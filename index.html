@@ -864,7 +864,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- ── AUTH MODAL ── -->
 <div class="auth-modal" id="authModal" style="display:none">
   <div class="auth-box" style="position:relative">
-    <button class="auth-close" onclick="history.pushState('','',window.location.pathname);this.closest('.auth-modal').style.display='none'" type="button">✕</button>
+    <button class="auth-close" onclick="document.getElementById('authModal').style.display='none';document.body.style.overflow=''" type="button">✕</button>
     <span class="auth-logo">M<b>M</b>GA</span>
     <span class="auth-tagline">Spine erect. Eyes closed. Points earned.</span>
     <div class="auth-title" id="authTitle">Sign in or create account</div>
@@ -903,7 +903,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div class="cam-inner">
     <div class="cam-top">
       <div class="cam-top-title">⚔ MONK POINTS DETECTOR</div>
-      <a href="#camModal" class="btn btn-red btn-sm">✕ Close</a>
+      <a href="#" class="cam-close" style="font-family:var(--px);font-size:8px;border:2px solid var(--border3);color:var(--muted);padding:7px 12px;text-decoration:none;display:inline-block">✕ Close</a>
     </div>
     <div class="cam-body">
       <div class="cam-left">
@@ -988,7 +988,9 @@ navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
 
 /* ── SMOOTH SCROLL ── */
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
-  const t=document.querySelector(a.getAttribute('href'));
+  const href=a.getAttribute('href');
+  if(href==='#camModal'||href==='#authModal'||href==='#') return; // let browser handle modals
+  const t=document.querySelector(href);
   if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
 }));
 
@@ -1437,25 +1439,17 @@ async function awardPointAndSync(){
 // Override awardPoint
 window.awardPoint = awardPointAndSync;
 
+function closeAuth(){var m=document.getElementById('authModal');if(m){m.style.display='none';document.body.style.overflow='';}}
 function openAuth(){var m=document.getElementById('authModal');if(m){m.style.display='flex';document.body.style.overflow='hidden';document.getElementById('authEmailStep').style.display='block';document.getElementById('authCheckEmail').style.display='none';document.getElementById('authMsg').textContent='';setTimeout(function(){var e=document.getElementById('authEmail');if(e)e.focus();},100);}}
 
 
-// Wire enable camera button
-var ecb = document.getElementById('enableCamBtn');
-if(ecb) ecb.addEventListener('click', function(){ startCam(); });
-
-
-// Wire session buttons
-var sb=document.getElementById('sessBtn');
-if(sb) sb.addEventListener('click',function(){ toggleSess(); });
-var rb=document.getElementById('resetBtn');
-if(rb) rb.addEventListener('click',function(){ resetSess(); });
+/* buttons wired via DOMContentLoaded below */
 
 
 
 /* ── EXPOSE ALL FUNCTIONS TO GLOBAL SCOPE ── */
 window.openCam      = function(){ var m=document.getElementById('camModal'); if(m){m.classList.add('open');document.body.style.overflow='hidden';} };
-window.closeAuth    = function(){ var m=document.getElementById('authModal'); if(m){m.classList.remove('open');document.body.style.overflow='';} };
+window.closeAuth    = function(){ var m=document.getElementById('authModal'); if(m){m.style.display='none';document.body.style.overflow='';} };
 window.startCam     = startCam;
 window.toggleSess   = toggleSess;
 window.resetSess    = resetSess;
@@ -1467,30 +1461,7 @@ window.selBt        = selBt;
 window.submitBook   = submitBook;
 window.joinList     = joinList;
 
-// Wire buttons via addEventListener as belt-and-suspenders
-document.addEventListener('DOMContentLoaded', function(){
-  var eb = document.getElementById('enableCamBtn');
-  if(eb) eb.addEventListener('click', startCam);
-  var sb = document.getElementById('sessBtn');
-  if(sb) sb.addEventListener('click', toggleSess);
-  var rb = document.getElementById('resetBtn');
-  if(rb) rb.addEventListener('click', resetSess);
-});
-
-/* ── EXPOSE TO GLOBAL SCOPE ── */
-window.startCam     = startCam;
-window.toggleSess   = toggleSess;
-window.resetSess    = resetSess;
-window.sendMagicLink= sendMagicLink;
-window.signInGoogle = signInGoogle;
-window.signOut      = signOut;
-window.chMonth      = chMonth;
-window.selBt        = selBt;
-window.submitBook   = submitBook;
-window.joinList     = joinList;
-window.initSupabase = initSupabase;
-window.checkSession = checkSession;
-
+/* ── INIT ── */
 document.addEventListener('DOMContentLoaded',function(){
   var eb=document.getElementById('enableCamBtn'); if(eb) eb.addEventListener('click',startCam);
   var sb=document.getElementById('sessBtn');      if(sb) sb.addEventListener('click',toggleSess);
