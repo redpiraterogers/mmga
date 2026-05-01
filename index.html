@@ -455,7 +455,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </ul>
   <div class="n-right" id="navRight">
     <button onclick="openAuth()" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="openAuth()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <button onclick="openCam()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
   </div>
 </nav>
 
@@ -1350,7 +1350,7 @@ function handleLoggedOut(){
   currentUser = null;
   document.getElementById('navRight').innerHTML = `
     <button onclick="openAuth()" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="openAuth()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <button onclick="openCam()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
   `;
 }
 
