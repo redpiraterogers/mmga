@@ -1238,14 +1238,14 @@ document.addEventListener('keydown',e=>{
 /* ── SUPABASE CONFIG ── */
 // TODO: Replace with your real keys from supabase.com → Project Settings → API
 const SUPA_URL = 'https://djyzuhhrhlxzsjgrkgxb.supabase.co';
-const SUPA_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqb3pybnNvZXl2Y2JjeHlkaWV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MjExNzcsImV4cCI6MjA5MzE5NzE3N30.dQ_n8CU_XPN9R2yYkUN30z4eexJUfpXKPABLtEawNDI';
 const REDIRECT_URL = window.location.origin + window.location.pathname;
 
 let supabase = null;
 let currentUser = null;
 
 function initSupabase(){
-  if(SUPA_URL === 'YOUR_SUPABASE_URL'){
+  if(SUPA_URL === 'YOUR_SUPABASE_URL' || SUPA_KEY === 'YOUR_SUPABASE_ANON_KEY'){
     document.getElementById('configNotice').style.display='block';
     return false;
   }
@@ -1260,13 +1260,15 @@ function initSupabase(){
 
 async function checkSession(){
   if(!supabase) return;
-  const {data:{session}} = await supabase.auth.getSession();
-  if(session?.user) handleLoggedIn(session.user);
-  // Listen for auth changes (magic link callback)
-  supabase.auth.onAuthStateChange((_event, session)=>{
+  try{
+    const res = await supabase.auth.getSession();
+    const session = res?.data?.session;
     if(session?.user) handleLoggedIn(session.user);
-    else handleLoggedOut();
-  });
+    supabase.auth.onAuthStateChange((_event, sess)=>{
+      if(sess?.user) handleLoggedIn(sess.user);
+      else handleLoggedOut();
+    });
+  }catch(e){console.warn('Session check failed:',e);}
 }
 
 async function handleLoggedIn(user){
