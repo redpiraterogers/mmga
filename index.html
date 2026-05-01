@@ -455,14 +455,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button onclick="openAuthSafe()" data-auth="1" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="openCamSafe()" data-cam="1" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <button onclick="var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';var s=document.getElementById('authEmailStep');if(s)s.style.display='block';var e=document.getElementById('authEmail');if(e)setTimeout(function(){e.focus()},100);}" data-auth="1" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
+    <button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
   </div>
 </nav>
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div style="position:absolute;inset:0;z-index:-3;background:url('https://images.unsplash.com/photo-1508672019048-805c876b67e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat,linear-gradient(135deg,#0d0d0b,#1c1c14)"></div>
+  <div style="position:absolute;inset:0;z-index:-3;background:url('https://picsum.photos/seed/mmga-zen/1920/1080') center/cover no-repeat,linear-gradient(135deg,#0d0d0b,#1c1c14)"></div>
   <div style="position:absolute;inset:0;z-index:-2;background:linear-gradient(to bottom,rgba(6,6,5,0.75) 0%,rgba(6,6,5,0.55) 40%,rgba(11,11,9,0.95) 100%)"></div>
   <div class="hero-grid" style="opacity:0.3"></div>
 
@@ -486,7 +486,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </div>
 
   <div class="h-ctas">
-    <button class="btn btn-red" onclick="openCam()">⚔ Begin the practice</button>
+    <button class="btn btn-red" onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}">⚔ Begin the practice</button>
     <a href="#secret" class="btn btn-ghost">◉ The royal secret</a>
     <a href="#companies" class="btn btn-yellow">🏢 For companies</a>
   </div>
@@ -599,9 +599,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <h2 class="s-title">Choose Your Universe</h2>
   <p class="s-body">Pop culture worlds. Real meditation. Earn Monk Points while you listen.</p>
   <div class="sess-grid">
-    <div class="sess-card reveal" onclick="openCamSafe()" data-cam="1"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
-    <div class="sess-card reveal" onclick="openCamSafe()" data-cam="1"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
-    <div class="sess-card reveal" onclick="openCamSafe()" data-cam="1"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
+    <div class="sess-card reveal" onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
+    <div class="sess-card reveal" onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
+    <div class="sess-card reveal" onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 04 · Pro</div><span class="sess-icon">🌹</span><div class="sess-name">Sit Like the Don</div><div class="sess-quote">"The Don never panics. The Don never reacts. The Don breathes."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">GODFATHER · 15 min</div><div class="sess-locked">PRO</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 05 · Pro</div><span class="sess-icon">⚔</span><div class="sess-name">Jedi Training Arc</div><div class="sess-quote">"The Force lives in the space between actions."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">STAR WARS · 18 min</div><div class="sess-locked">PRO</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 06 · Pro</div><span class="sess-icon">💀</span><div class="sess-name">You Died. Try Again.</div><div class="sess-quote">"Respawn. Sit back down. Spine erect. This is the run."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">DARK SOULS · 12 min</div><div class="sess-locked">PRO</div></div>
@@ -790,7 +790,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <span class="eyebrow">$ Pricing</span>
   <h2 class="s-title">Simple. No dark patterns.<br/>No annual guilt trips.</h2>
   <div class="price-grid">
-    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><button onclick="openCamSafe()" data-cam="1" class="p-btn">▶ Start now</button></div>
+    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1" class="p-btn">▶ Start now</button></div>
     <div class="p-card star"><div class="p-star">★ Most chosen ★</div><div class="p-tier">Pro</div><div class="p-num">€9</div><div class="p-per">/ month · cancel any time</div><ul class="p-feats"><li class="on">All 10 pop culture sessions</li><li class="on">Full tutorial library</li><li class="on">Masters video library</li><li class="on">All 8 scriptures</li><li class="on">3am mode unlocked</li><li class="on">Monthly certificate PDF</li></ul><a href="#signup" class="p-btn main">Get Pro →</a></div>
     <div class="p-card"><div class="p-tier">Company</div><div class="p-num">€5</div><div class="p-per">/ employee / month</div><ul class="p-feats"><li class="on">Everything Pro for all staff</li><li class="on">Company dashboard</li><li class="on">ESG wellness reports</li><li class="on">Certified Mindful badge</li><li class="on">Productivity data</li></ul><a href="#signup" class="p-btn">Onboard →</a></div>
     <div class="p-card"><div class="p-tier">Private</div><div class="p-num">€45</div><div class="p-per">per session with Memo</div><ul class="p-feats"><li class="on">60 min 1:1 with Memo</li><li class="on">Video or audio</li><li class="on">No agenda, no curriculum</li><li class="on">Points counted live</li></ul><a href="#book" class="p-btn">Book now →</a></div>
@@ -850,7 +850,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- ── AUTH MODAL ── -->
 <div class="auth-modal" id="authModal" style="display:none">
   <div class="auth-box" style="position:relative">
-    <button class="auth-close" onclick="closeAuth()" type="button">✕</button>
+    <button class="auth-close" onclick="document.getElementById('authModal').classList.remove('open');document.body.style.overflow=''" type="button">✕</button>
     <span class="auth-logo">M<b>M</b>GA</span>
     <span class="auth-tagline">Spine erect. Eyes closed. Points earned.</span>
     <div class="auth-title" id="authTitle">Sign in or create account</div>
@@ -889,7 +889,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div class="cam-inner">
     <div class="cam-top">
       <div class="cam-top-title">⚔ MONK POINTS DETECTOR</div>
-      <button class="cam-close" onclick="closeCam()" type="button">✕ Close</button>
+      <button class="cam-close" onclick="document.getElementById('camModal').classList.remove('open');document.body.style.overflow=''" type="button">✕ Close</button>
     </div>
     <div class="cam-body">
       <div class="cam-left">
@@ -1341,7 +1341,7 @@ async function handleLoggedIn(user){
       <span class="n-pts">★ ${totalPts} pts</span>
       <span style="font-size:7px;color:var(--muted)">${name}</span>
     </div>
-    <button onclick="openCam()" class="n-cta" type="button">▶ Meditate</button>
+    <button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" class="n-cta" type="button">▶ Meditate</button>
     <button onclick="signOut()" class="n-signout" type="button">Sign out</button>
   `;
 }
@@ -1349,8 +1349,8 @@ async function handleLoggedIn(user){
 function handleLoggedOut(){
   currentUser = null;
   document.getElementById('navRight').innerHTML = `
-    <button onclick="openAuth()" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="openCam()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <button onclick="var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';var s=document.getElementById('authEmailStep');if(s)s.style.display='block';var e=document.getElementById('authEmail');if(e)setTimeout(function(){e.focus()},100);}" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
+    <button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
   `;
 }
 
