@@ -454,8 +454,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button onclick="openAuth()" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="openCam()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <button onclick="openAuthSafe()" data-auth="1" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
+    <button onclick="openCamSafe()" data-cam="1" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
   </div>
 </nav>
 
@@ -486,7 +486,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </div>
 
   <div class="h-ctas">
-    <button class="btn btn-red" onclick="openCam()">⚔ Begin the practice</button>
+    <button class="btn btn-red" onclick="openCamSafe()" data-cam="1">⚔ Begin the practice</button>
     <a href="#secret" class="btn btn-ghost">◉ The royal secret</a>
     <a href="#companies" class="btn btn-yellow">🏢 For companies</a>
   </div>
@@ -599,9 +599,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <h2 class="s-title">Choose Your Universe</h2>
   <p class="s-body">Pop culture worlds. Real meditation. Earn Monk Points while you listen.</p>
   <div class="sess-grid">
-    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
-    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
-    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
+    <div class="sess-card reveal" onclick="openCamSafe()" data-cam="1"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
+    <div class="sess-card reveal" onclick="openCamSafe()" data-cam="1"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
+    <div class="sess-card reveal" onclick="openCamSafe()" data-cam="1"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 04 · Pro</div><span class="sess-icon">🌹</span><div class="sess-name">Sit Like the Don</div><div class="sess-quote">"The Don never panics. The Don never reacts. The Don breathes."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">GODFATHER · 15 min</div><div class="sess-locked">PRO</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 05 · Pro</div><span class="sess-icon">⚔</span><div class="sess-name">Jedi Training Arc</div><div class="sess-quote">"The Force lives in the space between actions."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">STAR WARS · 18 min</div><div class="sess-locked">PRO</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 06 · Pro</div><span class="sess-icon">💀</span><div class="sess-name">You Died. Try Again.</div><div class="sess-quote">"Respawn. Sit back down. Spine erect. This is the run."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">DARK SOULS · 12 min</div><div class="sess-locked">PRO</div></div>
@@ -790,7 +790,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <span class="eyebrow">$ Pricing</span>
   <h2 class="s-title">Simple. No dark patterns.<br/>No annual guilt trips.</h2>
   <div class="price-grid">
-    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><button onclick="openCam()" class="p-btn">▶ Start now</button></div>
+    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><button onclick="openCamSafe()" data-cam="1" class="p-btn">▶ Start now</button></div>
     <div class="p-card star"><div class="p-star">★ Most chosen ★</div><div class="p-tier">Pro</div><div class="p-num">€9</div><div class="p-per">/ month · cancel any time</div><ul class="p-feats"><li class="on">All 10 pop culture sessions</li><li class="on">Full tutorial library</li><li class="on">Masters video library</li><li class="on">All 8 scriptures</li><li class="on">3am mode unlocked</li><li class="on">Monthly certificate PDF</li></ul><a href="#signup" class="p-btn main">Get Pro →</a></div>
     <div class="p-card"><div class="p-tier">Company</div><div class="p-num">€5</div><div class="p-per">/ employee / month</div><ul class="p-feats"><li class="on">Everything Pro for all staff</li><li class="on">Company dashboard</li><li class="on">ESG wellness reports</li><li class="on">Certified Mindful badge</li><li class="on">Productivity data</li></ul><a href="#signup" class="p-btn">Onboard →</a></div>
     <div class="p-card"><div class="p-tier">Private</div><div class="p-num">€45</div><div class="p-per">per session with Memo</div><ul class="p-feats"><li class="on">60 min 1:1 with Memo</li><li class="on">Video or audio</li><li class="on">No agenda, no curriculum</li><li class="on">Points counted live</li></ul><a href="#book" class="p-btn">Book now →</a></div>
@@ -1449,6 +1449,47 @@ document.getElementById && document.addEventListener('keydown',e=>{
 // Init on load
 initSupabase();
 checkSession();
+
+/* ── BUTTON WIRING (failsafe) ── */
+function openCamSafe(){
+  try{
+    var m=document.getElementById('camModal');
+    if(m){m.classList.add('open');document.body.style.overflow='hidden';}
+  }catch(e){console.error('openCam error:',e);}
+}
+function openAuthSafe(){
+  try{
+    var m=document.getElementById('authModal');
+    if(m){m.classList.add('open');document.body.style.overflow='hidden';
+      document.getElementById('authEmailStep').style.display='block';
+      document.getElementById('authCheckEmail').style.display='none';
+      document.getElementById('authMsg').textContent='';
+      document.getElementById('authMsg').className='auth-msg';
+      setTimeout(function(){var e=document.getElementById('authEmail');if(e)e.focus();},100);
+    }
+  }catch(e){console.error('openAuth error:',e);}
+}
+// Wire all buttons via DOM — belt AND suspenders approach
+(function(){
+  function wire(){
+    document.querySelectorAll('[data-cam]').forEach(function(b){
+      b.addEventListener('click',openCamSafe);
+    });
+    document.querySelectorAll('[data-auth]').forEach(function(b){
+      b.addEventListener('click',openAuthSafe);
+    });
+    // Also directly wire by ID
+    var bb=document.getElementById('beginBtn');
+    if(bb) bb.onclick=openCamSafe;
+    var lb=document.getElementById('loginBtn');
+    if(lb) lb.onclick=openAuthSafe;
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',wire);
+  } else {
+    wire();
+  }
+})();
 </script>
 </body>
 </html>
