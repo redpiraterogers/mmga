@@ -407,6 +407,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 .reveal.active{opacity:1;transform:none}
 
 /* ── RESPONSIVE ── */
+@media(max-width:900px){#secret>div{grid-template-columns:1fr!important;}}
 @media(max-width:980px){
   .n-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(11,11,9,0.98);border-bottom:1px solid var(--border2);padding:12px 16px;flex-direction:column}
   .n-links.open{display:flex}
@@ -460,22 +461,39 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
 <!-- ── HERO ── -->
 <section class="hero">
+  <div class="hero-bg" style="position:absolute;inset:0;z-index:-3;background:url('https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat"></div>
+  <div class="hero-overlay" style="position:absolute;inset:0;z-index:-2;background:linear-gradient(to bottom,rgba(6,6,5,0.72) 0%,rgba(6,6,5,0.55) 40%,rgba(11,11,9,0.92) 100%)"></div>
   <div class="hero-grid"></div>
-  <div class="hero-vignette"></div>
-  <div class="h-kicker">★ BETA · FIRST 500 GET PRO FREE · GOTTA SIT 'EM ALL ★</div>
-  <h1 class="h1">MAKE</h1>
-  <h2 class="h2">MEDITATION</h2>
-  <h1 class="h1">GREAT AGAIN</h1>
-  <p class="h-sub">The world's first <strong>verified meditation registry.</strong><br/>Two rules. Camera proof. Monk Points that mean something.<br/>Meditation was stolen. <strong>We're taking it back.</strong></p>
+
+  <div class="h-kicker">★ THE ROYAL SECRET OF MEDITATION — NOW VERIFIABLE ★</div>
+
+  <h1 class="h1" style="font-size:clamp(14px,2.2vw,22px);color:var(--off);font-family:var(--serif);font-style:italic;font-weight:normal;letter-spacing:0.02em;text-shadow:none;margin-bottom:12px;max-width:680px">Every meditation app has been lying to you.</h1>
+
+  <h2 class="h2" style="font-size:clamp(28px,7vw,72px);letter-spacing:-0.02em;margin-bottom:6px">MAKE</h2>
+  <h2 class="h2" style="font-size:clamp(28px,7vw,72px);letter-spacing:-0.02em;margin-bottom:6px">MEDITATION</h2>
+  <h1 class="h1" style="font-size:clamp(28px,7vw,72px);letter-spacing:-0.02em;margin-bottom:32px">GREAT AGAIN</h1>
+
+  <p class="h-sub" style="max-width:720px;font-size:clamp(17px,2.2vw,22px)">
+    They told you to <em>stop your thoughts</em>. Clear your mind. Find peace.<br/>
+    That is why you gave up after three sessions.<br/><br/>
+    <strong>Here is what the Zen masters actually know:</strong><br/>
+    The mind stills itself. You don't still it.<br/>
+    You simply create the conditions — and wait.
+  </p>
+
+  <div style="font-family:var(--px);font-size:clamp(9px,1.8vw,18px);color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);letter-spacing:0.08em;margin-bottom:36px">
+    SPINE ERECT &nbsp;+&nbsp; EYES CLOSED &nbsp;+&nbsp; TIME &nbsp;=&nbsp; STILLNESS
+  </div>
+
   <div class="h-ctas">
-    <button class="btn btn-red" onclick="openCam()">⚔ Start Session</button>
-    <a href="#companies" class="btn btn-yellow">🏢 For Companies</a>
-    <a href="#how" class="btn btn-ghost">◉ How it works</a>
+    <button class="btn btn-red" onclick="openCam()">⚔ Begin the practice</button>
+    <a href="#secret" class="btn btn-ghost">◉ The royal secret</a>
+    <a href="#companies" class="btn btn-yellow">🏢 For companies</a>
   </div>
   <div class="hero-proof">
-    <span class="proof-pill">Local-only camera · never recorded</span>
-    <span class="proof-pill">60 verified seconds = 1 point</span>
-    <span class="proof-pill">No fake manual logs</span>
+    <span class="proof-pill">Camera-verified posture &amp; eye closure</span>
+    <span class="proof-pill">60 verified seconds = 1 Monk Point</span>
+    <span class="proof-pill">Guided by Agamemnon · Zen practitioner · Methana</span>
   </div>
 </section>
 
@@ -483,6 +501,37 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <div class="ticker" aria-hidden="true">
   <div class="ticker-t">&nbsp;&nbsp;SPINE ERECT &nbsp;·&nbsp; EYES CLOSED &nbsp;·&nbsp; MONK POINTS EARNED &nbsp;·&nbsp; ENTROPY: PAUSED &nbsp;·&nbsp; VERIFIED STILLNESS &nbsp;·&nbsp; LOCAL ONLY &nbsp;·&nbsp; TAO TE CHING &nbsp;·&nbsp; DHAMMAPADA &nbsp;·&nbsp; BHAGAVAD GITA &nbsp;·&nbsp; OSHO &nbsp;·&nbsp; LAO TZU &nbsp;·&nbsp; KRISHNAMURTI &nbsp;·&nbsp; GOTTA SIT EM ALL &nbsp;·&nbsp; SPINE ERECT &nbsp;·&nbsp; EYES CLOSED &nbsp;·&nbsp; MONK POINTS EARNED &nbsp;·&nbsp; ENTROPY: PAUSED &nbsp;·&nbsp; VERIFIED STILLNESS &nbsp;·&nbsp; LOCAL ONLY &nbsp;·&nbsp; TAO TE CHING &nbsp;·&nbsp; DHAMMAPADA &nbsp;·&nbsp; BHAGAVAD GITA &nbsp;·&nbsp; OSHO &nbsp;·&nbsp; LAO TZU &nbsp;·&nbsp; KRISHNAMURTI &nbsp;·&nbsp; GOTTA SIT EM ALL &nbsp;·&nbsp;</div>
 </div>
+
+<!-- ── ROYAL SECRET ── -->
+<section style="background:var(--bg2);border-bottom:2px solid var(--border2)" id="secret">
+  <div style="max-width:1160px;margin:0 auto;padding:clamp(72px,9vw,108px) clamp(20px,4vw,40px);display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center">
+    <div>
+      <span style="font-family:var(--px);font-size:9px;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:16px">⚔ THE ROYAL SECRET</span>
+      <h2 style="font-family:var(--px);font-size:clamp(18px,3.5vw,32px);margin-bottom:24px;line-height:1.35;text-shadow:2px 2px 0 var(--dim)">The one thing no meditation app ever tells you upfront</h2>
+      <p style="font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.2vw,22px);color:var(--off);line-height:1.85;margin-bottom:24px">You do not need to stop your thoughts. You do not need to clear your mind. You do not need to feel peaceful, focused, or spiritual.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:20px">These are misconceptions that have kept millions of people from a practice that would change their lives. The moment a thought arises, most people believe they are "failing". They are not failing. They are meditating.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:20px">The Dhammapada says: <em style="color:var(--off)">"Mind is the forerunner of all actions."</em> The Yoga Sutras say: <em style="color:var(--off)">"Yoga is the cessation of the fluctuations of the mind."</em> Every Zen koan, every Buddhist sutra, every Sufi poem — they are all pointing at the same thing.</p>
+      <p style="font-size:13px;color:var(--off);line-height:1.85;font-weight:500">The stillness arrives on its own. Your only job is to sit still long enough for it to find you.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:2px">
+      <div style="background:var(--bg);border:2px solid var(--border2);padding:28px 24px;border-left:4px solid var(--red)">
+        <div style="font-family:var(--px);font-size:9px;color:var(--red);margin-bottom:10px;letter-spacing:0.08em">MISCONCEPTION 01</div>
+        <div style="font-family:var(--serif);font-style:italic;font-size:17px;color:var(--off);margin-bottom:8px">"I need to stop my thoughts."</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65">No teacher has ever stopped their thoughts. The practice is not suppression — it is observation. Thoughts arise. You notice them. You return to stillness. That return <em>is</em> the practice.</div>
+      </div>
+      <div style="background:var(--bg);border:2px solid var(--border2);padding:28px 24px;border-left:4px solid var(--red)">
+        <div style="font-family:var(--px);font-size:9px;color:var(--red);margin-bottom:10px;letter-spacing:0.08em">MISCONCEPTION 02</div>
+        <div style="font-family:var(--serif);font-style:italic;font-size:17px;color:var(--off);margin-bottom:8px">"I need to feel peaceful to be meditating."</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.65">Peace is the outcome, not the prerequisite. You sit uncomfortable, distracted, restless — and you sit anyway. The nervous system does the rest over time. This is physiology, not spirituality.</div>
+      </div>
+      <div style="background:var(--bg);border:2px solid var(--yellow);padding:28px 24px;border-left:4px solid var(--yellow)">
+        <div style="font-family:var(--px);font-size:9px;color:var(--yellow);margin-bottom:10px;letter-spacing:0.08em;text-shadow:1px 1px 0 var(--ydark)">★ THE ACTUAL TRUTH</div>
+        <div style="font-family:var(--serif);font-style:italic;font-size:17px;color:var(--white);margin-bottom:8px">"Spine erect. Eyes closed. Time."</div>
+        <div style="font-size:12px;color:var(--off);line-height:1.65">These are the only two things you control. Everything else — stillness, insight, peace — is a function of accumulated verified minutes. MMGA measures exactly this. Nothing more. Nothing less.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ── TWO RULES ── -->
 <div class="rules-bg" id="rules">
@@ -612,13 +661,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div class="booking-inner">
     <div>
       <span class="eyebrow">🕯 Monk on Call</span>
-      <h2 class="s-title">Book a 1:1 with Memo</h2>
-      <p class="s-body" style="margin-bottom:24px">No curriculum. No agenda. You bring what you carry — Memo sits in silence with you. That's the whole thing.</p>
+      <h2 class="s-title">Monk on Call.<br/>Book Agamemnon.</h2>
+      <p class="s-body" style="margin-bottom:16px">No curriculum. No agenda. You bring what you carry — Agamemnon sits in silence with you. That's the whole thing.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:24px;max-width:480px">Agamemnon has practised Zen meditation for over two decades on the Saronic coast of Methana, Greece. He is not a guru. He does not have answers. He sits, and invites you to sit with him. The practice speaks for itself.</p>
       <div class="monk-card">
         <span class="monk-flame">🕯</span>
         <div>
-          <div class="live-badge"><span class="live-dot"></span>Memo is live now</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">Methana, Greece · Saronic coast</div>
+          <div class="live-badge"><span class="live-dot"></span>Agamemnon is live now</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">Agamemnon · Methana, Greece · Saronic coast</div>
         </div>
       </div>
       <div class="monk-stats">
@@ -665,7 +715,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
         </form>
         <div class="book-success" id="bookSuccess">
           <div class="bs-t">★ Request received ★</div>
-          <div class="bs-s">Memo confirms within 12 hours. Try a free session while you wait.</div>
+          <div class="bs-s">Agamemnon confirms within 12 hours. Try a free session while you wait.</div>
         </div>
       </div>
     </div>
@@ -785,10 +835,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- ── FOOTER ── -->
 <footer>
   <div class="footer-grid">
-    <div><span class="f-logo">M<b>M</b>GA</span><p class="f-about">Make Meditation Great Again. Taking it back from the wellness industry, one verified minute at a time. Built from Methana, Greece.</p></div>
+    <div><span class="f-logo">M<b>M</b>GA</span><p class="f-about">Make Meditation Great Again. Taking it back from the wellness industry, one verified minute at a time. Built from Methana, Greece. Founded by Agamemnon, Zen practitioner.</p></div>
     <div><span class="f-col-h">Product</span><ul class="f-links"><li><a href="#how">How it works</a></li><li><a href="#sessions">Sessions</a></li><li><a href="#tutorials">Tutorials</a></li><li><a href="#masters">Masters</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
     <div><span class="f-col-h">Companies</span><ul class="f-links"><li><a href="#companies">Dashboard</a></li><li><a href="#companies">ESG reports</a></li><li><a href="#companies">Certification</a></li><li><a href="mailto:info@mmga.yoga">Partner with us</a></li></ul></div>
-    <div><span class="f-col-h">Contact</span><ul class="f-links"><li><a href="mailto:info@mmga.yoga">info@mmga.yoga</a></li><li><a href="#book">Book Memo</a></li><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
+    <div><span class="f-col-h">Contact</span><ul class="f-links"><li><a href="mailto:info@mmga.yoga">info@mmga.yoga</a></li><li><a href="#book">Book Agamemnon</a></li><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
   </div>
   <div class="f-bottom">
     <span class="f-copy">© 2025 MMGA · Methana, Greece</span>
