@@ -969,9 +969,6 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
 
 <script>
-/* ── MMGA MAIN SCRIPT ── */
-(function(){
-try {
 
 /* ── NAV ── */
 const nav=document.getElementById('nav');
@@ -1454,10 +1451,55 @@ if(sb) sb.addEventListener('click',function(){ toggleSess(); });
 var rb=document.getElementById('resetBtn');
 if(rb) rb.addEventListener('click',function(){ resetSess(); });
 
-} catch(e) {
-  console.error('MMGA boot error:', e.message, e.stack);
-}
-})();
+
+
+/* ── EXPOSE ALL FUNCTIONS TO GLOBAL SCOPE ── */
+window.openCam      = function(){ var m=document.getElementById('camModal'); if(m){m.classList.add('open');document.body.style.overflow='hidden';} };
+window.closeAuth    = function(){ var m=document.getElementById('authModal'); if(m){m.classList.remove('open');document.body.style.overflow='';} };
+window.startCam     = startCam;
+window.toggleSess   = toggleSess;
+window.resetSess    = resetSess;
+window.sendMagicLink= sendMagicLink;
+window.signInGoogle = signInGoogle;
+window.signOut      = signOut;
+window.chMonth      = chMonth;
+window.selBt        = selBt;
+window.submitBook   = submitBook;
+window.joinList     = joinList;
+
+// Wire buttons via addEventListener as belt-and-suspenders
+document.addEventListener('DOMContentLoaded', function(){
+  var eb = document.getElementById('enableCamBtn');
+  if(eb) eb.addEventListener('click', startCam);
+  var sb = document.getElementById('sessBtn');
+  if(sb) sb.addEventListener('click', toggleSess);
+  var rb = document.getElementById('resetBtn');
+  if(rb) rb.addEventListener('click', resetSess);
+});
+
+/* ── EXPOSE TO GLOBAL SCOPE ── */
+window.startCam     = startCam;
+window.toggleSess   = toggleSess;
+window.resetSess    = resetSess;
+window.sendMagicLink= sendMagicLink;
+window.signInGoogle = signInGoogle;
+window.signOut      = signOut;
+window.chMonth      = chMonth;
+window.selBt        = selBt;
+window.submitBook   = submitBook;
+window.joinList     = joinList;
+window.initSupabase = initSupabase;
+window.checkSession = checkSession;
+
+document.addEventListener('DOMContentLoaded',function(){
+  var eb=document.getElementById('enableCamBtn'); if(eb) eb.addEventListener('click',startCam);
+  var sb=document.getElementById('sessBtn');      if(sb) sb.addEventListener('click',toggleSess);
+  var rb=document.getElementById('resetBtn');     if(rb) rb.addEventListener('click',resetSess);
+  initSupabase();
+  checkSession();
+});
+
+
 </script>
 </body>
 </html>
