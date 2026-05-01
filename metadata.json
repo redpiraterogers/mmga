@@ -1,0 +1,68 @@
+{
+  "name": "Monk",
+  "symbol": "MONK",
+  "description": "Utility token minted through verified meditation practice using Proof-of-Stillness protocol. Non-transferable during 5-Year Stillness Epoch. Earned by maintaining spine erect + eyes closed for 60 verified seconds.",
+  "image": "https://mmga.yoga/monk-token-icon.png",
+  "external_url": "https://mmga.yoga",
+  "attributes": [
+    {
+      "trait_type": "Token Standard",
+      "value": "SPL Token-2022"
+    },
+    {
+      "trait_type": "Extension",
+      "value": "Non-Transferable (Soulbound)"
+    },
+    {
+      "trait_type": "Blockchain",
+      "value": "Solana"
+    },
+    {
+      "trait_type": "Mint Method",
+      "value": "Proof-of-Stillness"
+    },
+    {
+      "trait_type": "Verification",
+      "value": "MediaPipe Client-Side Biometric Detection"
+    },
+    {
+      "trait_type": "Mint Rate",
+      "value": "1 MONK per 60 verified seconds"
+    },
+    {
+      "trait_type": "Decimals",
+      "value": "0 (Whole tokens only)"
+    },
+    {
+      "trait_type": "Stillness Epoch",
+      "value": "5 Years (Until January 2030)"
+    },
+    {
+      "trait_type": "Governance",
+      "value": "Community Vote for Year 5 Unlock"
+    },
+    {
+      "trait_type": "Location",
+      "value": "Methana, Greece"
+    }
+  ],
+  "properties": {
+    "category": "utility",
+    "creators": [
+      {
+        "address": "FCg4KoWtwbRfRQPt6t7dFSxzV2GbL4VABSsTRQoA66LX",
+        "share": 100
+      }
+    ],
+    "files": [
+      {
+        "uri": "https://mmga.yoga/monk-token-icon.png",
+        "type": "image/png"
+      }
+    ]
+  },
+  "collection": {
+    "name": "MMGA Protocol",
+    "family": "Proof-of-Stillness"
+  }
+}
