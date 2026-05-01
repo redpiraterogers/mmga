@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MMGA — Make Meditation Great Again</title>
+<meta name="description" content="The world's first verified meditation registry. Earn Monk Points. Onboard your company. Gotta sit em all."/>
+<meta name="theme-color" content="#0b0b09"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0b09;--bg2:#141411;--bg3:#1c1c18;--bg4:#242420;
+  --white:#f5f2eb;--off:#d4d0c8;--muted:#9a9690;--dim:#3a3830;--dim2:#4a4840;
+  --red:#e6331f;--red2:#ff5040;--rdk:#7c1a0e;
+  --yellow:#ffd84d;--ydim:#c49a1a;--ydark:#5a3e00;
+  --green:#1ed760;--gdim:#0e8a38;
+  --blue:#5a9fff;--teal:#1ed4b4;
+  --border:rgba(245,242,235,0.08);--border2:rgba(245,242,235,0.15);--border3:rgba(245,242,235,0.24);
+  --shadow:rgba(0,0,0,0.5);
+  --px:'Press Start 2P',monospace;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'DM Mono','Courier New',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:68px}
+body{background:var(--bg);color:var(--white);font-family:var(--mono);overflow-x:hidden;line-height:1.6;text-rendering:optimizeLegibility}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.4}
+::selection{background:var(--yellow);color:var(--bg)}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--dim2)}
+a{color:inherit}
+button,input,textarea,select{font:inherit}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,40px);transition:all 0.25s;background:rgba(11,11,9,0.7);backdrop-filter:blur(12px);border-bottom:1px solid transparent}
+nav.stuck{background:rgba(11,11,9,0.97);border-bottom-color:var(--border2);height:56px}
+.n-logo{font-family:var(--px);font-size:13px;color:var(--red);text-shadow:2px 2px 0 var(--rdk);text-decoration:none}
+.n-logo b{color:var(--yellow)}
+.n-links{display:flex;list-style:none}
+.n-links a{font-size:11px;color:var(--off);text-decoration:none;padding:7px 11px;transition:color 0.2s;letter-spacing:0.03em}
+.n-links a:hover{color:var(--yellow)}
+.n-right{display:flex;align-items:center;gap:10px}
+.n-cta{font-family:var(--px);font-size:8px;padding:9px 16px;background:var(--red);border:2px solid var(--red2);box-shadow:2px 2px 0 var(--rdk);color:var(--white);cursor:pointer;text-decoration:none;transition:all 0.1s;letter-spacing:0.04em;display:inline-block}
+.n-cta:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--rdk)}
+.n-ghost{background:transparent;border-color:var(--border3);box-shadow:2px 2px 0 var(--dim);color:var(--off)}
+.mobile-menu{display:none;background:transparent;color:var(--white);border:2px solid var(--border3);font-family:var(--px);font-size:8px;padding:8px 11px;cursor:pointer}
+
+/* ── BUTTONS ── */
+.btn{font-family:var(--px);font-size:9px;padding:14px 28px;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;text-decoration:none;letter-spacing:0.05em;border:2px solid;transition:all 0.1s;text-align:center;line-height:1}
+.btn:hover{transform:translate(-2px,-2px)}
+.btn-red{background:var(--red);border-color:var(--red2);box-shadow:4px 4px 0 var(--rdk);color:var(--white)}
+.btn-red:hover{box-shadow:6px 6px 0 var(--rdk)}
+.btn-yellow{background:var(--yellow);border-color:#ffe066;box-shadow:4px 4px 0 var(--ydark);color:var(--bg)}
+.btn-yellow:hover{box-shadow:6px 6px 0 var(--ydark)}
+.btn-ghost{background:transparent;border-color:var(--border3);box-shadow:4px 4px 0 var(--dim);color:var(--off)}
+.btn-ghost:hover{border-color:var(--white);color:var(--white);box-shadow:6px 6px 0 var(--dim)}
+.btn-sm{padding:9px 16px;font-size:8px}
+.btn-block{display:block;width:100%;text-align:center}
+
+/* ── LAYOUT ── */
+.s{padding:clamp(72px,9vw,108px) clamp(20px,4vw,40px);max-width:1160px;margin:0 auto}
+.eyebrow{font-family:var(--px);font-size:9px;color:var(--red);letter-spacing:0.15em;display:block;margin-bottom:16px}
+.s-title{font-family:var(--px);font-size:clamp(18px,3.5vw,32px);margin-bottom:18px;line-height:1.35;text-shadow:2px 2px 0 var(--dim);max-width:900px}
+.s-body{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.2vw,22px);color:var(--off);max-width:620px;line-height:1.8}
+.s-sub{font-size:13px;color:var(--muted);line-height:1.7;max-width:600px}
+hr.thin{border:none;border-top:1px solid var(--border2);max-width:1160px;margin:0 auto}
+
+/* ── HERO ── */
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:124px 24px 80px;position:relative;overflow:hidden;isolation:isolate}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(230,51,31,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(230,51,31,0.05) 1px,transparent 1px);background-size:48px 48px;animation:scrollgrid 60s linear infinite;pointer-events:none;z-index:-2}
+@keyframes scrollgrid{from{background-position:0 0}to{background-position:480px 480px}}
+.hero-vignette{position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 50% 45%,rgba(230,51,31,0.05) 0%,transparent 40%,rgba(11,11,9,0.94) 100%);pointer-events:none;z-index:-1}
+.h-kicker{font-family:var(--px);font-size:9px;color:var(--yellow);background:rgba(255,216,77,0.1);border:2px solid rgba(255,216,77,0.3);padding:10px 18px;display:inline-block;margin-bottom:28px;letter-spacing:0.08em;line-height:1.7;animation:fadein 0.5s ease both}
+@keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.h1{font-family:var(--px);font-size:clamp(32px,8vw,82px);color:var(--white);text-shadow:6px 6px 0 var(--dim);line-height:1.1;letter-spacing:-0.02em}
+.h2{font-family:var(--px);font-size:clamp(32px,8vw,82px);color:var(--red);text-shadow:6px 6px 0 var(--rdk);line-height:1.1;letter-spacing:-0.02em}
+.h-sub{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.4vw,24px);color:var(--off);max-width:680px;margin:28px auto 40px;line-height:1.7}
+.h-sub strong{font-style:normal;color:var(--white)}
+.h-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.hero-proof{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+.proof-pill{font-size:11px;color:var(--muted);border:1px solid var(--border2);padding:6px 12px;background:rgba(245,242,235,0.03)}
+
+/* ── TICKER ── */
+.ticker{background:var(--yellow);overflow:hidden;padding:13px 0;border-block:2px solid #ffe066;position:relative;z-index:10}
+.ticker-t{display:inline-block;white-space:nowrap;animation:tick 38s linear infinite;font-family:var(--px);font-size:9px;color:var(--bg);letter-spacing:0.06em}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── RULES ── */
+.rules-bg{background:var(--bg2);border-top:2px solid var(--border2);border-bottom:2px solid var(--border2)}
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:1160px;margin:0 auto;background:var(--border2)}
+.rule-card{background:var(--bg);padding:clamp(36px,5vw,60px) clamp(24px,4vw,44px);position:relative;overflow:hidden}
+.rule-num{font-family:var(--px);font-size:48px;color:var(--dim);position:absolute;top:20px;right:22px;line-height:1;pointer-events:none}
+.rule-icon{font-size:40px;margin-bottom:18px;display:block}
+.rule-title{font-family:var(--px);font-size:clamp(14px,2vw,20px);color:var(--yellow);margin-bottom:14px;text-shadow:1px 1px 0 var(--ydark);line-height:1.4}
+.rule-desc{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--off);line-height:1.75;margin-bottom:16px;max-width:500px}
+.rule-tech{font-size:12px;color:var(--muted);border-left:2px solid var(--dim2);padding-left:12px;line-height:1.65}
+.rule-tech strong{color:var(--off)}
+
+/* ── CALC ── */
+.calc-section{padding:clamp(64px,8vw,96px) clamp(20px,4vw,40px);background:var(--bg2);border-bottom:2px solid var(--border2)}
+.calc-box{max-width:820px;margin:0 auto}
+.calc-slider-box{margin:36px 0;padding:clamp(20px,4vw,36px);background:var(--bg);border:2px solid var(--border3);box-shadow:8px 8px 0 var(--dim)}
+input[type=range]{width:100%;height:12px;background:var(--bg3);-webkit-appearance:none;appearance:none;outline:none;border:2px solid var(--dim);cursor:pointer;accent-color:var(--yellow)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;background:var(--yellow);border:2px solid var(--ydark);cursor:pointer;box-shadow:2px 2px 0 var(--ydark)}
+.calc-result{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.res-box{text-align:center;padding:14px;background:rgba(245,242,235,0.03);border:1px solid var(--border)}
+.res-val{font-family:var(--px);font-size:clamp(20px,3.5vw,30px);color:var(--yellow);display:block;margin-bottom:6px}
+.res-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+.privacy-guard{background:rgba(30,215,96,0.05);border:2px dashed rgba(30,215,96,0.3);padding:22px;max-width:820px;margin:32px auto 0;display:flex;align-items:center;gap:20px}
+.pg-icon{font-size:36px;flex-shrink:0}
+.pg-text h4{font-family:var(--px);font-size:9px;color:var(--green);margin-bottom:8px;line-height:1.6}
+.pg-text p{font-size:12px;color:var(--off);line-height:1.65}
+
+/* ── STEPS ── */
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;margin-top:52px;background:var(--border2);border:2px solid var(--border2)}
+.step{background:var(--bg);padding:34px 26px}
+.step-n{font-family:var(--px);font-size:8px;color:var(--muted);margin-bottom:14px;letter-spacing:0.1em}
+.step-icon{font-size:30px;margin-bottom:14px;display:block}
+.step-title{font-family:var(--px);font-size:10px;color:var(--white);margin-bottom:10px;line-height:1.6}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.7}
+
+/* ── SESSIONS ── */
+.sess-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:44px}
+.sess-card{background:var(--bg2);border:2px solid var(--border);padding:28px;cursor:pointer;transition:all 0.18s;position:relative;overflow:hidden}
+.sess-card:hover{border-color:var(--border3);transform:translateY(-4px);box-shadow:0 16px 40px var(--shadow)}
+.sess-ep{font-family:var(--px);font-size:7px;color:var(--muted);margin-bottom:12px;letter-spacing:0.1em}
+.sess-icon{font-size:36px;margin-bottom:14px;display:block}
+.sess-name{font-family:var(--px);font-size:10px;color:var(--white);margin-bottom:8px;line-height:1.5}
+.sess-quote{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.sess-locked{position:absolute;top:12px;right:12px;font-family:var(--px);font-size:6px;color:var(--dim2);border:1px solid var(--dim2);padding:3px 8px}
+
+/* ── VIDEO CARDS ── */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:44px}
+.v-card{background:var(--bg2);border:2px solid var(--border);overflow:hidden;cursor:pointer;transition:all 0.18s}
+.v-card:hover{border-color:var(--border3);transform:translateY(-4px);box-shadow:0 16px 40px var(--shadow)}
+.v-thumb{aspect-ratio:16/9;background:var(--bg3);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.v-thumb-icon{font-size:44px;opacity:0.3}
+.v-play{width:52px;height:52px;border-radius:50%;background:rgba(230,51,31,0.9);border:2px solid var(--red2);display:flex;align-items:center;justify-content:center;position:absolute;transition:transform 0.2s}
+.v-card:hover .v-play{transform:scale(1.1)}
+.v-play::after{content:'';width:0;height:0;border-top:9px solid transparent;border-bottom:9px solid transparent;border-left:15px solid white;margin-left:3px}
+.v-tag{position:absolute;top:8px;left:8px;font-family:var(--px);font-size:6px;padding:4px 8px;border:1px solid;z-index:2}
+.v-tag.free{color:var(--green);border-color:rgba(30,215,96,0.5);background:rgba(30,215,96,0.1)}
+.v-tag.pro{color:var(--yellow);border-color:rgba(255,216,77,0.5);background:rgba(255,216,77,0.1)}
+.v-dur{position:absolute;bottom:8px;right:8px;font-family:var(--px);font-size:7px;color:var(--white);background:rgba(0,0,0,0.75);padding:3px 7px}
+.v-info{padding:20px}
+.v-cat{font-family:var(--px);font-size:6px;color:var(--muted);letter-spacing:0.1em;margin-bottom:7px;text-transform:uppercase}
+.v-title{font-family:var(--px);font-size:9px;color:var(--white);margin-bottom:7px;line-height:1.5}
+.v-desc{font-size:12px;color:var(--muted);line-height:1.65}
+
+/* ── MASTERS ── */
+.scripture-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px;margin-top:36px;background:var(--border)}
+.sc-card{background:var(--bg2);padding:28px 22px;transition:background 0.2s;cursor:pointer}
+.sc-card:hover{background:var(--bg3)}
+.sc-tag{font-family:var(--px);font-size:6px;padding:3px 8px;border:1px solid;margin-bottom:12px;display:inline-block;letter-spacing:0.08em}
+.sc-icon{font-size:26px;margin-bottom:10px;display:block}
+.sc-title{font-family:var(--px);font-size:8px;color:var(--white);margin-bottom:8px;line-height:1.5}
+.sc-line{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--muted);line-height:1.65}
+
+/* ── BOOKING ── */
+.booking-bg{background:var(--bg2);border-top:2px solid var(--border2);border-bottom:2px solid var(--border2)}
+.booking-inner{max-width:1160px;margin:0 auto;padding:clamp(64px,8vw,100px) clamp(20px,4vw,40px);display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.monk-card{background:var(--bg);border:2px solid var(--border2);padding:24px;box-shadow:6px 6px 0 var(--dim);display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.monk-flame{font-size:44px;animation:float 5s ease-in-out infinite;display:block}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.live-badge{font-family:var(--px);font-size:8px;color:var(--green);display:flex;align-items:center;gap:8px}
+.live-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+.monk-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border)}
+.ms{background:var(--bg);padding:14px;text-align:center}
+.ms-n{font-family:var(--px);font-size:14px;color:var(--yellow);display:block;margin-bottom:3px;text-shadow:1px 1px 0 var(--ydark)}
+.ms-l{font-size:10px;color:var(--muted)}
+.cal-ui{background:var(--bg);border:2px solid var(--border2);box-shadow:8px 8px 0 var(--dim);overflow:hidden}
+.cal-header{background:var(--bg3);padding:16px 18px;border-bottom:2px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cal-month{font-family:var(--px);font-size:9px}
+.cal-nav-btn{font-family:var(--px);font-size:9px;background:var(--bg4);border:1px solid var(--border2);color:var(--off);padding:6px 11px;cursor:pointer;transition:all 0.1s}
+.cal-nav-btn:hover{border-color:var(--yellow);color:var(--yellow)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border)}
+.cal-day-label{background:var(--bg2);text-align:center;padding:9px;font-family:var(--px);font-size:7px;color:var(--muted)}
+.cal-day{background:var(--bg2);text-align:center;padding:12px 4px;font-family:var(--px);font-size:8px;color:var(--dim2);cursor:default;min-height:44px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;width:100%}
+.cal-day.avail{color:var(--white);cursor:pointer;transition:background 0.1s}
+.cal-day.avail:hover{background:var(--bg4);color:var(--yellow)}
+.cal-day.sel{background:var(--red)!important;color:var(--white)!important}
+.cal-dot{width:4px;height:4px;border-radius:50%;background:var(--green)}
+.slots-wrap{padding:16px}
+.slots-label{font-family:var(--px);font-size:7px;color:var(--muted);margin-bottom:10px;letter-spacing:0.08em}
+.slots-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.slot{font-family:var(--px);font-size:7px;padding:9px 4px;text-align:center;border:1px solid var(--border2);color:var(--muted);background:transparent;cursor:pointer;transition:all 0.1s;width:100%}
+.slot.avail{color:var(--off)}
+.slot.avail:hover{border-color:var(--yellow);color:var(--yellow)}
+.slot.sel{background:var(--red);border-color:var(--red2);color:var(--white)}
+.f-label{font-family:var(--px);font-size:7px;color:var(--muted);display:block;margin-bottom:6px;letter-spacing:0.1em;text-transform:uppercase}
+.f-input{width:100%;background:var(--bg);border:2px solid var(--border2);padding:11px 14px;color:var(--white);outline:none;font-size:13px;transition:border-color 0.2s;margin-bottom:12px}
+.f-input:focus{border-color:var(--yellow)}
+.f-input::placeholder{color:var(--dim2)}
+select.f-input option{background:var(--bg2);color:var(--white)}
+.btype{background:var(--bg);border:2px solid var(--border);padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;transition:border-color 0.1s;width:100%;text-align:left}
+.btype:hover,.btype.sel{border-color:var(--yellow)}
+.btype-name{font-family:var(--px);font-size:8px;color:var(--white);margin-bottom:3px}
+.btype-desc{font-size:11px;color:var(--muted)}
+.btype-price{font-family:var(--px);font-size:9px;color:var(--yellow);white-space:nowrap;margin-left:10px;flex-shrink:0}
+.book-success{display:none;background:rgba(30,215,96,0.08);border:2px solid rgba(30,215,96,0.3);padding:20px;text-align:center}
+.book-success.show{display:block}
+.bs-t{font-family:var(--px);font-size:9px;color:var(--green);margin-bottom:6px}
+.bs-s{font-size:12px;color:var(--muted)}
+
+/* ── COMPANIES ── */
+.dash{background:var(--bg);border:3px solid var(--border3);box-shadow:8px 8px 0 var(--dim);overflow:hidden}
+.dash-bar{background:var(--bg3);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.dash-dots{display:flex;gap:6px}
+.dash-dot{width:10px;height:10px;border-radius:50%}
+.dash-t{font-family:var(--px);font-size:7px;color:var(--muted);letter-spacing:0.08em}
+.dash-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;background:var(--border)}
+.ds{background:var(--bg2);padding:22px;text-align:center}
+.ds-n{font-family:var(--px);font-size:22px;color:var(--yellow);margin-bottom:4px;text-shadow:1px 1px 0 var(--ydark)}
+.ds-l{font-size:11px;color:var(--muted);letter-spacing:0.06em}
+.dt-head{display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--bg3);padding:10px 18px}
+.dt-th{font-family:var(--px);font-size:6px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase}
+.dt-row{display:grid;grid-template-columns:2fr 1fr 1fr;padding:11px 18px;border-top:1px solid var(--border);align-items:center}
+.dt-row:hover{background:var(--bg2)}
+.dt-c{font-size:12px;color:var(--off)}
+.dt-badge{font-family:var(--px);font-size:5px;padding:3px 7px;border:1px solid}
+.dt-badge.g{border-color:var(--green);color:var(--green)}
+.dt-badge.y{border-color:var(--yellow);color:var(--yellow)}
+.roi-box{background:var(--bg);border:2px solid var(--border2);padding:32px;box-shadow:6px 6px 0 var(--dim)}
+.roi-title{font-family:var(--px);font-size:9px;color:var(--white);margin-bottom:20px;line-height:1.6;letter-spacing:0.04em}
+.roi-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--dim);gap:16px}
+.roi-row:last-child{border-bottom:none}
+.roi-lbl{font-size:12px;color:var(--muted)}
+.roi-val{font-family:var(--px);font-size:9px;color:var(--yellow)}
+.roi-total{font-family:var(--px);font-size:9px;color:var(--green);text-align:center;margin-top:14px;line-height:1.8;padding-top:14px;border-top:2px solid var(--yellow)}
+
+/* ── LEADERBOARD ── */
+.lb-box{background:var(--bg2);border:2px solid var(--border2);overflow:hidden;box-shadow:6px 6px 0 var(--dim)}
+.lb-hd{background:var(--bg3);padding:14px 22px;border-bottom:2px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.lb-row{display:flex;align-items:center;gap:14px;padding:13px 22px;border-bottom:1px solid var(--border)}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:var(--bg3)}
+.lb-pos{font-family:var(--px);font-size:9px;color:var(--dim2);width:28px;flex-shrink:0}
+.lb-pos.gold{color:var(--yellow)}
+.lb-flag{font-size:18px;flex-shrink:0}
+.lb-name{font-size:12px;color:var(--off);flex:1}
+.lb-bar{width:80px;height:3px;background:var(--dim);overflow:hidden;flex-shrink:0}
+.lb-fill{height:100%;background:var(--yellow)}
+.lb-pts{font-family:var(--px);font-size:8px;color:var(--yellow);flex-shrink:0}
+
+/* ── PRICING ── */
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;background:var(--border2);border:2px solid var(--border2);margin-top:44px}
+.p-card{background:var(--bg2);padding:40px 28px;position:relative}
+.p-card.star{background:var(--bg3);border:2px solid var(--yellow)}
+.p-star{position:absolute;top:-2px;left:50%;transform:translateX(-50%);font-family:var(--px);font-size:6px;background:var(--yellow);color:var(--bg);padding:4px 14px;white-space:nowrap;letter-spacing:0.08em}
+.p-tier{font-family:var(--px);font-size:8px;color:var(--red);margin-bottom:18px;letter-spacing:0.1em}
+.p-num{font-family:var(--px);font-size:32px;color:var(--white);margin-bottom:4px;text-shadow:3px 3px 0 var(--dim)}
+.p-per{font-size:12px;color:var(--muted);margin-bottom:22px}
+.p-feats{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.p-feats li{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.p-feats li::before{content:'→';color:var(--dim2);flex-shrink:0}
+.p-feats li.on{color:var(--off)}
+.p-feats li.on::before{content:'✓';color:var(--green)}
+.p-btn{display:block;width:100%;text-align:center;font-family:var(--px);font-size:7px;padding:12px;background:transparent;border:2px solid var(--border3);box-shadow:3px 3px 0 var(--dim);color:var(--off);cursor:pointer;transition:all 0.1s;text-decoration:none;letter-spacing:0.06em}
+.p-btn:hover{border-color:var(--white);color:var(--white);transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--dim)}
+.p-btn.main{background:var(--red);border-color:var(--red2);box-shadow:3px 3px 0 var(--rdk);color:var(--white)}
+.p-btn.main:hover{box-shadow:5px 5px 0 var(--rdk)}
+
+/* ── SUGGEST ── */
+.suggest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:36px}
+.sg{background:var(--bg2);border:1px solid var(--border2);padding:22px;transition:border-color 0.2s}
+.sg:hover{border-color:var(--border3)}
+.sg-icon{font-size:24px;margin-bottom:10px;display:block}
+.sg-title{font-family:var(--px);font-size:8px;color:var(--white);margin-bottom:7px;line-height:1.5}
+.sg-desc{font-size:12px;color:var(--muted);line-height:1.65}
+.sg-tag{display:inline-block;margin-top:8px;font-family:var(--px);font-size:5px;padding:3px 7px;border:1px solid var(--dim2);color:var(--muted)}
+
+/* ── SIGNUP ── */
+.signup-bg{background:radial-gradient(ellipse at center,rgba(230,51,31,0.08),transparent 60%),var(--bg);padding:clamp(80px,10vw,120px) 20px;text-align:center;border-top:2px solid var(--border2)}
+.signup-row{display:flex;max-width:520px;margin:28px auto;border:2px solid var(--border3);background:var(--bg2);box-shadow:6px 6px 0 var(--dim)}
+.signup-input{flex:1;background:transparent;border:none;padding:14px 16px;color:var(--white);font-family:var(--mono);min-width:0;font-size:13px}
+.signup-input:focus{outline:2px solid var(--yellow);outline-offset:-2px}
+.signup-sel{background:var(--bg3);border:none;border-left:1px solid var(--border2);padding:14px 12px;color:var(--muted);cursor:pointer}
+.signup-sel option{background:var(--bg2);color:var(--white)}
+.wl-confirm{display:none;background:rgba(30,215,96,0.08);border:2px solid rgba(30,215,96,0.25);padding:18px 24px;max-width:520px;margin:0 auto}
+.wl-confirm.show{display:block}
+.wlc-t{font-family:var(--px);font-size:9px;color:var(--green);margin-bottom:6px}
+.wlc-s{font-size:12px;color:var(--muted)}
+
+/* ── FOOTER ── */
+footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40px 36px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;max-width:1160px;margin:0 auto 40px}
+.f-logo{font-family:var(--px);font-size:13px;color:var(--red);text-shadow:2px 2px 0 var(--rdk);display:block;margin-bottom:12px}
+.f-logo b{color:var(--yellow)}
+.f-about{font-size:12px;color:var(--muted);line-height:1.7;max-width:220px}
+.f-col-h{font-family:var(--px);font-size:7px;color:var(--muted);letter-spacing:0.12em;margin-bottom:14px;display:block}
+.f-links{list-style:none;display:flex;flex-direction:column;gap:8px}
+.f-links a{font-size:12px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.f-links a:hover{color:var(--yellow)}
+.f-bottom{max-width:1160px;margin:0 auto;border-top:1px solid var(--border);padding-top:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.f-copy{font-size:11px;color:var(--dim2)}
+.f-tag{font-family:var(--px);font-size:7px;color:var(--dim2)}
+
+/* ── CAMERA MODAL ── */
+.cam-modal{position:fixed;inset:0;z-index:900;background:rgba(11,11,9,0.96);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
+.cam-modal.open{display:flex}
+.cam-inner{width:100%;max-width:900px;background:var(--bg2);border:2px solid var(--border3);box-shadow:12px 12px 0 var(--dim);overflow:hidden;max-height:90svh;overflow-y:auto}
+.cam-top{background:var(--bg3);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border2);position:sticky;top:0;z-index:2}
+.cam-top-title{font-family:var(--px);font-size:9px;color:var(--yellow);letter-spacing:0.06em}
+.cam-close{font-family:var(--px);font-size:8px;background:none;border:2px solid var(--border3);color:var(--muted);padding:7px 12px;cursor:pointer;transition:all 0.1s}
+.cam-close:hover{border-color:var(--red);color:var(--red)}
+.cam-body{display:grid;grid-template-columns:1fr 320px;gap:0}
+.cam-left{padding:24px;border-right:2px solid var(--border)}
+.cam-right{padding:24px;display:flex;flex-direction:column;gap:14px}
+.cam-wrap{position:relative;aspect-ratio:4/3;background:#000;border:2px solid var(--border2);overflow:hidden}
+.cam-wrap video,.cam-wrap canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
+.cam-wrap video{object-fit:cover}
+.cam-wrap canvas{z-index:2}
+.cam-overlay-status{position:absolute;top:10px;left:10px;right:10px;z-index:5;display:flex;justify-content:space-between;pointer-events:none}
+.status-pill{font-family:var(--px);font-size:7px;padding:5px 10px;border:2px solid;display:flex;align-items:center;gap:5px;backdrop-filter:blur(4px)}
+.sp-ok{border-color:var(--green);color:var(--green);background:rgba(30,215,96,0.12)}
+.sp-fail{border-color:var(--red);color:var(--red);background:rgba(230,51,31,0.12)}
+.sp-wait{border-color:var(--muted);color:var(--muted);background:rgba(154,150,144,0.12)}
+.sp-dot{width:5px;height:5px;border-radius:50%}
+.sp-ok .sp-dot{background:var(--green);animation:blink 1.5s infinite}
+.sp-fail .sp-dot{background:var(--red)}
+.sp-wait .sp-dot{background:var(--muted)}
+.cam-glow{position:absolute;inset:-2px;border:3px solid var(--green);z-index:3;opacity:0;transition:opacity 0.4s;pointer-events:none;box-shadow:0 0 20px var(--green),inset 0 0 10px rgba(30,215,96,0.05)}
+.cam-glow.on{opacity:1}
+.cam-idle-overlay{position:absolute;inset:0;z-index:10;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px}
+.cam-idle-icon{font-size:40px;opacity:0.4}
+.cam-idle-t{font-family:var(--px);font-size:9px;color:var(--muted);text-align:center;line-height:1.8;text-transform:uppercase}
+.cam-idle-s{font-size:12px;color:var(--dim2);text-align:center;line-height:1.7;max-width:240px}
+.cam-perm{position:absolute;inset:0;z-index:20;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center}
+.cam-perm-t{font-family:var(--px);font-size:9px;color:var(--white);line-height:1.8}
+.cam-perm-s{font-size:12px;color:var(--muted);max-width:240px;line-height:1.7}
+.load-bar{height:3px;background:var(--dim);margin-top:10px;overflow:hidden}
+.load-fill{height:100%;background:var(--yellow);width:0;transition:width 0.3s}
+.rules-bar{display:flex;gap:2px;margin-top:10px}
+.rule-box{flex:1;background:var(--bg2);border:2px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px;transition:border-color 0.2s}
+.rule-box.ok{border-color:var(--green);background:rgba(30,215,96,0.05)}
+.rule-box.fail{border-color:var(--red);background:rgba(230,51,31,0.05)}
+.rule-icon-sm{font-family:var(--px);font-size:10px;flex-shrink:0}
+.rule-icon-sm.ok{color:var(--green)}
+.rule-icon-sm.fail{color:var(--red)}
+.rule-icon-sm.idle{color:var(--dim2)}
+.rule-lbl{font-family:var(--px);font-size:6px;color:var(--muted);text-transform:uppercase;margin-bottom:2px;letter-spacing:0.06em}
+.rule-val{font-size:11px;color:var(--off)}
+.pts-big{font-family:var(--px);font-size:28px;color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);text-align:center;display:block;line-height:1}
+.pts-lbl{font-family:var(--px);font-size:7px;color:var(--muted);text-align:center;display:block;margin-top:4px;letter-spacing:0.08em;margin-bottom:16px}
+.timer-box{background:var(--bg);border:2px solid var(--border2);padding:14px;text-align:center}
+.timer-big{font-family:var(--px);font-size:22px;color:var(--white);text-shadow:2px 2px 0 var(--dim)}
+.timer-big.counting{color:var(--green);text-shadow:2px 2px 0 var(--gdim)}
+.timer-lbl{font-family:var(--px);font-size:7px;color:var(--muted);margin-top:5px;letter-spacing:0.06em}
+.prog-wrap{margin-top:4px}
+.prog-lbl{font-family:var(--px);font-size:7px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px}
+.prog-track{height:6px;background:var(--bg);border:1px solid var(--dim);overflow:hidden}
+.prog-fill{height:100%;background:var(--yellow);width:0;transition:width 0.5s linear}
+.prog-fill.earn{background:var(--green)}
+.med-banner{background:rgba(30,215,96,0.08);border:2px solid rgba(30,215,96,0.3);padding:10px 14px;text-align:center;display:none}
+.med-banner.on{display:block}
+.med-t{font-family:var(--px);font-size:8px;color:var(--green);margin-bottom:3px}
+.med-s{font-size:11px;color:rgba(30,215,96,0.6)}
+.cam-ctrl-row{display:flex;gap:8px}
+.session-log{background:var(--bg);border:1px solid var(--border);padding:10px;max-height:140px;overflow-y:auto}
+.log-item{font-size:10px;padding:4px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:8px}
+.log-t{font-size:9px;color:var(--dim2);flex-shrink:0}
+.log-ok{color:var(--green)}
+.log-fail{color:var(--red)}
+.log-pt{color:var(--yellow)}
+.point-pop{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:1000;font-family:var(--px);font-size:11px;background:var(--yellow);color:var(--bg);padding:11px 28px;border:2px solid white;box-shadow:4px 4px 0 var(--ydark);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap}
+.point-pop.on{opacity:1}
+
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.55s ease,transform 0.55s ease}
+.reveal.active{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
+@media(max-width:980px){
+  .n-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(11,11,9,0.98);border-bottom:1px solid var(--border2);padding:12px 16px;flex-direction:column}
+  .n-links.open{display:flex}
+  .mobile-menu{display:block}
+  .n-right .n-ghost{display:none}
+  .rules-grid,.booking-inner{grid-template-columns:1fr}
+  .cam-body{grid-template-columns:1fr}
+  .cam-right{border-top:2px solid var(--border)}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:28px}
+}
+@media(max-width:640px){
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .signup-row{flex-direction:column;border:none;background:transparent;box-shadow:none;gap:8px}
+  .signup-row .btn{width:100%}
+  .signup-input{border:2px solid var(--border3);background:var(--bg2)}
+  .signup-sel{border:2px solid var(--border3);background:var(--bg2)}
+  .h-ctas .btn{width:100%}
+  .calc-result{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .cam-inner{max-height:100svh}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<div class="point-pop" id="pointPop">+1 MONK POINT ★</div>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <a href="#" class="n-logo">M<b>M</b>GA</a>
+  <button class="mobile-menu" id="mobileMenu" type="button">Menu</button>
+  <ul class="n-links" id="navLinks">
+    <li><a href="#how">System</a></li>
+    <li><a href="#sessions">Sessions</a></li>
+    <li><a href="#tutorials">Learn</a></li>
+    <li><a href="#masters">Masters</a></li>
+    <li><a href="#book">Monk Call</a></li>
+    <li><a href="#companies">Business</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+  </ul>
+  <div class="n-right">
+    <a href="#signup" class="n-cta n-ghost">Login</a>
+    <a href="#signup" class="n-cta" onclick="openCam();return false">▶ Begin</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-vignette"></div>
+  <div class="h-kicker">★ BETA · FIRST 500 GET PRO FREE · GOTTA SIT 'EM ALL ★</div>
+  <h1 class="h1">MAKE</h1>
+  <h2 class="h2">MEDITATION</h2>
+  <h1 class="h1">GREAT AGAIN</h1>
+  <p class="h-sub">The world's first <strong>verified meditation registry.</strong><br/>Two rules. Camera proof. Monk Points that mean something.<br/>Meditation was stolen. <strong>We're taking it back.</strong></p>
+  <div class="h-ctas">
+    <button class="btn btn-red" onclick="openCam()">⚔ Start Session</button>
+    <a href="#companies" class="btn btn-yellow">🏢 For Companies</a>
+    <a href="#how" class="btn btn-ghost">◉ How it works</a>
+  </div>
+  <div class="hero-proof">
+    <span class="proof-pill">Local-only camera · never recorded</span>
+    <span class="proof-pill">60 verified seconds = 1 point</span>
+    <span class="proof-pill">No fake manual logs</span>
+  </div>
+</section>
+
+<!-- ── TICKER ── -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-t">&nbsp;&nbsp;SPINE ERECT &nbsp;·&nbsp; EYES CLOSED &nbsp;·&nbsp; MONK POINTS EARNED &nbsp;·&nbsp; ENTROPY: PAUSED &nbsp;·&nbsp; VERIFIED STILLNESS &nbsp;·&nbsp; LOCAL ONLY &nbsp;·&nbsp; TAO TE CHING &nbsp;·&nbsp; DHAMMAPADA &nbsp;·&nbsp; BHAGAVAD GITA &nbsp;·&nbsp; OSHO &nbsp;·&nbsp; LAO TZU &nbsp;·&nbsp; KRISHNAMURTI &nbsp;·&nbsp; GOTTA SIT EM ALL &nbsp;·&nbsp; SPINE ERECT &nbsp;·&nbsp; EYES CLOSED &nbsp;·&nbsp; MONK POINTS EARNED &nbsp;·&nbsp; ENTROPY: PAUSED &nbsp;·&nbsp; VERIFIED STILLNESS &nbsp;·&nbsp; LOCAL ONLY &nbsp;·&nbsp; TAO TE CHING &nbsp;·&nbsp; DHAMMAPADA &nbsp;·&nbsp; BHAGAVAD GITA &nbsp;·&nbsp; OSHO &nbsp;·&nbsp; LAO TZU &nbsp;·&nbsp; KRISHNAMURTI &nbsp;·&nbsp; GOTTA SIT EM ALL &nbsp;·&nbsp;</div>
+</div>
+
+<!-- ── TWO RULES ── -->
+<div class="rules-bg" id="rules">
+  <div class="rules-grid">
+    <div class="rule-card reveal">
+      <div class="rule-num">01</div>
+      <span class="rule-icon">🦴</span>
+      <h2 class="rule-title">Comfortably erect spine</h2>
+      <p class="rule-desc">Not military posture — comfortably upright, relaxed and awake. Only clear slouching stops the timer.</p>
+      <div class="rule-tech"><strong>Detection:</strong> MediaPipe Pose checks shoulder alignment and head position locally. Lenient — a natural relaxed seat always passes.</div>
+    </div>
+    <div class="rule-card reveal">
+      <div class="rule-num">02</div>
+      <span class="rule-icon">👁</span>
+      <h2 class="rule-title">Eyes closed</h2>
+      <p class="rule-desc">Close your eyes. Open them and the timer stops. No cheating, no manual logging. The camera is the proof.</p>
+      <div class="rule-tech"><strong>Detection:</strong> EAR (Eye Aspect Ratio) via MediaPipe FaceMesh. 30 checks/second. <strong>Nothing recorded or transmitted. Ever.</strong></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CALCULATOR ── -->
+<section class="calc-section">
+  <div class="calc-box reveal">
+    <span class="eyebrow">◉ Gamify Your Stillness</span>
+    <h2 class="s-title">Calculate Your Growth</h2>
+    <p class="s-body" style="margin-bottom:0">Slide to see what consistent practice does over time.</p>
+    <div class="calc-slider-box">
+      <label for="minSlider" style="display:block;font-family:var(--px);font-size:8px;color:var(--muted);margin-bottom:16px;letter-spacing:0.08em">DAILY VERIFIED MINUTES</label>
+      <input type="range" min="1" max="60" value="10" id="minSlider">
+      <div class="calc-result">
+        <div class="res-box"><span class="res-val" id="rTime">10m</span><span class="res-lbl">Daily sit</span></div>
+        <div class="res-box"><span class="res-val" id="rWeek">70 pts</span><span class="res-lbl">Weekly points</span></div>
+        <div class="res-box"><span class="res-val" id="rRank">Initiate</span><span class="res-lbl">Rank</span></div>
+      </div>
+    </div>
+    <div class="privacy-guard">
+      <div class="pg-icon">🛡</div>
+      <div class="pg-text">
+        <h4>Privacy First — Local Only Processing</h4>
+        <p>Your camera stream is processed in RAM and immediately discarded. No video ever leaves your browser. Zero cloud uploads. Zero surveillance. Your stillness is yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="s" id="how">
+  <span class="eyebrow">◉ The System</span>
+  <h2 class="s-title">How Monk Points Work</h2>
+  <p class="s-body">1 point = 1 verified minute. Both rules active simultaneously. Break either and the counter resets.</p>
+  <div class="steps-grid">
+    <div class="step reveal"><div class="step-n">STEP 01</div><span class="step-icon">📷</span><div class="step-title">Allow camera</div><div class="step-desc">MediaPipe runs entirely in your browser. Nothing recorded.</div></div>
+    <div class="step reveal"><div class="step-n">STEP 02</div><span class="step-icon">🧘</span><div class="step-title">Sit — spine erect, eyes closed</div><div class="step-desc">Both conditions must be green simultaneously.</div></div>
+    <div class="step reveal"><div class="step-n">STEP 03</div><span class="step-icon">⏱</span><div class="step-title">60s = 1 Monk Point</div><div class="step-desc">Break posture or open eyes and the consecutive counter resets to zero.</div></div>
+    <div class="step reveal"><div class="step-n">STEP 04</div><span class="step-icon">📊</span><div class="step-title">Points logged forever</div><div class="step-desc">Cryptographic session hashes. Verifiable for HR, insurance, ESG reports.</div></div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── GUIDED SESSIONS ── -->
+<section class="s" id="sessions">
+  <span class="eyebrow">▶ Guided Sessions</span>
+  <h2 class="s-title">Choose Your Universe</h2>
+  <p class="s-body">Pop culture worlds. Real meditation. Earn Monk Points while you listen.</p>
+  <div class="sess-grid">
+    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
+    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
+    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
+    <div class="sess-card reveal"><div class="sess-ep">Ep 04 · Pro</div><span class="sess-icon">🌹</span><div class="sess-name">Sit Like the Don</div><div class="sess-quote">"The Don never panics. The Don never reacts. The Don breathes."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">GODFATHER · 15 min</div><div class="sess-locked">PRO</div></div>
+    <div class="sess-card reveal"><div class="sess-ep">Ep 05 · Pro</div><span class="sess-icon">⚔</span><div class="sess-name">Jedi Training Arc</div><div class="sess-quote">"The Force lives in the space between actions."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">STAR WARS · 18 min</div><div class="sess-locked">PRO</div></div>
+    <div class="sess-card reveal"><div class="sess-ep">Ep 06 · Pro</div><span class="sess-icon">💀</span><div class="sess-name">You Died. Try Again.</div><div class="sess-quote">"Respawn. Sit back down. Spine erect. This is the run."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">DARK SOULS · 12 min</div><div class="sess-locked">PRO</div></div>
+  </div>
+  <div style="text-align:center;margin-top:28px"><a href="#signup" class="btn btn-red">Unlock all 10 universes →</a></div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── TUTORIALS ── -->
+<section class="s" id="tutorials">
+  <span class="eyebrow">🎓 How to Meditate</span>
+  <h2 class="s-title">You don't know how.<br/>That's fine. Start here.</h2>
+  <div class="video-grid">
+    <div class="v-card reveal"><div class="v-thumb"><div class="v-thumb-icon">🧘</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">8:24</div></div><div class="v-info"><div class="v-cat">Fundamentals · Ep 1</div><div class="v-title">What happens when you close your eyes</div><div class="v-desc">The first 60 seconds explained. What your brain does and why discomfort is correct.</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb"><div class="v-thumb-icon">🦴</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">6:12</div></div><div class="v-info"><div class="v-cat">Fundamentals · Ep 2</div><div class="v-title">Posture — comfortably erect</div><div class="v-desc">How to find the natural upright position that MMGA detects as correct.</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb"><div class="v-thumb-icon">💭</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">11:40</div></div><div class="v-info"><div class="v-cat">Fundamentals · Ep 3</div><div class="v-title">Your mind wanders. That's the practice.</div><div class="v-desc">The return is the meditation. Ten thousand times you come back from distraction.</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb"><div class="v-thumb-icon">⏱</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">9:55</div></div><div class="v-info"><div class="v-cat">Fundamentals · Ep 4</div><div class="v-title">How to sit for 20 minutes when you can barely do 2</div><div class="v-desc">Practical progression. Build from 5 to 20 minutes over 4 weeks.</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb"><div class="v-thumb-icon">🌬</div><div class="v-play"></div><div class="v-tag pro">PRO</div><div class="v-dur">14:18</div></div><div class="v-info"><div class="v-cat">Techniques · Ep 5</div><div class="v-title">Four breath techniques — when to use each</div><div class="v-desc">Box breathing, 4-7-8, Nadi Shodhana, and natural observation.</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb"><div class="v-thumb-icon">🧠</div><div class="v-play"></div><div class="v-tag pro">PRO</div><div class="v-dur">18:02</div></div><div class="v-info"><div class="v-cat">Science · Ep 6</div><div class="v-title">What meditation actually does to your brain</div><div class="v-desc">Default mode network, prefrontal cortex, parasympathetic shift. Plainly explained.</div></div></div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── MASTERS ── -->
+<section class="s" id="masters">
+  <span class="eyebrow">📜 The Masters</span>
+  <h2 class="s-title">The people who figured this out<br/>before there were apps.</h2>
+  <div class="video-grid">
+    <div class="v-card reveal"><div class="v-thumb" style="background:#1a0f08"><div class="v-thumb-icon">🌿</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">47:22</div></div><div class="v-info"><div class="v-cat">Buddhist · Vietnamese</div><div class="v-title">Thich Nhat Hanh — The art of stopping</div><div class="v-desc">"Breathing in, I calm my body. Breathing out, I smile."</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb" style="background:#0a0a18"><div class="v-thumb-icon">🌀</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">1:12:04</div></div><div class="v-info"><div class="v-cat">Eclectic · Indian</div><div class="v-title">Osho — Meditation is a state of no-mind</div><div class="v-desc">"You cannot do meditation. You can only be in meditation."</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb" style="background:#0f0a00"><div class="v-thumb-icon">🔥</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">38:50</div></div><div class="v-info"><div class="v-cat">Advaita · Indian</div><div class="v-title">Ramana Maharshi — Who am I?</div><div class="v-desc">"Ask 'who am I?' and follow the I to its source. What remains is silence."</div></div></div>
+    <div class="v-card reveal"><div class="v-thumb" style="background:#001a0a"><div class="v-thumb-icon">☯</div><div class="v-play"></div><div class="v-tag free">FREE</div><div class="v-dur">54:30</div></div><div class="v-info"><div class="v-cat">Taoist · British-American</div><div class="v-title">Alan Watts — The art of doing nothing</div><div class="v-desc">"The meaning of life is just to be alive. So obvious. Yet everybody rushes."</div></div></div>
+  </div>
+
+  <div style="margin-top:64px">
+    <h3 style="font-family:var(--px);font-size:clamp(13px,2vw,20px);margin-bottom:14px;line-height:1.4;text-shadow:2px 2px 0 var(--dim)">Source Texts</h3>
+    <p class="s-sub" style="margin-bottom:0">The books all teachers were pointing at.</p>
+    <div class="scripture-grid">
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--yellow);border-color:var(--ydim)">Buddhist</span><span class="sc-icon">🕊</span><div class="sc-title">Dhammapada</div><p class="sc-line">"Mind is the forerunner of all actions."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--yellow);border-color:var(--ydim)">Buddhist</span><span class="sc-icon">💎</span><div class="sc-title">Heart Sutra</div><p class="sc-line">"Form is emptiness. Emptiness is form."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--teal);border-color:rgba(30,212,180,0.4)">Hindu</span><span class="sc-icon">🔱</span><div class="sc-title">Bhagavad Gita</div><p class="sc-line">"Let right deeds be thy motive, not the fruit."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--teal);border-color:rgba(30,212,180,0.4)">Hindu</span><span class="sc-icon">🌅</span><div class="sc-title">Yoga Sutras</div><p class="sc-line">"Yoga is the cessation of the fluctuations of the mind."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--green);border-color:rgba(30,215,96,0.4)">Taoist</span><span class="sc-icon">☯</span><div class="sc-title">Tao Te Ching</div><p class="sc-line">"The Tao that can be named is not the eternal Tao."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--green);border-color:rgba(30,215,96,0.4)">Taoist</span><span class="sc-icon">🌊</span><div class="sc-title">Zhuangzi</div><p class="sc-line">"The perfect man uses his mind like a mirror — grasping nothing."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--red2);border-color:rgba(255,80,64,0.4)">Sufi</span><span class="sc-icon">🌹</span><div class="sc-title">Rumi — Masnavi</div><p class="sc-line">"Silence is the sea. Speech is like the river."</p></div>
+      <div class="sc-card reveal"><span class="sc-tag" style="color:var(--teal);border-color:rgba(30,212,180,0.4)">Hindu</span><span class="sc-icon">✨</span><div class="sc-title">Upanishads</div><p class="sc-line">"Tat tvam asi — That thou art."</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── BOOKING ── -->
+<div class="booking-bg" id="book">
+  <div class="booking-inner">
+    <div>
+      <span class="eyebrow">🕯 Monk on Call</span>
+      <h2 class="s-title">Book a 1:1 with Memo</h2>
+      <p class="s-body" style="margin-bottom:24px">No curriculum. No agenda. You bring what you carry — Memo sits in silence with you. That's the whole thing.</p>
+      <div class="monk-card">
+        <span class="monk-flame">🕯</span>
+        <div>
+          <div class="live-badge"><span class="live-dot"></span>Memo is live now</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">Methana, Greece · Saronic coast</div>
+        </div>
+      </div>
+      <div class="monk-stats">
+        <div class="ms"><span class="ms-n">24h</span><span class="ms-l">Available</span></div>
+        <div class="ms"><span class="ms-n">€5</span><span class="ms-l">Group session</span></div>
+        <div class="ms"><span class="ms-n">€45</span><span class="ms-l">Private 1:1</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="cal-ui">
+        <div class="cal-header">
+          <div class="cal-month" id="calMonth">June 2025</div>
+          <div style="display:flex;gap:6px">
+            <button class="cal-nav-btn" onclick="chMonth(-1)">←</button>
+            <button class="cal-nav-btn" onclick="chMonth(1)">→</button>
+          </div>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+        <div class="slots-wrap">
+          <div class="slots-label">AVAILABLE TIMES — <span id="selDate" style="color:var(--yellow)">Select a date</span></div>
+          <div class="slots-grid" id="slotsGrid"></div>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <div style="display:flex;flex-direction:column;gap:2px;margin-bottom:14px">
+          <button class="btype sel" onclick="selBt(this)" type="button"><div><div class="btype-name">Single session</div><div class="btype-desc">60 min · video or audio</div></div><div class="btype-price">€45</div></button>
+          <button class="btype" onclick="selBt(this)" type="button"><div><div class="btype-name">Deep dive</div><div class="btype-desc">90 min + intention setting</div></div><div class="btype-price">€75</div></button>
+          <button class="btype" onclick="selBt(this)" type="button"><div><div class="btype-name">Monthly companion</div><div class="btype-desc">4 sessions + unlimited group</div></div><div class="btype-price">€120/mo</div></button>
+        </div>
+        <form id="bookForm" onsubmit="submitBook(event)">
+          <label class="f-label">Name</label>
+          <input class="f-input" type="text" placeholder="Your name" required/>
+          <label class="f-label">Email</label>
+          <input class="f-input" type="email" placeholder="your@email.com" required/>
+          <label class="f-label">Anything to share (optional)</label>
+          <textarea class="f-input" rows="2" placeholder="What you're carrying..." style="resize:vertical;min-height:64px"></textarea>
+          <button type="submit" class="btn btn-red btn-block" style="font-size:8px">Request session →</button>
+        </form>
+        <div class="book-success" id="bookSuccess">
+          <div class="bs-t">★ Request received ★</div>
+          <div class="bs-s">Memo confirms within 12 hours. Try a free session while you wait.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="thin"/>
+
+<!-- ── COMPANIES ── -->
+<section class="s" id="companies">
+  <span class="eyebrow">🏢 For Companies</span>
+  <h2 class="s-title">Verified Wellness Analytics.<br/>The first meditation KPI.</h2>
+  <p class="s-body" style="margin-bottom:40px">MMGA gives you verified meditation data — actual minutes, per employee, tamper-proof. Turn stillness into a measurable, reportable metric.</p>
+  <div class="dash reveal">
+    <div class="dash-bar">
+      <div class="dash-dots"><div class="dash-dot" style="background:#e05540"></div><div class="dash-dot" style="background:#f0c96e"></div><div class="dash-dot" style="background:#1ed760"></div></div>
+      <div class="dash-t">MMGA COMPANY DASHBOARD — ACME CORP · JUNE 2025</div>
+      <div style="font-family:var(--px);font-size:7px;color:var(--green);display:flex;align-items:center;gap:5px"><span class="live-dot"></span>LIVE</div>
+    </div>
+    <div class="dash-stats">
+      <div class="ds"><div class="ds-n">2,847</div><div class="ds-l">Monk Points this month</div></div>
+      <div class="ds"><div class="ds-n">47h 27m</div><div class="ds-l">Verified meditation</div></div>
+      <div class="ds"><div class="ds-n">68%</div><div class="ds-l">Team participation</div></div>
+      <div class="ds"><div class="ds-n">+34%</div><div class="ds-l">Focus score ↑</div></div>
+    </div>
+    <div class="dt-head"><div class="dt-th">Department</div><div class="dt-th">Points</div><div class="dt-th">Status</div></div>
+    <div class="dt-row"><div class="dt-c">Engineering</div><div class="dt-c">847 pts</div><div><span class="dt-badge g">On fire</span></div></div>
+    <div class="dt-row"><div class="dt-c">Sales</div><div class="dt-c">612 pts</div><div><span class="dt-badge g">Strong</span></div></div>
+    <div class="dt-row"><div class="dt-c">Marketing</div><div class="dt-c">394 pts</div><div><span class="dt-badge y">Growing</span></div></div>
+    <div class="dt-row"><div class="dt-c">Leadership</div><div class="dt-c">994 pts</div><div><span class="dt-badge g">Leading</span></div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:48px;align-items:start" class="reveal">
+    <div>
+      <h3 class="s-title" style="font-size:clamp(16px,2.5vw,24px)">The cheapest retention tool you'll buy</h3>
+      <p class="s-sub" style="margin-bottom:22px">Replacing one employee costs €15,000–50,000. MMGA costs €5/employee/month. The math is not complicated.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="#signup" class="btn btn-red btn-sm">Start free pilot →</a>
+        <a href="mailto:memo@akappa.gr" class="btn btn-ghost btn-sm">Talk to us</a>
+      </div>
+    </div>
+    <div class="roi-box">
+      <div class="roi-title">ROI Snapshot — 100 employees</div>
+      <div class="roi-row"><span class="roi-lbl">MMGA annual cost</span><span class="roi-val">€6,000</span></div>
+      <div class="roi-row"><span class="roi-lbl">Burnout reduction (Stanford)</span><span class="roi-val">–28%</span></div>
+      <div class="roi-row"><span class="roi-lbl">Sick days reduction (avg)</span><span class="roi-val">–19%</span></div>
+      <div class="roi-row"><span class="roi-lbl">Avg cost to replace 1 employee</span><span class="roi-val">€25,000</span></div>
+      <div class="roi-total">Estimated annual saving: €47,000+<br/>ROI: 683% in year one</div>
+    </div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── LEADERBOARD ── -->
+<section class="s">
+  <span class="eyebrow">🌍 Global Leaderboard</span>
+  <h2 class="s-title">The world is meditating.<br/>Athens is winning.</h2>
+  <div class="lb-box reveal" style="margin-top:40px">
+    <div class="lb-hd"><div style="font-family:var(--px);font-size:8px;color:var(--white)">★ COUNTRIES · JUNE 2025</div><div style="font-family:var(--px);font-size:7px;color:var(--green);display:flex;align-items:center;gap:5px"><span class="live-dot"></span>LIVE</div></div>
+    <div class="lb-row"><span class="lb-pos gold">#1</span><span class="lb-flag">🇬🇷</span><span class="lb-name">Greece</span><div class="lb-bar"><div class="lb-fill" style="width:100%"></div></div><span class="lb-pts">12,847</span></div>
+    <div class="lb-row"><span class="lb-pos gold">#2</span><span class="lb-flag">🇯🇵</span><span class="lb-name">Japan</span><div class="lb-bar"><div class="lb-fill" style="width:88%"></div></div><span class="lb-pts">11,320</span></div>
+    <div class="lb-row"><span class="lb-pos">#3</span><span class="lb-flag">🇩🇪</span><span class="lb-name">Germany</span><div class="lb-bar"><div class="lb-fill" style="width:74%"></div></div><span class="lb-pts">9,501</span></div>
+    <div class="lb-row"><span class="lb-pos">#4</span><span class="lb-flag">🇬🇧</span><span class="lb-name">United Kingdom</span><div class="lb-bar"><div class="lb-fill" style="width:62%"></div></div><span class="lb-pts">7,844</span></div>
+    <div class="lb-row"><span class="lb-pos">#5</span><span class="lb-flag">🇺🇸</span><span class="lb-name">United States</span><div class="lb-bar"><div class="lb-fill" style="width:55%"></div></div><span class="lb-pts">7,098</span></div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── PRICING ── -->
+<section class="s" id="pricing">
+  <span class="eyebrow">$ Pricing</span>
+  <h2 class="s-title">Simple. No dark patterns.<br/>No annual guilt trips.</h2>
+  <div class="price-grid">
+    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><button onclick="openCam()" class="p-btn">▶ Start now</button></div>
+    <div class="p-card star"><div class="p-star">★ Most chosen ★</div><div class="p-tier">Pro</div><div class="p-num">€9</div><div class="p-per">/ month · cancel any time</div><ul class="p-feats"><li class="on">All 10 pop culture sessions</li><li class="on">Full tutorial library</li><li class="on">Masters video library</li><li class="on">All 8 scriptures</li><li class="on">3am mode unlocked</li><li class="on">Monthly certificate PDF</li></ul><a href="#signup" class="p-btn main">Get Pro →</a></div>
+    <div class="p-card"><div class="p-tier">Company</div><div class="p-num">€5</div><div class="p-per">/ employee / month</div><ul class="p-feats"><li class="on">Everything Pro for all staff</li><li class="on">Company dashboard</li><li class="on">ESG wellness reports</li><li class="on">Certified Mindful badge</li><li class="on">Productivity data</li></ul><a href="#signup" class="p-btn">Onboard →</a></div>
+    <div class="p-card"><div class="p-tier">Private</div><div class="p-num">€45</div><div class="p-per">per session with Memo</div><ul class="p-feats"><li class="on">60 min 1:1 with Memo</li><li class="on">Video or audio</li><li class="on">No agenda, no curriculum</li><li class="on">Points counted live</li></ul><a href="#book" class="p-btn">Book now →</a></div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- ── COMING SOON ── -->
+<section class="s">
+  <span class="eyebrow">🚀 Coming soon</span>
+  <h2 class="s-title">What's next</h2>
+  <div class="suggest-grid">
+    <div class="sg reveal"><span class="sg-icon">🏫</span><div class="sg-title">MMGA for Schools</div><div class="sg-desc">Free for students and teachers. Kids earn Monk Points. Parent dashboard.</div><span class="sg-tag">Free · Q3 2025</span></div>
+    <div class="sg reveal"><span class="sg-icon">🎯</span><div class="sg-title">Monk Point Exchange</div><div class="sg-desc">Spend points at partner cafes, on insurance discounts, on free sessions.</div><span class="sg-tag">Partnerships · Q4</span></div>
+    <div class="sg reveal"><span class="sg-icon">🌍</span><div class="sg-title">Annual Stillness Report</div><div class="sg-desc">Global verified meditation data published every January. Gets press.</div><span class="sg-tag">Jan 2026</span></div>
+    <div class="sg reveal"><span class="sg-icon">🎵</span><div class="sg-title">Suno soundscapes</div><div class="sg-desc">AI ambient music plays during your detection session. Tibetan bowls, lo-fi, forest.</div><span class="sg-tag">Q4 2025</span></div>
+    <div class="sg reveal"><span class="sg-icon">🏕</span><div class="sg-title">MMGA Retreats</div><div class="sg-desc">Memo leads in-person 3-day and 7-day retreats from Methana, Greece.</div><span class="sg-tag">Summer 2026</span></div>
+    <div class="sg reveal"><span class="sg-icon">👕</span><div class="sg-title">MMGA Merch</div><div class="sg-desc">The hat. "MAKE MEDITATION GREAT AGAIN" in pixel font across the front.</div><span class="sg-tag">Coming soon</span></div>
+  </div>
+</section>
+
+<!-- ── SIGNUP ── -->
+<div class="signup-bg" id="signup">
+  <h1 class="h1">READY?</h1>
+  <p class="h-sub" style="margin-top:16px">Join the waitlist. First 500 get Pro free for 3 months.<br/>Companies get a 90-day free pilot.</p>
+  <form onsubmit="joinList(event)" id="wlForm">
+    <div class="signup-row">
+      <input class="signup-input" type="email" placeholder="your@email.com" required id="wlEmail"/>
+      <select class="signup-sel" id="wlType">
+        <option value="ind">Individual</option>
+        <option value="co">Company</option>
+        <option value="school">School</option>
+      </select>
+      <button type="submit" class="btn btn-red" style="border:none;border-left:2px solid var(--red2);box-shadow:none">Join →</button>
+    </div>
+  </form>
+  <div class="wl-confirm" id="wlConfirm"><div class="wlc-t">★ You're on the list ★</div><div class="wlc-s" id="wlMsg">First 500 get Pro free. We'll email when we launch.</div></div>
+  <p style="font-size:11px;color:var(--muted);margin-top:16px;line-height:1.6">One email at launch. No spam. · MMGA · Methana, Greece · privacy@mmga.app</p>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div><span class="f-logo">M<b>M</b>GA</span><p class="f-about">Make Meditation Great Again. Taking it back from the wellness industry, one verified minute at a time. Built from Methana, Greece.</p></div>
+    <div><span class="f-col-h">Product</span><ul class="f-links"><li><a href="#how">How it works</a></li><li><a href="#sessions">Sessions</a></li><li><a href="#tutorials">Tutorials</a></li><li><a href="#masters">Masters</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
+    <div><span class="f-col-h">Companies</span><ul class="f-links"><li><a href="#companies">Dashboard</a></li><li><a href="#companies">ESG reports</a></li><li><a href="#companies">Certification</a></li><li><a href="mailto:memo@akappa.gr">Partner with us</a></li></ul></div>
+    <div><span class="f-col-h">Contact</span><ul class="f-links"><li><a href="mailto:memo@akappa.gr">memo@akappa.gr</a></li><li><a href="#book">Book Memo</a></li><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
+  </div>
+  <div class="f-bottom">
+    <span class="f-copy">© 2025 MMGA · Methana, Greece</span>
+    <span class="f-tag">Gotta sit em all ™ · Spine erect · Eyes closed</span>
+  </div>
+</footer>
+
+<!-- ── CAMERA MODAL ── -->
+<div class="cam-modal" id="camModal">
+  <div class="cam-inner">
+    <div class="cam-top">
+      <div class="cam-top-title">⚔ MONK POINTS DETECTOR</div>
+      <button class="cam-close" onclick="closeCam()" type="button">✕ Close</button>
+    </div>
+    <div class="cam-body">
+      <div class="cam-left">
+        <div class="cam-wrap" id="camWrap">
+          <div class="cam-perm" id="camPerm">
+            <div style="font-size:36px">📷</div>
+            <div class="cam-perm-t">Camera access required</div>
+            <div class="cam-perm-s">MMGA uses your camera locally to detect posture and eye closure. No video leaves your device. Ever.</div>
+            <button class="btn btn-red btn-sm" onclick="startCam()" type="button">Enable camera →</button>
+          </div>
+          <div class="cam-idle-overlay" id="camIdle" style="display:none">
+            <div class="cam-idle-icon">🧘</div>
+            <div class="cam-idle-t">Loading AI detection...</div>
+            <div class="cam-idle-s">Initialising MediaPipe. First load ~10 seconds.</div>
+          </div>
+          <video id="camVideo" autoplay playsinline muted></video>
+          <canvas id="camCanvas"></canvas>
+          <div class="cam-glow" id="camGlow"></div>
+          <div class="cam-overlay-status" id="camStatusBar" style="display:none">
+            <div class="status-pill sp-wait" id="spineStatusPill"><span class="sp-dot"></span><span id="spineStatusTxt">Spine…</span></div>
+            <div class="status-pill sp-wait" id="eyesStatusPill"><span class="sp-dot"></span><span id="eyesStatusTxt">Eyes…</span></div>
+          </div>
+        </div>
+        <div class="load-bar"><div class="load-fill" id="loadFill"></div></div>
+        <div class="rules-bar">
+          <div class="rule-box" id="ruleSpineBox">
+            <div class="rule-icon-sm idle" id="ruleSpineIcon">—</div>
+            <div><div class="rule-lbl">Rule 1</div><div class="rule-val" id="ruleSpineVal">Comfortably erect spine</div></div>
+          </div>
+          <div class="rule-box" id="ruleEyesBox">
+            <div class="rule-icon-sm idle" id="ruleEyesIcon">—</div>
+            <div><div class="rule-lbl">Rule 2</div><div class="rule-val" id="ruleEyesVal">Eyes closed</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="cam-right">
+        <span class="pts-big" id="modalPts">0</span>
+        <span class="pts-lbl">Monk Points earned</span>
+        <div class="timer-box">
+          <div class="timer-big" id="timerDisp">00:00</div>
+          <div class="timer-lbl" id="timerLbl">Not started</div>
+        </div>
+        <div class="prog-wrap">
+          <div class="prog-lbl"><span>Next point</span><span id="progNum">0 / 60s</span></div>
+          <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+        </div>
+        <div class="med-banner" id="medBanner"><div class="med-t">★ MEDITATING ★</div><div class="med-s">Both rules active — earning</div></div>
+        <div class="cam-ctrl-row">
+          <button class="btn btn-red btn-sm" id="sessBtn" onclick="toggleSess()" type="button" style="flex:1" disabled>Start session</button>
+          <button class="btn btn-ghost btn-sm" onclick="resetSess()" type="button">↺</button>
+        </div>
+        <div class="session-log" id="sessLog"><div class="log-item"><span class="log-ok">Waiting for camera…</span><span class="log-t">--:--</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MediaPipe CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
+
+<script>
+/* ── NAV ── */
+const nav=document.getElementById('nav');
+const mobileMenu=document.getElementById('mobileMenu');
+const navLinks=document.getElementById('navLinks');
+window.addEventListener('scroll',()=>nav.classList.toggle('stuck',scrollY>20),{passive:true});
+mobileMenu.addEventListener('click',()=>{
+  const o=navLinks.classList.toggle('open');
+  mobileMenu.setAttribute('aria-expanded',o);
+});
+navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
+  navLinks.classList.remove('open');
+  mobileMenu.setAttribute('aria-expanded','false');
+}));
+
+/* ── SCROLL REVEAL ── */
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+  if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target);}
+}),{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  const t=document.querySelector(a.getAttribute('href'));
+  if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+}));
+
+/* ── CALCULATOR ── */
+const sl=document.getElementById('minSlider');
+const ranks=['Seeker','Initiate','Adept','Monk','Void Master'];
+function calcRank(v){return v<10?'Seeker':v<20?'Initiate':v<35?'Adept':v<50?'Monk':'Void Master';}
+function updateCalc(){
+  const v=Number(sl.value);
+  document.getElementById('rTime').textContent=v+'m';
+  document.getElementById('rWeek').textContent=(v*7)+' pts';
+  document.getElementById('rRank').textContent=calcRank(v);
+}
+sl.addEventListener('input',updateCalc);
+updateCalc();
+
+/* ── CALENDAR ── */
+const MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WDAYS=['M','T','W','T','F','S','S'];
+const AVAIL_TIMES=['09:00','11:00','14:00','16:00','18:00','20:00'];
+let cY=2025,cM=5,selDay=null,selSlot=null;
+
+function renderCal(){
+  document.getElementById('calMonth').textContent=MONTHS[cM]+' '+cY;
+  const first=new Date(cY,cM,1);
+  const days=new Date(cY,cM+1,0).getDate();
+  let start=first.getDay()-1;if(start<0)start=6;
+  let h=WDAYS.map(d=>`<div class="cal-day-label">${d}</div>`).join('');
+  for(let i=0;i<start;i++) h+=`<button class="cal-day" disabled></button>`;
+  for(let i=1;i<=days;i++){
+    const d=new Date(cY,cM,i);
+    const past=d<new Date();
+    const dow=d.getDay();
+    const avail=!past&&dow>0&&dow<6;
+    const hasDot=[3,7,10,14,17,21,24,28].includes(i);
+    h+=`<button class="cal-day${avail?' avail':''}${i===selDay?' sel':''}" ${avail?`data-d="${i}"`:'disabled'}>${i}${hasDot&&avail?'<span class="cal-dot"></span>':''}</button>`;
+  }
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML=h;
+  grid.querySelectorAll('.avail').forEach(b=>b.addEventListener('click',()=>{
+    selDay=Number(b.dataset.d);renderCal();renderSlots();
+  }));
+}
+function renderSlots(){
+  document.getElementById('selDate').textContent=selDay?MONTHS[cM]+' '+selDay:'Select a date';
+  document.getElementById('slotsGrid').innerHTML=AVAIL_TIMES.map((t,i)=>`<button class="slot${[1,3].includes(i)?'':' avail'}${t===selSlot?' sel':''}" data-s="${t}"${[1,3].includes(i)?' disabled':''} type="button">${t}</button>`).join('');
+  document.querySelectorAll('.slot.avail').forEach(b=>b.addEventListener('click',()=>{selSlot=b.dataset.s;renderSlots();}));
+}
+function chMonth(d){
+  cM+=d;if(cM<0){cM=11;cY--;}if(cM>11){cM=0;cY++;}
+  selDay=null;selSlot=null;renderCal();renderSlots();
+}
+renderCal();renderSlots();
+function selBt(el){document.querySelectorAll('.btype').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');}
+function submitBook(e){e.preventDefault();document.getElementById('bookForm').style.display='none';document.getElementById('bookSuccess').classList.add('show');}
+
+/* ── WAITLIST ── */
+function joinList(e){
+  e.preventDefault();
+  const t=document.getElementById('wlType').value;
+  document.getElementById('wlForm').style.display='none';
+  const c=document.getElementById('wlConfirm');c.classList.add('show');
+  const msgs={ind:`You're #${Math.floor(Math.random()*180)+300} on the list. Pro free at launch.`,co:'Company pilot confirmed — 90 days free. Memo will reach out within 24 hours.',school:'School access confirmed — free forever. Teacher dashboard coming soon.'};
+  document.getElementById('wlMsg').textContent=msgs[t]||msgs.ind;
+}
+
+/* ── CAMERA MODAL ── */
+function openCam(){document.getElementById('camModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeCam(){clearInterval(sessTimer);playing=false;document.getElementById('camModal').classList.remove('open');document.body.style.overflow='';}
+
+/* ── DETECTION STATE ── */
+let spineOk=false,eyesOk=false,camStarted=false;
+let faceMesh=null,pose=null,mpCam=null;
+let latestFace=null,latestPose=null,frame=0;
+let totalPts=parseInt(localStorage.getItem('mmga_pts')||'0');
+let sessActive=false,sessElapsed=0,consec=0,verified=0,sessTimer=null,playing=false,sessPoints=0;
+
+function updatePtsUI(){
+  document.getElementById('modalPts').textContent=totalPts;
+}
+updatePtsUI();
+
+async function startCam(){
+  document.getElementById('camPerm').style.display='none';
+  document.getElementById('camIdle').style.display='flex';
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'},audio:false});
+    const video=document.getElementById('camVideo');
+    video.srcObject=stream;
+    video.onloadedmetadata=()=>{
+      const c=document.getElementById('camCanvas');
+      c.width=video.videoWidth||640;
+      c.height=video.videoHeight||480;
+      initMP();
+    };
+  }catch(err){
+    document.getElementById('camPerm').style.display='flex';
+    document.getElementById('camPerm').innerHTML=`<div style="font-size:36px">⚠</div><div class="cam-perm-t">Camera denied</div><div class="cam-perm-s">Allow camera access in your browser settings and refresh.</div>`;
+  }
+}
+
+function setLoad(pct){document.getElementById('loadFill').style.width=Math.min(pct,100)+'%';}
+
+function initMP(){
+  faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`});
+  faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5,minTrackingConfidence:0.5});
+  faceMesh.onResults(r=>{latestFace=r;setLoad(50);});
+
+  pose=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/${f}`});
+  pose.setOptions({modelComplexity:1,smoothLandmarks:true,enableSegmentation:false,minDetectionConfidence:0.5,minTrackingConfidence:0.5});
+  pose.onResults(r=>{
+    latestPose=r;setLoad(100);
+    if(!camStarted){
+      camStarted=true;
+      document.getElementById('camIdle').style.display='none';
+      document.getElementById('camStatusBar').style.display='flex';
+      document.getElementById('sessBtn').disabled=false;
+      addLog('Detection active. Ready to meditate.','ok');
+    }
+  });
+
+  const video=document.getElementById('camVideo');
+  mpCam=new Camera(video,{
+    onFrame:async()=>{
+      frame++;
+      if(frame%2===0) await faceMesh.send({image:video});
+      else await pose.send({image:video});
+      processDetect();
+      drawOverlay();
+    },
+    width:640,height:480
+  });
+  mpCam.start();
+}
+
+/* EAR */
+const LE=[33,160,158,133,153,144];
+const RE=[362,385,387,263,373,380];
+const EAR_THRESH=0.22;
+function dst(a,b){return Math.hypot(a.x-b.x,a.y-b.y);}
+function ear(lm,idx){
+  const p=idx.map(i=>lm[i]);
+  return (dst(p[1],p[5])+dst(p[2],p[4]))/(2*dst(p[0],p[3])||0.001);
+}
+
+/* SPINE — LENIENT */
+function checkSpine(lm){
+  if(!lm||lm.length<25) return false;
+  const nose=lm[0],ls=lm[11],rs=lm[12];
+  if((nose.visibility||0)<0.35||(ls.visibility||0)<0.35||(rs.visibility||0)<0.35) return false;
+  if(Math.abs(ls.y-rs.y)>0.18) return false; // very lenient tilt check
+  const smy=(ls.y+rs.y)/2;
+  if(nose.y>=smy+0.02) return false; // head clearly below shoulders = slouching
+  return true;
+}
+
+function processDetect(){
+  let newEyes=false,newSpine=false;
+  if(latestFace?.multiFaceLandmarks?.[0]){
+    const lm=latestFace.multiFaceLandmarks[0];
+    newEyes=((ear(lm,LE)+ear(lm,RE))/2)<EAR_THRESH;
+  }
+  if(latestPose?.poseLandmarks){
+    newSpine=checkSpine(latestPose.poseLandmarks);
+  }
+  if(camStarted){
+    setRule('spine',newSpine,newSpine!==spineOk);
+    setRule('eyes',newEyes,newEyes!==eyesOk);
+  }
+  spineOk=newSpine;eyesOk=newEyes;
+  const both=spineOk&&eyesOk&&sessActive;
+  document.getElementById('medBanner').classList.toggle('on',both);
+  document.getElementById('camGlow').classList.toggle('on',both);
+}
+
+function setRule(type,ok,changed){
+  const pillId=type==='spine'?'spineStatusPill':'eyesStatusPill';
+  const txtId=type==='spine'?'spineStatusTxt':'eyesStatusTxt';
+  const boxId=type==='spine'?'ruleSpineBox':'ruleEyesBox';
+  const iconId=type==='spine'?'ruleSpineIcon':'ruleEyesIcon';
+  const valId=type==='spine'?'ruleSpineVal':'ruleEyesVal';
+  const pill=document.getElementById(pillId);
+  pill.className=`status-pill ${ok?'sp-ok':'sp-fail'}`;
+  pill.querySelector('.sp-dot').className=`sp-dot`;
+  document.getElementById(txtId).textContent=type==='spine'?(ok?'Spine ✓':'Spine ✗'):(ok?'Eyes ✓':'Eyes ✗');
+  document.getElementById(iconId).textContent=ok?'✓':'✗';
+  document.getElementById(iconId).className=`rule-icon-sm ${ok?'ok':'fail'}`;
+  document.getElementById(valId).style.color=ok?'var(--green)':'var(--red)';
+  document.getElementById(boxId).className=`rule-box ${ok?'ok':'fail'}`;
+  if(changed&&camStarted) addLog(type==='spine'?(ok?'Spine erect ✓':'Spine lost'):(ok?'Eyes closed ✓':'Eyes opened'),ok?'ok':'fail');
+}
+
+function drawOverlay(){
+  const canvas=document.getElementById('camCanvas');
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  const W=canvas.width,H=canvas.height;
+  if(latestFace?.multiFaceLandmarks?.[0]){
+    const lm=latestFace.multiFaceLandmarks[0];
+    const ec=eyesOk?'rgba(30,215,96,0.8)':'rgba(230,51,31,0.6)';
+    [LE,RE].forEach(idx=>{
+      ctx.beginPath();
+      idx.forEach((i,j)=>{const p=lm[i];j===0?ctx.moveTo(p.x*W,p.y*H):ctx.lineTo(p.x*W,p.y*H);});
+      ctx.closePath();ctx.strokeStyle=ec;ctx.lineWidth=1.5;ctx.stroke();
+    });
+  }
+  if(latestPose?.poseLandmarks){
+    const lm=latestPose.poseLandmarks;
+    const sc=spineOk?'rgba(30,215,96,0.7)':'rgba(230,51,31,0.5)';
+    [[0,11],[0,12],[11,12],[11,23],[12,24],[23,24]].forEach(([a,b])=>{
+      const pa=lm[a],pb=lm[b];
+      if((pa.visibility||0)<0.3||(pb.visibility||0)<0.3) return;
+      ctx.beginPath();ctx.moveTo(pa.x*W,pa.y*H);ctx.lineTo(pb.x*W,pb.y*H);
+      ctx.strokeStyle=sc;ctx.lineWidth=2;ctx.stroke();
+    });
+    [0,11,12,23,24].forEach(i=>{
+      const p=lm[i];if((p.visibility||0)<0.3) return;
+      ctx.beginPath();ctx.arc(p.x*W,p.y*H,4,0,Math.PI*2);ctx.fillStyle=sc;ctx.fill();
+    });
+  }
+}
+
+/* SESSION */
+function toggleSess(){
+  if(!sessActive){
+    sessActive=true;sessElapsed=0;verified=0;consec=0;sessPoints=0;
+    document.getElementById('sessBtn').textContent='Stop session';
+    document.getElementById('sessBtn').style.background='var(--bg3)';
+    addLog('Session started. Sit still.','ok');
+    sessTimer=setInterval(sessTick,1000);
+    playing=true;
+  } else {
+    clearInterval(sessTimer);playing=false;sessActive=false;
+    document.getElementById('sessBtn').textContent='Start session';
+    document.getElementById('sessBtn').style.background='var(--red)';
+    document.getElementById('medBanner').classList.remove('on');
+    document.getElementById('camGlow').classList.remove('on');
+    addLog(`Session ended — ${sessPoints} points earned.`,'ok');
+    localStorage.setItem('mmga_streak',updateStreak());
+  }
+}
+function sessTick(){
+  sessElapsed++;
+  const m=Math.floor(sessElapsed/60),s=sessElapsed%60;
+  document.getElementById('timerDisp').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  document.getElementById('timerDisp').className='timer-big'+(spineOk&&eyesOk?' counting':'');
+  document.getElementById('timerLbl').textContent=spineOk&&eyesOk?'Verified — earning points':'Paused — fix posture or open eyes';
+  if(spineOk&&eyesOk){
+    verified++;consec++;
+    const pct=(consec%60)/60*100;
+    document.getElementById('progFill').style.width=pct+'%';
+    document.getElementById('progFill').className='prog-fill earn';
+    document.getElementById('progNum').textContent=(consec%60)+' / 60s';
+    if(consec>0&&consec%60===0) awardPoint();
+  } else {
+    consec=0;
+    document.getElementById('progFill').style.width='0%';
+    document.getElementById('progFill').className='prog-fill';
+    document.getElementById('progNum').textContent='0 / 60s';
+  }
+}
+function awardPoint(){
+  totalPts++;sessPoints++;
+  localStorage.setItem('mmga_pts',totalPts);
+  updatePtsUI();
+  addLog(`★ MONK POINT EARNED! Total: ${totalPts}`,'pt');
+  const p=document.getElementById('pointPop');
+  p.textContent=`+1 MONK POINT ★ (Total: ${totalPts})`;
+  p.classList.add('on');
+  setTimeout(()=>p.classList.remove('on'),2500);
+}
+function resetSess(){
+  clearInterval(sessTimer);playing=false;sessActive=false;
+  sessElapsed=0;verified=0;consec=0;sessPoints=0;
+  document.getElementById('sessBtn').textContent='Start session';
+  document.getElementById('sessBtn').style.background='var(--red)';
+  document.getElementById('timerDisp').textContent='00:00';
+  document.getElementById('timerDisp').className='timer-big';
+  document.getElementById('timerLbl').textContent='Not started';
+  document.getElementById('progFill').style.width='0%';
+  document.getElementById('progNum').textContent='0 / 60s';
+  document.getElementById('medBanner').classList.remove('on');
+  document.getElementById('camGlow').classList.remove('on');
+}
+function addLog(msg,type){
+  const log=document.getElementById('sessLog');
+  const now=new Date();
+  const t=String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0')+':'+String(now.getSeconds()).padStart(2,'0');
+  const el=document.createElement('div');
+  el.className=`log-item`;
+  el.innerHTML=`<span class="log-${type}">${msg}</span><span class="log-t">${t}</span>`;
+  log.insertBefore(el,log.firstChild);
+  while(log.children.length>30)log.removeChild(log.lastChild);
+}
+function updateStreak(){
+  const today=new Date().toDateString();
+  const d=JSON.parse(localStorage.getItem('mmga_str')||'{"last":"","count":0}');
+  const yest=new Date(Date.now()-86400000).toDateString();
+  if(d.last!==today){d.count=d.last===yest?d.count+1:1;d.last=today;}
+  return JSON.stringify(d);
+}
+
+/* ESC to close modal */
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCam();});
+</script>
+</body>
+</html>
