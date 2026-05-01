@@ -912,7 +912,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
             <div style="font-size:36px">📷</div>
             <div class="cam-perm-t">Camera access required</div>
             <div class="cam-perm-s">MMGA uses your camera locally to detect posture and eye closure. No video leaves your device. Ever.</div>
-            <button class="btn btn-red btn-sm" onclick="startCam()" type="button">Enable camera →</button>
+            <button class="btn btn-red btn-sm" id="enableCamBtn" type="button">Enable camera →</button>
           </div>
           <div class="cam-idle-overlay" id="camIdle" style="display:none">
             <div class="cam-idle-icon">🧘</div>
@@ -952,8 +952,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
         </div>
         <div class="med-banner" id="medBanner"><div class="med-t">★ MEDITATING ★</div><div class="med-s">Both rules active — earning</div></div>
         <div class="cam-ctrl-row">
-          <button class="btn btn-red btn-sm" id="sessBtn" onclick="toggleSess()" type="button" style="flex:1" disabled>Start session</button>
-          <button class="btn btn-ghost btn-sm" onclick="resetSess()" type="button">↺</button>
+          <button class="btn btn-red btn-sm" id="sessBtn" type="button" style="flex:1" disabled>Start session</button>
+          <button class="btn btn-ghost btn-sm" id="resetBtn" type="button">↺</button>
         </div>
         <div class="session-log" id="sessLog"><div class="log-item"><span class="log-ok">Waiting for camera…</span><span class="log-t">--:--</span></div></div>
       </div>
@@ -969,6 +969,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
 
 <script>
+/* ── MMGA MAIN SCRIPT ── */
+(function(){
+try {
+
 /* ── NAV ── */
 const nav=document.getElementById('nav');
 const mobileMenu=document.getElementById('mobileMenu');
@@ -1334,6 +1338,7 @@ async function checkSession(){
 async function handleLoggedIn(user){
   currentUser = user;
   closeAuth();
+  var gb=document.getElementById("guestBanner");if(gb)gb.style.display="none";
   // Load points from Supabase
   if(supabase){
     const {data} = await supabase
@@ -1437,6 +1442,22 @@ window.awardPoint = awardPointAndSync;
 
 function openAuth(){var m=document.getElementById('authModal');if(m){m.style.display='flex';document.body.style.overflow='hidden';document.getElementById('authEmailStep').style.display='block';document.getElementById('authCheckEmail').style.display='none';document.getElementById('authMsg').textContent='';setTimeout(function(){var e=document.getElementById('authEmail');if(e)e.focus();},100);}}
 
+
+// Wire enable camera button
+var ecb = document.getElementById('enableCamBtn');
+if(ecb) ecb.addEventListener('click', function(){ startCam(); });
+
+
+// Wire session buttons
+var sb=document.getElementById('sessBtn');
+if(sb) sb.addEventListener('click',function(){ toggleSess(); });
+var rb=document.getElementById('resetBtn');
+if(rb) rb.addEventListener('click',function(){ resetSess(); });
+
+} catch(e) {
+  console.error('MMGA boot error:', e.message, e.stack);
+}
+})();
 </script>
 </body>
 </html>
