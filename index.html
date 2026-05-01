@@ -757,7 +757,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <div class="sg reveal"><span class="sg-icon">🏫</span><div class="sg-title">MMGA for Schools</div><div class="sg-desc">Free for students and teachers. Kids earn Monk Points. Parent dashboard.</div><span class="sg-tag">Free · Q3 2025</span></div>
     <div class="sg reveal"><span class="sg-icon">🎯</span><div class="sg-title">Monk Point Exchange</div><div class="sg-desc">Spend points at partner cafes, on insurance discounts, on free sessions.</div><span class="sg-tag">Partnerships · Q4</span></div>
     <div class="sg reveal"><span class="sg-icon">🌍</span><div class="sg-title">Annual Stillness Report</div><div class="sg-desc">Global verified meditation data published every January. Gets press.</div><span class="sg-tag">Jan 2026</span></div>
-    <div class="sg reveal"><span class="sg-icon">🎵</span><div class="sg-title">Suno soundscapes</div><div class="sg-desc">AI ambient music plays during your detection session. Tibetan bowls, lo-fi, forest.</div><span class="sg-tag">Q4 2025</span></div>
+    <div class="sg reveal"><span class="sg-icon">🎵</span><div class="sg-title">Musical soundscapes</div><div class="sg-desc">Ambient music plays during your detection session. Tibetan bowls, lo-fi, forest.</div><span class="sg-tag">Q4 2025</span></div>
     <div class="sg reveal"><span class="sg-icon">🏕</span><div class="sg-title">MMGA Retreats</div><div class="sg-desc">Memo leads in-person 3-day and 7-day retreats from Methana, Greece.</div><span class="sg-tag">Summer 2026</span></div>
     <div class="sg reveal"><span class="sg-icon">👕</span><div class="sg-title">MMGA Merch</div><div class="sg-desc">The hat. "MAKE MEDITATION GREAT AGAIN" in pixel font across the front.</div><span class="sg-tag">Coming soon</span></div>
   </div>
@@ -1237,8 +1237,8 @@ document.addEventListener('keydown',e=>{
 
 /* ── SUPABASE CONFIG ── */
 // TODO: Replace with your real keys from supabase.com → Project Settings → API
-const SUPA_URL = 'const SUPA_URL = 'https://djyzuhhrhlxzsjgrkgxb.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqb3pybnNvZXl2Y2JjeHlkaWV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MjExNzcsImV4cCI6MjA5MzE5NzE3N30.dQ_n8CU_XPN9R2yYkUN30z4eexJUfpXKPABLtEawNDI';
+const SUPA_URL = 'YOUR_SUPABASE_URL';
+const SUPA_KEY = 'YOUR_SUPABASE_ANON_KEY';
 const REDIRECT_URL = window.location.origin + window.location.pathname;
 
 let supabase = null;
@@ -1352,9 +1352,9 @@ async function awardPointAndSync(){
   totalPts++;sessPoints++;
   localStorage.setItem('mmga_pts',totalPts);
   updatePtsUI();
-  addLog(\`★ MONK POINT EARNED! Total: \${totalPts}\`,'pt');
+  addLog('★ MONK POINT EARNED! Total: '+totalPts,'pt');
   const p=document.getElementById('pointPop');
-  p.textContent=\`+1 MONK POINT ★ (Total: \${totalPts})\`;
+  p.textContent='+1 MONK POINT ★ (Total: '+totalPts+')';
   p.classList.add('on');
   setTimeout(()=>p.classList.remove('on'),2500);
   // Sync to Supabase
@@ -1367,7 +1367,7 @@ async function awardPointAndSync(){
     },{onConflict:'user_id'});
     // Update nav pts display
     const ptEl = document.querySelector('.n-pts');
-    if(ptEl) ptEl.textContent = \`★ \${totalPts} pts\`;
+    if(ptEl) ptEl.textContent = '★ '+totalPts+' pts';
   }
 }
 // Override awardPoint
@@ -1388,7 +1388,7 @@ function closeAuth(){
 }
 function showAuthMsg(msg,type){
   const el=document.getElementById('authMsg');
-  el.textContent=msg;el.className=\`auth-msg \${type}\`;
+  el.textContent=msg;el.className='auth-msg '+type;
 }
 
 // Auth enter key
