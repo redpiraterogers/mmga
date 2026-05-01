@@ -369,6 +369,39 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 .point-pop{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:1000;font-family:var(--px);font-size:11px;background:var(--yellow);color:var(--bg);padding:11px 28px;border:2px solid white;box-shadow:4px 4px 0 var(--ydark);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap}
 .point-pop.on{opacity:1}
 
+
+/* ── AUTH ── */
+.auth-modal{position:fixed;inset:0;z-index:800;background:rgba(11,11,9,0.97);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;padding:20px}
+.auth-modal.open{display:flex}
+.auth-box{width:100%;max-width:440px;background:var(--bg2);border:2px solid var(--border3);box-shadow:12px 12px 0 var(--dim);padding:40px}
+.auth-logo{font-family:var(--px);font-size:14px;color:var(--red);text-shadow:2px 2px 0 var(--rdk);margin-bottom:8px;display:block}
+.auth-logo b{color:var(--yellow)}
+.auth-tagline{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--muted);margin-bottom:32px;display:block}
+.auth-title{font-family:var(--px);font-size:12px;color:var(--white);margin-bottom:24px;line-height:1.6;letter-spacing:0.04em}
+.auth-input{width:100%;background:var(--bg);border:2px solid var(--border2);padding:14px 16px;color:var(--white);font-family:var(--mono);font-size:14px;outline:none;margin-bottom:12px;transition:border-color 0.2s}
+.auth-input:focus{border-color:var(--yellow)}
+.auth-input::placeholder{color:var(--dim2)}
+.auth-btn{width:100%;font-family:var(--px);font-size:9px;padding:14px;background:var(--red);border:2px solid var(--red2);box-shadow:3px 3px 0 var(--rdk);color:var(--white);cursor:pointer;letter-spacing:0.06em;transition:all 0.1s;margin-bottom:10px}
+.auth-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--rdk)}
+.auth-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--dim2);font-size:11px}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.auth-google{width:100%;font-family:var(--px);font-size:9px;padding:14px;background:transparent;border:2px solid var(--border3);box-shadow:3px 3px 0 var(--dim);color:var(--off);cursor:pointer;letter-spacing:0.06em;transition:all 0.1s;display:flex;align-items:center;justify-content:center;gap:10px}
+.auth-google:hover{border-color:var(--white);color:var(--white)}
+.auth-msg{font-family:var(--px);font-size:8px;text-align:center;line-height:1.8;margin-top:8px;padding:12px;min-height:40px}
+.auth-msg.ok{color:var(--green);background:rgba(30,215,96,0.08);border:1px solid rgba(30,215,96,0.2)}
+.auth-msg.err{color:var(--red);background:rgba(230,51,31,0.08);border:1px solid rgba(230,51,31,0.2)}
+.auth-close{position:absolute;top:16px;right:16px;font-family:var(--px);font-size:8px;background:none;border:1px solid var(--border2);color:var(--muted);padding:6px 10px;cursor:pointer}
+.auth-close:hover{border-color:var(--red);color:var(--red)}
+.auth-note{font-size:11px;color:var(--muted);text-align:center;margin-top:16px;line-height:1.6}
+/* Nav user state */
+.n-user{font-family:var(--px);font-size:8px;color:var(--yellow);display:flex;align-items:center;gap:8px}
+.n-pts{background:rgba(255,216,77,0.12);border:1px solid rgba(255,216,77,0.3);padding:5px 10px;font-size:7px}
+.n-signout{font-family:var(--px);font-size:7px;background:transparent;border:1px solid var(--border2);color:var(--muted);padding:7px 10px;cursor:pointer;transition:all 0.1s}
+.n-signout:hover{border-color:var(--red);color:var(--red)}
+/* Config notice */
+.config-notice{position:fixed;bottom:16px;left:16px;background:var(--yellow);color:var(--bg);font-family:var(--px);font-size:7px;padding:10px 14px;z-index:999;line-height:1.8;max-width:320px;box-shadow:4px 4px 0 var(--ydark)}
+
 /* ── REVEAL ── */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity 0.55s ease,transform 0.55s ease}
 .reveal.active{opacity:1;transform:none}
@@ -419,9 +452,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#companies">Business</a></li>
     <li><a href="#pricing">Pricing</a></li>
   </ul>
-  <div class="n-right">
-    <a href="#signup" class="n-cta n-ghost">Login</a>
-    <a href="#signup" class="n-cta" onclick="openCam();return false">▶ Begin</a>
+  <div class="n-right" id="navRight">
+    <button onclick="openAuth()" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
+    <button onclick="openAuth()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
   </div>
 </nav>
 
@@ -670,7 +703,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       <p class="s-sub" style="margin-bottom:22px">Replacing one employee costs €15,000–50,000. MMGA costs €5/employee/month. The math is not complicated.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
         <a href="#signup" class="btn btn-red btn-sm">Start free pilot →</a>
-        <a href="mailto:info@mgmt.yoga" class="btn btn-ghost btn-sm">Talk to us</a>
+        <a href="mailto:info@mmga.yoga" class="btn btn-ghost btn-sm">Talk to us</a>
       </div>
     </div>
     <div class="roi-box">
@@ -754,14 +787,52 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div class="footer-grid">
     <div><span class="f-logo">M<b>M</b>GA</span><p class="f-about">Make Meditation Great Again. Taking it back from the wellness industry, one verified minute at a time. Built from Methana, Greece.</p></div>
     <div><span class="f-col-h">Product</span><ul class="f-links"><li><a href="#how">How it works</a></li><li><a href="#sessions">Sessions</a></li><li><a href="#tutorials">Tutorials</a></li><li><a href="#masters">Masters</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
-    <div><span class="f-col-h">Companies</span><ul class="f-links"><li><a href="#companies">Dashboard</a></li><li><a href="#companies">ESG reports</a></li><li><a href="#companies">Certification</a></li><li><a href="mailto:info@mgmt.yoga">Partner with us</a></li></ul></div>
-    <div><span class="f-col-h">Contact</span><ul class="f-links"><li><a href="mailto:info@mgmt.yoga">info@mgmt.yoga</a></li><li><a href="#book">Book Memo</a></li><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
+    <div><span class="f-col-h">Companies</span><ul class="f-links"><li><a href="#companies">Dashboard</a></li><li><a href="#companies">ESG reports</a></li><li><a href="#companies">Certification</a></li><li><a href="mailto:info@mmga.yoga">Partner with us</a></li></ul></div>
+    <div><span class="f-col-h">Contact</span><ul class="f-links"><li><a href="mailto:info@mmga.yoga">info@mmga.yoga</a></li><li><a href="#book">Book Memo</a></li><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
   </div>
   <div class="f-bottom">
     <span class="f-copy">© 2025 MMGA · Methana, Greece</span>
     <span class="f-tag">Gotta sit em all ™ · Spine erect · Eyes closed</span>
   </div>
 </footer>
+
+
+<!-- ── AUTH MODAL ── -->
+<div class="auth-modal" id="authModal">
+  <div class="auth-box" style="position:relative">
+    <button class="auth-close" onclick="closeAuth()" type="button">✕</button>
+    <span class="auth-logo">M<b>M</b>GA</span>
+    <span class="auth-tagline">Spine erect. Eyes closed. Points earned.</span>
+    <div class="auth-title" id="authTitle">Sign in or create account</div>
+
+    <div id="authEmailStep">
+      <input class="auth-input" type="email" id="authEmail" placeholder="your@email.com" autocomplete="email"/>
+      <button class="auth-btn" id="authSendBtn" onclick="sendMagicLink()" type="button">
+        Send magic link →
+      </button>
+      <div class="auth-divider">or</div>
+      <button class="auth-google" onclick="signInGoogle()" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+        Continue with Google
+      </button>
+    </div>
+
+    <div id="authCheckEmail" style="display:none;text-align:center;padding:20px 0">
+      <div style="font-size:36px;margin-bottom:16px">📬</div>
+      <div style="font-family:var(--px);font-size:9px;color:var(--white);margin-bottom:10px;line-height:1.8">Check your email</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.7">We sent a magic link to<br/><span id="authEmailSent" style="color:var(--yellow)"></span><br/>Click it to sign in — no password needed.</div>
+      <button onclick="document.getElementById('authCheckEmail').style.display='none';document.getElementById('authEmailStep').style.display='block'" style="margin-top:20px;font-family:var(--px);font-size:7px;background:none;border:1px solid var(--border2);color:var(--muted);padding:8px 14px;cursor:pointer" type="button">← Try different email</button>
+    </div>
+
+    <div class="auth-msg" id="authMsg"></div>
+    <p class="auth-note">No password. No spam. One click to sign in.<br/>Your Monk Points sync across all devices.</p>
+  </div>
+</div>
+
+<!-- Config notice (remove once Supabase is connected) -->
+<div class="config-notice" id="configNotice" style="display:none">
+  ⚠ Add your Supabase keys to activate auth
+</div>
 
 <!-- ── CAMERA MODAL ── -->
 <div class="cam-modal" id="camModal">
@@ -826,6 +897,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </div>
 </div>
 
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <!-- MediaPipe CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
@@ -1158,7 +1231,176 @@ function updateStreak(){
 }
 
 /* ESC to close modal */
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCam();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeCam();closeAuth();}
+});
+
+/* ── SUPABASE CONFIG ── */
+// TODO: Replace with your real keys from supabase.com → Project Settings → API
+const SUPA_URL = 'YOUR_SUPABASE_URL';
+const SUPA_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const REDIRECT_URL = window.location.origin + window.location.pathname;
+
+let supabase = null;
+let currentUser = null;
+
+function initSupabase(){
+  if(SUPA_URL === 'YOUR_SUPABASE_URL'){
+    document.getElementById('configNotice').style.display='block';
+    return false;
+  }
+  try{
+    supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+    return true;
+  }catch(e){
+    console.warn('Supabase init failed:', e);
+    return false;
+  }
+}
+
+async function checkSession(){
+  if(!supabase) return;
+  const {data:{session}} = await supabase.auth.getSession();
+  if(session?.user) handleLoggedIn(session.user);
+  // Listen for auth changes (magic link callback)
+  supabase.auth.onAuthStateChange((_event, session)=>{
+    if(session?.user) handleLoggedIn(session.user);
+    else handleLoggedOut();
+  });
+}
+
+async function handleLoggedIn(user){
+  currentUser = user;
+  closeAuth();
+  // Load points from Supabase
+  if(supabase){
+    const {data} = await supabase
+      .from('monk_points')
+      .select('points')
+      .eq('user_id', user.id)
+      .single();
+    if(data) {
+      totalPts = data.points;
+      localStorage.setItem('mmga_pts', totalPts);
+      updatePtsUI();
+    }
+  }
+  // Update nav
+  const email = user.email || 'Monk';
+  const name = email.split('@')[0];
+  document.getElementById('navRight').innerHTML = `
+    <div class="n-user">
+      <span class="n-pts">★ ${totalPts} pts</span>
+      <span style="font-size:7px;color:var(--muted)">${name}</span>
+    </div>
+    <button onclick="openCam()" class="n-cta" type="button">▶ Meditate</button>
+    <button onclick="signOut()" class="n-signout" type="button">Sign out</button>
+  `;
+}
+
+function handleLoggedOut(){
+  currentUser = null;
+  document.getElementById('navRight').innerHTML = `
+    <button onclick="openAuth()" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
+    <button onclick="openAuth()" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+  `;
+}
+
+async function sendMagicLink(){
+  const email = document.getElementById('authEmail').value.trim();
+  if(!email || !email.includes('@')){
+    showAuthMsg('Enter a valid email address.','err');return;
+  }
+  const btn = document.getElementById('authSendBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  if(!supabase){
+    // Demo mode — no real auth yet
+    showAuthMsg('Supabase not configured yet. Add your keys to activate.','err');
+    btn.disabled=false; btn.textContent='Send magic link →'; return;
+  }
+  const {error} = await supabase.auth.signInWithOtp({
+    email,
+    options:{emailRedirectTo: REDIRECT_URL}
+  });
+  if(error){
+    showAuthMsg(error.message,'err');
+    btn.disabled=false; btn.textContent='Send magic link →';
+  } else {
+    document.getElementById('authEmailSent').textContent = email;
+    document.getElementById('authEmailStep').style.display='none';
+    document.getElementById('authCheckEmail').style.display='block';
+  }
+}
+
+async function signInGoogle(){
+  if(!supabase){showAuthMsg('Supabase not configured yet.','err');return;}
+  const {error} = await supabase.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo: REDIRECT_URL}
+  });
+  if(error) showAuthMsg(error.message,'err');
+}
+
+async function signOut(){
+  if(supabase) await supabase.auth.signOut();
+  handleLoggedOut();
+}
+
+/* Save points to Supabase when earned */
+const _origAwardPoint = awardPoint;
+async function awardPointAndSync(){
+  totalPts++;sessPoints++;
+  localStorage.setItem('mmga_pts',totalPts);
+  updatePtsUI();
+  addLog(\`★ MONK POINT EARNED! Total: \${totalPts}\`,'pt');
+  const p=document.getElementById('pointPop');
+  p.textContent=\`+1 MONK POINT ★ (Total: \${totalPts})\`;
+  p.classList.add('on');
+  setTimeout(()=>p.classList.remove('on'),2500);
+  // Sync to Supabase
+  if(supabase && currentUser){
+    await supabase.from('monk_points').upsert({
+      user_id: currentUser.id,
+      email: currentUser.email,
+      points: totalPts,
+      updated_at: new Date().toISOString()
+    },{onConflict:'user_id'});
+    // Update nav pts display
+    const ptEl = document.querySelector('.n-pts');
+    if(ptEl) ptEl.textContent = \`★ \${totalPts} pts\`;
+  }
+}
+// Override awardPoint
+window.awardPoint = awardPointAndSync;
+
+function openAuth(){
+  document.getElementById('authModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  document.getElementById('authEmailStep').style.display='block';
+  document.getElementById('authCheckEmail').style.display='none';
+  document.getElementById('authMsg').textContent='';
+  document.getElementById('authMsg').className='auth-msg';
+  setTimeout(()=>document.getElementById('authEmail')?.focus(),100);
+}
+function closeAuth(){
+  document.getElementById('authModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function showAuthMsg(msg,type){
+  const el=document.getElementById('authMsg');
+  el.textContent=msg;el.className=\`auth-msg \${type}\`;
+}
+
+// Auth enter key
+document.getElementById && document.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && document.getElementById('authModal')?.classList.contains('open')){
+    sendMagicLink();
+  }
+});
+
+// Init on load
+initSupabase();
+checkSession();
 </script>
 </body>
 </html>
