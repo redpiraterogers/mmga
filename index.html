@@ -64,8 +64,9 @@ nav.stuck{background:rgba(11,11,9,0.97);border-bottom-color:var(--border2)}
 hr.thin{border:none;border-top:1px solid var(--border2);max-width:1160px;margin:0 auto}
 
 /* HERO */
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:124px 24px 80px;position:relative;overflow:hidden;isolation:isolate;background:url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat}
-.hero-overlay-div{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(11,11,9,0.3) 0%,rgba(11,11,9,0.7) 60%,rgba(11,11,9,0.98) 100%);pointer-events:none;z-index:-1}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:124px 24px 80px;position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at center, rgba(30,25,20,0.3), var(--bg) 70%)}
+.hero-overlay-div{position:absolute;inset:0;pointer-events:none;z-index:-1}
+
 .h-kicker{font-family:var(--px);font-size:9px;color:var(--yellow);background:rgba(255,216,77,0.1);border:2px solid rgba(255,216,77,0.3);padding:10px 18px;display:inline-block;margin-bottom:28px;letter-spacing:0.08em;line-height:1.7;animation:fadein 0.5s ease both}
 @keyframes fadein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .h1{font-family:var(--px);font-size:clamp(32px,8vw,82px);color:var(--white);text-shadow:6px 6px 0 var(--dim);line-height:1.1;letter-spacing:-0.02em}
@@ -365,12 +366,17 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- HERO -->
 <section class="hero">
   <div class="hero-overlay-div"></div>
+  
   <div class="h-kicker">★ THE ROYAL SECRET OF MEDITATION — NOW VERIFIABLE ★</div>
   <p style="font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,20px);color:var(--off);margin-bottom:14px">Every meditation app has been lying to you.</p>
   <h2 class="h2">MAKE</h2>
   <h2 class="h2">MEDITATION</h2>
-  <h1 class="h1" style="margin-bottom:28px">GREAT AGAIN</h1>
+  <h1 class="h1" style="margin-bottom:0">GREAT AGAIN</h1>
+  
   <p class="h-sub">They told you to <em>stop your thoughts.</em> Clear your mind. Find peace.<br/>
+  That is why you gave up after three sessions.<br/><br/>
+  <strong>The mind stills itself. You do not still it.</strong><br/>
+  You create the conditions — spine erect, eyes closed — and wait.</p>
   That is why you gave up after three sessions.<br/><br/>
   <strong>The mind stills itself. You do not still it.</strong><br/>
   You create the conditions — spine erect, eyes closed — and wait.</p>
