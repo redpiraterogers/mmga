@@ -403,7 +403,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 .config-notice{position:fixed;bottom:16px;left:16px;background:var(--yellow);color:var(--bg);font-family:var(--px);font-size:7px;padding:10px 14px;z-index:999;line-height:1.8;max-width:320px;box-shadow:4px 4px 0 var(--ydark)}
 
 /* ── REVEAL ── */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.55s ease,transform 0.55s ease}
+.reveal{opacity:1;transform:none}
 .reveal.active{opacity:1;transform:none}
 
 /* ── RESPONSIVE ── */
@@ -919,11 +919,7 @@ navLinks.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{
   mobileMenu.setAttribute('aria-expanded','false');
 }));
 
-/* ── SCROLL REVEAL ── */
-const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
-  if(e.isIntersecting){e.target.classList.add('active');obs.unobserve(e.target);}
-}),{threshold:0.08});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+/* scroll reveal disabled — content always visible */
 
 /* ── SMOOTH SCROLL ── */
 document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
