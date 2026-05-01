@@ -595,12 +595,18 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       </div>
     </div>
     <div>
-      <div class="cal-ui">
+      <a href="https://calendar.app.google/Pqznzezs65KZ1yC77" target="_blank" 
+  style="display:block;width:100%;text-align:center;font-family:var(--px);font-size:8px;
+  padding:13px;background:var(--yellow);color:var(--bg);border:2px solid #ffe066;
+  box-shadow:3px 3px 0 var(--ydark);margin-bottom:12px;text-decoration:none;letter-spacing:0.06em">
+  📅 Book directly with Memo →
+</a>
+<div class="cal-ui">
         <div class="cal-header">
           <div class="cal-month" id="calMonth">June 2025</div>
           <div style="display:flex;gap:6px">
-            <button class="cal-nav-btn" onclick="https://calendar.app.google/Pqznzezs65KZ1yC77(-1)">←</button>
-            <button class="cal-nav-btn" onclick="https://calendar.app.google/Pqznzezs65KZ1yC77(1)">→</button>
+            <button class="cal-nav-btn" onclick="chMonth(-1)">←</button>
+            <button class="cal-nav-btn" onclick="chMonth(1)">→</button>
           </div>
         </div>
         <div class="cal-grid" id="calGrid"></div>
@@ -615,7 +621,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
           <button class="btype" onclick="selBt(this)" type="button"><div><div class="btype-name">Deep dive</div><div class="btype-desc">90 min + intention setting</div></div><div class="btype-price">€75</div></button>
           <button class="btype" onclick="selBt(this)" type="button"><div><div class="btype-name">Monthly companion</div><div class="btype-desc">4 sessions + unlimited group</div></div><div class="btype-price">€120/mo</div></button>
         </div>
-        <form id="bookForm" ="submitBook(event)">
+        <form id="bookForm" onsubmit="submitBook(event)">
           <label class="f-label">Name</label>
           <input class="f-input" type="text" placeholder="Your name" required/>
           <label class="f-label">Email</label>
@@ -728,7 +734,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <div class="signup-bg" id="signup">
   <h1 class="h1">READY?</h1>
   <p class="h-sub" style="margin-top:16px">Join the waitlist. First 500 get Pro free for 3 months.<br/>Companies get a 90-day free pilot.</p>
-  <<form action="https://formspree.io/f/xqenakba" method="POST"> id="wlForm">
+  <form onsubmit="joinList(event)" id="wlForm">
     <div class="signup-row">
       <input class="signup-input" type="email" placeholder="your@email.com" required id="wlEmail"/>
       <select class="signup-sel" id="wlType">
@@ -897,7 +903,7 @@ function renderSlots(){
   document.getElementById('slotsGrid').innerHTML=AVAIL_TIMES.map((t,i)=>`<button class="slot${[1,3].includes(i)?'':' avail'}${t===selSlot?' sel':''}" data-s="${t}"${[1,3].includes(i)?' disabled':''} type="button">${t}</button>`).join('');
   document.querySelectorAll('.slot.avail').forEach(b=>b.addEventListener('click',()=>{selSlot=b.dataset.s;renderSlots();}));
 }
-function https://calendar.app.google/Pqznzezs65KZ1yC77(d){
+function chMonth(d){
   cM+=d;if(cM<0){cM=11;cY--;}if(cM>11){cM=0;cY++;}
   selDay=null;selSlot=null;renderCal();renderSlots();
 }
