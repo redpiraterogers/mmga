@@ -402,6 +402,19 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 /* Config notice */
 .config-notice{position:fixed;bottom:16px;left:16px;background:var(--yellow);color:var(--bg);font-family:var(--px);font-size:7px;padding:10px 14px;z-index:999;line-height:1.8;max-width:320px;box-shadow:4px 4px 0 var(--ydark)}
 
+
+/* ── HERO PHOTO ── */
+.hero{background:radial-gradient(ellipse 120% 80% at 50% 20%,#1a2a1a 0%,#0e1810 30%,#0b0b09 70%,#080808 100%);}
+.hero-overlay-div{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,8,6,0.72) 0%,rgba(8,8,6,0.52) 35%,rgba(11,11,9,0.94) 100%);pointer-events:none;z-index:0}
+.hero-grid{pointer-events:none!important}
+.hero-vignette{pointer-events:none!important}
+.h-ctas,.hero-proof,.h-kicker,.h-sub,.h1,.h2{position:relative;z-index:2}
+
+
+/* ── MODAL via :target (CSS-only, no JS needed) ── */
+#camModal:target,#authModal:target{display:flex!important}
+#camModal:target ~ * #camModal,#authModal:target ~ * #authModal{display:flex!important}
+
 /* ── REVEAL ── */
 .reveal{opacity:1;transform:none}
 .reveal.active{opacity:1;transform:none}
@@ -454,45 +467,46 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#companies">Business</a></li>
     <li><a href="#pricing">Pricing</a></li>
   </ul>
-  <div class="n-right" id="navRight">
+  <div class="n-right" id="navRight" style="position:relative;z-index:600">
     <button onclick="var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';var s=document.getElementById('authEmailStep');if(s)s.style.display='block';var e=document.getElementById('authEmail');if(e)setTimeout(function(){e.focus()},100);}" data-auth="1" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <a href="#camModal" class="btn btn-red btn-sm">▶ Begin</a>
   </div>
 </nav>
 
 <!-- ── HERO ── -->
 <section class="hero">
-  <div style="position:absolute;inset:0;z-index:-3;background:url('https://picsum.photos/seed/mmga-zen/1920/1080') center/cover no-repeat,linear-gradient(135deg,#0d0d0b,#1c1c14)"></div>
-  <div style="position:absolute;inset:0;z-index:-2;background:linear-gradient(to bottom,rgba(6,6,5,0.75) 0%,rgba(6,6,5,0.55) 40%,rgba(11,11,9,0.95) 100%)"></div>
-  <div class="hero-grid" style="opacity:0.3"></div>
+  <div class="hero-overlay-div"></div>
+  <div class="hero-grid"></div>
 
-  <div class="h-kicker">★ THE ROYAL SECRET OF MEDITATION — NOW VERIFIABLE ★</div>
+  <div class="h-kicker" style="position:relative;z-index:2">★ THE ROYAL SECRET OF MEDITATION — NOW VERIFIABLE ★</div>
 
-  <p style="font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,20px);color:var(--off);margin-bottom:20px;max-width:640px;text-align:center;line-height:1.6">Every meditation app has been lying to you.</p>
+  <p style="position:relative;z-index:2;font-family:var(--serif);font-style:italic;font-size:clamp(16px,2vw,20px);color:var(--off);margin-bottom:14px;text-shadow:1px 1px 2px rgba(0,0,0,0.8)">Every meditation app has been lying to you.</p>
 
-  <h1 class="h1">MAKE</h1>
-  <h2 class="h2">MEDITATION</h2>
-  <h1 class="h1" style="margin-bottom:28px">GREAT AGAIN</h1>
+  <h2 class="h2" style="position:relative;z-index:2">MAKE</h2>
+  <h2 class="h2" style="position:relative;z-index:2">MEDITATION</h2>
+  <h1 class="h1" style="position:relative;z-index:2;margin-bottom:28px">GREAT AGAIN</h1>
 
-  <p class="h-sub" style="max-width:700px">
-    They told you to <em>stop your thoughts</em>. Clear your mind.<br/>
-    That is why you quit after three sessions.<br/><br/>
-    <strong>What every Zen master actually knows:</strong><br/>
-    The mind stills itself. You only create the conditions.
+  <p class="h-sub" style="position:relative;z-index:2;text-shadow:1px 1px 3px rgba(0,0,0,0.9)">
+    They told you to <em>stop your thoughts</em>. Clear your mind. Find peace.<br/>
+    That is why you gave up after three sessions.<br/><br/>
+    <strong>Here is what every Zen master actually knows:</strong><br/>
+    The mind stills itself. You do not still it.<br/>
+    You create the conditions — spine erect, eyes closed — and wait.
   </p>
 
-  <div style="font-family:var(--px);font-size:clamp(8px,1.6vw,14px);color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);letter-spacing:0.08em;margin:8px 0 36px;text-align:center">
+  <div style="position:relative;z-index:2;font-family:var(--px);font-size:clamp(9px,1.6vw,16px);color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);letter-spacing:0.08em;margin-bottom:36px">
     SPINE ERECT &nbsp;+&nbsp; EYES CLOSED &nbsp;+&nbsp; TIME &nbsp;=&nbsp; STILLNESS
   </div>
 
-  <div class="h-ctas">
-    <button class="btn btn-red" onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}">⚔ Begin the practice</button>
+  <div class="h-ctas" style="position:relative;z-index:10">
+    <a href="#camModal" class="btn btn-red">⚔ Begin the practice</a>
     <a href="#secret" class="btn btn-ghost">◉ The royal secret</a>
     <a href="#companies" class="btn btn-yellow">🏢 For companies</a>
   </div>
-  <div class="hero-proof">
-    <span class="proof-pill">Camera-verified · never recorded</span>
-    <span class="proof-pill">60s = 1 Monk Point</span>
+
+  <div class="hero-proof" style="position:relative;z-index:10">
+    <span class="proof-pill">Camera-verified posture &amp; eye closure</span>
+    <span class="proof-pill">60 verified seconds = 1 Monk Point</span>
     <span class="proof-pill">Guided by Agamemnon · Methana, Greece</span>
   </div>
 </section>
@@ -790,7 +804,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <span class="eyebrow">$ Pricing</span>
   <h2 class="s-title">Simple. No dark patterns.<br/>No annual guilt trips.</h2>
   <div class="price-grid">
-    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" data-cam="1" class="p-btn">▶ Start now</button></div>
+    <div class="p-card"><div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div><ul class="p-feats"><li class="on">Monk Points detector</li><li class="on">3 guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>All pop culture sessions</li><li>Company dashboard</li></ul><a href="#camModal" class="btn btn-red btn-sm">▶ Start now</a></div>
     <div class="p-card star"><div class="p-star">★ Most chosen ★</div><div class="p-tier">Pro</div><div class="p-num">€9</div><div class="p-per">/ month · cancel any time</div><ul class="p-feats"><li class="on">All 10 pop culture sessions</li><li class="on">Full tutorial library</li><li class="on">Masters video library</li><li class="on">All 8 scriptures</li><li class="on">3am mode unlocked</li><li class="on">Monthly certificate PDF</li></ul><a href="#signup" class="p-btn main">Get Pro →</a></div>
     <div class="p-card"><div class="p-tier">Company</div><div class="p-num">€5</div><div class="p-per">/ employee / month</div><ul class="p-feats"><li class="on">Everything Pro for all staff</li><li class="on">Company dashboard</li><li class="on">ESG wellness reports</li><li class="on">Certified Mindful badge</li><li class="on">Productivity data</li></ul><a href="#signup" class="p-btn">Onboard →</a></div>
     <div class="p-card"><div class="p-tier">Private</div><div class="p-num">€45</div><div class="p-per">per session with Memo</div><ul class="p-feats"><li class="on">60 min 1:1 with Memo</li><li class="on">Video or audio</li><li class="on">No agenda, no curriculum</li><li class="on">Points counted live</li></ul><a href="#book" class="p-btn">Book now →</a></div>
@@ -850,7 +864,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- ── AUTH MODAL ── -->
 <div class="auth-modal" id="authModal" style="display:none">
   <div class="auth-box" style="position:relative">
-    <button class="auth-close" onclick="document.getElementById('authModal').classList.remove('open');document.body.style.overflow=''" type="button">✕</button>
+    <button class="auth-close" onclick="history.pushState('','',window.location.pathname);this.closest('.auth-modal').style.display='none'" type="button">✕</button>
     <span class="auth-logo">M<b>M</b>GA</span>
     <span class="auth-tagline">Spine erect. Eyes closed. Points earned.</span>
     <div class="auth-title" id="authTitle">Sign in or create account</div>
@@ -889,7 +903,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div class="cam-inner">
     <div class="cam-top">
       <div class="cam-top-title">⚔ MONK POINTS DETECTOR</div>
-      <button class="cam-close" onclick="document.getElementById('camModal').classList.remove('open');document.body.style.overflow=''" type="button">✕ Close</button>
+      <a href="#camModal" class="btn btn-red btn-sm">✕ Close</a>
     </div>
     <div class="cam-body">
       <div class="cam-left">
@@ -1341,7 +1355,7 @@ async function handleLoggedIn(user){
       <span class="n-pts">★ ${totalPts} pts</span>
       <span style="font-size:7px;color:var(--muted)">${name}</span>
     </div>
-    <button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" class="n-cta" type="button">▶ Meditate</button>
+    <a href="#camModal" class="btn btn-red btn-sm">▶ Meditate</a>
     <button onclick="signOut()" class="n-signout" type="button">Sign out</button>
   `;
 }
@@ -1349,8 +1363,8 @@ async function handleLoggedIn(user){
 function handleLoggedOut(){
   currentUser = null;
   document.getElementById('navRight').innerHTML = `
-    <button onclick="var m=document.getElementById('authModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';var s=document.getElementById('authEmailStep');if(s)s.style.display='block';var e=document.getElementById('authEmail');if(e)setTimeout(function(){e.focus()},100);}" class="n-cta n-ghost" type="button" id="loginBtn">Login</button>
-    <button onclick="var m=document.getElementById('camModal');if(m){m.classList.add('open');document.body.style.overflow='hidden';}" class="n-cta" type="button" id="beginBtn">▶ Begin</button>
+    <a href="#authModal" class="n-cta n-ghost" id="loginBtn" style="display:inline-flex;align-items:center">Login</a>
+    <a href="#camModal" class="n-cta" id="beginBtn" style="display:inline-flex;align-items:center">▶ Begin</a>
   `;
 }
 
