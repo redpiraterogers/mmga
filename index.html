@@ -360,7 +360,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </ul>
   <div class="n-right" id="navRight">
     <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{window.open('https://phantom.app/','_blank')}">Connect Wallet</button>
-    <button onclick="openCam()" class="btn btn-red btn-sm">▶ Begin</button>
+    <button id="begin-btn" class="btn btn-red btn-sm">▶ Begin</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
@@ -1507,6 +1507,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 </script>
 
 <!-- CAMERA MODAL -->
+<!-- CAMERA MODAL -->
 <div class="cam-modal" id="camModal">
   <div class="cam-inner">
     <div class="cam-top">
@@ -1638,25 +1639,6 @@ let faceMesh, pose, mpCam, localStream;
 let latestFace = null, latestPose = null;
 
 document.getElementById('modalPts').textContent = totalPts;
-
-function openCam() {
-  document.getElementById('camModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCam() {
-  document.getElementById('camModal').classList.remove('open');
-  document.body.style.overflow = '';
-  if (sessActive) toggleSess();
-  if (localStream) localStream.getTracks().forEach(t => t.stop());
-  if (mpCam) { try { mpCam.stop(); } catch(e){} }
-  resetSess();
-  document.getElementById('camPerm').style.display = 'flex';
-  document.getElementById('camStatusBar').style.display = 'none';
-  document.getElementById('sessBtn').disabled = true;
-  localStream = null; mpCam = null; faceMesh = null; pose = null;
-  latestFace = null; latestPose = null;
-}
 
 async function startCam() {
   document.getElementById('camPerm').style.display = 'none';
@@ -1801,41 +1783,15 @@ function awardPoint() {
   totalPts++;
   localStorage.setItem('mmga_pts', totalPts);
   document.getElementById('modalPts').textContent = totalPts;
-  addLog('★ $MONK EARNED! Total: ' + totalPts);
+  addLog('★ $MONK MINTED! Total: ' + totalPts);
   const p = document.getElementById('pointPop');
-  p.textContent = '+1 $MONK EARNED ★ (Total: ' + totalPts + ')';
+  p.textContent = '+1 $MONK MINTED ★ (Total: ' + totalPts + ')';
   p.classList.add('on');
   setTimeout(() => p.classList.remove('on'), 2500);
   const ptEl = document.querySelector('.n-pts');
   if (ptEl) ptEl.textContent = '★ ' + totalPts + ' $MONK';
-  
-  // Add MONK to server balance
-  if (window.solana && window.solana.isConnected) {
-    const walletAddress = window.solana.publicKey.toString();
-    fetch('https://mmga-backend.onrender.com/api/earn', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        sessionId: 'session-' + Date.now(),
-        duration: 60,
-        timestamp: new Date().toISOString(),
-        biometricValid: true,
-        userWallet: walletAddress
-      })
-    })
-    .then(r => r.json())
-    .then(data => {
-      console.log('✅ MONK added to balance:', data.newBalance);
-      addLog('💾 Saved to your wallet balance: ' + data.newBalance + ' unminted');
-      // Update balance display if widget is loaded
-      if (window.mmgaReloadBalance) window.mmgaReloadBalance();
-    })
-    .catch(err => {
-      console.error('Failed to save MONK:', err);
-      addLog('⚠️ MONK earned but not saved to server. Connect wallet and try again.');
-    });
-  } else {
-    addLog('⚠️ Connect wallet to save MONK permanently!');
+  if (window._supa && window._user) {
+    window._supa.from('monk_points').upsert({user_id:window._user.id, email:window._user.email, points:totalPts, updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(()=>{}).catch(()=>{});
   }
 }
 
@@ -1929,172 +1885,27 @@ function handleLoggedOut() {
 document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeCam(); closeAuth(); }});
 </script>
 </body>
-</html><!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div><span class="f-logo">M<b>M</b>GA</span><p class="f-about">Make Meditation Great Again. Taking it back from the wellness industry, one verified minute at a time. Methana, Greece.</p></div>
-    <div><span class="f-col-h">Product</span><ul class="f-links"><li><a href="#secret">The Royal Secret</a></li><li><a href="#monk-token">$MONK Token</a></li><li><a href="#sessions">Sessions</a></li><li><a href="#tutorials">Tutorials</a></li><li><a href="#masters">Masters</a></li><li><a href="#pricing">Pricing</a></li></ul></div>
-    <div><span class="f-col-h">Companies</span><ul class="f-links"><li><a href="#companies">Dashboard</a></li><li><a href="#companies">ESG reports</a></li><li><a href="mailto:info@mmga.yoga">Partner with us</a></li></ul></div>
-    <div><span class="f-col-h">Contact</span><ul class="f-links"><li><a href="mailto:info@mmga.yoga">info@mmga.yoga</a></li><li><a href="#book">Book a session</a></li><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
-  </div>
-  <div class="f-bottom">
-    <span class="f-copy">© 2025 MMGA · Methana, Greece · Proof-of-Stillness Protocol</span>
-    <span class="f-tag">Utility-only participation · No capital required ™</span>
-  </div>
-</footer>
-
-<!-- AUTH MODAL -->
-<div class="auth-modal" id="authModal">
-  <div class="auth-box">
-    <button class="auth-close" onclick="closeAuth()">✕</button>
-    <span class="auth-logo">M<b>M</b>GA</span>
-    <span class="auth-tag">Spine erect. Eyes closed. $MONK minted.</span>
-    <div id="authEmailStep">
-      <input class="auth-input" type="email" id="authEmail" placeholder="your@email.com" autocomplete="email"/>
-      <button class="auth-btn" id="authSendBtn" onclick="sendMagicLink()">Send magic link →</button>
-    </div>
-    <div id="authCheckEmail" style="display:none;text-align:center;padding:20px 0">
-      <div style="font-size:36px;margin-bottom:14px">📬</div>
-      <div style="font-family:var(--px);font-size:9px;color:var(--white);margin-bottom:10px;line-height:1.8">Check your email</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.7">Magic link sent to<br/><span id="authEmailSent" style="color:var(--yellow)"></span><br/>Click it to sign in — no password needed.</div>
-      <button onclick="document.getElementById('authCheckEmail').style.display='none';document.getElementById('authEmailStep').style.display='block'" style="margin-top:16px;font-family:var(--px);font-size:7px;background:none;border:1px solid var(--border2);color:var(--muted);padding:8px 14px;cursor:pointer">← Try different email</button>
-    </div>
-    <div class="auth-msg" id="authMsg"></div>
-    <p class="auth-note">No password. No spam. Enter your email and click the link we send you.</p>
-  </div>
-</div>
-
-<!-- CAMERA MODAL -->
-<div class="cam-modal" id="camModal">
-  <div class="cam-inner">
-    <div class="cam-top">
-      <div class="cam-top-title">⚔ $MONK MINTING DETECTOR</div>
-      <button class="cam-close-btn" onclick="closeCam()">✕ Close</button>
-    </div>
-    <div class="guest-banner" id="guestBanner">
-      <span style="font-family:var(--px);font-size:7px;color:var(--yellow);letter-spacing:0.06em">★ GUEST MODE — tokens saved locally only</span>
-      <button onclick="closeCam();openAuth()" style="font-family:var(--px);font-size:7px;padding:6px 12px;background:var(--yellow);color:var(--bg);border:none;cursor:pointer;letter-spacing:0.06em">Sign in to mint on-chain →</button>
-    </div>
-    <div style="background:rgba(30,215,96,0.05);border-bottom:1px solid rgba(30,215,96,0.2);padding:12px 20px">
-      <div style="font-family:var(--px);font-size:7px;color:var(--green);margin-bottom:6px;letter-spacing:0.06em">🛡 CLIENT-SIDE BIOMETRIC PROCESSING</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.65">
-        <strong style="color:var(--off)">Zero server transmission.</strong> MediaPipe face/pose detection runs 100% in your browser's volatile RAM. No pixel data, facial landmarks, or biometric vectors ever leave your device. Inference completes locally and is wiped from memory instantly after each frame. No recording. No storage. No cloud upload. <a href="#privacy-tech" style="color:var(--green);text-decoration:underline">Technical specification</a>
-      </div>
-    </div>
-    <div class="cam-body">
-      <div class="cam-left">
-        <div class="cam-wrap">
-          <div class="cam-perm" id="camPerm" style="position:absolute;inset:0;z-index:20;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center">
-            <div style="font-size:36px">📷</div>
-            <div style="font-family:var(--px);font-size:9px;line-height:1.8">Camera access required</div>
-            <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7">
-              <strong style="color:var(--off)">Local processing only.</strong> MediaPipe runs in your browser's RAM. No pixel data, facial features, or biometric identifiers are transmitted to any server. Inference completes locally and is wiped from volatile memory after each frame.
-            </p>
-            <p style="font-size:11px;color:var(--dim2);max-width:280px;line-height:1.7;margin-top:8px">
-              By enabling camera access, you consent to local biometric processing for posture detection only. You may revoke consent at any time by closing this window. <a href="#privacy-tech" style="color:var(--green);text-decoration:underline">Privacy details</a>
-            </p>
-            <button class="btn btn-red btn-sm" onclick="startCam()">I consent — Enable camera →</button>
-          </div>
-          <video id="camVideo" autoplay playsinline muted></video>
-          <canvas id="camCanvas"></canvas>
-          <div class="cam-glow" id="camGlow"></div>
-          <div class="cam-overlay-status" id="camStatusBar" style="display:none">
-            <div class="status-pill sp-wait" id="spineStatusPill">Spine…</div>
-            <div class="status-pill sp-wait" id="eyesStatusPill">Eyes…</div>
-          </div>
-        </div>
-        <div style="height:3px;background:var(--dim);margin-top:10px;overflow:hidden"><div id="loadFill" style="height:100%;background:var(--yellow);width:0;transition:width 0.3s"></div></div>
-        <div style="display:flex;gap:2px;margin-top:10px">
-          <div id="ruleSpineBox" style="flex:1;background:var(--bg2);border:2px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px">
-            <span id="ruleSpineIcon" style="font-family:var(--px);font-size:10px;color:var(--dim2)">—</span>
-            <div><div style="font-family:var(--px);font-size:6px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Rule 1</div><div style="font-size:11px;color:var(--off)">Spine erect</div></div>
-          </div>
-          <div id="ruleEyesBox" style="flex:1;background:var(--bg2);border:2px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px">
-            <span id="ruleEyesIcon" style="font-family:var(--px);font-size:10px;color:var(--dim2)">—</span>
-            <div><div style="font-family:var(--px);font-size:6px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Rule 2</div><div style="font-size:11px;color:var(--off)">Eyes closed</div></div>
-          </div>
-        </div>
-      </div>
-      <div class="cam-right">
-        <span class="pts-big" id="modalPts">0</span>
-        <span class="pts-lbl">$MONK tokens minted</span>
-        <div class="timer-box">
-          <div class="timer-big" id="timerDisp">00:00</div>
-          <div style="font-family:var(--px);font-size:7px;color:var(--muted);margin-top:5px;letter-spacing:0.06em" id="timerLbl">Not started</div>
-        </div>
-        <div>
-          <div style="font-family:var(--px);font-size:7px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px"><span>Next $MONK</span><span id="progNum">0 / 60s</span></div>
-          <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-        </div>
-        <div class="med-banner" id="medBanner">
-          <div style="font-family:var(--px);font-size:8px;color:var(--green);margin-bottom:3px">★ MINTING ★</div>
-          <div style="font-size:11px;color:rgba(30,215,96,0.6)">Both rules active — minting tokens</div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-red btn-sm" id="sessBtn" style="flex:1" disabled onclick="toggleSess()">Start session</button>
-          <button class="btn btn-ghost btn-sm" id="resetBtn" onclick="resetSess()">↺</button>
-        </div>
-        <div id="sessLog" style="background:var(--bg);border:1px solid var(--border);padding:10px;height:130px;overflow-y:auto;font-size:10px;color:var(--muted);line-height:1.5"></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- MEDIAPIPE -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
-<!-- SUPABASE -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+</html></body></html>
 
 <script>
-/* NAV */
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => nav.classList.toggle('stuck', scrollY > 20), {passive:true});
-document.getElementById('mobileMenu').addEventListener('click', () => document.getElementById('navLinks').classList.toggle('open'));
-document.getElementById('navLinks').querySelectorAll('a').forEach(a => a.addEventListener('click', () => document.getElementById('navLinks').classList.remove('open')));
-
-/* SCROLL REVEAL */
-const revealObs = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('active'); });
-}, {threshold: 0.1});
-document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
-
-/* CALCULATOR */
-const sl = document.getElementById('minSlider');
-sl.addEventListener('input', () => {
-  const v = Number(sl.value);
-  document.getElementById('rTime').textContent = v + 'm';
-  document.getElementById('rWeek').textContent = (v*7) + ' $MONK';
-  document.getElementById('rRank').textContent = v<10?'Seeker':v<20?'Initiate':v<35?'Adept':v<50?'Monk':'Void Master';
-});
-
-/* EPOCH COUNTDOWN */
-function updateEpochCountdown() {
-  const now = new Date();
-  const epoch = new Date('2030-01-01T00:00:00Z');
-  const diff = epoch - now;
-  if (diff > 0) {
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const years = Math.floor(days / 365);
-    const months = Math.floor((days % 365) / 30);
-    const daysRem = days % 30;
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    document.getElementById('epochYears').textContent = years;
-    document.getElementById('epochMonths').textContent = months;
-    document.getElementById('epochDays').textContent = daysRem;
-    document.getElementById('epochHours').textContent = hours;
+// Attach Begin button handler when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  const beginBtn = document.getElementById('begin-btn');
+  if (beginBtn) {
+    beginBtn.addEventListener('click', function() {
+      console.log('Begin button clicked!');
+      const modal = document.getElementById('camModal');
+      if (modal) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        console.log('Camera modal opened');
+      } else {
+        console.error('camModal not found!');
+      }
+    });
+    console.log('Begin button handler attached');
+  } else {
+    console.error('begin-btn not found!');
   }
-}
-updateEpochCountdown();
-setInterval(updateEpochCountdown, 3600000); // Update every hour
-
-/* CAMERA */
-let spineOk = false, eyesOk = false, sessActive = false, sessTimer = null, consec = 0, sessElapsed = 0;
-let totalPts = parseInt(localStorage.getItem('mmga_pts') || '0');
-let faceMesh, pose, mpCam, localStream;
-let latestFace = null, latestPose = null;
-
-document.getElementById('modalPts').textContent = totalPts;
-
-</body></html>
+});
+</script>
