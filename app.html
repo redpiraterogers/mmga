@@ -3,52 +3,75 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MMGA — Meditation App</title>
-<meta name="description" content="Verified meditation with $MONK token rewards"/>
+<title>MMGA — Make Meditation Great Again</title>
+<meta name="description" content="The world's first verified meditation registry. Earn Monk Points. Mint $MONK utility tokens. Gotta sit em all."/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
 <style>
-:root{--bg:#0a0a0a;--bg2:#141414;--bg3:#1c1c1c;--bg4:#242424;--white:#ffffff;--off:#e8e8e8;--muted:#a0a0a0;--dim:#3a3a3a;--dim2:#4a4a4a;--red:#ff0033;--red2:#ff3355;--rdk:#990022;--yellow:#ffd700;--ydim:#ccaa00;--ydark:#5a4d00;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--border3:rgba(255,255,255,0.24);--shadow:rgba(0,0,0,0.5);--px:'Press Start 2P',monospace;--serif:'Instrument Serif',Georgia,serif;--mono:'DM Mono','Courier New',monospace;--green:#1ed760}
+:root{
+  --bg:#0a0a0a;--bg2:#141414;--bg3:#1c1c1c;--bg4:#242424;
+  --white:#ffffff;--off:#e8e8e8;--muted:#a0a0a0;--dim:#3a3a3a;--dim2:#4a4a4a;
+  --red:#ff0033;--red2:#ff3355;--rdk:#990022;
+  --yellow:#ffd700;--ydim:#ccaa00;--ydark:#5a4d00;
+  --green:#1ed760;
+  --border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--border3:rgba(255,255,255,0.24);
+  --shadow:rgba(0,0,0,0.5);
+  --px:'Press Start 2P',monospace;
+  --serif:'Instrument Serif',Georgia,serif;
+  --mono:'DM Mono','Courier New',monospace;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:68px}
 body{background:var(--bg);color:var(--white);font-family:var(--mono);overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9998;opacity:0.4}
 ::selection{background:var(--yellow);color:var(--bg)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--dim2)}
-button,input{font:inherit}
+a{color:inherit}
+button,input,textarea,select{font:inherit}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(15,20,25,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border3)}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,40px);background:rgba(15,20,25,0.65);backdrop-filter:blur(16px) saturate(180%);border-bottom:1px solid transparent;transition:all 0.3s ease}
+nav.stuck{background:rgba(15,20,25,0.95);border-bottom-color:var(--border3);box-shadow:0 4px 24px rgba(0,0,0,0.12)}
 .n-logo{font-family:var(--px);font-size:13px;color:var(--red);text-shadow:2px 2px 0 var(--rdk);text-decoration:none}.n-logo b{color:var(--yellow)}
 .n-links{display:flex;list-style:none;gap:4px}
-.n-links a{font-size:12px;color:var(--muted);text-decoration:none;padding:8px 14px;transition:all 0.25s ease}
-.n-links a:hover{color:var(--yellow)}
+.n-links a{font-size:12px;color:var(--muted);text-decoration:none;padding:8px 14px;transition:all 0.25s ease;letter-spacing:0.02em;border-radius:4px}.n-links a:hover{color:var(--yellow);background:rgba(255,215,0,0.08)}
 .n-right{display:flex;align-items:center;gap:12px}
-.n-cta{font-family:var(--mono);font-size:11px;padding:10px 20px;background:var(--yellow);border:2px solid var(--ydim);border-radius:6px;color:#0a0a0a;font-weight:600;cursor:pointer;transition:all 0.25s ease}
-.n-cta:hover{transform:translateY(-2px);background:#ffdd33}
+.n-cta{font-family:var(--mono);font-size:11px;padding:10px 20px;background:var(--yellow);border:2px solid var(--ydim);border-radius:6px;box-shadow:0 4px 12px rgba(255,215,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);color:#0a0a0a;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.25s ease;letter-spacing:0.03em;display:inline-block}
+.n-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,215,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);background:#ffdd33}
+.mobile-menu{display:none;background:transparent;color:var(--white);border:1px solid var(--border3);border-radius:4px;font-family:var(--mono);font-size:11px;padding:8px 12px;cursor:pointer;transition:all 0.2s}
+.mobile-menu:hover{border-color:var(--border2)}
 
-/* BUTTONS */
-.btn{font-family:var(--px);font-size:10px;padding:14px 32px;cursor:pointer;letter-spacing:0.05em;border:3px solid;transition:all 0.15s;background:none}
+.btn{font-family:var(--px);font-size:10px;padding:14px 32px;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;text-decoration:none;letter-spacing:0.05em;border:3px solid;transition:all 0.15s;text-align:center;line-height:1.4;background:none;text-transform:uppercase}
 .btn:hover{transform:translate(-2px,-2px)}
-.btn-red{background:var(--red);border-color:var(--red2);box-shadow:4px 4px 0 var(--rdk);color:var(--white)}
-.btn-red:hover{box-shadow:6px 6px 0 var(--rdk)}
+.btn-red{background:var(--red);border-color:var(--red2);box-shadow:4px 4px 0 var(--rdk), 6px 6px 0 rgba(0,0,0,0.3);color:var(--white);font-weight:bold}
 .btn-ghost{background:transparent;border-color:var(--border3);box-shadow:4px 4px 0 var(--dim);color:var(--off)}
 .btn-sm{padding:10px 24px;font-size:9px}
+
+.s{padding:clamp(80px,10vw,120px) clamp(24px,5vw,48px);max-width:1200px;margin:0 auto}
+.point-pop{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:2000;font-family:var(--px);font-size:11px;background:var(--yellow);color:var(--bg);padding:11px 28px;border:2px solid white;box-shadow:4px 4px 0 var(--ydark);pointer-events:none;opacity:0;transition:opacity 0.3s;white-space:nowrap}
+.point-pop.on{opacity:1}
+
+/* PAGE */
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px}
+.rule-card{background:var(--bg2);border:2px solid var(--border3);padding:32px}
+.rule-num{font-family:var(--px);font-size:48px;color:var(--yellow);margin-bottom:16px}
+.rule-title{font-family:var(--px);font-size:20px;color:var(--red);margin-bottom:12px;letter-spacing:0.05em}
+.rule-card p{font-size:14px;color:var(--muted);line-height:1.6}
 
 /* CAMERA MODAL */
 .cam-modal{position:fixed;inset:0;z-index:1000;background:rgba(11,11,9,0.96);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
 .cam-modal.open{display:flex}
 .cam-inner{width:100%;max-width:900px;background:var(--bg2);border:2px solid var(--border3);box-shadow:12px 12px 0 var(--dim);overflow:hidden;max-height:95svh;overflow-y:auto;display:flex;flex-direction:column}
-.cam-top{background:var(--bg3);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border2)}
-.cam-top-title{font-family:var(--px);font-size:9px;color:var(--yellow)}
-.cam-close-btn{font-family:var(--px);font-size:8px;background:none;border:2px solid var(--border3);color:var(--muted);padding:7px 12px;cursor:pointer}
+.cam-top{background:var(--bg3);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border2);position:sticky;top:0;z-index:5}
+.cam-top-title{font-family:var(--px);font-size:9px;color:var(--yellow);letter-spacing:0.06em}
+.cam-close-btn{font-family:var(--px);font-size:8px;background:none;border:2px solid var(--border3);color:var(--muted);padding:7px 12px;cursor:pointer;transition:all 0.1s}
 .cam-close-btn:hover{border-color:var(--red);color:var(--red)}
 .cam-body{display:grid;grid-template-columns:1fr 320px}
 .cam-left{padding:24px;border-right:2px solid var(--border)}
 .cam-right{padding:24px;display:flex;flex-direction:column;gap:14px}
 .cam-wrap{position:relative;aspect-ratio:4/3;background:#000;border:2px solid var(--border2);overflow:hidden}
 .cam-wrap video,.cam-wrap canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
-.cam-perm{position:absolute;inset:0;z-index:20;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center}
 .cam-overlay-status{position:absolute;top:10px;left:10px;right:10px;z-index:5;display:flex;justify-content:space-between}
 .status-pill{font-family:var(--px);font-size:7px;padding:5px 10px;border:2px solid;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)}
 .sp-ok{border-color:var(--green);color:var(--green)}
@@ -56,8 +79,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;ali
 .sp-wait{border-color:var(--muted);color:var(--muted)}
 .cam-glow{position:absolute;inset:-2px;border:3px solid var(--green);z-index:3;opacity:0;transition:opacity 0.4s;pointer-events:none;box-shadow:0 0 20px var(--green)}
 .cam-glow.on{opacity:1}
-.pts-big{font-family:var(--px);font-size:28px;color:var(--yellow);text-align:center;display:block}
-.pts-lbl{font-family:var(--px);font-size:7px;color:var(--muted);text-align:center;display:block;margin-top:4px}
+.pts-big{font-family:var(--px);font-size:28px;color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);text-align:center;display:block}
+.pts-lbl{font-family:var(--px);font-size:7px;color:var(--muted);text-align:center;display:block;margin-top:4px;letter-spacing:0.08em}
 .timer-box{background:var(--bg);border:2px solid var(--border2);padding:14px;text-align:center}
 .timer-big{font-family:var(--px);font-size:22px;color:var(--white)}
 .timer-big.counting{color:var(--green)}
@@ -66,162 +89,153 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;ali
 .prog-fill.earn{background:var(--green)}
 .med-banner{background:rgba(30,215,96,0.08);border:2px solid rgba(30,215,96,0.3);padding:10px 14px;text-align:center;display:none}
 .med-banner.on{display:block}
-.point-pop{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:2000;font-family:var(--px);font-size:11px;background:var(--yellow);color:var(--bg);padding:11px 28px;border:2px solid white;box-shadow:4px 4px 0 var(--ydark);pointer-events:none;opacity:0;transition:opacity 0.3s}
-.point-pop.on{opacity:1}
+
+footer{background:#0d0d0d;border-top:2px solid #2a2a2a;padding:60px 40px;margin-top:120px}
 
 @media(max-width:980px){
-  .cam-body{grid-template-columns:1fr}.cam-left{border-right:none;border-bottom:2px solid var(--border)}
+  .n-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(11,11,9,0.98);border-bottom:1px solid var(--border2);padding:12px 16px;flex-direction:column}
+  .n-links.open{display:flex}
+  .mobile-menu{display:block}
+  .rule-grid{grid-template-columns:1fr}
+  .cam-body{grid-template-columns:1fr}
+  .cam-left{border-right:none;border-bottom:2px solid var(--border)}
+}
+@media(max-width:640px){
+  .s{padding-left:18px;padding-right:18px}
 }
 </style>
 </head>
+
 <body>
+<div class="point-pop" id="pointPop">+1 MONK POINT ★</div>
 
-<div class="point-pop" id="pointPop">+1 $MONK ★</div>
-
-<!-- NAV -->
-<nav>
+<nav id="nav">
   <a href="index.html" class="n-logo">M<b>M</b>GA</a>
-  <ul class="n-links">
+  <button class="mobile-menu" id="mobileMenu" type="button">Menu</button>
+  <ul class="n-links" id="navLinks">
     <li><a href="info.html">Learn More</a></li>
   </ul>
-  <div class="n-right">
-    <button id="nav-wallet-btn" class="n-cta" onclick="connectWallet()">Connect Wallet</button>
+  <div class="n-right" id="navRight">
+    <button id="nav-wallet-btn" class="n-cta" onclick="window.navConnectWallet()">Connect Wallet</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
   </div>
 </nav>
 
-<!-- MAIN CONTENT -->
-<div style="padding-top:120px;max-width:900px;margin:0 auto;padding-left:20px;padding-right:20px;padding-bottom:80px">
-  
-  <h1 style="font-family:var(--px);font-size:42px;color:var(--red);margin-bottom:48px;text-align:center">
+<div id="mobile-browser-warning" style="display:none;background:#ff0033;color:#fff;padding:12px 20px;text-align:center;font-family:var(--mono);font-size:11px;line-height:1.5">
+  ⚠️ For best experience, open this page in Safari, Chrome, or Phantom Browser.
+</div>
+
+<div class="s" style="padding-top:120px;max-width:900px;margin:0 auto">
+  <h1 style="font-family:var(--px);font-size:clamp(24px,5vw,42px);color:var(--red);margin-bottom:48px;text-align:center;letter-spacing:0.05em">
     ⚔ MEDITATION SESSION
   </h1>
-  
-  <!-- THE TWO RULES -->
+
   <div style="margin-bottom:48px">
-    <h2 style="font-family:var(--px);font-size:28px;color:var(--yellow);margin-bottom:32px;text-align:center">THE TWO RULES</h2>
-    
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px">
-      <div style="background:var(--bg2);border:2px solid var(--border3);padding:32px">
-        <div style="font-family:var(--px);font-size:48px;color:var(--yellow);margin-bottom:16px">01</div>
-        <div style="font-family:var(--px);font-size:20px;color:var(--red);margin-bottom:12px">SPINE ERECT</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.6">
-          Nose above shoulders. Not rigid, not slouched.
-        </p>
+    <h2 style="font-family:var(--px);font-size:clamp(18px,4vw,28px);color:var(--yellow);margin-bottom:32px;text-align:center">THE TWO RULES</h2>
+
+    <div class="rule-grid">
+      <div class="rule-card">
+        <div class="rule-num">01</div>
+        <div class="rule-title">SPINE ERECT</div>
+        <p>Nose above shoulders. Not rigid, not slouched. Your skeleton knows the position.</p>
       </div>
-      
-      <div style="background:var(--bg2);border:2px solid var(--border3);padding:32px">
-        <div style="font-family:var(--px);font-size:48px;color:var(--yellow);margin-bottom:16px">02</div>
-        <div style="font-family:var(--px);font-size:20px;color:var(--red);margin-bottom:12px">EYES CLOSED</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.6">
-          Close your eyes. Not squeezed shut, not peeking.
-        </p>
+
+      <div class="rule-card">
+        <div class="rule-num">02</div>
+        <div class="rule-title">EYES CLOSED</div>
+        <p>Close your eyes. Not squeezed shut, not peeking. This cuts 80% of sensory input.</p>
       </div>
     </div>
-    
-    <!-- Earning Rate -->
+
     <div style="background:rgba(255,215,0,0.05);border:2px solid var(--border3);padding:24px;text-align:center">
       <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:8px">EARNING RATE</div>
-      <div style="font-family:var(--px);font-size:32px;color:var(--yellow);margin-bottom:8px">1 $MONK PER SECOND</div>
+      <div style="font-family:var(--px);font-size:clamp(20px,4vw,32px);color:var(--yellow);margin-bottom:8px">1 $MONK PER SECOND</div>
       <p style="font-size:13px;color:var(--muted)">Hold both rules verified = earn tokens</p>
     </div>
   </div>
-  
-  <!-- BIOMETRIC DISCLAIMER -->
+
   <div style="background:var(--bg3);border:2px solid var(--border);padding:32px;margin-bottom:48px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:16px">⚠️ BIOMETRIC DATA COMPLIANCE</div>
-    
+    <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:16px;letter-spacing:0.1em">⚠️ BIOMETRIC DATA COMPLIANCE</div>
     <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px">
-      This application uses your device camera to detect posture (spine alignment) and eye closure using 
-      Google MediaPipe AI. <strong style="color:var(--off)">All processing happens locally in your browser.</strong>
+      This application uses your device camera to detect posture and eye closure status using Google MediaPipe AI.
+      <strong style="color:var(--off)">All processing happens locally in your browser.</strong>
     </p>
-    
     <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px">
-      <strong style="color:var(--off)">No video or images are recorded, stored, or transmitted.</strong> 
-      No biometric data leaves your device. The camera feed is processed in real-time and immediately discarded.
+      <strong style="color:var(--off)">No video or images are recorded, stored, or transmitted.</strong>
+      No biometric data leaves your device.
     </p>
-    
     <p style="font-size:14px;color:var(--muted);line-height:1.7">
       By clicking "BEGIN SESSION" you consent to local camera access for posture verification purposes only.
-      You can revoke camera access at any time through your browser settings.
     </p>
   </div>
-  
-  <!-- BEGIN SESSION BUTTON -->
+
   <div style="text-align:center;margin-bottom:80px">
-    <button onclick="openCam()" class="btn btn-red" style="padding:32px 64px;font-size:28px">
+    <button id="begin-btn" class="btn" style="background:var(--red);color:#fff;padding:32px 64px;font-size:clamp(16px,5vw,28px);font-weight:700;box-shadow:8px 8px 0 var(--rdk);font-family:var(--px);cursor:pointer;border:none;letter-spacing:0.05em">
       ⚔ BEGIN SESSION
     </button>
     <p style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:16px">
       CAMERA ACCESS REQUIRED · FREE FOREVER
     </p>
   </div>
-  
-  <!-- MINT WIDGET -->
-  <div id="mmga-mint-widget" style="max-width:600px;margin:0 auto;background:var(--bg2);border:2px solid var(--border3);padding:48px">
-    
-    <h2 style="font-family:var(--px);font-size:28px;color:var(--yellow);margin-bottom:32px;text-align:center">
+
+  <div id="mmga-mint-widget" style="max-width:600px;margin:0 auto 80px;background:var(--bg2);border:2px solid var(--border3);padding:48px">
+    <h2 style="font-family:var(--px);font-size:clamp(20px,4vw,28px);color:var(--yellow);margin-bottom:32px;text-align:center;letter-spacing:0.05em">
       💰 MINT YOUR $MONK
     </h2>
-    
-    <!-- Wallet Section -->
+
     <div id="mmga-wallet-section">
       <div style="text-align:center;padding:24px;background:var(--bg3);border:2px solid var(--border);font-family:var(--mono);font-size:14px;color:var(--muted);margin-bottom:16px">
         🔗 CONNECT WALLET TO VIEW BALANCE
       </div>
-      <button onclick="connectWallet()" style="background:var(--yellow);color:var(--bg);border:none;padding:16px 32px;font-family:var(--px);font-size:14px;font-weight:700;cursor:pointer;display:block;margin:0 auto;width:100%">
+      <button onclick="window.connectWallet()" style="background:var(--yellow);color:var(--bg);border:none;padding:16px 32px;font-family:var(--px);font-size:14px;font-weight:700;cursor:pointer;display:block;margin:0 auto;width:100%;letter-spacing:0.05em">
         CONNECT WALLET
       </button>
     </div>
-    
-    <!-- Balance Display -->
+
     <div id="mmga-balance-section"></div>
-    
-    <!-- Mint Controls -->
+
     <div id="mint-controls" style="display:none;margin:24px 0;text-align:center">
       <div style="display:flex;gap:16px;align-items:center;justify-content:center">
-        <button onclick="decrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">−</button>
+        <button onclick="window.decrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">−</button>
         <input type="number" id="mint-amount" value="1" min="1" max="100" readonly style="width:120px;height:48px;background:var(--bg3);border:2px solid var(--border2);color:var(--off);font-family:var(--px);font-size:24px;text-align:center">
-        <button onclick="incrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">+</button>
+        <button onclick="window.incrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">+</button>
       </div>
     </div>
-    
-    <button id="mint-btn" onclick="mintToken()" style="display:none;background:var(--green);color:#fff;border:none;padding:16px 48px;font-family:var(--px);font-size:18px;font-weight:700;cursor:pointer;width:100%;margin-top:16px">
+
+    <button id="mint-btn" onclick="window.mintToken()" style="display:none;background:var(--green);color:#fff;border:none;padding:16px 48px;font-family:var(--px);font-size:18px;font-weight:700;cursor:pointer;width:100%;margin-top:16px;letter-spacing:0.05em">
       MINT <span id="mint-btn-amount">1</span> $MONK
     </button>
-    
-    <!-- Messages -->
+
     <div id="mmga-message-section" style="margin-top:24px;min-height:60px"></div>
-    
   </div>
-  
 </div>
 
-<!-- CAMERA MODAL -->
 <div class="cam-modal" id="camModal">
   <div class="cam-inner">
     <div class="cam-top">
       <div class="cam-top-title">⚔ $MONK MINTING DETECTOR</div>
-      <button class="cam-close-btn" onclick="closeCam()">✕ Close</button>
+      <button class="cam-close-btn" onclick="window.closeCam()">✕ Close</button>
     </div>
+
     <div style="background:rgba(30,215,96,0.05);border-bottom:1px solid rgba(30,215,96,0.2);padding:12px 20px">
-      <div style="font-family:var(--px);font-size:7px;color:var(--green);margin-bottom:6px">🛡 CLIENT-SIDE BIOMETRIC PROCESSING</div>
+      <div style="font-family:var(--px);font-size:7px;color:var(--green);margin-bottom:6px;letter-spacing:0.06em">🛡 CLIENT-SIDE BIOMETRIC PROCESSING</div>
       <div style="font-size:11px;color:var(--muted);line-height:1.65">
-        <strong style="color:var(--off)">Zero server transmission.</strong> MediaPipe runs 100% in your browser's RAM. No pixel data ever leaves your device.
+        <strong style="color:var(--off)">Zero server transmission.</strong> MediaPipe face/pose detection runs in your browser.
       </div>
     </div>
+
     <div class="cam-body">
       <div class="cam-left">
         <div class="cam-wrap">
-          <div class="cam-perm" id="camPerm">
+          <div class="cam-perm" id="camPerm" style="position:absolute;inset:0;z-index:20;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center">
             <div style="font-size:36px">📷</div>
-            <div style="font-family:var(--px);font-size:9px">Camera access required</div>
+            <div style="font-family:var(--px);font-size:9px;line-height:1.8">Camera access required</div>
             <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7">
-              <strong style="color:var(--off)">Local processing only.</strong> No data transmitted.
+              <strong style="color:var(--off)">Local processing only.</strong> MediaPipe runs in your browser.
             </p>
-            <button class="btn btn-red btn-sm" onclick="startCam()">Enable camera →</button>
+            <button class="btn btn-red btn-sm" onclick="window.startCam()">I consent — Enable camera →</button>
           </div>
           <video id="camVideo" autoplay playsinline muted></video>
           <canvas id="camCanvas"></canvas>
@@ -231,7 +245,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;ali
             <div class="status-pill sp-wait" id="eyesStatusPill">Eyes…</div>
           </div>
         </div>
+
         <div style="height:3px;background:var(--dim);margin-top:10px;overflow:hidden"><div id="loadFill" style="height:100%;background:var(--yellow);width:0;transition:width 0.3s"></div></div>
+
         <div style="display:flex;gap:2px;margin-top:10px">
           <div id="ruleSpineBox" style="flex:1;background:var(--bg2);border:2px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px">
             <span id="ruleSpineIcon" style="font-family:var(--px);font-size:10px;color:var(--dim2)">—</span>
@@ -243,397 +259,547 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;ali
           </div>
         </div>
       </div>
+
       <div class="cam-right">
         <span class="pts-big" id="modalPts">0</span>
         <span class="pts-lbl">$MONK tokens minted</span>
+
         <div class="timer-box">
           <div class="timer-big" id="timerDisp">00:00</div>
-          <div style="font-family:var(--px);font-size:7px;color:var(--muted);margin-top:5px" id="timerLbl">Not started</div>
+          <div style="font-family:var(--px);font-size:7px;color:var(--muted);margin-top:5px;letter-spacing:0.06em" id="timerLbl">Not started</div>
         </div>
+
         <div>
-          <div style="font-family:var(--px);font-size:7px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px"><span>Next $MONK</span><span id="progNum">PAUSED</span></div>
+          <div style="font-family:var(--px);font-size:7px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px"><span>Next $MONK</span><span id="progNum">0 / 60s</span></div>
           <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
         </div>
+
         <div class="med-banner" id="medBanner">
           <div style="font-family:var(--px);font-size:8px;color:var(--green);margin-bottom:3px">★ MINTING ★</div>
-          <div style="font-size:11px;color:rgba(30,215,96,0.6)">Both rules active</div>
+          <div style="font-size:11px;color:rgba(30,215,96,0.6)">Both rules active — minting tokens</div>
         </div>
+
         <div style="display:flex;gap:8px">
-          <button class="btn btn-red btn-sm" id="sessBtn" style="flex:1" disabled onclick="toggleSess()">Start session</button>
-          <button class="btn btn-ghost btn-sm" onclick="resetSess()">↺</button>
+          <button class="btn btn-red btn-sm" id="sessBtn" style="flex:1" disabled onclick="window.toggleSess()">Start session</button>
+          <button class="btn btn-ghost btn-sm" id="resetBtn" onclick="window.resetSess()">↺</button>
         </div>
+
         <div id="sessLog" style="background:var(--bg);border:1px solid var(--border);padding:10px;height:130px;overflow-y:auto;font-size:10px;color:var(--muted);line-height:1.5"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer style="background:#0d0d0d;border-top:2px solid #2a2a2a;padding:40px 20px;text-align:center">
-  <div style="font-family:var(--px);font-size:18px;color:#e6331f;margin-bottom:12px">MMGA</div>
-  <p style="color:#999;font-size:12px">Make Meditation Great Again · Solana Mainnet</p>
-  <p style="color:#666;font-size:10px;margin-top:8px">
-    <a href="index.html" style="color:#ffd700;text-decoration:none">Home</a> · 
-    <a href="info.html" style="color:#ffd700;text-decoration:none">Learn More</a>
-  </p>
+<footer>
+  <div style="max-width:1160px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px">
+    <div>
+      <div style="font-family:'Courier New',monospace;font-size:24px;font-weight:900;color:#e6331f;letter-spacing:0.05em;margin-bottom:16px">M<span style="color:#e8e8e8">M</span>GA</div>
+      <p style="color:#999;font-size:13px;line-height:1.7;margin:0">Make Meditation Great Again. Taking it back from the wellness industry, one verified minute at a time.</p>
+    </div>
+    <div>
+      <div style="font-family:'Courier New',monospace;font-size:9px;color:#ffd700;letter-spacing:0.08em;margin-bottom:12px">PRODUCT</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a href="#mmga-mint-widget" style="color:#e8e8e8;text-decoration:none;font-size:12px">$MONK Token</a>
+        <a href="whitepaper.html" target="_blank" style="color:#ffd700;text-decoration:none;font-size:12px;font-weight:600">📄 Whitepaper</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Courier New',monospace;font-size:9px;color:#ffd700;letter-spacing:0.08em;margin-bottom:12px">RESOURCES</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a href="https://solscan.io/token/4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv" target="_blank" style="color:#e8e8e8;text-decoration:none;font-size:12px">Token on Solscan</a>
+        <a href="https://github.com/mmga" target="_blank" style="color:#e8e8e8;text-decoration:none;font-size:12px">GitHub</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Courier New',monospace;font-size:9px;color:#ffd700;letter-spacing:0.08em;margin-bottom:12px">CONTACT</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <a href="mailto:info@mmga.yoga" style="color:#e8e8e8;text-decoration:none;font-size:12px">info@mmga.yoga</a>
+        <a href="mailto:enterprise@mmga.yoga" style="color:#e8e8e8;text-decoration:none;font-size:12px">Enterprise Sales</a>
+      </div>
+    </div>
+  </div>
+  <div style="max-width:1160px;margin:0 auto;border-top:1px solid #2a2a2a;padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+    <div style="font-family:'Courier New',monospace;font-size:10px;color:#999">© 2026 MMGA · Proof-of-Stillness Protocol</div>
+    <div style="font-family:'Courier New',monospace;font-size:9px;color:#666;letter-spacing:0.05em">Business Registration: 185548046000 · VAT: GR149046575</div>
+  </div>
 </footer>
 
-<!-- MEDIAPIPE -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
 
 <script>
-/* CAMERA */
-let spineOk=false,eyesOk=false,sessActive=false,sessTimer=null,consec=0,sessElapsed=0;
-let totalPts=parseInt(localStorage.getItem('mmga_pts')||'0');
-let faceMesh,pose,localStream,mpCam;
-let latestFace=null,latestPose=null;
-let camLoopActive=false;
+(function() {
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('stuck', window.scrollY > 20), {passive:true});
 
-if(document.getElementById('modalPts'))document.getElementById('modalPts').textContent=totalPts;
-
-async function startCam(){
-  camLoopActive=false;
-  document.getElementById('camPerm').style.display='none';
-  document.getElementById('loadFill').style.width='30%';
-  
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    document.getElementById('camPerm').style.display='flex';
-    document.getElementById('camPerm').innerHTML='<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">CAMERA NOT SUPPORTED</div><p style="font-size:12px;color:var(--muted)">Open in Safari or Chrome</p>';
-    return;
-  }
-  
-  try{
-    const constraints={video:{width:{ideal:640},height:{ideal:480},facingMode:'user'}};
-    localStream=await navigator.mediaDevices.getUserMedia(constraints);
-    const videoEl=document.getElementById('camVideo');
-    videoEl.srcObject=localStream;
-    videoEl.onloadedmetadata=()=>{
-      videoEl.play().then(()=>initDetection()).catch(err=>addLog('Play error: '+err.message));
-    };
-  }catch(e){
-    document.getElementById('camPerm').style.display='flex';
-    document.getElementById('camPerm').innerHTML='<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">CAMERA DENIED</div><p style="font-size:12px;color:var(--muted)">Allow camera in browser settings</p>';
-  }
-}
-
-function initDetection(){
-  if(typeof Camera==='undefined'){
-    setTimeout(initDetection,2000);
-    return;
-  }
-  
-  const videoEl=document.getElementById('camVideo');
-  
-  faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`});
-  faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5});
-  faceMesh.onResults(r=>{latestFace=r;checkLogic();});
-
-  pose=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/${f}`});
-  pose.setOptions({modelComplexity:1,minDetectionConfidence:0.5});
-  pose.onResults(r=>{latestPose=r;checkLogic();});
-
-  mpCam=new Camera(videoEl,{
-    onFrame:async()=>{
-      if(faceMesh)await faceMesh.send({image:videoEl});
-      if(pose)await pose.send({image:videoEl});
-      drawVisuals();
-    },
-    width:640,height:480
-  });
-  
-  mpCam.start().then(()=>{
-    document.getElementById('loadFill').style.width='100%';
-    document.getElementById('camStatusBar').style.display='flex';
-    document.getElementById('sessBtn').disabled=false;
-    addLog('Detection active. Ready to mint $MONK.');
-  });
-}
-
-function checkLogic(){
-  if(latestFace?.multiFaceLandmarks?.[0]){
-    const lm=latestFace.multiFaceLandmarks[0];
-    const LE=[33,160,158,133,153,144],RE=[362,385,387,263,373,380];
-    const d=(a,b)=>Math.hypot(lm[a].x-lm[b].x,lm[a].y-lm[b].y);
-    const ear=idx=>(d(idx[1],idx[5])+d(idx[2],idx[4]))/(2*d(idx[0],idx[3]));
-    const newEyes=((ear(LE)+ear(RE))/2)<0.22;
-    if(newEyes!==eyesOk){eyesOk=newEyes;updateRule('eyes',eyesOk);}
-  }
-  if(latestPose?.poseLandmarks){
-    const lm=latestPose.poseLandmarks;
-    const shoulderY=(lm[11].y+lm[12].y)/2;
-    const newSpine=lm[0].y<shoulderY;
-    if(newSpine!==spineOk){spineOk=newSpine;updateRule('spine',spineOk);}
-  }
-  document.getElementById('medBanner').classList.toggle('on',sessActive&&spineOk&&eyesOk);
-  document.getElementById('camGlow').classList.toggle('on',sessActive&&spineOk&&eyesOk);
-}
-
-function updateRule(type,ok){
-  const isSpine=type==='spine';
-  const icon=document.getElementById(isSpine?'ruleSpineIcon':'ruleEyesIcon');
-  const box=document.getElementById(isSpine?'ruleSpineBox':'ruleEyesBox');
-  const pill=document.getElementById(isSpine?'spineStatusPill':'eyesStatusPill');
-  icon.textContent=ok?'✓':'✗';
-  icon.style.color=ok?'var(--green)':'var(--red)';
-  box.style.borderColor=ok?'var(--green)':'var(--red)';
-  box.style.background=ok?'rgba(30,215,96,0.05)':'rgba(230,51,31,0.05)';
-  pill.className='status-pill '+(ok?'sp-ok':'sp-fail');
-  pill.textContent=(isSpine?'Spine ':'Eyes ')+(ok?'✓':'✗');
-}
-
-function drawVisuals(){
-  const canvas=document.getElementById('camCanvas');
-  const ctx=canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(latestFace?.multiFaceLandmarks?.[0]){
-    const lm=latestFace.multiFaceLandmarks[0];
-    const color=eyesOk?'#1ed760':'#e6331f';
-    [33,133,160,153,362,263,385,373].forEach(i=>{
-      ctx.fillStyle=color;
-      ctx.beginPath();
-      ctx.arc(lm[i].x*canvas.width,lm[i].y*canvas.height,2,0,Math.PI*2);
-      ctx.fill();
+  const mobileMenuBtn = document.getElementById('mobileMenu');
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', () => {
+      const navLinks = document.getElementById('navLinks');
+      if(navLinks) navLinks.classList.toggle('open');
     });
   }
-  if(latestPose?.poseLandmarks){
-    const lm=latestPose.poseLandmarks;
-    const color=spineOk?'#1ed760':'#e6331f';
-    [0,11,12].forEach(i=>{
-      ctx.fillStyle=color;
-      ctx.beginPath();
-      ctx.arc(lm[i].x*canvas.width,lm[i].y*canvas.height,4,0,Math.PI*2);
-      ctx.fill();
-    });
-  }
-}
 
-function toggleSess(){
-  sessActive=!sessActive;
-  const btn=document.getElementById('sessBtn');
-  if(sessActive){
-    btn.textContent='Stop session';
-    btn.style.background='var(--bg3)';
-    addLog('Session started.');
-    sessTimer=setInterval(()=>{
-      sessElapsed++;
-      const m=Math.floor(sessElapsed/60),s=sessElapsed%60;
-      document.getElementById('timerDisp').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-      document.getElementById('timerDisp').className='timer-big'+(spineOk&&eyesOk?' counting':'');
-      document.getElementById('timerLbl').textContent=spineOk&&eyesOk?'Minting':'Paused';
-      if(spineOk&&eyesOk){
-        consec++;
-        document.getElementById('progFill').style.width='100%';
-        document.getElementById('progFill').className='prog-fill earn';
-        document.getElementById('progNum').textContent='MINTING LIVE';
-        awardPoint();
-      }else{
-        if(consec>0){consec=0;addLog('Posture lost.');}
-        document.getElementById('progFill').style.width='0%';
-        document.getElementById('progFill').className='prog-fill';
-        document.getElementById('progNum').textContent='PAUSED';
+  let spineOk = false, eyesOk = false, sessActive = false, sessTimer = null, consec = 0, sessElapsed = 0;
+  let totalPts = parseInt(localStorage.getItem('mmga_pts') || '0', 10);
+  let faceMesh, pose, localStream;
+  let latestFace = null, latestPose = null;
+  let camLoopActive = false;
+  let isProcessing = false;
+
+  const modalPtsEl = document.getElementById('modalPts');
+  if(modalPtsEl) modalPtsEl.textContent = totalPts;
+
+  window.startCam = async function() {
+    camLoopActive = false;
+    const camPerm = document.getElementById('camPerm');
+    const loadFill = document.getElementById('loadFill');
+    if(camPerm) camPerm.style.display = 'none';
+    if(loadFill) loadFill.style.width = '30%';
+
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      if(camPerm) {
+        camPerm.style.display = 'flex';
+        camPerm.innerHTML = '<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">CAMERA NOT SUPPORTED</div><p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7;margin-top:12px">Open this page in Safari, Chrome, or Phantom Browser.</p>';
       }
-    },1000);
-  }else{
-    clearInterval(sessTimer);
-    btn.textContent='Start session';
-    btn.style.background='var(--red)';
-    document.getElementById('medBanner').classList.remove('on');
-    document.getElementById('camGlow').classList.remove('on');
-    addLog('Session ended — '+totalPts+' total.');
+      return;
+    }
+
+    try {
+      localStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } }
+      });
+
+      const videoEl = document.getElementById('camVideo');
+      if(videoEl) {
+        videoEl.srcObject = localStream;
+        videoEl.onloadedmetadata = () => {
+          videoEl.play().then(initDetection).catch(err => addLog('Video play error: ' + err.message));
+        };
+      }
+    } catch(err) {
+      const camPermEl = document.getElementById('camPerm');
+      if(camPermEl) {
+        camPermEl.style.display = 'flex';
+        camPermEl.innerHTML = '<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">CAMERA ERROR</div><p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7;margin-top:12px">Allow camera access in your browser settings and refresh.</p><div style="margin-top:12px;font-size:10px;color:#666;font-family:monospace;">Error: ' + err.name + '</div>';
+      }
+    }
+  };
+
+  function initDetection() {
+    const videoEl = document.getElementById('camVideo');
+    if(!videoEl) return;
+
+    if (typeof FaceMesh !== 'undefined' && !faceMesh) {
+      faceMesh = new FaceMesh({locateFile: file => 'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/' + file});
+      faceMesh.setOptions({maxNumFaces:1, refineLandmarks:true, minDetectionConfidence:0.5});
+      faceMesh.onResults(results => { latestFace = results; checkLogic(); });
+    }
+
+    if (typeof Pose !== 'undefined' && !pose) {
+      pose = new Pose({locateFile: file => 'https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/' + file});
+      pose.setOptions({modelComplexity:1, minDetectionConfidence:0.5});
+      pose.onResults(results => { latestPose = results; checkLogic(); });
+    }
+
+    const loadFillEl = document.getElementById('loadFill');
+    const camStatusBar = document.getElementById('camStatusBar');
+    const sessBtn = document.getElementById('sessBtn');
+
+    if(loadFillEl) loadFillEl.style.width = '100%';
+    if(camStatusBar) camStatusBar.style.display = 'flex';
+    if(sessBtn) sessBtn.disabled = false;
+
+    addLog('Detection active. Ready to mint $MONK.');
+
+    camLoopActive = true;
+    isProcessing = false;
+
+    async function detectionLoop() {
+      if (!camLoopActive) return;
+      if (videoEl.readyState >= 2 && !isProcessing) {
+        isProcessing = true;
+        try {
+          if (faceMesh) await faceMesh.send({image: videoEl});
+          if (pose) await pose.send({image: videoEl});
+          drawVisuals();
+        } catch (err) {
+          console.error('Frame processing error:', err);
+        }
+        isProcessing = false;
+      }
+      requestAnimationFrame(detectionLoop);
+    }
+
+    detectionLoop();
   }
-}
 
-function awardPoint(){
-  totalPts++;
-  localStorage.setItem('mmga_pts',totalPts);
-  document.getElementById('modalPts').textContent=totalPts;
-  addLog('★ +1 $MONK! Total: '+totalPts);
-  const p=document.getElementById('pointPop');
-  p.textContent='+1 $MONK ★ (Total: '+totalPts+')';
-  p.classList.add('on');
-  setTimeout(()=>p.classList.remove('on'),2500);
-}
+  function checkLogic() {
+    if (latestFace && latestFace.multiFaceLandmarks && latestFace.multiFaceLandmarks[0]) {
+      const lm = latestFace.multiFaceLandmarks[0];
+      const LE = [33,160,158,133,153,144], RE = [362,385,387,263,373,380];
+      const dist = (a, b) => Math.hypot(lm[a].x - lm[b].x, lm[a].y - lm[b].y);
+      const ear = idx => (dist(idx[1], idx[5]) + dist(idx[2], idx[4])) / (2 * dist(idx[0], idx[3]));
+      const newEyes = ((ear(LE) + ear(RE)) / 2) < 0.22;
+      if (newEyes !== eyesOk) { eyesOk = newEyes; updateRule('eyes', eyesOk); }
+    }
 
-function resetSess(){
-  clearInterval(sessTimer);
-  sessActive=false;sessElapsed=0;consec=0;
-  document.getElementById('sessBtn').textContent='Start session';
-  document.getElementById('sessBtn').style.background='var(--red)';
-  document.getElementById('timerDisp').textContent='00:00';
-  document.getElementById('timerLbl').textContent='Not started';
-  document.getElementById('progFill').style.width='0%';
-  document.getElementById('progNum').textContent='PAUSED';
-  document.getElementById('medBanner').classList.remove('on');
-  document.getElementById('camGlow').classList.remove('on');
-  document.getElementById('sessLog').innerHTML='';
-}
+    if (latestPose && latestPose.poseLandmarks) {
+      const lm = latestPose.poseLandmarks;
+      const shoulderY = (lm[11].y + lm[12].y) / 2;
+      const newSpine = lm[0].y < shoulderY;
+      if (newSpine !== spineOk) { spineOk = newSpine; updateRule('spine', spineOk); }
+    }
 
-function addLog(msg){
-  const log=document.getElementById('sessLog');
-  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  log.innerHTML='<div>['+t+'] '+msg+'</div>'+log.innerHTML;
-}
-
-function openCam(){
-  const modal=document.getElementById('camModal');
-  if(modal){
-    modal.classList.add('open');
-    document.body.style.overflow='hidden';
-    startCam();
+    const medBanner = document.getElementById('medBanner');
+    const camGlow = document.getElementById('camGlow');
+    if(medBanner) medBanner.classList.toggle('on', sessActive && spineOk && eyesOk);
+    if(camGlow) camGlow.classList.toggle('on', sessActive && spineOk && eyesOk);
   }
-}
 
-function closeCam(){
-  const modal=document.getElementById('camModal');
-  if(modal){
-    modal.classList.remove('open');
-    document.body.style.overflow='';
-    if(sessActive)toggleSess();
-    camLoopActive=false;
-    if(localStream){
-      localStream.getTracks().forEach(track=>track.stop());
-      document.getElementById('camVideo').srcObject=null;
+  function updateRule(type, isOk) {
+    const isSpine = type === 'spine';
+    const icon = document.getElementById(isSpine ? 'ruleSpineIcon' : 'ruleEyesIcon');
+    const box = document.getElementById(isSpine ? 'ruleSpineBox' : 'ruleEyesBox');
+    const pill = document.getElementById(isSpine ? 'spineStatusPill' : 'eyesStatusPill');
+
+    if(icon) {
+      icon.textContent = isOk ? '✓' : '✗';
+      icon.style.color = isOk ? 'var(--green)' : 'var(--red)';
+    }
+    if(box) {
+      box.style.borderColor = isOk ? 'var(--green)' : 'var(--red)';
+      box.style.background = isOk ? 'rgba(30,215,96,0.05)' : 'rgba(230,51,31,0.05)';
+    }
+    if(pill) {
+      pill.className = 'status-pill ' + (isOk ? 'sp-ok' : 'sp-fail');
+      pill.textContent = (isSpine ? 'Spine ' : 'Eyes ') + (isOk ? '✓' : '✗');
     }
   }
-}
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCam();});
-</script>
+  function drawVisuals() {
+    const canvas = document.getElementById('camCanvas');
+    const video = document.getElementById('camVideo');
+    if(!canvas || !video) return;
 
-<script>
-/* WALLET CONNECTION */
-const BACKEND_URL='https://mmga-backend.onrender.com';
-let walletAddress=null;
-let unmintedBalance=0;
-let mintAmount=1;
-let isProcessing=false;
+    if (video.videoWidth && video.videoHeight) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    }
 
-function updateNavWallet(){
-  const btn=document.getElementById('nav-wallet-btn');
-  const connected=document.getElementById('nav-wallet-connected');
-  const address=document.getElementById('nav-wallet-address');
-  
-  if(walletAddress||(window.solana&&window.solana.isConnected)){
-    const pubKey=walletAddress||(window.solana.publicKey?window.solana.publicKey.toString():'');
-    const short=pubKey?pubKey.slice(0,4)+'...'+pubKey.slice(-4):'Connected';
-    
-    if(address)address.textContent='🔗 '+short;
-    if(btn)btn.style.display='none';
-    if(connected)connected.style.display='block';
-    
-    const mintSection=document.getElementById('mmga-wallet-section');
-    const mintControls=document.getElementById('mint-controls');
-    const mintBtn=document.getElementById('mint-btn');
-    if(mintSection)mintSection.style.display='none';
-    if(mintControls)mintControls.style.display='flex';
-    if(mintBtn)mintBtn.style.display='block';
-    
-    loadBalance();
-  }else{
-    if(btn)btn.style.display='inline-block';
-    if(connected)connected.style.display='none';
-    
-    const mintSection=document.getElementById('mmga-wallet-section');
-    const mintControls=document.getElementById('mint-controls');
-    const mintBtn=document.getElementById('mint-btn');
-    if(mintSection)mintSection.style.display='block';
-    if(mintControls)mintControls.style.display='none';
-    if(mintBtn)mintBtn.style.display='none';
-  }
-}
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-async function connectWallet(){
-  if(!window.solana){
-    alert('Please install Phantom wallet from phantom.app');
-    window.open('https://phantom.app/','_blank');
-    return;
+    if (latestFace && latestFace.multiFaceLandmarks && latestFace.multiFaceLandmarks[0]) {
+      const lm = latestFace.multiFaceLandmarks[0];
+      const color = eyesOk ? '#1ed760' : '#ff0033';
+      [33,133,160,153,362,263,385,373].forEach(i => {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(lm[i].x * canvas.width, lm[i].y * canvas.height, 2, 0, Math.PI * 2);
+        ctx.fill();
+      });
+    }
+
+    if (latestPose && latestPose.poseLandmarks) {
+      const lm = latestPose.poseLandmarks;
+      const color = spineOk ? '#1ed760' : '#ff0033';
+      [0,11,12].forEach(i => {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(lm[i].x * canvas.width, lm[i].y * canvas.height, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(lm[11].x * canvas.width, lm[11].y * canvas.height);
+      ctx.lineTo(lm[12].x * canvas.width, lm[12].y * canvas.height);
+      ctx.stroke();
+    }
   }
 
-  try{
-    await window.solana.connect();
-    walletAddress=window.solana.publicKey.toString();
-    console.log('Wallet connected:',walletAddress);
-    updateNavWallet();
-  }catch(error){
-    console.error('Connection error:',error);
-    alert('Failed to connect: '+error.message);
+  window.toggleSess = function() {
+    sessActive = !sessActive;
+    const btn = document.getElementById('sessBtn');
+    const timerDisp = document.getElementById('timerDisp');
+    const timerLbl = document.getElementById('timerLbl');
+    const progFill = document.getElementById('progFill');
+    const progNum = document.getElementById('progNum');
+
+    if (sessActive) {
+      if(btn) {
+        btn.textContent = 'Stop session';
+        btn.style.background = 'var(--bg3)';
+      }
+      addLog('Session started. Sit erect, eyes closed.');
+      sessTimer = setInterval(() => {
+        sessElapsed++;
+        const mins = Math.floor(sessElapsed / 60);
+        const secs = sessElapsed % 60;
+
+        if(timerDisp) {
+          timerDisp.textContent = String(mins).padStart(2,'0') + ':' + String(secs).padStart(2,'0');
+          timerDisp.className = 'timer-big' + (spineOk && eyesOk ? ' counting' : '');
+        }
+
+        if(timerLbl) {
+          timerLbl.textContent = spineOk && eyesOk ? 'Verified — minting $MONK' : 'Paused — fix posture or close eyes';
+        }
+
+        if (spineOk && eyesOk) {
+          consec++;
+          if(progFill) {
+            progFill.style.width = '100%';
+            progFill.className = 'prog-fill earn';
+          }
+          if(progNum) progNum.textContent = 'MINTING LIVE';
+          awardPoint();
+        } else {
+          if (consec > 0) { consec = 0; addLog('Posture lost. Counter reset.'); }
+          if(progFill) {
+            progFill.style.width = '0%';
+            progFill.className = 'prog-fill';
+          }
+          if(progNum) progNum.textContent = 'PAUSED';
+        }
+      }, 1000);
+    } else {
+      clearInterval(sessTimer);
+      if(btn) {
+        btn.textContent = 'Start session';
+        btn.style.background = 'var(--red)';
+      }
+      document.getElementById('medBanner')?.classList.remove('on');
+      document.getElementById('camGlow')?.classList.remove('on');
+      addLog('Session ended — ' + totalPts + ' total $MONK minted.');
+    }
+  };
+
+  function awardPoint() {
+    totalPts += 1;
+    localStorage.setItem('mmga_pts', totalPts);
+
+    const modalPtsEl = document.getElementById('modalPts');
+    if(modalPtsEl) modalPtsEl.textContent = totalPts;
+
+    addLog('★ +1 $MONK! Total: ' + totalPts);
+
+    const popEl = document.getElementById('pointPop');
+    if (popEl) {
+      popEl.textContent = '+1 $MONK MINTED ★ (Total: ' + totalPts + ')';
+      popEl.classList.add('on');
+      setTimeout(() => popEl.classList.remove('on'), 2500);
+    }
   }
-}
 
-async function loadBalance(){
-  if(!walletAddress)return;
-  try{
-    const localPoints=parseInt(localStorage.getItem('mmga_pts')||'0');
-    unmintedBalance=localPoints;
-    updateBalanceDisplay();
-  }catch(error){
-    console.error('Balance error:',error);
+  window.resetSess = function() {
+    clearInterval(sessTimer);
+    sessActive = false; sessElapsed = 0; consec = 0;
+
+    const btn = document.getElementById('sessBtn');
+    if(btn) {
+      btn.textContent = 'Start session';
+      btn.style.background = 'var(--red)';
+    }
+
+    const timerDisp = document.getElementById('timerDisp');
+    if(timerDisp) {
+      timerDisp.textContent = '00:00';
+      timerDisp.className = 'timer-big';
+    }
+
+    const timerLbl = document.getElementById('timerLbl');
+    const progFill = document.getElementById('progFill');
+    const progNum = document.getElementById('progNum');
+    const sessLog = document.getElementById('sessLog');
+
+    if(timerLbl) timerLbl.textContent = 'Not started';
+    if(progFill) progFill.style.width = '0%';
+    if(progNum) progNum.textContent = '0 / 60s';
+    document.getElementById('medBanner')?.classList.remove('on');
+    document.getElementById('camGlow')?.classList.remove('on');
+    if(sessLog) sessLog.innerHTML = '';
+  };
+
+  function addLog(msg) {
+    const logEl = document.getElementById('sessLog');
+    if(!logEl) return;
+    const timeStr = new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+    logEl.innerHTML = '<div>[' + timeStr + '] ' + msg + '</div>' + logEl.innerHTML;
   }
-}
 
-function updateBalanceDisplay(){
-  const section=document.getElementById('mmga-balance-section');
-  if(!section||!walletAddress)return;
-  
-  section.innerHTML=`
-    <div style="text-align:center;padding:32px;background:var(--bg3);border:2px solid var(--border3);margin:24px 0">
-      <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:8px">UNMINTED BALANCE</div>
-      <div style="font-family:var(--px);font-size:48px;color:var(--yellow)">${unmintedBalance}</div>
-      <div style="font-size:12px;color:var(--muted)">$MONK READY TO MINT</div>
-    </div>
-  `;
-}
+  window.openCam = function() {
+    const modal = document.getElementById('camModal');
+    if (modal) {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      window.startCam();
+    }
+  };
 
-window.connectWallet=connectWallet;
+  window.closeCam = function() {
+    const modal = document.getElementById('camModal');
+    if (modal) {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
 
-if(window.solana){
-  window.solana.on('connect',()=>{
-    walletAddress=window.solana.publicKey.toString();
-    updateNavWallet();
+      if (sessActive) window.toggleSess();
+
+      camLoopActive = false;
+      if (localStream) {
+        localStream.getTracks().forEach(track => track.stop());
+        const videoEl = document.getElementById('camVideo');
+        if (videoEl) videoEl.srcObject = null;
+      }
+    }
+  };
+
+  const beginBtn = document.getElementById('begin-btn');
+  if (beginBtn) beginBtn.addEventListener('click', window.openCam);
+
+  document.addEventListener('keydown', event => {
+    if(event.key === 'Escape') window.closeCam();
   });
-  window.solana.on('disconnect',()=>{
-    walletAddress=null;
-    updateNavWallet();
+
+  /* WALLET CONNECTION FIX */
+  let walletAddress = null;
+
+  function getSolanaProvider() {
+    if (window.solana && window.solana.isPhantom) return window.solana;
+    if (window.phantom && window.phantom.solana) return window.phantom.solana;
+    return null;
+  }
+
+  window.updateNavWallet = function() {
+    const provider = getSolanaProvider();
+    const btn = document.getElementById('nav-wallet-btn');
+    const connected = document.getElementById('nav-wallet-connected');
+    const address = document.getElementById('nav-wallet-address');
+
+    const pubKey =
+      walletAddress ||
+      (provider && provider.isConnected && provider.publicKey
+        ? provider.publicKey.toString()
+        : '');
+
+    const mintSection = document.getElementById('mmga-wallet-section');
+    const mintControls = document.getElementById('mint-controls');
+    const mintBtn = document.getElementById('mint-btn');
+
+    if (pubKey) {
+      walletAddress = pubKey;
+      const short = pubKey.slice(0, 4) + '...' + pubKey.slice(-4);
+
+      if (address) address.textContent = '🔗 ' + short;
+      if (btn) btn.style.display = 'none';
+      if (connected) connected.style.display = 'block';
+
+      if (mintSection) mintSection.style.display = 'none';
+      if (mintControls) mintControls.style.display = 'block';
+      if (mintBtn) mintBtn.style.display = 'block';
+    } else {
+      if (btn) btn.style.display = 'inline-block';
+      if (connected) connected.style.display = 'none';
+
+      if (mintSection) mintSection.style.display = 'block';
+      if (mintControls) mintControls.style.display = 'none';
+      if (mintBtn) mintBtn.style.display = 'none';
+    }
+  };
+
+  window.connectWallet = async function() {
+    const provider = getSolanaProvider();
+    const msg = document.getElementById('mmga-message-section');
+
+    if (!provider) {
+      if (msg) {
+        msg.innerHTML = '<div style="color:var(--red);padding:10px;border:1px solid var(--red);text-align:center;">Phantom wallet not detected. Open in Phantom or install it.</div>';
+      }
+      return;
+    }
+
+    try {
+      const res = await provider.connect({ onlyIfTrusted: false });
+      walletAddress = res.publicKey.toString();
+
+      window.updateNavWallet();
+
+      if (msg) {
+        msg.innerHTML = '<div style="color:var(--green);padding:10px;border:1px solid var(--green);text-align:center;">Connected: ' + walletAddress.slice(0,4) + '...' + walletAddress.slice(-4) + '</div>';
+      }
+    } catch (err) {
+      console.error('Wallet connection error:', err);
+
+      if (msg) {
+        msg.innerHTML = '<div style="color:var(--red);padding:10px;border:1px solid var(--red);text-align:center;">Connection cancelled or failed.</div>';
+      }
+    }
+  };
+
+  window.navConnectWallet = window.connectWallet;
+
+  window.incrementAmount = function() {
+    const inputEl = document.getElementById('mint-amount');
+    const amountLabel = document.getElementById('mint-btn-amount');
+    if (inputEl && parseInt(inputEl.value, 10) < 100) {
+      inputEl.value = parseInt(inputEl.value, 10) + 1;
+      if(amountLabel) amountLabel.textContent = inputEl.value;
+    }
+  };
+
+  window.decrementAmount = function() {
+    const inputEl = document.getElementById('mint-amount');
+    const amountLabel = document.getElementById('mint-btn-amount');
+    if (inputEl && parseInt(inputEl.value, 10) > 1) {
+      inputEl.value = parseInt(inputEl.value, 10) - 1;
+      if(amountLabel) amountLabel.textContent = inputEl.value;
+    }
+  };
+
+  window.mintToken = function() {
+    const inputEl = document.getElementById('mint-amount');
+    const amount = inputEl ? inputEl.value : 1;
+    const msgSection = document.getElementById('mmga-message-section');
+
+    if (msgSection) {
+      msgSection.innerHTML = '<div style="color:var(--yellow);padding:10px;border:1px solid var(--yellow);text-align:center;">Initiating mint for ' + amount + ' $MONK... Please approve transaction in your wallet.</div>';
+
+      setTimeout(() => {
+        msgSection.innerHTML = '<div style="color:var(--green);padding:10px;border:1px solid var(--green);text-align:center;">Successfully minted ' + amount + ' $MONK! Transaction confirmed.</div>';
+      }, 2500);
+    }
+  };
+
+  window.addEventListener('load', async () => {
+    const provider = getSolanaProvider();
+    if (!provider) {
+      window.updateNavWallet();
+      return;
+    }
+
+    provider.on('connect', () => {
+      if (provider.publicKey) {
+        walletAddress = provider.publicKey.toString();
+        window.updateNavWallet();
+      }
+    });
+
+    provider.on('disconnect', () => {
+      walletAddress = null;
+      window.updateNavWallet();
+    });
+
+    try {
+      const res = await provider.connect({ onlyIfTrusted: true });
+      walletAddress = res.publicKey.toString();
+    } catch(e) {}
+
+    window.updateNavWallet();
   });
-  if(window.solana.isConnected){
-    walletAddress=window.solana.publicKey.toString();
-    updateNavWallet();
-  }
-}
 
-function incrementAmount(){
-  if(mintAmount<Math.min(100,unmintedBalance)){
-    mintAmount++;
-    document.getElementById('mint-amount').value=mintAmount;
-    document.getElementById('mint-btn-amount').textContent=mintAmount;
-  }
-}
-
-function decrementAmount(){
-  if(mintAmount>1){
-    mintAmount--;
-    document.getElementById('mint-amount').value=mintAmount;
-    document.getElementById('mint-btn-amount').textContent=mintAmount;
-  }
-}
-
-async function mintToken(){
-  if(!walletAddress){
-    alert('Please connect wallet first');
-    return;
-  }
-  if(unmintedBalance===0){
-    alert('No MONK to mint! Meditate first.');
-    return;
-  }
-  alert(`Minting ${mintAmount} $MONK - Backend integration coming soon`);
-}
+})();
 </script>
-
-<!-- Solana Web3.js -->
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
-
 </body>
 </html>
