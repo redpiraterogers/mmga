@@ -359,8 +359,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button onclick="openAuth()" class="n-cta n-ghost">Login</button>
-    <button onclick="openCam()" class="btn btn-red btn-sm">▶ Begin</button>
+    <button id="nav-wallet-btn" class="n-cta" onclick="navConnectWallet()" style="display:none">Connect Wallet</button>
+    <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
+      <span id="nav-wallet-address"></span>
+    </div>
   </div>
 </nav>
 
@@ -385,9 +387,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     SPINE ERECT &nbsp;+&nbsp; EYES CLOSED &nbsp;+&nbsp; TIME &nbsp;=&nbsp; STILLNESS
   </div>
   <div class="h-ctas">
-    <button onclick="openCam()" class="btn btn-red">⚔ Begin the practice</button>
-    <button onclick="openAuth()" class="btn btn-ghost">Create free account</button>
-    <a href="#monk-token" class="btn btn-purple">⬢ Mint $MONK</a>
+    <a href="#mmga-mint-widget" class="btn btn-red">⚔ Mint $MONK Token</a>
+    <a href="#secret" class="btn btn-ghost">Learn the Secret</a>
   </div>
   <div class="hero-proof">
     <span class="proof-pill">Camera-verified posture &amp; eye closure</span>
@@ -411,8 +412,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       <p style="font-size:13px;color:var(--muted);line-height:1.85;margin-bottom:20px">The moment a thought arises, most people believe they are "failing." They are not failing. They are meditating. The Dhammapada says: <em style="color:var(--off)">"Mind is the forerunner of all actions."</em> The Yoga Sutras: <em style="color:var(--off)">"Yoga is the cessation of the fluctuations of the mind."</em> Every Zen koan points at the same thing.</p>
       <p style="font-size:13px;color:var(--off);line-height:1.85;margin-bottom:28px">The stillness arrives on its own. Your only job is to sit still long enough for it to find you.</p>
       <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <button onclick="openCam()" class="btn btn-red btn-sm">⚔ Try it now</button>
-        <button onclick="openAuth()" class="btn btn-ghost btn-sm">Create account</button>
+        <a href="#mmga-mint-widget" class="btn btn-red btn-sm">⚔ Mint $MONK</a>
+        <a href="#monk-token" class="btn btn-ghost btn-sm">Learn about $MONK</a>
       </div>
     </div>
     <div style="display:flex;flex-direction:column;gap:2px">
@@ -541,7 +542,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     </div>
 
     <div style="margin-top:40px;text-align:center">
-      <button onclick="openCam()" class="btn btn-purple">⬢ Mint your first $MONK →</button>
+      <a href="#mmga-mint-widget" class="btn btn-purple">⬢ Mint your first $MONK →</a>
       <p style="font-size:11px;color:var(--muted);margin-top:14px;line-height:1.7">Read the full technical specification and protocol documentation at <a href="#" style="color:var(--purple)">docs.mmga.yoga</a></p>
     </div>
   </div>
@@ -597,14 +598,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <h2 class="s-title">Choose Your Universe</h2>
   <p class="s-body">Pop culture worlds. Real meditation. Mint $MONK tokens while you listen.</p>
   <div class="sess-grid">
-    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
-    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
-    <div class="sess-card reveal" onclick="openCam()"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
+    <div class="sess-card reveal" href="#mmga-mint-widget"><div class="sess-ep">Ep 01 · Free</div><span class="sess-icon">🎮</span><div class="sess-name">The Tall Grass</div><div class="sess-quote">"You caught Pikachu at nine by going still. You understood this once."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">POKÉMON · 10 min</div></div>
+    <div class="sess-card reveal" href="#mmga-mint-widget"><div class="sess-ep">Ep 02 · Free</div><span class="sess-icon">🔥</span><div class="sess-name">CEO of Nothing</div><div class="sess-quote">"Gödel proved every system has a crack. Your mind is that system."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">FOR SKEPTICS · 22 min</div></div>
+    <div class="sess-card reveal" href="#mmga-mint-widget"><div class="sess-ep">Ep 03 · Free</div><span class="sess-icon">🌙</span><div class="sess-name">3am Silence</div><div class="sess-quote">"The thoughts at 3am are not truth. Just thoughts in a quiet house."</div><div style="font-family:var(--px);font-size:7px;color:var(--green);margin-top:8px">NIGHT ONLY · 20 min</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 04 · Pro</div><span class="sess-icon">🌹</span><div class="sess-name">Sit Like the Don</div><div class="sess-quote">"The Don never panics. The Don never reacts. The Don breathes."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">GODFATHER · 15 min</div><div class="sess-locked">PRO</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 05 · Pro</div><span class="sess-icon">⚔</span><div class="sess-name">Jedi Training Arc</div><div class="sess-quote">"The Force lives in the space between actions."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">STAR WARS · 18 min</div><div class="sess-locked">PRO</div></div>
     <div class="sess-card reveal"><div class="sess-ep">Ep 06 · Pro</div><span class="sess-icon">💀</span><div class="sess-name">You Died. Try Again.</div><div class="sess-quote">"Respawn. Sit back down. Spine erect. This is the run."</div><div style="font-family:var(--px);font-size:7px;color:var(--yellow);margin-top:8px">DARK SOULS · 12 min</div><div class="sess-locked">PRO</div></div>
   </div>
-  <div style="text-align:center;margin-top:28px"><button onclick="openAuth()" class="btn btn-red">Unlock all 10 universes →</button></div>
+  <div style="text-align:center;margin-top:28px"><button href="#mmga-mint-widget" class="btn btn-red">Unlock all 10 universes →</button></div>
 </section>
 
 <hr class="thin"/>
@@ -724,7 +725,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       <h3 class="s-title" style="font-size:clamp(16px,2.5vw,24px)">Wellness as a measurable utility</h3>
       <p class="s-sub" style="margin-bottom:22px">Replacing one employee costs €15,000–50,000. MMGA costs €5/employee/month. This is not an ROI calculation—it's a retention utility tool with verifiable participation metrics.</p>
       <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <button onclick="openAuth()" class="btn btn-red btn-sm">Start free pilot →</button>
+        <button href="#mmga-mint-widget" class="btn btn-red btn-sm">Start free pilot →</button>
         <a href="mailto:info@mmga.yoga" class="btn btn-ghost btn-sm">Talk to us</a>
       </div>
     </div>
@@ -766,20 +767,20 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <div class="p-card">
       <div class="p-tier">Free</div><div class="p-num">€0</div><div class="p-per">forever · no card</div>
       <ul class="p-feats"><li class="on">✅ Unlimited $MONK minting</li><li class="on">Monk Points detector</li><li class="on">Basic guided sessions</li><li class="on">4 tutorial videos</li><li class="on">Global leaderboard</li><li>Premium content library</li><li>Company dashboard</li></ul>
-      <button onclick="openCam()" class="p-btn">▶ Start now</button>
+      <button href="#mmga-mint-widget" class="p-btn">▶ Start now</button>
       <div style="margin-top:12px;padding:10px;background:rgba(30,215,96,0.05);border:1px solid rgba(30,215,96,0.2);font-size:10px;color:var(--green);line-height:1.6;text-align:center">Unlimited minting · You pay only network gas fees (~€0.002/mint)</div>
     </div>
     <div class="p-card star">
       <div class="p-star">★ Most chosen ★</div>
       <div class="p-tier">Pro Content</div><div class="p-num">€9</div><div class="p-per">/ month · cancel any time</div>
       <ul class="p-feats"><li class="on">✅ Same unlimited minting</li><li class="on">All 10 pop culture sessions</li><li class="on">Full tutorial library</li><li class="on">Masters video library</li><li class="on">All 8 scriptures</li><li class="on">3am mode + extras</li><li class="on">Monthly certificate PDF</li></ul>
-      <button onclick="openAuth()" class="p-btn main">Get Pro Content →</button>
+      <button href="#mmga-mint-widget" class="p-btn main">Get Pro Content →</button>
       <div style="margin-top:12px;padding:10px;background:rgba(255,216,77,0.05);border:1px solid rgba(255,216,77,0.2);font-size:10px;color:var(--yellow);line-height:1.6;text-align:center">Content only — does NOT affect minting or gas fees</div>
     </div>
     <div class="p-card">
       <div class="p-tier">Company Dashboard</div><div class="p-num">€5</div><div class="p-per">/ employee / month</div>
       <ul class="p-feats"><li class="on">✅ Same unlimited minting</li><li class="on">Everything Pro for all staff</li><li class="on">Company analytics dashboard</li><li class="on">ESG wellness reports</li><li class="on">Certified Mindful badge</li><li class="on">Aggregated participation data</li></ul>
-      <button onclick="openAuth()" class="p-btn">Onboard →</button>
+      <button href="#mmga-mint-widget" class="p-btn">Onboard →</button>
       <div style="margin-top:12px;padding:10px;background:rgba(30,215,96,0.05);border:1px solid rgba(30,215,96,0.2);font-size:10px;color:var(--green);line-height:1.6;text-align:center">Dashboard access fee — NOT for tokens</div>
     </div>
     <div class="p-card">
@@ -889,8 +890,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <h1 style="font-family:var(--px);font-size:clamp(28px,6vw,64px);color:var(--white);text-shadow:6px 6px 0 var(--dim);line-height:1.1;letter-spacing:-0.02em;margin-bottom:8px">READY?</h1>
   <p style="font-family:var(--serif);font-style:italic;font-size:clamp(18px,2.4vw,24px);color:var(--off);max-width:600px;margin:16px auto 44px;line-height:1.75">Create your account. Mint $MONK tokens. Prove your practice.<br/><strong style="font-style:normal;color:var(--white)">No password. No credit card. One click to begin.</strong></p>
   <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
-    <button onclick="openAuth()" class="btn btn-red" style="font-size:10px;padding:16px 36px">Create free account →</button>
-    <button onclick="openCam()" class="btn btn-ghost">▶ Try without account</button>
+    <button href="#mmga-mint-widget" class="btn btn-red" style="font-size:10px;padding:16px 36px">Create free account →</button>
+    <button href="#mmga-mint-widget" class="btn btn-ghost">▶ Try without account</button>
   </div>
   <p style="font-size:11px;color:var(--muted);line-height:1.7">Magic link auth — one email, no password ever · MMGA · Methana, Greece · <a href="mailto:info@mmga.yoga" style="color:var(--muted)">info@mmga.yoga</a></p>
 </div>
@@ -936,12 +937,13 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </div>
 </div>
 
-<!-- MINT TOKEN WIDGET -->
+<!-- MMGA Token Minting Widget with Balance Storage -->
+
 <div id="mmga-mint-widget" style="background:var(--bg);padding:clamp(80px,10vw,120px) 0;border-top:3px solid var(--border3)">
   <div class="s">
-    <span class="eyebrow">⬢ MINT YOUR TOKEN</span>
+    <span class="eyebrow">⬢ MINT YOUR TOKENS</span>
     <h2 class="s-title">Claim Your $MONK</h2>
-    <p class="s-body" style="margin-bottom:48px">Connect your Phantom wallet and mint your $MONK token. First mint costs ~$0.36 (creates token account), subsequent mints ~$0.002 each. Fees go to Solana validators, not MMGA.</p>
+    <p class="s-body" style="margin-bottom:48px">Your earned MONK is stored on our server. Connect your wallet and mint whenever you're ready. First mint costs ~$0.36 (creates token account), subsequent mints ~$0.002 each.</p>
   </div>
 
   <style>
@@ -951,6 +953,36 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       padding: 40px 24px;
       text-align: center;
       background: #0a0a0a;
+    }
+
+    .mmga-balance-box {
+      padding: 24px;
+      background: #141414;
+      border: 4px solid #ffd700;
+      margin-bottom: 32px;
+      box-shadow: 6px 6px 0 rgba(90,77,0,0.8);
+    }
+
+    .mmga-balance-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: #a0a0a0;
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .mmga-balance-amount {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 36px;
+      color: #ffd700;
+      text-shadow: 3px 3px 0 rgba(90,77,0,0.8);
+      margin-bottom: 8px;
+    }
+
+    .mmga-balance-unit {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: #a0a0a0;
     }
 
     .mmga-wallet-status {
@@ -971,6 +1003,44 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       margin-top: 12px;
       word-break: break-all;
       text-shadow: 2px 2px 0 rgba(90,77,0,0.5);
+    }
+
+    .mmga-amount-selector {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .mmga-amount-btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 16px;
+      width: 44px;
+      height: 44px;
+      background: #141414;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .mmga-amount-btn:hover {
+      border-color: #ffd700;
+      color: #ffd700;
+      transform: translate(-1px, -1px);
+      box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .mmga-amount-input {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 20px;
+      width: 80px;
+      padding: 12px;
+      background: #141414;
+      border: 3px solid #ffd700;
+      color: #ffd700;
+      text-align: center;
     }
 
     .mmga-mint-btn {
@@ -1071,6 +1141,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </style>
 
   <div class="mmga-mint-container">
+    <div id="mmga-balance-section">
+      <!-- Balance appears here -->
+    </div>
+
     <div id="mmga-wallet-section">
       <!-- Wallet connection status appears here -->
     </div>
@@ -1091,9 +1165,12 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   
   let walletAddress = null;
   let isProcessing = false;
+  let unmintedBalance = 0;
+  let mintAmount = 1;
 
   // Initialize
   checkWallet();
+  updateNavWallet();
 
   function checkWallet() {
     const walletSection = document.getElementById('mmga-wallet-section');
@@ -1115,6 +1192,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     if (window.solana.isConnected) {
       walletAddress = window.solana.publicKey.toString();
       showConnectedState();
+      loadBalance();
     } else {
       showDisconnectedState();
     }
@@ -1123,19 +1201,81 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     window.solana.on('connect', () => {
       walletAddress = window.solana.publicKey.toString();
       showConnectedState();
+      loadBalance();
+      updateNavWallet();
     });
 
     window.solana.on('disconnect', () => {
       walletAddress = null;
       showDisconnectedState();
+      unmintedBalance = 0;
+      updateBalanceDisplay();
+      updateNavWallet();
     });
+  }
+
+  async function loadBalance() {
+    if (!walletAddress) return;
+
+    try {
+      const response = await fetch(`${BACKEND_URL}/api/balance/${walletAddress}`);
+      const data = await response.json();
+      unmintedBalance = data.unmintedBalance || 0;
+      updateBalanceDisplay();
+    } catch (error) {
+      console.error('Failed to load balance:', error);
+      unmintedBalance = 0;
+      updateBalanceDisplay();
+    }
+  }
+
+  function updateBalanceDisplay() {
+    const balanceSection = document.getElementById('mmga-balance-section');
+    
+    if (!walletAddress) {
+      balanceSection.innerHTML = '';
+      return;
+    }
+
+    balanceSection.innerHTML = `
+      <div class="mmga-balance-box">
+        <div class="mmga-balance-label">UNMINTED BALANCE</div>
+        <div class="mmga-balance-amount">${unmintedBalance}</div>
+        <div class="mmga-balance-unit">$MONK TOKENS READY TO MINT</div>
+      </div>
+    `;
+  }
+
+  function updateNavWallet() {
+    const navBtn = document.getElementById('nav-wallet-btn');
+    const navConnected = document.getElementById('nav-wallet-connected');
+    const navAddress = document.getElementById('nav-wallet-address');
+    
+    if (!navBtn || !navConnected) return;
+
+    if (!window.solana) {
+      navBtn.textContent = 'Install Phantom';
+      navBtn.onclick = () => window.open('https://phantom.app/', '_blank');
+      navBtn.style.display = 'inline-block';
+      navConnected.style.display = 'none';
+    } else if (window.solana.isConnected && walletAddress) {
+      const short = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
+      navAddress.textContent = '🔗 ' + short;
+      navBtn.style.display = 'none';
+      navConnected.style.display = 'block';
+    } else {
+      navBtn.textContent = 'Connect Wallet';
+      navBtn.onclick = navConnectWallet;
+      navBtn.style.display = 'inline-block';
+      navConnected.style.display = 'none';
+    }
   }
 
   function showDisconnectedState() {
     const walletSection = document.getElementById('mmga-wallet-section');
     walletSection.innerHTML = `
       <div class="mmga-wallet-status">
-        🔗 CONNECT YOUR PHANTOM WALLET TO MINT $MONK
+        🔗 CONNECT YOUR PHANTOM WALLET TO VIEW BALANCE
       </div>
       <button class="mmga-mint-btn" onclick="mmgaConnect()">
         CONNECT WALLET
@@ -1151,25 +1291,72 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
         ✅ WALLET CONNECTED
         <div class="mmga-wallet-address">${shortAddress}</div>
       </div>
+      <div class="mmga-amount-selector">
+        <button class="mmga-amount-btn" onclick="mmgaDecrement()">−</button>
+        <input type="number" id="mint-amount" class="mmga-amount-input" value="1" min="1" max="100" onchange="mmgaUpdateAmount(this.value)">
+        <button class="mmga-amount-btn" onclick="mmgaIncrement()">+</button>
+      </div>
       <button class="mmga-mint-btn" onclick="mmgaMint()" id="mint-btn">
-        MINT 1 MONK TOKEN
+        MINT <span id="mint-btn-amount">1</span> MONK
       </button>
       <div class="mmga-fee-notice">
-        Network fee: ~$0.002 (paid to Solana validators)
+        Network fee: ~$0.002 per transaction (paid to Solana validators)
       </div>
     `;
+  }
+
+  function updateMintAmount(amount) {
+    mintAmount = Math.max(1, Math.min(100, Math.min(amount, unmintedBalance)));
+    const input = document.getElementById('mint-amount');
+    const btnAmount = document.getElementById('mint-btn-amount');
+    if (input) input.value = mintAmount;
+    if (btnAmount) btnAmount.textContent = mintAmount;
+  }
+
+  function incrementAmount() {
+    updateMintAmount(mintAmount + 1);
+  }
+
+  function decrementAmount() {
+    updateMintAmount(mintAmount - 1);
   }
 
   async function connectWallet() {
     try {
       await window.solana.connect();
+      updateNavWallet();
     } catch (error) {
       showError('Failed to connect wallet: ' + error.message);
     }
   }
 
+  async function navConnectWallet() {
+    if (!window.solana) {
+      window.open('https://phantom.app/', '_blank');
+      return;
+    }
+    try {
+      await window.solana.connect();
+      updateNavWallet();
+      // Scroll to mint section
+      document.getElementById('mmga-mint-widget').scrollIntoView({ behavior: 'smooth' });
+    } catch (error) {
+      console.error('Wallet connection error:', error);
+    }
+  }
+
   async function mintToken() {
     if (!walletAddress || isProcessing) return;
+
+    if (unmintedBalance === 0) {
+      showError('No MONK to mint! Complete a meditation session to earn MONK.');
+      return;
+    }
+
+    if (mintAmount > unmintedBalance) {
+      showError(`Cannot mint ${mintAmount} MONK. You only have ${unmintedBalance} unminted.`);
+      return;
+    }
 
     isProcessing = true;
     const btn = document.getElementById('mint-btn');
@@ -1179,17 +1366,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
     try {
       // Step 1: Request transaction from backend
-      showStatus('Preparing transaction...');
+      showStatus(`Preparing to mint ${mintAmount} MONK...`);
       
       const response = await fetch(`${BACKEND_URL}/api/mint`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          sessionId: 'demo-' + Date.now(), // Replace with real session ID
-          duration: 600, // 10 minutes - replace with actual session duration
-          timestamp: new Date().toISOString(),
-          biometricValid: true, // Replace with actual biometric validation
-          userWallet: walletAddress
+          userWallet: walletAddress,
+          amount: mintAmount
         })
       });
 
@@ -1228,12 +1412,18 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
         lastValidBlockHeight: txData.lastValidBlockHeight
       });
 
+      // Update balance
+      unmintedBalance = txData.remainingBalance;
+      updateBalanceDisplay();
+
       // Success!
-      showSuccess(signature);
+      showSuccess(signature, mintAmount, unmintedBalance);
 
     } catch (error) {
       console.error('Mint error:', error);
       showError(error.message || 'Minting failed');
+      // Reload balance in case it changed
+      await loadBalance();
     } finally {
       isProcessing = false;
       if (btn) btn.disabled = false;
@@ -1258,13 +1448,13 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     `;
   }
 
-  function showSuccess(signature) {
+  function showSuccess(signature, amount, remaining) {
     const messageSection = document.getElementById('mmga-message-section');
     messageSection.innerHTML = `
       <div class="mmga-success-message">
-        ✅ TOKEN MINTED SUCCESSFULLY!
+        ✅ MINTED ${amount} $MONK SUCCESSFULLY!
         <div style="margin-top:16px;font-size:10px;">
-          YOU NOW OWN 1 $MONK TOKEN
+          REMAINING BALANCE: ${remaining} MONK
         </div>
         <a href="https://solscan.io/tx/${signature}" target="_blank" class="mmga-tx-link">
           VIEW ON SOLSCAN →
@@ -1280,6 +1470,10 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   // Expose functions globally
   window.mmgaConnect = connectWallet;
   window.mmgaMint = mintToken;
+  window.navConnectWallet = navConnectWallet;
+  window.mmgaIncrement = incrementAmount;
+  window.mmgaDecrement = decrementAmount;
+  window.mmgaUpdateAmount = updateMintAmount;
 
 })();
 </script>
@@ -1696,7 +1890,7 @@ function handleLoggedIn(user) {
   const name = (user.email||'Monk').split('@')[0];
   document.getElementById('navRight').innerHTML =
     '<div class="n-user"><span class="n-pts">★ '+totalPts+' $MONK</span><span style="font-size:7px;color:var(--muted)">'+name+'</span></div>' +
-    '<button onclick="openCam()" class="btn btn-red btn-sm">▶ Mint</button>' +
+    '<button href="#mmga-mint-widget" class="btn btn-red btn-sm">▶ Mint</button>' +
     '<button onclick="signOut()" class="n-signout">Sign out</button>';
   if (window._supa) {
     window._supa.from('monk_points').select('points').eq('user_id',user.id).single()
@@ -1707,8 +1901,8 @@ function handleLoggedIn(user) {
 function handleLoggedOut() {
   window._user = null;
   document.getElementById('navRight').innerHTML =
-    '<button onclick="openAuth()" class="n-cta n-ghost">Login</button>' +
-    '<button onclick="openCam()" class="btn btn-red btn-sm">▶ Begin</button>';
+    '<button href="#mmga-mint-widget" class="n-cta n-ghost">Login</button>' +
+    '<button href="#mmga-mint-widget" class="btn btn-red btn-sm">▶ Begin</button>';
   document.getElementById('guestBanner').style.display = 'flex';
 }
 
