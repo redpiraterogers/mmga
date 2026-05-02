@@ -359,7 +359,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{alert('Install Phantom wallet and refresh this page. Camera features work best in Safari/Chrome, not Phantom browser.');window.open('https://phantom.app/download','_blank')}">Connect Wallet</button>
+    <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);if(isMobile){const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink}else{window.open('https://phantom.app/','_blank')}}">Connect Wallet</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
@@ -1227,23 +1227,22 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (!window.solana) {
-      // On mobile, show instructions instead of redirecting
+      // On mobile, provide wallet connection option
       if (isMobile) {
         walletSection.innerHTML = `
           <div class="mmga-wallet-status">
-            📱 MOBILE WALLET SETUP
-            <div style="margin-top:16px;font-size:12px;color:#a0a0a0;line-height:1.7;text-align:left;">
-              <strong style="color:#ffd700;">To connect your wallet on mobile:</strong><br><br>
-              1. Install Phantom app if you haven't<br>
-              2. In Phantom app, go to Settings → Trusted Apps<br>
-              3. Add mmga.yoga to trusted apps<br>
-              4. Return here and refresh this page<br><br>
-              <em style="color:#666;">Or mint later on desktop - your balance is stored on our server.</em>
+            📱 CONNECT MOBILE WALLET
+            <div style="margin-top:16px;font-size:12px;color:#a0a0a0;line-height:1.7;">
+              Click below to connect your Phantom wallet.
+              This will open the Phantom app to approve connection.
             </div>
             <div style="margin-top:16px;">
-              <a href="https://phantom.app/download" target="_blank" class="mmga-tx-link" style="font-size:9px;">
-                DOWNLOAD PHANTOM →
-              </a>
+              <button onclick="connectMobileWallet()" class="mmga-mint-btn" style="font-size:10px;cursor:pointer;border:none;">
+                CONNECT PHANTOM WALLET
+              </button>
+            </div>
+            <div style="margin-top:12px;font-size:11px;color:#666;">
+              Don't have Phantom? <a href="https://phantom.app/download" target="_blank" style="color:#ffd700;text-decoration:underline;">Download here</a>
             </div>
           </div>
         `;
@@ -1286,6 +1285,30 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       updateBalanceDisplay();
       updateNavWallet();
     });
+  }
+  
+  // Mobile wallet connection via deep linking
+  function connectMobileWallet() {
+    const currentUrl = window.location.href;
+    const deepLink = `https://phantom.app/ul/v1/connect?app_url=${encodeURIComponent(currentUrl)}&cluster=mainnet-beta`;
+    
+    // Try to open Phantom app
+    window.location.href = deepLink;
+    
+    // Show pending message
+    document.getElementById('mmga-wallet-section').innerHTML = `
+      <div class="mmga-wallet-status">
+        🔄 OPENING PHANTOM...
+        <div style="margin-top:12px;font-size:12px;color:#a0a0a0;line-height:1.7;">
+          Approve the connection in the Phantom app, then return here.
+        </div>
+        <div style="margin-top:16px;">
+          <button onclick="checkWallet()" class="mmga-mint-btn" style="font-size:10px;cursor:pointer;border:none;background:#0a0a0a;border:2px solid #ffd700;">
+            I'VE CONNECTED - REFRESH
+          </button>
+        </div>
+      </div>
+    `;
   }
 
   async function loadBalance() {
@@ -2009,7 +2032,7 @@ function handleLoggedIn(user) {
 function handleLoggedOut() {
   window._user = null;
   document.getElementById('navRight').innerHTML =
-    '<button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById(\'mmga-mint-widget\').scrollIntoView({behavior:\'smooth\'})}).catch(e=>console.error(e))}else{alert(\'Install Phantom wallet and refresh. Camera works best in Safari/Chrome.\');window.open(\'https://phantom.app/download\',\'_blank\')}">Connect Wallet</button>' +
+    '<button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById(\'mmga-mint-widget\').scrollIntoView({behavior:\'smooth\'})}).catch(e=>console.error(e))}else{const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);if(isMobile){const deepLink=\'https://phantom.app/ul/v1/connect?app_url=\'+encodeURIComponent(window.location.href)+\'&cluster=mainnet-beta\';window.location.href=deepLink}else{window.open(\'https://phantom.app/\',\'_blank\')}}">Connect Wallet</button>' +
     '<div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;"><span id="nav-wallet-address"></span></div>';
 }
 
