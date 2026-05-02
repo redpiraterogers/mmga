@@ -183,7 +183,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;ali
     <div id="mint-controls" style="display:none;margin:24px 0;text-align:center">
       <div style="display:flex;gap:16px;align-items:center;justify-content:center">
         <button onclick="decrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">−</button>
-        <input type="number" id="mint-amount" value="1" min="1" max="100" style="width:120px;height:48px;background:var(--bg3);border:2px solid var(--border2);color:var(--off);font-family:var(--px);font-size:24px;text-align:center">
+        <input type="number" id="mint-amount" value="1" min="1" max="100" autocomplete="off" inputmode="numeric" pattern="[0-9]*" style="width:120px;height:48px;background:var(--bg3);border:2px solid var(--border2);color:var(--off);font-family:var(--px);font-size:24px;text-align:center">
         <button onclick="incrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">+</button>
       </div>
     </div>
@@ -583,15 +583,24 @@ async function loadBalance(){
   if(!walletAddress)return;
   try{
     const localPoints=parseInt(localStorage.getItem('mmga_pts')||'0',10);
+    console.log('Loading balance - localStorage:',localPoints);
     
+    // Try to get backend balance
+    let backendBalance=0;
     try{
       const response=await fetch(BACKEND_URL+'/api/balance/'+walletAddress);
-      const data=await response.json();
-      const backendBalance=parseInt(data.unmintedBalance)||0;
-      unmintedBalance=localPoints+backendBalance;
+      if(response.ok){
+        const data=await response.json();
+        backendBalance=parseInt(data.unmintedBalance)||0;
+        console.log('Backend balance:',backendBalance);
+      }
     }catch(err){
-      unmintedBalance=localPoints;
+      console.warn('Backend balance fetch failed, using localStorage only');
     }
+    
+    // Total is local + backend
+    unmintedBalance=localPoints+backendBalance;
+    console.log('Total unminted balance:',unmintedBalance);
     
     updateBalanceDisplay();
   }catch(error){
@@ -655,13 +664,15 @@ async function mintToken(){
   const inputEl=document.getElementById('mint-amount');
   const amount=parseInt(inputEl?inputEl.value:'1',10);
   
-  if(unmintedBalance===0){
+  const localPoints=parseInt(localStorage.getItem('mmga_pts')||'0',10);
+  
+  if(localPoints===0&&unmintedBalance===0){
     showError('No MONK to mint! Complete a meditation session first.');
     return;
   }
   
-  if(amount>unmintedBalance){
-    showError('Cannot mint '+amount+' MONK. You only have '+unmintedBalance+' unminted.');
+  if(amount>localPoints&&amount>unmintedBalance){
+    showError('Cannot mint '+amount+' MONK. You only have '+Math.max(localPoints,unmintedBalance)+' unminted.');
     return;
   }
   
@@ -669,15 +680,31 @@ async function mintToken(){
   if(btn)btn.disabled=true;
   
   try{
-    // Step 1: Sync local points
-    const localPoints=parseInt(localStorage.getItem('mmga_pts')||'0',10);
+    // CRITICAL: Sync local points FIRST and wait for confirmation
     if(localPoints>0){
-      showStatus('Syncing '+localPoints+' earned MONK...');
-      await fetch(BACKEND_URL+'/api/balance/'+walletAddress+'/add',{
+      showStatus('Syncing '+localPoints+' earned MONK to backend...');
+      const syncResponse=await fetch(BACKEND_URL+'/api/balance/'+walletAddress+'/add',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({amount:localPoints})
       });
+      
+      if(!syncResponse.ok){
+        throw new Error('Failed to sync balance to backend. Please try again.');
+      }
+      
+      // Verify sync worked by reloading balance
+      showStatus('Verifying sync...');
+      const balanceCheck=await fetch(BACKEND_URL+'/api/balance/'+walletAddress);
+      const balanceData=await balanceCheck.json();
+      const backendBalance=parseInt(balanceData.unmintedBalance)||0;
+      
+      if(backendBalance<amount){
+        throw new Error('Sync verification failed. Backend shows '+backendBalance+' but need '+amount+'. Please refresh and try again.');
+      }
+      
+      // Clear localStorage AFTER successful sync
+      localStorage.setItem('mmga_pts','0');
     }
     
     // Step 2: Request mint transaction
@@ -716,8 +743,7 @@ async function mintToken(){
     showStatus('Confirming transaction...');
     await connection.confirmTransaction(signature,'confirmed');
     
-    // Step 4: Clear local storage and reload
-    localStorage.setItem('mmga_pts','0');
+    // Step 4: Reload balance
     await loadBalance();
     
     showSuccess(signature,amount,unmintedBalance);
@@ -725,6 +751,15 @@ async function mintToken(){
   }catch(error){
     console.error('Mint error:',error);
     showError(error.message||'Minting failed. Please try again.');
+    
+    // Restore localStorage if sync failed
+    if(localPoints>0){
+      const currentLocal=parseInt(localStorage.getItem('mmga_pts')||'0',10);
+      if(currentLocal===0){
+        localStorage.setItem('mmga_pts',localPoints.toString());
+        showError('Restored '+localPoints+' MONK to local storage. '+error.message);
+      }
+    }
   }finally{
     if(btn)btn.disabled=false;
   }
