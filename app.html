@@ -789,8 +789,19 @@ async function mintToken(){
     const provider=getSolanaProvider();
     if(!provider)throw new Error('Wallet disconnected');
     
+    // Use Phantom's connection (uses their RPC, not blocked!)
+    const phantomConnection=new solanaWeb3.Connection(
+      provider.connection?.rpcEndpoint || 'https://api.mainnet-beta.solana.com'
+    );
+    
+    // Get blockhash from Phantom's connection
+    const {blockhash}=await phantomConnection.getLatestBlockhash();
+    
     // Create simple transfer to self (smallest possible transaction)
-    const transaction=new solanaWeb3.Transaction().add(
+    const transaction=new solanaWeb3.Transaction();
+    transaction.recentBlockhash=blockhash;
+    transaction.feePayer=new solanaWeb3.PublicKey(walletAddress);
+    transaction.add(
       solanaWeb3.SystemProgram.transfer({
         fromPubkey:new solanaWeb3.PublicKey(walletAddress),
         toPubkey:new solanaWeb3.PublicKey(walletAddress),
@@ -800,7 +811,7 @@ async function mintToken(){
     
     showStatus('Please approve transaction in Phantom...');
     
-    // Let Phantom handle everything (RPC, signing, broadcasting)
+    // Let Phantom sign and send
     const {signature}=await provider.signAndSendTransaction(transaction);
     
     showStatus('Confirming on Solana...');
