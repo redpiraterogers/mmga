@@ -359,7 +359,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{const isMobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent);if(isMobile){const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink}else{window.open('https://phantom.app/','_blank')}}">Connect Wallet</button>
+    <button id="nav-wallet-btn" class="n-cta" onclick="window.navConnectWallet()">Connect Wallet</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
@@ -1238,7 +1238,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   let walletAddress = null;
   let isProcessing = false;
   let unmintedBalance = 0;
-  let mintAmount = 0.1;
+  let mintAmount = 1;
 
   // Initialize
   checkWallet();
@@ -1404,25 +1404,23 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
     try {
       // Get locally earned MONK (from meditation sessions before wallet connected)
-      const localPoints = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      const localPoints = parseInt(localStorage.getItem('mmga_pts') || '0');
       
       // Get backend balance (from server)
       const response = await fetch(`${BACKEND_URL}/api/balance/${walletAddress}`);
       const data = await response.json();
-      const backendBalance = parseFloat(data.unmintedBalance) || 0;
+      const backendBalance = parseInt(data.unmintedBalance) || 0;
       
       // Combine both balances
       unmintedBalance = localPoints + backendBalance;
-      unmintedBalance = Math.round(unmintedBalance * 10) / 10;  // Round to 1 decimal
       
-      console.log(`Balance loaded: ${localPoints.toFixed(1)} local + ${backendBalance.toFixed(1)} backend = ${unmintedBalance.toFixed(1)} total`);
+      console.log(`Balance loaded: ${localPoints} local + ${backendBalance} backend = ${unmintedBalance} total`);
       
       updateBalanceDisplay();
     } catch (error) {
       console.error('Failed to load balance:', error);
       // Fallback to just localStorage if backend fails
-      unmintedBalance = parseFloat(localStorage.getItem('mmga_pts') || '0');
-      unmintedBalance = Math.round(unmintedBalance * 10) / 10;
+      unmintedBalance = parseInt(localStorage.getItem('mmga_pts') || '0');
       updateBalanceDisplay();
     }
   }
@@ -1438,7 +1436,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     balanceSection.innerHTML = `
       <div class="mmga-balance-box">
         <div class="mmga-balance-label">UNMINTED BALANCE</div>
-        <div class="mmga-balance-amount">${unmintedBalance.toFixed(1)}</div>
+        <div class="mmga-balance-amount">${unmintedBalance}</div>
         <div class="mmga-balance-unit">$MONK TOKENS READY TO MINT</div>
       </div>
     `;
@@ -1504,20 +1502,19 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   }
 
   function updateMintAmount(amount) {
-    mintAmount = Math.max(0.1, Math.min(100, Math.min(amount, unmintedBalance)));
-    mintAmount = Math.round(mintAmount * 10) / 10;  // Round to 1 decimal place
+    mintAmount = Math.max(1, Math.min(100, Math.min(amount, unmintedBalance)));
     const input = document.getElementById('mint-amount');
     const btnAmount = document.getElementById('mint-btn-amount');
-    if (input) input.value = mintAmount.toFixed(1);
-    if (btnAmount) btnAmount.textContent = mintAmount.toFixed(1);
+    if (input) input.value = mintAmount;
+    if (btnAmount) btnAmount.textContent = mintAmount;
   }
 
   function incrementAmount() {
-    updateMintAmount(mintAmount + 0.1);
+    updateMintAmount(mintAmount + 1);
   }
 
   function decrementAmount() {
-    updateMintAmount(mintAmount - 0.1);
+    updateMintAmount(mintAmount - 1);
   }
 
   async function connectWallet() {
@@ -1536,7 +1533,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     }
     try {
       await window.solana.connect();
+      walletAddress = window.solana.publicKey.toString();
       updateNavWallet();
+      loadBalance();
       // Scroll to mint section
       document.getElementById('mmga-mint-widget').scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
@@ -1547,13 +1546,13 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   async function mintToken() {
     if (!walletAddress || isProcessing) return;
 
-    if (unmintedBalance === 0 || unmintedBalance < 0.1) {
-      showError('No MONK to mint! Complete a meditation session to earn MONK (minimum 0.1).');
+    if (unmintedBalance === 0) {
+      showError('No MONK to mint! Complete a meditation session to earn MONK.');
       return;
     }
 
     if (mintAmount > unmintedBalance) {
-      showError(`Cannot mint ${mintAmount.toFixed(1)} MONK. You only have ${unmintedBalance.toFixed(1)} unminted.`);
+      showError(`Cannot mint ${mintAmount} MONK. You only have ${unmintedBalance} unminted.`);
       return;
     }
 
@@ -1565,9 +1564,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
     try {
       // Sync localStorage balance to backend before minting
-      const localPoints = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      const localPoints = parseInt(localStorage.getItem('mmga_pts') || '0');
       if (localPoints > 0) {
-        showStatus(`Syncing ${localPoints.toFixed(1)} earned MONK to your wallet...`);
+        showStatus(`Syncing ${localPoints} earned MONK to your wallet...`);
         try {
           const syncResponse = await fetch(`${BACKEND_URL}/api/balance/${walletAddress}/add`, {
             method: 'POST',
@@ -1584,7 +1583,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       }
       
       // Step 1: Request transaction from backend
-      showStatus(`Preparing to mint ${mintAmount.toFixed(1)} MONK...`);
+      showStatus(`Preparing to mint ${mintAmount} MONK...`);
       
       const response = await fetch(`${BACKEND_URL}/api/mint`, {
         method: 'POST',
@@ -1666,9 +1665,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     const messageSection = document.getElementById('mmga-message-section');
     messageSection.innerHTML = `
       <div class="mmga-success-message">
-        ✅ MINTED ${parseFloat(amount).toFixed(1)} $MONK SUCCESSFULLY!
+        ✅ MINTED ${amount} $MONK SUCCESSFULLY!
         <div style="margin-top:16px;font-size:10px;">
-          REMAINING BALANCE: ${parseFloat(remaining).toFixed(1)} MONK
+          REMAINING BALANCE: ${remaining} MONK
         </div>
         <a href="https://solscan.io/tx/${signature}" target="_blank" class="mmga-tx-link">
           VIEW ON SOLSCAN →
@@ -1863,7 +1862,7 @@ setInterval(updateEpochCountdown, 3600000); // Update every hour
 
 /* CAMERA */
 let spineOk = false, eyesOk = false, sessActive = false, sessTimer = null, consec = 0, sessElapsed = 0;
-let totalPts = parseFloat(localStorage.getItem('mmga_pts') || '0');
+let totalPts = parseInt(localStorage.getItem('mmga_pts') || '0');
 let faceMesh, pose, mpCam, localStream;
 let latestFace = null, latestPose = null;
 
@@ -2082,16 +2081,16 @@ function toggleSess() {
       document.getElementById('timerLbl').textContent = spineOk&&eyesOk ? 'Verified — minting $MONK' : 'Paused — fix posture or close eyes';
       if (spineOk && eyesOk) {
         consec++;
-        const pct = (consec%10)/10*100;  // Changed from %60 to %10
-        document.getElementById('progFill').style.width = pct + '%';
+        // Award every second
+        document.getElementById('progFill').style.width = '100%';
         document.getElementById('progFill').className = 'prog-fill earn';
-        document.getElementById('progNum').textContent = (consec%10) + ' / 10s';  // Changed from 60s to 10s
-        if (consec > 0 && consec%10 === 0) awardPoint();  // Changed from %60 to %10
+        document.getElementById('progNum').textContent = 'MINTING LIVE';
+        awardPoint();  // Award every second!
       } else {
         if (consec > 0) { consec = 0; addLog('Posture lost. Counter reset.'); }
         document.getElementById('progFill').style.width = '0%';
         document.getElementById('progFill').className = 'prog-fill';
-        document.getElementById('progNum').textContent = '0 / 10s';  // Changed from 60s to 10s
+        document.getElementById('progNum').textContent = 'PAUSED';
       }
     }, 1000);
   } else {
@@ -2105,17 +2104,16 @@ function toggleSess() {
 }
 
 function awardPoint() {
-  totalPts += 0.1;  // Award 0.1 MONK every 10 seconds
-  totalPts = Math.round(totalPts * 10) / 10;  // Round to 1 decimal place
+  totalPts += 1;  // Award 1 MONK every second
   localStorage.setItem('mmga_pts', totalPts);
-  document.getElementById('modalPts').textContent = totalPts.toFixed(1);
-  addLog('★ +0.1 $MONK! Total: ' + totalPts.toFixed(1));
+  document.getElementById('modalPts').textContent = totalPts;
+  addLog('★ +1 $MONK! Total: ' + totalPts);
   const p = document.getElementById('pointPop');
-  p.textContent = '+0.1 $MONK MINTED ★ (Total: ' + totalPts.toFixed(1) + ')';
+  p.textContent = '+1 $MONK MINTED ★ (Total: ' + totalPts + ')';
   p.classList.add('on');
   setTimeout(() => p.classList.remove('on'), 2500);
   const ptEl = document.querySelector('.n-pts');
-  if (ptEl) ptEl.textContent = '★ ' + totalPts.toFixed(1) + ' $MONK';
+  if (ptEl) ptEl.textContent = '★ ' + totalPts + ' $MONK';
   if (window._supa && window._user) {
     window._supa.from('monk_points').upsert({user_id:window._user.id, email:window._user.email, points:totalPts, updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(()=>{}).catch(()=>{});
   }
@@ -2267,7 +2265,7 @@ function closeCam() {
     
     // Sync locally earned MONK to backend if wallet is connected
     if (window.solana && window.solana.isConnected) {
-      const localPoints = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      const localPoints = parseInt(localStorage.getItem('mmga_pts') || '0');
       if (localPoints > 0 && window.mmgaReloadBalance) {
         console.log('Camera closed, syncing earned MONK to wallet...');
         setTimeout(() => {
