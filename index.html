@@ -359,12 +359,24 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button id="nav-wallet-btn" class="n-cta" onclick="(function(){const isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else if(isMobile){const url=encodeURIComponent(window.location.href);window.location.href='https://phantom.app/ul/browse/'+url+'?ref=mmga.yoga'}else{window.open('https://phantom.app/','_blank')}})()">Connect Wallet</button>
+    <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{alert('Install Phantom wallet and refresh this page. Camera features work best in Safari/Chrome, not Phantom browser.');window.open('https://phantom.app/download','_blank')}">Connect Wallet</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
   </div>
 </nav>
+
+<!-- Mobile Browser Warning -->
+<div id="mobile-browser-warning" style="display:none;background:#ff0033;color:#fff;padding:12px 20px;text-align:center;font-family:var(--mono);font-size:11px;line-height:1.5">
+  ⚠️ <strong>PHANTOM BROWSER DETECTED</strong><br>
+  Camera may not work. <a href="${window.location.href}" target="_blank" style="color:#fff;text-decoration:underline">Open in Safari/Chrome →</a>
+</div>
+<script>
+  // Detect if in Phantom's in-app browser
+  if (/phantom/i.test(navigator.userAgent) || (window.solana && /Android|iPhone|iPad|iPod/i.test(navigator.userAgent))) {
+    document.getElementById('mobile-browser-warning').style.display = 'block';
+  }
+</script>
 
 <!-- HERO -->
 <section class="hero">
@@ -1215,20 +1227,22 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     
     if (!window.solana) {
-      // On mobile, redirect to Phantom browser
+      // On mobile, show instructions instead of redirecting
       if (isMobile) {
-        const currentUrl = encodeURIComponent(window.location.href);
-        const phantomUrl = `https://phantom.app/ul/browse/${currentUrl}?ref=mmga.yoga`;
-        
         walletSection.innerHTML = `
           <div class="mmga-wallet-status">
-            ⚠️ OPEN IN PHANTOM BROWSER
-            <div style="margin-top:12px;font-size:12px;color:#a0a0a0;line-height:1.6;">
-              Tap the button below to open this page in Phantom's browser to connect your wallet.
+            📱 MOBILE WALLET SETUP
+            <div style="margin-top:16px;font-size:12px;color:#a0a0a0;line-height:1.7;text-align:left;">
+              <strong style="color:#ffd700;">To connect your wallet on mobile:</strong><br><br>
+              1. Install Phantom app if you haven't<br>
+              2. In Phantom app, go to Settings → Trusted Apps<br>
+              3. Add mmga.yoga to trusted apps<br>
+              4. Return here and refresh this page<br><br>
+              <em style="color:#666;">Or mint later on desktop - your balance is stored on our server.</em>
             </div>
             <div style="margin-top:16px;">
-              <a href="${phantomUrl}" class="mmga-mint-btn" style="text-decoration:none;display:inline-block;font-size:10px;">
-                OPEN IN PHANTOM →
+              <a href="https://phantom.app/download" target="_blank" class="mmga-tx-link" style="font-size:9px;">
+                DOWNLOAD PHANTOM →
               </a>
             </div>
           </div>
@@ -1721,13 +1735,54 @@ document.getElementById('modalPts').textContent = totalPts;
 async function startCam() {
   document.getElementById('camPerm').style.display = 'none';
   document.getElementById('loadFill').style.width = '30%';
+  
+  // Check if camera is supported
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    document.getElementById('camPerm').style.display = 'flex';
+    document.getElementById('camPerm').innerHTML = `
+      <div style="font-size:36px">⚠</div>
+      <div style="font-family:var(--px);font-size:9px">CAMERA NOT SUPPORTED</div>
+      <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7;margin-top:12px">
+        This browser doesn't support camera access. 
+        <strong style="color:var(--off)">Open this page in Safari or Chrome</strong> instead of the Phantom in-app browser.
+      </p>
+      <a href="${window.location.href}" target="_blank" style="margin-top:16px;padding:10px 20px;background:var(--red);color:#fff;text-decoration:none;font-family:var(--px);font-size:8px;border-radius:4px;">
+        OPEN IN SAFARI/CHROME →
+      </a>
+    `;
+    return;
+  }
+  
   try {
     localStream = await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'}});
     document.getElementById('camVideo').srcObject = localStream;
     initDetection();
   } catch(e) {
     document.getElementById('camPerm').style.display = 'flex';
-    document.getElementById('camPerm').innerHTML = '<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">Camera denied</div><p style="font-size:12px;color:var(--muted);max-width:220px;line-height:1.7">Allow camera access in your browser settings and refresh.</p>';
+    
+    // Better error messages based on error type
+    let errorMsg = 'Allow camera access in your browser settings and refresh.';
+    let errorTitle = 'Camera denied';
+    
+    if (e.name === 'NotAllowedError') {
+      errorTitle = 'Camera permission denied';
+      errorMsg = 'You blocked camera access. Go to your browser settings, allow camera for this site, and refresh.';
+    } else if (e.name === 'NotFoundError') {
+      errorTitle = 'No camera found';
+      errorMsg = 'No camera detected on your device. Make sure a camera is connected.';
+    } else if (e.name === 'NotSupportedError') {
+      errorTitle = 'Browser not supported';
+      errorMsg = 'This browser doesn\'t support camera access. Try opening in Safari or Chrome instead.';
+    } else if (e.name === 'NotReadableError') {
+      errorTitle = 'Camera in use';
+      errorMsg = 'Your camera is being used by another app. Close other apps and try again.';
+    }
+    
+    document.getElementById('camPerm').innerHTML = `
+      <div style="font-size:36px">⚠</div>
+      <div style="font-family:var(--px);font-size:9px">${errorTitle.toUpperCase()}</div>
+      <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7;margin-top:12px">${errorMsg}</p>
+    `;
   }
 }
 
@@ -1954,7 +2009,7 @@ function handleLoggedIn(user) {
 function handleLoggedOut() {
   window._user = null;
   document.getElementById('navRight').innerHTML =
-    '<button id="nav-wallet-btn" class="n-cta" onclick="(function(){const isMobile=/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);if(window.solana){window.solana.connect().then(()=>{document.getElementById(\'mmga-mint-widget\').scrollIntoView({behavior:\'smooth\'})}).catch(e=>console.error(e))}else if(isMobile){const url=encodeURIComponent(window.location.href);window.location.href=\'https://phantom.app/ul/browse/\'+url+\'?ref=mmga.yoga\'}else{window.open(\'https://phantom.app/\',\'_blank\')}})()">Connect Wallet</button>' +
+    '<button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById(\'mmga-mint-widget\').scrollIntoView({behavior:\'smooth\'})}).catch(e=>console.error(e))}else{alert(\'Install Phantom wallet and refresh. Camera works best in Safari/Chrome.\');window.open(\'https://phantom.app/download\',\'_blank\')}">Connect Wallet</button>' +
     '<div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;"><span id="nav-wallet-address"></span></div>';
 }
 
