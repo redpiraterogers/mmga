@@ -37,12 +37,12 @@ nav.stuck{background:rgba(15,20,25,0.95);border-bottom-color:var(--border3);box-
 .n-links{display:flex;list-style:none;gap:4px}
 .n-links a{font-size:12px;color:var(--muted);text-decoration:none;padding:8px 14px;transition:all 0.25s ease;letter-spacing:0.02em;border-radius:4px}.n-links a:hover{color:var(--gold);background:rgba(212,165,116,0.08)}
 .n-right{display:flex;align-items:center;gap:12px}
-.n-cta{font-family:var(--mono);font-size:11px;padding:10px 20px;background:linear-gradient(135deg, var(--amber) 0%, var(--amber-dim) 100%);border:1px solid rgba(255,255,255,0.1);border-radius:6px;box-shadow:0 4px 12px rgba(244,162,97,0.25), inset 0 1px 0 rgba(255,255,255,0.15);color:var(--bg);font-weight:500;cursor:pointer;text-decoration:none;transition:all 0.25s ease;letter-spacing:0.03em;display:inline-block}.n-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(244,162,97,0.35), inset 0 1px 0 rgba(255,255,255,0.15)}
+.n-cta{font-family:var(--mono);font-size:11px;padding:10px 20px;background:var(--yellow);border:2px solid var(--ydim);border-radius:6px;box-shadow:0 4px 12px rgba(255,215,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);color:#0a0a0a;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.25s ease;letter-spacing:0.03em;display:inline-block}.n-cta:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,215,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2);background:#ffdd33}
 .n-ghost{background:transparent;border-color:var(--border3);box-shadow:none;color:var(--off)}.n-ghost:hover{background:rgba(248,246,240,0.05);border-color:var(--border2)}
 .mobile-menu{display:none;background:transparent;color:var(--white);border:1px solid var(--border3);border-radius:4px;font-family:var(--mono);font-size:11px;padding:8px 12px;cursor:pointer;transition:all 0.2s}.mobile-menu:hover{border-color:var(--border2)}
 .n-user{font-family:var(--mono);font-size:11px;color:var(--gold);display:flex;align-items:center;gap:10px}
 .n-pts{background:rgba(232,192,104,0.1);border:1px solid rgba(232,192,104,0.25);border-radius:4px;padding:6px 12px;font-size:10px;letter-spacing:0.03em}
-.n-signout{font-family:var(--mono);font-size:10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:7px 12px;cursor:pointer;transition:all 0.2s}.n-signout:hover{border-color:var(--amber);color:var(--amber)}
+.n-signout{font-family:var(--mono);font-size:10px;background:transparent;border:1px solid var(--border2);border-radius:4px;color:var(--muted);padding:7px 12px;cursor:pointer;transition:all 0.2s}.n-signout:hover{border-color:var(--yellow);color:var(--yellow)}
 
 /* BUTTONS */
 .btn{font-family:var(--px);font-size:10px;padding:14px 32px;display:inline-flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;text-decoration:none;letter-spacing:0.05em;border:3px solid;transition:all 0.15s;text-align:center;line-height:1.4;background:none;text-transform:uppercase}.btn:hover{transform:translate(-2px,-2px)}
@@ -1097,14 +1097,14 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     .mmga-success-message {
       margin-top: 24px;
       padding: 24px;
-      background: #1a1a1a;
-      border: 4px solid #ffd700;
+      background: #ffd700;
+      border: 4px solid #c9a400;
       font-family: 'Press Start 2P', monospace;
       font-size: 11px;
-      color: #ffd700;
+      color: #0a0a0a;
       line-height: 1.8;
       box-shadow: 6px 6px 0 rgba(90,77,0,0.8);
-      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+      text-shadow: none;
     }
 
     .mmga-tx-link {
@@ -1479,25 +1479,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
 })();
 </script>
-      <div class="mmga-success-message">
-        ✅ MINTED ${amount} $MONK SUCCESSFULLY!
-        <div style="margin-top:16px;font-size:10px;">
-          REMAINING BALANCE: ${remaining} MONK
-        </div>
-        <a href="https://solscan.io/tx/${signature}" target="_blank" class="mmga-tx-link">
-          VIEW ON SOLSCAN →
-        </a>
-      </div>
-    `;
-  }
 
-  function clearMessages() {
-    document.getElementById('mmga-message-section').innerHTML = '';
-  }
-
-  // Expose functions globally
-  window.mmgaConnect = connectWallet;
-  window.mmgaMint = mintToken;
+<script>
   window.navConnectWallet = navConnectWallet;
   window.mmgaIncrement = incrementAmount;
   window.mmgaDecrement = decrementAmount;
