@@ -2479,10 +2479,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Camera modal functions
 function openCam() {
+  // Check if dependencies are loaded
+  if (typeof Camera === 'undefined') {
+    alert('Please wait for the page to fully load and try again.');
+    console.error('Camera library not loaded');
+    setTimeout(() => window.location.reload(), 1000);
+    return;
+  }
+  
   const modal = document.getElementById('camModal');
   if (modal) {
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';
+    
+    // Request camera and initialize detection
+    startCam();
   }
 }
 
