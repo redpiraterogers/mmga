@@ -1168,21 +1168,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   let unmintedBalance = 0;
   let mintAmount = 1;
 
-  // Wait for DOM to be ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-
-  function init() {
-    console.log('🚀 MMGA Widget initializing...');
-    console.log('Nav button exists:', !!document.getElementById('nav-wallet-btn'));
-    console.log('Widget section exists:', !!document.getElementById('mmga-wallet-section'));
-    checkWallet();
-    updateNavWallet();
-    console.log('✅ Initialization complete');
-  }
+  // Initialize
+  checkWallet();
+  updateNavWallet();
 
   function checkWallet() {
     const walletSection = document.getElementById('mmga-wallet-section');
@@ -1263,38 +1251,23 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     const navConnected = document.getElementById('nav-wallet-connected');
     const navAddress = document.getElementById('nav-wallet-address');
     
-    if (!navBtn) {
-      console.error('❌ Nav button not found!');
-      return;
-    }
-    if (!navConnected) {
-      console.error('❌ Nav connected div not found!');
-      return;
-    }
-
-    console.log('Updating nav wallet...');
+    if (!navBtn || !navConnected) return;
 
     if (!window.solana) {
       navBtn.textContent = 'Install Phantom';
       navBtn.onclick = () => window.open('https://phantom.app/', '_blank');
       navBtn.style.display = 'inline-block';
       navConnected.style.display = 'none';
-      console.log('No Phantom detected');
     } else if (window.solana.isConnected && walletAddress) {
       const short = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
       navAddress.textContent = '🔗 ' + short;
       navBtn.style.display = 'none';
       navConnected.style.display = 'block';
-      console.log('Wallet connected:', short);
     } else {
       navBtn.textContent = 'Connect Wallet';
-      navBtn.onclick = () => {
-        console.log('Connect button clicked!');
-        navConnectWallet();
-      };
+      navBtn.onclick = navConnectWallet;
       navBtn.style.display = 'inline-block';
       navConnected.style.display = 'none';
-      console.log('Ready to connect');
     }
   }
 
@@ -1504,6 +1477,32 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
 })();
 </script>
+      <div class="mmga-success-message">
+        ✅ MINTED ${amount} $MONK SUCCESSFULLY!
+        <div style="margin-top:16px;font-size:10px;">
+          REMAINING BALANCE: ${remaining} MONK
+        </div>
+        <a href="https://solscan.io/tx/${signature}" target="_blank" class="mmga-tx-link">
+          VIEW ON SOLSCAN →
+        </a>
+      </div>
+    `;
+  }
+
+  function clearMessages() {
+    document.getElementById('mmga-message-section').innerHTML = '';
+  }
+
+  // Expose functions globally
+  window.mmgaConnect = connectWallet;
+  window.mmgaMint = mintToken;
+  window.navConnectWallet = navConnectWallet;
+  window.mmgaIncrement = incrementAmount;
+  window.mmgaDecrement = decrementAmount;
+  window.mmgaUpdateAmount = updateMintAmount;
+
+})();
+</script>
 
 <!-- FOOTER -->
 <footer>
@@ -1673,268 +1672,4 @@ let latestFace = null, latestPose = null;
 
 document.getElementById('modalPts').textContent = totalPts;
 
-function openCam() {
-  document.getElementById('camModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeCam() {
-  document.getElementById('camModal').classList.remove('open');
-  document.body.style.overflow = '';
-  if (sessActive) toggleSess();
-  if (localStream) localStream.getTracks().forEach(t => t.stop());
-  if (mpCam) { try { mpCam.stop(); } catch(e){} }
-  resetSess();
-  document.getElementById('camPerm').style.display = 'flex';
-  document.getElementById('camStatusBar').style.display = 'none';
-  document.getElementById('sessBtn').disabled = true;
-  localStream = null; mpCam = null; faceMesh = null; pose = null;
-  latestFace = null; latestPose = null;
-}
-
-async function startCam() {
-  document.getElementById('camPerm').style.display = 'none';
-  document.getElementById('loadFill').style.width = '30%';
-  try {
-    localStream = await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'}});
-    document.getElementById('camVideo').srcObject = localStream;
-    initDetection();
-  } catch(e) {
-    document.getElementById('camPerm').style.display = 'flex';
-    document.getElementById('camPerm').innerHTML = '<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">Camera denied</div><p style="font-size:12px;color:var(--muted);max-width:220px;line-height:1.7">Allow camera access in your browser settings and refresh.</p>';
-  }
-}
-
-function initDetection() {
-  faceMesh = new FaceMesh({locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`});
-  faceMesh.setOptions({maxNumFaces:1, refineLandmarks:true, minDetectionConfidence:0.5});
-  faceMesh.onResults(r => { latestFace = r; checkLogic(); });
-
-  pose = new Pose({locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/${f}`});
-  pose.setOptions({modelComplexity:1, minDetectionConfidence:0.5});
-  pose.onResults(r => { latestPose = r; checkLogic(); });
-
-  const video = document.getElementById('camVideo');
-  mpCam = new Camera(video, {
-    onFrame: async () => {
-      if (faceMesh) await faceMesh.send({image:video});
-      if (pose) await pose.send({image:video});
-      drawVisuals();
-    },
-    width: 640, height: 480
-  });
-  mpCam.start().then(() => {
-    document.getElementById('loadFill').style.width = '100%';
-    document.getElementById('camStatusBar').style.display = 'flex';
-    document.getElementById('sessBtn').disabled = false;
-    addLog('Detection active. Ready to mint $MONK.');
-  }).catch(e => addLog('Error: ' + e.message));
-}
-
-function checkLogic() {
-  if (latestFace?.multiFaceLandmarks?.[0]) {
-    const lm = latestFace.multiFaceLandmarks[0];
-    const LE = [33,160,158,133,153,144], RE = [362,385,387,263,373,380];
-    const d = (a,b) => Math.hypot(lm[a].x-lm[b].x, lm[a].y-lm[b].y);
-    const ear = idx => (d(idx[1],idx[5]) + d(idx[2],idx[4])) / (2*d(idx[0],idx[3]));
-    const newEyes = ((ear(LE) + ear(RE)) / 2) < 0.22;
-    if (newEyes !== eyesOk) { eyesOk = newEyes; updateRule('eyes', eyesOk); }
-  }
-  if (latestPose?.poseLandmarks) {
-    const lm = latestPose.poseLandmarks;
-    const shoulderY = (lm[11].y + lm[12].y) / 2;
-    const newSpine = lm[0].y < shoulderY;
-    if (newSpine !== spineOk) { spineOk = newSpine; updateRule('spine', spineOk); }
-  }
-  document.getElementById('medBanner').classList.toggle('on', sessActive && spineOk && eyesOk);
-  document.getElementById('camGlow').classList.toggle('on', sessActive && spineOk && eyesOk);
-}
-
-function updateRule(type, ok) {
-  const isSpine = type === 'spine';
-  const icon = document.getElementById(isSpine ? 'ruleSpineIcon' : 'ruleEyesIcon');
-  const box = document.getElementById(isSpine ? 'ruleSpineBox' : 'ruleEyesBox');
-  const pill = document.getElementById(isSpine ? 'spineStatusPill' : 'eyesStatusPill');
-  icon.textContent = ok ? '✓' : '✗';
-  icon.style.color = ok ? 'var(--green)' : 'var(--red)';
-  box.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
-  box.style.background = ok ? 'rgba(30,215,96,0.05)' : 'rgba(230,51,31,0.05)';
-  pill.className = 'status-pill ' + (ok ? 'sp-ok' : 'sp-fail');
-  pill.textContent = (isSpine ? 'Spine ' : 'Eyes ') + (ok ? '✓' : '✗');
-}
-
-function drawVisuals() {
-  const canvas = document.getElementById('camCanvas');
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  if (latestFace?.multiFaceLandmarks?.[0]) {
-    const lm = latestFace.multiFaceLandmarks[0];
-    const color = eyesOk ? '#1ed760' : '#e6331f';
-    [33,133,160,153,362,263,385,373].forEach(i => {
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(lm[i].x*canvas.width, lm[i].y*canvas.height, 2, 0, Math.PI*2);
-      ctx.fill();
-    });
-  }
-  if (latestPose?.poseLandmarks) {
-    const lm = latestPose.poseLandmarks;
-    const color = spineOk ? '#1ed760' : '#e6331f';
-    [0,11,12].forEach(i => {
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(lm[i].x*canvas.width, lm[i].y*canvas.height, 4, 0, Math.PI*2);
-      ctx.fill();
-    });
-    ctx.strokeStyle = color; ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(lm[11].x*canvas.width, lm[11].y*canvas.height);
-    ctx.lineTo(lm[12].x*canvas.width, lm[12].y*canvas.height);
-    ctx.stroke();
-  }
-}
-
-function toggleSess() {
-  sessActive = !sessActive;
-  const btn = document.getElementById('sessBtn');
-  if (sessActive) {
-    btn.textContent = 'Stop session';
-    btn.style.background = 'var(--bg3)';
-    addLog('Session started. Sit erect, eyes closed.');
-    sessTimer = setInterval(() => {
-      sessElapsed++;
-      const m = Math.floor(sessElapsed/60), s = sessElapsed%60;
-      document.getElementById('timerDisp').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-      document.getElementById('timerDisp').className = 'timer-big' + (spineOk&&eyesOk ? ' counting' : '');
-      document.getElementById('timerLbl').textContent = spineOk&&eyesOk ? 'Verified — minting $MONK' : 'Paused — fix posture or close eyes';
-      if (spineOk && eyesOk) {
-        consec++;
-        const pct = (consec%60)/60*100;
-        document.getElementById('progFill').style.width = pct + '%';
-        document.getElementById('progFill').className = 'prog-fill earn';
-        document.getElementById('progNum').textContent = (consec%60) + ' / 60s';
-        if (consec > 0 && consec%60 === 0) awardPoint();
-      } else {
-        if (consec > 0) { consec = 0; addLog('Posture lost. Counter reset.'); }
-        document.getElementById('progFill').style.width = '0%';
-        document.getElementById('progFill').className = 'prog-fill';
-        document.getElementById('progNum').textContent = '0 / 60s';
-      }
-    }, 1000);
-  } else {
-    clearInterval(sessTimer);
-    btn.textContent = 'Start session';
-    btn.style.background = 'var(--red)';
-    document.getElementById('medBanner').classList.remove('on');
-    document.getElementById('camGlow').classList.remove('on');
-    addLog('Session ended — ' + totalPts + ' total $MONK minted.');
-  }
-}
-
-function awardPoint() {
-  totalPts++;
-  localStorage.setItem('mmga_pts', totalPts);
-  document.getElementById('modalPts').textContent = totalPts;
-  addLog('★ $MONK MINTED! Total: ' + totalPts);
-  const p = document.getElementById('pointPop');
-  p.textContent = '+1 $MONK MINTED ★ (Total: ' + totalPts + ')';
-  p.classList.add('on');
-  setTimeout(() => p.classList.remove('on'), 2500);
-  const ptEl = document.querySelector('.n-pts');
-  if (ptEl) ptEl.textContent = '★ ' + totalPts + ' $MONK';
-  if (window._supa && window._user) {
-    window._supa.from('monk_points').upsert({user_id:window._user.id, email:window._user.email, points:totalPts, updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(()=>{}).catch(()=>{});
-  }
-}
-
-function resetSess() {
-  clearInterval(sessTimer);
-  sessActive = false; sessElapsed = 0; consec = 0;
-  document.getElementById('sessBtn').textContent = 'Start session';
-  document.getElementById('sessBtn').style.background = 'var(--red)';
-  document.getElementById('timerDisp').textContent = '00:00';
-  document.getElementById('timerDisp').className = 'timer-big';
-  document.getElementById('timerLbl').textContent = 'Not started';
-  document.getElementById('progFill').style.width = '0%';
-  document.getElementById('progNum').textContent = '0 / 60s';
-  document.getElementById('medBanner').classList.remove('on');
-  document.getElementById('camGlow').classList.remove('on');
-  document.getElementById('sessLog').innerHTML = '';
-}
-
-function addLog(msg) {
-  const log = document.getElementById('sessLog');
-  const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  log.innerHTML = '<div>[' + t + '] ' + msg + '</div>' + log.innerHTML;
-}
-
-/* AUTH */
-const SUPA_URL = 'https://ajozrnsoeyvbcxydiew.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFqb3pybnNvZXl2Y2JjeHlkaWV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2MjExNzcsImV4cCI6MjA5MzE5NzE3N30.dQ_n8CU_XPN9R2yYkUN30z4eexJUfpXKPABLtEawNDI';
-window._user = null;
-
-try {
-  window._supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-  window._supa.auth.getSession().then(({data}) => { if(data?.session?.user) handleLoggedIn(data.session.user); }).catch(()=>{});
-  window._supa.auth.onAuthStateChange((_, s) => { if(s?.user) handleLoggedIn(s.user); else handleLoggedOut(); });
-} catch(e) { console.warn('Supabase:', e); }
-
-function openAuth() {
-  document.getElementById('authModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.getElementById('authEmailStep').style.display = 'block';
-  document.getElementById('authCheckEmail').style.display = 'none';
-  document.getElementById('authMsg').textContent = '';
-  document.getElementById('authMsg').className = 'auth-msg';
-  setTimeout(() => document.getElementById('authEmail')?.focus(), 100);
-}
-function closeAuth() {
-  document.getElementById('authModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-async function sendMagicLink() {
-  const email = document.getElementById('authEmail').value.trim();
-  if (!email || !email.includes('@')) { showMsg('Enter a valid email.','err'); return; }
-  const btn = document.getElementById('authSendBtn');
-  btn.disabled = true; btn.textContent = 'Sending…';
-  if (!window._supa) { showMsg('Auth not configured.','err'); btn.disabled=false; btn.textContent='Send magic link →'; return; }
-  const {error} = await window._supa.auth.signInWithOtp({email, options:{emailRedirectTo:window.location.href}});
-  if (error) { showMsg(error.message,'err'); btn.disabled=false; btn.textContent='Send magic link →'; }
-  else { document.getElementById('authEmailSent').textContent=email; document.getElementById('authEmailStep').style.display='none'; document.getElementById('authCheckEmail').style.display='block'; }
-}
-
-async function signOut() {
-  if (window._supa) await window._supa.auth.signOut();
-  handleLoggedOut();
-}
-function showMsg(m,t){ const el=document.getElementById('authMsg'); el.textContent=m; el.className='auth-msg '+t; }
-
-function handleLoggedIn(user) {
-  window._user = user;
-  closeAuth();
-  document.getElementById('guestBanner').style.display = 'none';
-  const name = (user.email||'Monk').split('@')[0];
-  document.getElementById('navRight').innerHTML =
-    '<div class="n-user"><span class="n-pts">★ '+totalPts+' $MONK</span><span style="font-size:7px;color:var(--muted)">'+name+'</span></div>' +
-    '<button href="#mmga-mint-widget" class="btn btn-red btn-sm">▶ Mint</button>' +
-    '<button onclick="signOut()" class="n-signout">Sign out</button>';
-  if (window._supa) {
-    window._supa.from('monk_points').select('points').eq('user_id',user.id).single()
-      .then(({data}) => { if(data?.points){ totalPts=data.points; localStorage.setItem('mmga_pts',totalPts); document.getElementById('modalPts').textContent=totalPts; const pt=document.querySelector('.n-pts'); if(pt) pt.textContent='★ '+totalPts+' $MONK'; }})
-      .catch(()=>{});
-  }
-}
-function handleLoggedOut() {
-  window._user = null;
-  document.getElementById('navRight').innerHTML =
-    '<button href="#mmga-mint-widget" class="n-cta n-ghost">Login</button>' +
-    '<button href="#mmga-mint-widget" class="btn btn-red btn-sm">▶ Begin</button>';
-  document.getElementById('guestBanner').style.display = 'flex';
-}
-
-/* ESC */
-document.addEventListener('keydown', e => { if(e.key==='Escape'){ closeCam(); closeAuth(); }});
-</script>
-</body>
-</html>
+</body></html>
