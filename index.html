@@ -359,7 +359,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     <li><a href="#pricing">Pricing</a></li>
   </ul>
   <div class="n-right" id="navRight">
-    <button id="nav-wallet-btn" class="n-cta">Connect Wallet</button>
+    <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{window.open('https://phantom.app/','_blank')}">Connect Wallet</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
