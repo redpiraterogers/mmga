@@ -1,22 +1,467 @@
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MMGA - Make Meditation Great Again</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #121212;
+      --bg3: #1a1a1a;
+      --off: #e8e8e8;
+      --muted: #a0a0a0;
+      --dim: #666;
+      --border: #2a2a2a;
+      --border2: #333;
+      --border3: rgba(255,215,0,0.2);
+      --red: #e6331f;
+      --rdk: #b32818;
+      --yellow: #ffd700;
+      --green: #1ed760;
+      --px: 'Pixelify Sans', cursive;
+      --mono: 'Share Tech Mono', monospace;
+      --serif: Georgia, serif;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--off);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-family: var(--px);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+    
+    .logo span:nth-child(1) { color: var(--red); }
+    .logo span:nth-child(2) { color: var(--off); }
+    .logo span:nth-child(3) { color: var(--green); }
+    .logo span:nth-child(4) { color: var(--yellow); }
+    
+    .n-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    
+    .n-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-family: var(--mono);
+      transition: color 0.2s;
+    }
+    
+    .n-link:hover {
+      color: var(--yellow);
+    }
+    
+    .n-cta {
+      background: var(--yellow);
+      color: var(--bg);
+      border: none;
+      padding: 12px 24px;
+      font-family: var(--px);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    
+    .n-cta:hover {
+      background: #ffed4e;
+      transform: translateY(-2px);
+    }
+    
+    #nav-wallet-connected {
+      display: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--yellow);
+      padding: 8px 16px;
+      background: rgba(255,215,0,0.1);
+      border: 2px solid rgba(255,215,0,0.3);
+      border-radius: 4px;
+    }
+    
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 20px 80px;
+      position: relative;
+      text-align: center;
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 50%, rgba(230,51,31,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,215,0,0.05) 0%, transparent 50%);
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+    
+    .h-kicker {
+      font-family: var(--px);
+      font-size: 12px;
+      color: var(--yellow);
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+    }
+    
+    .h1 {
+      font-family: var(--px);
+      font-size: clamp(48px, 12vw, 120px);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      color: var(--red);
+      text-shadow: 4px 4px 0 var(--rdk), 8px 8px 0 rgba(0,0,0,0.5);
+      margin-bottom: 8px;
+    }
+    
+    .h2 {
+      font-family: var(--px);
+      font-size: clamp(36px, 10vw, 100px);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: 0.05em;
+      color: var(--off);
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+      margin-bottom: 8px;
+    }
+    
+    .h-tagline {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--muted);
+      margin: 32px 0 48px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    
+    .btn-primary {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 32px 64px;
+      font-family: var(--px);
+      font-size: clamp(18px, 4vw, 28px);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border-radius: 0;
+      box-shadow: 8px 8px 0 var(--rdk), 12px 12px 0 rgba(0,0,0,0.5);
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+    
+    .btn-primary:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 10px 10px 0 var(--rdk), 14px 14px 0 rgba(0,0,0,0.5);
+    }
+    
+    .btn-primary:active {
+      transform: translate(2px, 2px);
+      box-shadow: 4px 4px 0 var(--rdk), 6px 6px 0 rgba(0,0,0,0.5);
+    }
+    
+    .wallet-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .btn-wallet {
+      background: transparent;
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      padding: 16px 32px;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-wallet:hover {
+      background: rgba(255,215,0,0.1);
+      transform: translateY(-2px);
+    }
+    
+    .h-note {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      letter-spacing: 0.05em;
+      margin-top: 24px;
+    }
+    
+    .info-link {
+      display: inline-block;
+      margin-top: 48px;
+      color: var(--yellow);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--yellow);
+      transition: all 0.2s;
+    }
+    
+    .info-link:hover {
+      color: var(--off);
+      border-color: var(--off);
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--bg2);
+      border-top: 2px solid var(--border);
+      padding: 32px 20px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--dim);
+    }
+    
+    footer a {
+      color: var(--yellow);
+      text-decoration: none;
+    }
+    
+    footer a:hover {
+      text-decoration: underline;
+    }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      nav {
+        padding: 12px 16px;
+      }
+      
+      .logo {
+        font-size: 18px;
+      }
+      
+      .n-link {
+        display: none;
+      }
+      
+      .btn-primary {
+        padding: 24px 40px;
+        font-size: 20px;
+      }
+      
+      .wallet-options {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+      }
+      
+      .btn-wallet {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
 
-<p class="h-note">FREE · NO SIGNUP · CAMERA REQUIRED</p>
+<!-- Navigation -->
+<nav>
+  <div class="logo">
+    <span>M</span><span>M</span><span>G</span><span>A</span>
+  </div>
+  <div class="n-right">
+    <a href="info.html" class="n-link">Learn More</a>
+    <button id="nav-wallet-btn" class="n-cta">Connect Wallet</button>
+    <div id="nav-wallet-connected">
+      <span id="nav-wallet-address"></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="h-kicker">★ THE ROYAL SECRET OF MEDITATION — NOW VERIFIABLE ★</div>
+    
+    <h2 class="h2">MAKE</h2>
+    <h2 class="h2">MEDITATION</h2>
+    <h1 class="h1">GREAT AGAIN</h1>
+    
+    <p class="h-tagline">
+      Every meditation app has been lying to you. The truth: your mind stills itself. 
+      You just create the conditions. We verify them.
+    </p>
+    
+    <div class="btn-group">
+      <button class="btn-primary" id="begin-btn">
+        ⚔ BEGIN THE PRACTICE
+      </button>
+      
+      <div class="wallet-options">
+        <button class="btn-wallet" id="connect-desktop">💼 Connect Wallet (Desktop)</button>
+        <button class="btn-wallet" id="connect-mobile">📱 Connect Wallet (Mobile)</button>
+      </div>
+    </div>
+    
+    <p class="h-note">FREE · NO SIGNUP · CAMERA REQUIRED</p>
     <p class="h-note" style="margin-top:8px;color:var(--dim);font-size:10px">
       Clicking "BEGIN THE PRACTICE" opens the meditation app (app.html)
     </p>
+    
+    <a href="info.html" class="info-link">
+      Learn how it works →
+    </a>
+  </div>
+</section>
 
-<a href="info.html" class="info-link">
-Learn how it works →
-@@ -423,10 +426,9 @@ <h1 class="h1">GREAT AGAIN</h1>
-window.location.href = deepLink;
-}
+<!-- Footer -->
+<footer>
+  <p>MMGA Protocol · Solana Mainnet</p>
+  <p style="margin-top:8px">
+    Token: 4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv · 
+    <a href="info.html">Learn More</a> · 
+    <a href="info.html#whitepaper">Whitepaper</a>
+  </p>
+</footer>
 
-  // Open camera modal (redirect to full app for now)
+<script>
+  // Simple wallet connection
+  let walletAddress = null;
+  
+  // Update nav wallet display
+  function updateNavWallet() {
+    const btn = document.getElementById('nav-wallet-btn');
+    const connected = document.getElementById('nav-wallet-connected');
+    const address = document.getElementById('nav-wallet-address');
+    
+    if (!btn || !connected) return;
+    
+    if (window.solana && window.solana.isConnected && walletAddress) {
+      const short = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
+      address.textContent = '🔗 ' + short;
+      btn.style.display = 'none';
+      connected.style.display = 'block';
+    } else {
+      btn.style.display = 'inline-block';
+      connected.style.display = 'none';
+    }
+  }
+  
+  // Connect wallet (desktop)
+  async function connectWalletDesktop() {
+    if (!window.solana) {
+      alert('Please install Phantom wallet extension');
+      window.open('https://phantom.app/', '_blank');
+      return;
+    }
+    
+    try {
+      await window.solana.connect();
+      walletAddress = window.solana.publicKey.toString();
+      updateNavWallet();
+      alert('Wallet connected! You can now use the full platform.');
+    } catch (error) {
+      console.error('Connection error:', error);
+      alert('Failed to connect wallet');
+    }
+  }
+  
+  // Connect wallet (mobile)
+  function connectWalletMobile() {
+    const deepLink = `https://phantom.app/ul/browse/${encodeURIComponent(window.location.href)}?ref=mmga`;
+    window.location.href = deepLink;
+  }
+  
   // Open full meditation app
-function openCamera() {
-    alert('Camera feature coming soon! For now, visit the full platform.');
-    // TODO: Implement camera modal or redirect to full app
+  function openCamera() {
     window.location.href = 'app.html';
-}
+  }
+  
+  // Event listeners
+  document.getElementById('nav-wallet-btn').addEventListener('click', connectWalletDesktop);
+  document.getElementById('connect-desktop').addEventListener('click', connectWalletDesktop);
+  document.getElementById('connect-mobile').addEventListener('click', connectWalletMobile);
+  document.getElementById('begin-btn').addEventListener('click', openCamera);
+  
+  // Check wallet on load
+  if (window.solana) {
+    window.solana.on('connect', () => {
+      walletAddress = window.solana.publicKey.toString();
+      updateNavWallet();
+    });
+    
+    window.solana.on('disconnect', () => {
+      walletAddress = null;
+      updateNavWallet();
+    });
+    
+    // Check if already connected
+    if (window.solana.isConnected) {
+      walletAddress = window.solana.publicKey.toString();
+      updateNavWallet();
+    }
+  }
+  
+  // Initial update
+  updateNavWallet();
+</script>
 
-// Event listeners
+<!-- Phantom Wallet -->
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+</body>
+</html>
