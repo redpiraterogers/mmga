@@ -383,12 +383,13 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   That is why you gave up after three sessions.<br/><br/>
   <strong>The mind stills itself. You do not still it.</strong><br/>
   You create the conditions — spine erect, eyes closed — and wait.</p>
-  <div style="font-family:var(--px);font-size:clamp(9px,1.6vw,16px);color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);letter-spacing:0.08em;margin-bottom:36px">
+  <div style="font-family:var(--px);font-size:clamp(9px,1.6vw,16px);color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);letter-spacing:0.08em;margin-bottom:48px">
     SPINE ERECT &nbsp;+&nbsp; EYES CLOSED &nbsp;+&nbsp; TIME &nbsp;=&nbsp; STILLNESS
   </div>
+  <button class="btn btn-red" id="hero-begin-btn" style="font-size:clamp(16px,3vw,24px);padding:32px 64px;box-shadow:8px 8px 0 var(--rdk), 12px 12px 0 rgba(0,0,0,0.5);letter-spacing:0.1em;margin-bottom:32px;">⚔ BEGIN THE PRACTICE</button>
   <div class="h-ctas">
-    <button class="btn btn-red" id="hero-begin-btn">⚔ Begin the Practice</button>
-    <a href="#mmga-mint-widget" class="btn btn-ghost">Mint $MONK Token</a>
+    <a href="#mmga-mint-widget" class="btn btn-ghost btn-sm">Mint $MONK Token</a>
+    <a href="#secret" class="btn btn-ghost btn-sm">Learn the Secret</a>
   </div>
   <div class="hero-proof">
     <span class="proof-pill">Camera-verified posture &amp; eye closure</span>
@@ -1875,9 +1876,8 @@ function handleLoggedIn(user) {
 function handleLoggedOut() {
   window._user = null;
   document.getElementById('navRight').innerHTML =
-    '<button href="#mmga-mint-widget" class="n-cta n-ghost">Login</button>' +
-    '<button href="#mmga-mint-widget" class="btn btn-red btn-sm">▶ Begin</button>';
-  document.getElementById('guestBanner').style.display = 'flex';
+    '<button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById(\'mmga-mint-widget\').scrollIntoView({behavior:\'smooth\'})}).catch(e=>console.error(e))}else{window.open(\'https://phantom.app/\',\'_blank\')}">Connect Wallet</button>' +
+    '<div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;"><span id="nav-wallet-address"></span></div>';
 }
 
 /* ESC */
@@ -1922,6 +1922,32 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Hero Begin button handler attached');
   }
 });
+
+// Camera modal functions
+function openCam() {
+  const modal = document.getElementById('camModal');
+  if (modal) {
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeCam() {
+  const modal = document.getElementById('camModal');
+  if (modal) {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    if (sessActive) toggleSess();
+  }
+}
+
+function closeAuth() {
+  const authModal = document.getElementById('authModal');
+  if (authModal) {
+    authModal.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+}
 </script>
 </body>
 </html>
