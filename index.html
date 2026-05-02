@@ -358,6 +358,9 @@
     </div>
     
     <p class="h-note">FREE · NO SIGNUP · CAMERA REQUIRED</p>
+    <p class="h-note" style="margin-top:8px;color:var(--dim);font-size:10px">
+      Clicking "BEGIN THE PRACTICE" opens the meditation app (app.html)
+    </p>
     
     <a href="info.html" class="info-link">
       Learn how it works →
@@ -423,10 +426,9 @@
     window.location.href = deepLink;
   }
   
-  // Open camera modal (redirect to full app for now)
+  // Open full meditation app
   function openCamera() {
-    alert('Camera feature coming soon! For now, visit the full platform.');
-    // TODO: Implement camera modal or redirect to full app
+    window.location.href = 'app.html';
   }
   
   // Event listeners
