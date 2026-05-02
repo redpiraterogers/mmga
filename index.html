@@ -63,8 +63,10 @@ nav.stuck{background:rgba(15,20,25,0.95);border-bottom-color:var(--border3);box-
 hr.thin{border:none;border-top:2px solid var(--border3);max-width:1200px;margin:0 auto;box-shadow:0 1px 0 var(--dim)}
 
 /* HERO */
-.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 32px 96px;position:relative;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 20%, rgba(232,192,104,0.12), transparent 60%), radial-gradient(ellipse at center, var(--bg2) 0%, var(--bg) 70%)}
-.hero-overlay-div{position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(circle at 80% 20%, rgba(244,162,97,0.08), transparent 40%)}
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 32px 96px;position:relative;overflow:hidden;isolation:isolate;background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1920&q=80');background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.7) 50%, rgba(10,10,10,0.9) 100%);z-index:0}
+.hero > *{position:relative;z-index:1}
+.hero-overlay-div{position:absolute;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 80% 20%, rgba(255,0,51,0.15), transparent 50%)}
 
 .h-kicker{font-family:var(--px);font-size:9px;color:var(--yellow);background:rgba(255,215,0,0.12);border:2px solid rgba(255,215,0,0.4);padding:12px 20px;display:inline-block;margin-bottom:32px;letter-spacing:0.1em;line-height:1.6;animation:fadein 0.6s ease both;text-transform:uppercase;box-shadow:3px 3px 0 rgba(90,77,0,0.5)}
 @keyframes fadein{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -933,6 +935,354 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     </div>
   </div>
 </div>
+
+<!-- MINT TOKEN WIDGET -->
+<div id="mmga-mint-widget" style="background:var(--bg);padding:clamp(80px,10vw,120px) 0;border-top:3px solid var(--border3)">
+  <div class="s">
+    <span class="eyebrow">⬢ MINT YOUR TOKEN</span>
+    <h2 class="s-title">Claim Your $MONK</h2>
+    <p class="s-body" style="margin-bottom:48px">Connect your Phantom wallet and mint your $MONK token. First mint costs ~$0.36 (creates token account), subsequent mints ~$0.002 each. Fees go to Solana validators, not MMGA.</p>
+  </div>
+
+  <style>
+    .mmga-mint-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 40px 24px;
+      text-align: center;
+      background: #0a0a0a;
+    }
+
+    .mmga-wallet-status {
+      padding: 20px;
+      background: #141414;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      margin-bottom: 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      color: #ffffff;
+      box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .mmga-wallet-address {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 10px;
+      color: #ffd700;
+      margin-top: 12px;
+      word-break: break-all;
+      text-shadow: 2px 2px 0 rgba(90,77,0,0.5);
+    }
+
+    .mmga-mint-btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 12px;
+      padding: 20px 40px;
+      background: #ff0033;
+      border: 3px solid #ff3355;
+      color: #ffffff;
+      cursor: pointer;
+      text-transform: uppercase;
+      box-shadow: 4px 4px 0 #990022, 6px 6px 0 rgba(0,0,0,0.5);
+      transition: all 0.15s;
+      letter-spacing: 0.05em;
+      font-weight: bold;
+    }
+
+    .mmga-mint-btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 #990022, 8px 8px 0 rgba(0,0,0,0.5);
+    }
+
+    .mmga-mint-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .mmga-status-message {
+      margin-top: 24px;
+      padding: 20px;
+      background: #141414;
+      border: 3px solid #ffd700;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      color: #ffd700;
+      line-height: 1.6;
+      box-shadow: 4px 4px 0 rgba(90,77,0,0.5);
+    }
+
+    .mmga-error-message {
+      margin-top: 24px;
+      padding: 20px;
+      background: #141414;
+      border: 3px solid #ff0033;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      color: #ff0033;
+      line-height: 1.6;
+      box-shadow: 4px 4px 0 #990022;
+    }
+
+    .mmga-success-message {
+      margin-top: 24px;
+      padding: 24px;
+      background: #1a1a1a;
+      border: 4px solid #ffd700;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      color: #ffd700;
+      line-height: 1.8;
+      box-shadow: 6px 6px 0 rgba(90,77,0,0.8);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    }
+
+    .mmga-tx-link {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: #ff0033;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 9px;
+      border: 2px solid #ff3355;
+      box-shadow: 3px 3px 0 #990022;
+      transition: all 0.15s;
+    }
+
+    .mmga-tx-link:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 #990022;
+    }
+
+    .mmga-fee-notice {
+      margin-top: 16px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: #a0a0a0;
+    }
+
+    .mmga-install-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: #ffd700;
+      text-decoration: underline;
+      font-size: 12px;
+    }
+  </style>
+
+  <div class="mmga-mint-container">
+    <div id="mmga-wallet-section">
+      <!-- Wallet connection status appears here -->
+    </div>
+
+    <div id="mmga-message-section">
+      <!-- Status messages appear here -->
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  const BACKEND_URL = 'https://mmga-backend.onrender.com';
+  const MONK_TOKEN = '4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv';
+  
+  let walletAddress = null;
+  let isProcessing = false;
+
+  // Initialize
+  checkWallet();
+
+  function checkWallet() {
+    const walletSection = document.getElementById('mmga-wallet-section');
+    
+    if (!window.solana) {
+      walletSection.innerHTML = `
+        <div class="mmga-wallet-status">
+          ⚠️ PHANTOM WALLET NOT DETECTED
+          <div class="mmga-install-link">
+            <a href="https://phantom.app/" target="_blank" class="mmga-install-link">
+              Install Phantom Wallet →
+            </a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    if (window.solana.isConnected) {
+      walletAddress = window.solana.publicKey.toString();
+      showConnectedState();
+    } else {
+      showDisconnectedState();
+    }
+
+    // Listen for wallet events
+    window.solana.on('connect', () => {
+      walletAddress = window.solana.publicKey.toString();
+      showConnectedState();
+    });
+
+    window.solana.on('disconnect', () => {
+      walletAddress = null;
+      showDisconnectedState();
+    });
+  }
+
+  function showDisconnectedState() {
+    const walletSection = document.getElementById('mmga-wallet-section');
+    walletSection.innerHTML = `
+      <div class="mmga-wallet-status">
+        🔗 CONNECT YOUR PHANTOM WALLET TO MINT $MONK
+      </div>
+      <button class="mmga-mint-btn" onclick="mmgaConnect()">
+        CONNECT WALLET
+      </button>
+    `;
+  }
+
+  function showConnectedState() {
+    const walletSection = document.getElementById('mmga-wallet-section');
+    const shortAddress = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
+    walletSection.innerHTML = `
+      <div class="mmga-wallet-status">
+        ✅ WALLET CONNECTED
+        <div class="mmga-wallet-address">${shortAddress}</div>
+      </div>
+      <button class="mmga-mint-btn" onclick="mmgaMint()" id="mint-btn">
+        MINT 1 MONK TOKEN
+      </button>
+      <div class="mmga-fee-notice">
+        Network fee: ~$0.002 (paid to Solana validators)
+      </div>
+    `;
+  }
+
+  async function connectWallet() {
+    try {
+      await window.solana.connect();
+    } catch (error) {
+      showError('Failed to connect wallet: ' + error.message);
+    }
+  }
+
+  async function mintToken() {
+    if (!walletAddress || isProcessing) return;
+
+    isProcessing = true;
+    const btn = document.getElementById('mint-btn');
+    if (btn) btn.disabled = true;
+
+    clearMessages();
+
+    try {
+      // Step 1: Request transaction from backend
+      showStatus('Preparing transaction...');
+      
+      const response = await fetch(`${BACKEND_URL}/api/mint`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'demo-' + Date.now(), // Replace with real session ID
+          duration: 600, // 10 minutes - replace with actual session duration
+          timestamp: new Date().toISOString(),
+          biometricValid: true, // Replace with actual biometric validation
+          userWallet: walletAddress
+        })
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create transaction');
+      }
+
+      const txData = await response.json();
+
+      // Step 2: Sign transaction with Phantom
+      showStatus('Please approve transaction in Phantom...');
+      
+      const transaction = solanaWeb3.Transaction.from(
+        Buffer.from(txData.transaction, 'base64')
+      );
+
+      const signed = await window.solana.signTransaction(transaction);
+
+      // Step 3: Send to blockchain
+      showStatus('Submitting to blockchain...');
+      
+      const connection = new solanaWeb3.Connection(
+        'https://api.mainnet-beta.solana.com',
+        'confirmed'
+      );
+
+      const signature = await connection.sendRawTransaction(signed.serialize());
+
+      // Step 4: Wait for confirmation
+      showStatus('Confirming transaction...');
+      
+      await connection.confirmTransaction({
+        signature,
+        blockhash: txData.blockhash,
+        lastValidBlockHeight: txData.lastValidBlockHeight
+      });
+
+      // Success!
+      showSuccess(signature);
+
+    } catch (error) {
+      console.error('Mint error:', error);
+      showError(error.message || 'Minting failed');
+    } finally {
+      isProcessing = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+
+  function showStatus(message) {
+    const messageSection = document.getElementById('mmga-message-section');
+    messageSection.innerHTML = `
+      <div class="mmga-status-message">
+        ⏳ ${message}
+      </div>
+    `;
+  }
+
+  function showError(message) {
+    const messageSection = document.getElementById('mmga-message-section');
+    messageSection.innerHTML = `
+      <div class="mmga-error-message">
+        ❌ ${message}
+      </div>
+    `;
+  }
+
+  function showSuccess(signature) {
+    const messageSection = document.getElementById('mmga-message-section');
+    messageSection.innerHTML = `
+      <div class="mmga-success-message">
+        ✅ TOKEN MINTED SUCCESSFULLY!
+        <div style="margin-top:16px;font-size:10px;">
+          YOU NOW OWN 1 $MONK TOKEN
+        </div>
+        <a href="https://solscan.io/tx/${signature}" target="_blank" class="mmga-tx-link">
+          VIEW ON SOLSCAN →
+        </a>
+      </div>
+    `;
+  }
+
+  function clearMessages() {
+    document.getElementById('mmga-message-section').innerHTML = '';
+  }
+
+  // Expose functions globally
+  window.mmgaConnect = connectWallet;
+  window.mmgaMint = mintToken;
+
+})();
+</script>
 
 <!-- FOOTER -->
 <footer>
