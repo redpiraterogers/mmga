@@ -1,4 +1,4 @@
-    {<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
@@ -430,7 +430,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   
   <!-- BEGIN SESSION BUTTON -->
   <div style="text-align:center;margin-bottom:80px">
-    <button onclick="openCam()" class="btn" style="background:var(--red);color:#fff;padding:32px 64px;font-size:28px;font-weight:700;box-shadow:8px 8px 0 var(--rdk);font-family:var(--px);cursor:pointer;border:none;letter-spacing:0.05em">
+    <button id="begin-btn" onclick="openCam()" class="btn" style="background:var(--red);color:#fff;padding:32px 64px;font-size:28px;font-weight:700;box-shadow:8px 8px 0 var(--rdk);font-family:var(--px);cursor:pointer;border:none;letter-spacing:0.05em">
       ⚔ BEGIN SESSION
     </button>
     <p style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:16px">
@@ -725,13 +725,13 @@ async function startCam() {
       errorMsg = 'No camera detected on your device. Make sure a camera is connected.';
     } else if (e.name === 'NotSupportedError') {
       errorTitle = 'Browser not supported';
-      errorMsg = 'This browser doesn\'t support camera access. Try opening in Safari or Chrome instead.';
+      errorMsg = 'This browser doesn't support camera access. Try opening in Safari or Chrome instead.';
     } else if (e.name === 'NotReadableError') {
       errorTitle = 'Camera in use';
       errorMsg = 'Your camera is being used by another app. Close other apps and try again.';
     } else if (e.name === 'OverconstrainedError') {
       errorTitle = 'Camera constraints not supported';
-      errorMsg = 'Your camera doesn\'t support the required resolution. Try a different device.';
+      errorMsg = 'Your camera doesn't support the required resolution. Try a different device.';
     }
     
     document.getElementById('camPerm').innerHTML = `
@@ -1023,8 +1023,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
     console.log('Begin button handler attached');
-  } else {
-    console.error('begin-btn not found!');
   }
   
   // Also attach to hero Begin button
