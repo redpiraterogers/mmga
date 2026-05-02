@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Camera Test</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: #000; 
+      color: #fff;
+      font-family: -apple-system, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 { 
+      font-size: 24px; 
+      margin: 20px 0;
+      color: #ffd700;
+    }
+    video {
+      width: 100%;
+      max-width: 640px;
+      height: auto;
+      background: #222;
+      border: 3px solid #ffd700;
+      border-radius: 8px;
+      margin: 20px auto;
+      display: block;
+    }
+    button {
+      background: #e6331f;
+      color: #fff;
+      border: none;
+      padding: 20px 40px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 20px 0;
+      width: 100%;
+      max-width: 400px;
+    }
+    button:active {
+      background: #c72818;
+    }
+    #status {
+      font-size: 16px;
+      margin: 20px 0;
+      padding: 20px;
+      background: #1a1a1a;
+      border-radius: 8px;
+      line-height: 1.6;
+    }
+    .success { color: #1ed760; }
+    .error { color: #ff4444; }
+    .info { color: #ffd700; }
+  </style>
+</head>
+<body>
+
+<h1>📷 Simple Camera Test</h1>
+
+<div id="status">
+  <div class="info">Click button below to test camera</div>
+</div>
+
+<button id="startBtn">START CAMERA</button>
+
+<video id="video" autoplay playsinline muted></video>
+
+<div style="margin-top:30px;font-size:12px;color:#666;line-height:1.8">
+  <strong>What should happen:</strong><br>
+  1. Click "START CAMERA"<br>
+  2. Browser asks for camera permission<br>
+  3. Tap "Allow"<br>
+  4. Your face appears in the video box above<br><br>
+  
+  <strong>If it doesn't work:</strong><br>
+  - Check if you're in Safari/Chrome (not Phantom)<br>
+  - Check if site is HTTPS (lock icon)<br>
+  - Check if another app is using camera<br>
+  - Try closing all apps and refreshing
+</div>
+
+<script>
+const video = document.getElementById('video');
+const status = document.getElementById('status');
+const btn = document.getElementById('startBtn');
+
+function log(msg, type = 'info') {
+  console.log(msg);
+  const className = type === 'success' ? 'success' : type === 'error' ? 'error' : 'info';
+  status.innerHTML = `<div class="${className}">${msg}</div>`;
+}
+
+btn.addEventListener('click', async () => {
+  log('🔄 Requesting camera access...', 'info');
+  
+  try {
+    // Step 1: Request camera
+    log('Step 1: Requesting camera permission...', 'info');
+    
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: 'user',
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      }
+    });
+    
+    log('Step 2: Camera stream obtained! ✅', 'success');
+    
+    // Step 2: Attach to video
+    video.srcObject = stream;
+    
+    log('Step 3: Attached stream to video element...', 'info');
+    
+    // Step 3: Wait for video to load
+    video.onloadedmetadata = () => {
+      log('Step 4: Video metadata loaded...', 'info');
+      
+      video.play()
+        .then(() => {
+          log('✅ SUCCESS! Camera is working!<br>You should see yourself in the video above.', 'success');
+          btn.style.display = 'none';
+        })
+        .catch(err => {
+          log(`❌ Video play error: ${err.message}`, 'error');
+        });
+    };
+    
+    // Timeout check
+    setTimeout(() => {
+      if (video.paused) {
+        log('⚠️ Video not playing. Trying to start manually...', 'info');
+        video.play().catch(err => {
+          log(`❌ Manual play failed: ${err.message}`, 'error');
+        });
+      }
+    }, 2000);
+    
+  } catch (err) {
+    log(`❌ ERROR: ${err.name}<br><br>${err.message}<br><br>`, 'error');
+    
+    if (err.name === 'NotAllowedError') {
+      log(`❌ Camera Permission Denied!<br><br>
+        <strong>iPhone (Safari):</strong><br>
+        1. Tap AA button in address bar<br>
+        2. Tap "Website Settings"<br>
+        3. Set Camera to "Allow"<br>
+        4. Refresh this page<br><br>
+        
+        <strong>Android (Chrome):</strong><br>
+        1. Tap lock icon in address bar<br>
+        2. Tap "Permissions"<br>
+        3. Set Camera to "Allow"<br>
+        4. Refresh this page`, 'error');
+    } else if (err.name === 'NotFoundError') {
+      log('❌ No Camera Found!<br><br>Make sure your device has a camera.', 'error');
+    } else if (err.name === 'NotReadableError') {
+      log('❌ Camera In Use!<br><br>Close all other apps and try again.', 'error');
+    }
+  }
+});
+
+// Check if camera API exists
+if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+  log('❌ Camera API not supported!<br><br>Make sure you\'re using Safari or Chrome, not Phantom\'s in-app browser.', 'error');
+  btn.disabled = true;
+  btn.textContent = 'CAMERA NOT SUPPORTED';
+}
+</script>
+
+</body>
+</html>
