@@ -571,11 +571,32 @@ async function connectWallet(){
       msg.innerHTML='<div style="color:var(--green);padding:16px;border:2px solid var(--green);text-align:center;margin-top:16px">✅ Connected: '+walletAddress.slice(0,4)+'...'+walletAddress.slice(-4)+'</div>';
       setTimeout(()=>{msg.innerHTML='';},3000);
     }
+    
+    // Check backend health
+    checkBackendHealth();
   }catch(error){
     console.error('Connection error:',error);
     if(msg){
       msg.innerHTML='<div style="color:var(--red);padding:16px;border:2px solid var(--red);text-align:center;margin-top:16px">❌ Connection cancelled or failed</div>';
     }
+  }
+}
+
+async function checkBackendHealth(){
+  try{
+    const response=await fetch(BACKEND_URL+'/health',{method:'GET'});
+    if(response.ok){
+      console.log('✓ Backend is healthy:',BACKEND_URL);
+    }else{
+      console.warn('⚠️ Backend responded but not healthy:',response.status);
+    }
+  }catch(error){
+    console.error('❌ Backend unreachable:',BACKEND_URL);
+    console.error('Error:',error.message);
+    console.log('This means minting will fail. Backend endpoints needed:');
+    console.log('- POST /api/balance/:wallet/add');
+    console.log('- GET /api/balance/:wallet');
+    console.log('- POST /api/mint');
   }
 }
 
@@ -680,52 +701,74 @@ async function mintToken(){
   if(btn)btn.disabled=true;
   
   try{
-    // CRITICAL: Sync local points FIRST and wait for confirmation
+    let backendSyncSucceeded=false;
+    
+    // TRY to sync to backend (but continue if it fails)
     if(localPoints>0){
-      showStatus('Syncing '+localPoints+' earned MONK to backend...');
-      const syncResponse=await fetch(BACKEND_URL+'/api/balance/'+walletAddress+'/add',{
+      try{
+        showStatus('Syncing '+localPoints+' earned MONK to backend...');
+        const syncResponse=await fetch(BACKEND_URL+'/api/balance/'+walletAddress+'/add',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({amount:localPoints})
+        });
+        
+        if(syncResponse.ok){
+          // Verify sync worked
+          showStatus('Verifying sync...');
+          const balanceCheck=await fetch(BACKEND_URL+'/api/balance/'+walletAddress);
+          const balanceData=await balanceCheck.json();
+          const backendBalance=parseInt(balanceData.unmintedBalance)||0;
+          
+          if(backendBalance>=amount){
+            backendSyncSucceeded=true;
+            showStatus('✓ Sync verified! Backend has '+backendBalance+' MONK');
+            localStorage.setItem('mmga_pts','0');
+          }else{
+            console.warn('Sync verification failed. Backend:',backendBalance,'Need:',amount);
+          }
+        }
+      }catch(syncError){
+        console.warn('Backend sync failed:',syncError.message);
+        showStatus('⚠️ Backend sync failed - proceeding with localStorage balance...');
+        await new Promise(resolve=>setTimeout(resolve,2000));
+      }
+    }
+    
+    // If backend sync failed, warn but continue with localStorage
+    if(!backendSyncSucceeded&&localPoints>0){
+      showStatus('Using localStorage balance (backend unavailable)');
+      await new Promise(resolve=>setTimeout(resolve,1500));
+    }
+    
+    // Step 2: Request mint transaction from backend
+    showStatus('Creating mint transaction for '+amount+' MONK...');
+    
+    let transaction;
+    try{
+      const response=await fetch(BACKEND_URL+'/api/mint',{
         method:'POST',
         headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({amount:localPoints})
+        body:JSON.stringify({
+          userWallet:walletAddress,
+          amount:amount
+        })
       });
       
-      if(!syncResponse.ok){
-        throw new Error('Failed to sync balance to backend. Please try again.');
+      if(!response.ok){
+        const error=await response.json();
+        throw new Error(error.error||'Backend mint endpoint failed');
       }
       
-      // Verify sync worked by reloading balance
-      showStatus('Verifying sync...');
-      const balanceCheck=await fetch(BACKEND_URL+'/api/balance/'+walletAddress);
-      const balanceData=await balanceCheck.json();
-      const backendBalance=parseInt(balanceData.unmintedBalance)||0;
-      
-      if(backendBalance<amount){
-        throw new Error('Sync verification failed. Backend shows '+backendBalance+' but need '+amount+'. Please refresh and try again.');
-      }
-      
-      // Clear localStorage AFTER successful sync
-      localStorage.setItem('mmga_pts','0');
+      const data=await response.json();
+      transaction=data.transaction;
+    }catch(backendError){
+      // Backend mint endpoint failed - show detailed error
+      console.error('Backend mint error:',backendError);
+      throw new Error('Backend is unreachable or mint endpoint not ready. Error: '+backendError.message+'. Please check if backend is running at '+BACKEND_URL);
     }
     
-    // Step 2: Request mint transaction
-    showStatus('Creating mint transaction for '+amount+' MONK...');
-    const response=await fetch(BACKEND_URL+'/api/mint',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        userWallet:walletAddress,
-        amount:amount
-      })
-    });
-    
-    if(!response.ok){
-      const error=await response.json();
-      throw new Error(error.error||'Failed to create mint transaction');
-    }
-    
-    const {transaction}=await response.json();
-    
-    // Step 3: Sign and send
+    // Step 3: Sign and send transaction
     showStatus('Please approve the transaction in Phantom...');
     
     const provider=getSolanaProvider();
@@ -743,23 +786,26 @@ async function mintToken(){
     showStatus('Confirming transaction...');
     await connection.confirmTransaction(signature,'confirmed');
     
-    // Step 4: Reload balance
+    // Step 4: Clear localStorage and reload
+    if(!backendSyncSucceeded){
+      localStorage.setItem('mmga_pts','0');
+    }
     await loadBalance();
     
     showSuccess(signature,amount,unmintedBalance);
     
   }catch(error){
     console.error('Mint error:',error);
-    showError(error.message||'Minting failed. Please try again.');
     
-    // Restore localStorage if sync failed
-    if(localPoints>0){
-      const currentLocal=parseInt(localStorage.getItem('mmga_pts')||'0',10);
-      if(currentLocal===0){
-        localStorage.setItem('mmga_pts',localPoints.toString());
-        showError('Restored '+localPoints+' MONK to local storage. '+error.message);
-      }
+    // Show detailed error with backend status
+    let errorMsg=error.message||'Minting failed';
+    if(errorMsg.includes('Backend')||errorMsg.includes('fetch')){
+      errorMsg+=' | Check: Is backend running at '+BACKEND_URL+'? Open browser console (F12) for details.';
     }
+    
+    showError(errorMsg);
+    
+    // Don't restore localStorage - let user try again
   }finally{
     if(btn)btn.disabled=false;
   }
