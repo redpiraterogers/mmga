@@ -398,7 +398,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="font-family:var(--px);font-size:clamp(9px,1.6vw,16px);color:var(--yellow);text-shadow:2px 2px 0 var(--ydark);letter-spacing:0.08em;margin-bottom:48px">
     SPINE ERECT &nbsp;+&nbsp; EYES CLOSED &nbsp;+&nbsp; TIME &nbsp;=&nbsp; STILLNESS
   </div>
-  <button class="btn btn-red" id="hero-begin-btn" style="font-size:clamp(16px,3vw,24px);padding:32px 64px;box-shadow:8px 8px 0 var(--rdk), 12px 12px 0 rgba(0,0,0,0.5);letter-spacing:0.1em;margin-bottom:32px;">⚔ BEGIN THE PRACTICE</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px">
+    <button class="btn btn-red" id="hero-begin-btn" style="font-size:clamp(16px,3vw,24px);padding:32px 64px;box-shadow:8px 8px 0 var(--rdk), 12px 12px 0 rgba(0,0,0,0.5);letter-spacing:0.1em;">⚔ BEGIN SESSION</button>
+    <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected! Scroll to mint widget.')}).catch(e=>alert('Connection failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:14px;padding:20px 32px">💼 Connect Wallet (Desktop)</button>
+    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:14px;padding:20px 32px">📱 Connect Wallet (Mobile)</button>
+  </div>
   <div class="h-ctas">
     <a href="#mmga-mint-widget" class="btn btn-ghost btn-sm">Mint $MONK Token</a>
     <a href="#secret" class="btn btn-ghost btn-sm">Learn the Secret</a>
@@ -412,7 +416,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 
 <!-- Quick CTA -->
 <div style="text-align:center;padding:40px 20px;background:#0d0d0d;border-top:1px solid #2a2a2a;border-bottom:1px solid #2a2a2a">
-  <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN A SESSION NOW</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+    <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN SESSION</button>
+    <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Connection failed: '+e.message))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect Wallet (Desktop)</button>
+    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect Wallet (Mobile)</button>
+  </div>
   <p style="font-family:var(--mono);font-size:11px;color:#666;margin-top:12px;letter-spacing:0.05em">FREE · NO SIGNUP · CAMERA REQUIRED</p>
 </div>
 
@@ -478,7 +486,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- Quick CTA -->
 <div style="text-align:center;padding:48px 20px;background:#0a0a0a">
   <p style="font-family:var(--px);font-size:10px;color:#ffd700;letter-spacing:0.08em;margin-bottom:16px">READY TO TRY?</p>
-  <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN YOUR FIRST SESSION</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+    <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN SESSION</button>
+    <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Connection failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
+    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+  </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:12px">Takes 60 seconds · Completely free</p>
 </div>
 
@@ -621,7 +633,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- Quick CTA -->
 <div style="text-align:center;padding:60px 20px;background:#0d0d0d">
   <p style="font-family:var(--serif);font-size:24px;color:#e8e8e8;margin-bottom:20px;font-style:italic">Or just sit in silence</p>
-  <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ START SILENT SESSION</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+    <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN SESSION</button>
+    <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
+    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+  </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:12px">No music. No voice. Just you.</p>
 </div>
 
@@ -794,7 +810,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <!-- Quick CTA -->
 <div style="text-align:center;padding:60px 20px;background:#0a0a0a">
   <p style="font-family:var(--px);font-size:9px;color:#ffd700;letter-spacing:0.1em;margin-bottom:20px">EVERYTHING STARTS WITH ONE SESSION</p>
-  <button onclick="openCam()" class="btn btn-red" style="font-size:16px;padding:24px 56px">▶ BEGIN NOW</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+    <button onclick="openCam()" class="btn btn-red" style="font-size:16px;padding:24px 56px">▶ BEGIN SESSION</button>
+    <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Connected!')}).catch(e=>alert('Failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
+    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+  </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:16px">Free · 60 seconds · Earn your first $MONK</p>
 </div>
 
@@ -981,7 +1001,11 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
 <div style="text-align:center;padding:80px 20px;background:#0d0d0d;border-top:1px solid #2a2a2a;border-bottom:3px solid rgba(255,215,0,0.3)">
   <p style="font-family:var(--serif);font-size:32px;color:#e8e8e8;margin-bottom:12px;line-height:1.3">Before you mint,<br/>try one session</p>
   <p style="font-size:14px;color:#a0a0a0;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto;line-height:1.6">Experience the protocol. See how verification works. Then decide if this is for you.</p>
-  <button onclick="openCam()" class="btn btn-red" style="font-size:16px;padding:24px 64px">▶ TRY 60 SECONDS NOW</button>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
+    <button onclick="openCam()" class="btn btn-red" style="font-size:16px;padding:24px 64px">▶ BEGIN SESSION</button>
+    <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
+    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+  </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:16px">Completely free · No wallet needed yet</p>
 </div>
 
@@ -1755,6 +1779,9 @@ async function startCam() {
   document.getElementById('camPerm').style.display = 'none';
   document.getElementById('loadFill').style.width = '30%';
   
+  // Detect mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
   // Check if camera is supported
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
     document.getElementById('camPerm').style.display = 'flex';
@@ -1773,10 +1800,42 @@ async function startCam() {
   }
   
   try {
-    localStream = await navigator.mediaDevices.getUserMedia({video:{width:640,height:480,facingMode:'user'}});
-    document.getElementById('camVideo').srcObject = localStream;
-    initDetection();
+    // Mobile-optimized constraints
+    const constraints = isMobile ? {
+      video: {
+        facingMode: 'user',
+        width: { ideal: 640, max: 1280 },
+        height: { ideal: 480, max: 720 }
+      }
+    } : {
+      video: {
+        width: 640,
+        height: 480,
+        facingMode: 'user'
+      }
+    };
+    
+    console.log('Requesting camera with constraints:', constraints);
+    localStream = await navigator.mediaDevices.getUserMedia(constraints);
+    console.log('Camera stream obtained!');
+    
+    const videoEl = document.getElementById('camVideo');
+    videoEl.srcObject = localStream;
+    
+    // Wait for video to be ready
+    videoEl.onloadedmetadata = () => {
+      console.log('Video metadata loaded, starting playback');
+      videoEl.play().then(() => {
+        console.log('Video playing, initializing detection');
+        initDetection();
+      }).catch(err => {
+        console.error('Video play error:', err);
+        addLog('Video play error: ' + err.message);
+      });
+    };
+    
   } catch(e) {
+    console.error('Camera error:', e);
     document.getElementById('camPerm').style.display = 'flex';
     
     // Better error messages based on error type
@@ -1785,7 +1844,9 @@ async function startCam() {
     
     if (e.name === 'NotAllowedError') {
       errorTitle = 'Camera permission denied';
-      errorMsg = 'You blocked camera access. Go to your browser settings, allow camera for this site, and refresh.';
+      errorMsg = isMobile 
+        ? 'Tap the AA button (Safari) or lock icon (Chrome) in the address bar, then enable Camera and refresh this page.'
+        : 'You blocked camera access. Go to your browser settings, allow camera for this site, and refresh.';
     } else if (e.name === 'NotFoundError') {
       errorTitle = 'No camera found';
       errorMsg = 'No camera detected on your device. Make sure a camera is connected.';
@@ -1795,17 +1856,31 @@ async function startCam() {
     } else if (e.name === 'NotReadableError') {
       errorTitle = 'Camera in use';
       errorMsg = 'Your camera is being used by another app. Close other apps and try again.';
+    } else if (e.name === 'OverconstrainedError') {
+      errorTitle = 'Camera constraints not supported';
+      errorMsg = 'Your camera doesn\'t support the required resolution. Try a different device.';
     }
     
     document.getElementById('camPerm').innerHTML = `
       <div style="font-size:36px">⚠</div>
       <div style="font-family:var(--px);font-size:9px">${errorTitle.toUpperCase()}</div>
       <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7;margin-top:12px">${errorMsg}</p>
+      <div style="margin-top:12px;font-size:10px;color:#666;font-family:monospace;">Error: ${e.name}</div>
     `;
   }
 }
 
 function initDetection() {
+  const videoEl = document.getElementById('camVideo');
+  
+  // Mobile-specific: ensure video is playing
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  if (isMobile) {
+    videoEl.setAttribute('playsinline', 'true');
+    videoEl.setAttribute('autoplay', 'true');
+    videoEl.setAttribute('muted', 'true');
+  }
+  
   faceMesh = new FaceMesh({locateFile: f => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`});
   faceMesh.setOptions({maxNumFaces:1, refineLandmarks:true, minDetectionConfidence:0.5});
   faceMesh.onResults(r => { latestFace = r; checkLogic(); });
@@ -1814,21 +1889,25 @@ function initDetection() {
   pose.setOptions({modelComplexity:1, minDetectionConfidence:0.5});
   pose.onResults(r => { latestPose = r; checkLogic(); });
 
-  const video = document.getElementById('camVideo');
-  mpCam = new Camera(video, {
+  mpCam = new Camera(videoEl, {
     onFrame: async () => {
-      if (faceMesh) await faceMesh.send({image:video});
-      if (pose) await pose.send({image:video});
+      if (faceMesh) await faceMesh.send({image:videoEl});
+      if (pose) await pose.send({image:videoEl});
       drawVisuals();
     },
     width: 640, height: 480
   });
+  
   mpCam.start().then(() => {
+    console.log('MediaPipe camera started successfully');
     document.getElementById('loadFill').style.width = '100%';
     document.getElementById('camStatusBar').style.display = 'flex';
     document.getElementById('sessBtn').disabled = false;
     addLog('Detection active. Ready to mint $MONK.');
-  }).catch(e => addLog('Error: ' + e.message));
+  }).catch(e => {
+    console.error('MediaPipe camera start error:', e);
+    addLog('Error: ' + e.message);
+  });
 }
 
 function checkLogic() {
