@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MMGA - Meditation Session</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg2: #121212;
+      --bg3: #1a1a1a;
+      --off: #e8e8e8;
+      --muted: #a0a0a0;
+      --dim: #666;
+      --border: #2a2a2a;
+      --border2: #333;
+      --border3: rgba(255,215,0,0.2);
+      --red: #e6331f;
+      --rdk: #b32818;
+      --yellow: #ffd700;
+      --green: #1ed760;
+      --px: 'Pixelify Sans', cursive;
+      --mono: 'Share Tech Mono', monospace;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--off);
+      min-height: 100vh;
+    }
+    
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .logo {
+      font-family: var(--px);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .logo span:nth-child(1) { color: var(--red); }
+    .logo span:nth-child(2) { color: var(--off); }
+    .logo span:nth-child(3) { color: var(--green); }
+    .logo span:nth-child(4) { color: var(--yellow); }
+    
+    .n-right {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    
+    .n-link {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-family: var(--mono);
+      transition: color 0.2s;
+    }
+    
+    .n-link:hover {
+      color: var(--yellow);
+    }
+    
+    .n-cta {
+      background: var(--yellow);
+      color: var(--bg);
+      border: none;
+      padding: 12px 24px;
+      font-family: var(--px);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+    }
+    
+    .n-cta:hover {
+      background: #ffed4e;
+      transform: translateY(-2px);
+    }
+    
+    #nav-wallet-connected {
+      display: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--yellow);
+      padding: 8px 16px;
+      background: rgba(255,215,0,0.1);
+      border: 2px solid rgba(255,215,0,0.3);
+      border-radius: 4px;
+    }
+    
+    /* Main Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 20px;
+    }
+    
+    /* Session Control */
+    .session-control {
+      background: var(--bg2);
+      border: 2px solid var(--border3);
+      padding: 48px;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    
+    .session-control h1 {
+      font-family: var(--px);
+      font-size: 32px;
+      color: var(--red);
+      margin-bottom: 16px;
+      letter-spacing: 0.05em;
+    }
+    
+    .session-control p {
+      color: var(--muted);
+      margin-bottom: 32px;
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+    
+    .btn-begin {
+      background: var(--red);
+      color: #fff;
+      border: none;
+      padding: 24px 64px;
+      font-family: var(--px);
+      font-size: 24px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 8px 8px 0 var(--rdk);
+      transition: all 0.2s;
+    }
+    
+    .btn-begin:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 10px 10px 0 var(--rdk);
+    }
+    
+    /* Mint Widget */
+    .mint-widget {
+      background: var(--bg2);
+      border: 2px solid var(--border3);
+      padding: 48px;
+    }
+    
+    .mint-widget h2 {
+      font-family: var(--px);
+      font-size: 28px;
+      color: var(--yellow);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+    
+    .wallet-section {
+      margin-bottom: 32px;
+    }
+    
+    .wallet-status {
+      text-align: center;
+      padding: 24px;
+      background: var(--bg3);
+      border: 2px solid var(--border);
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--muted);
+    }
+    
+    .balance-box {
+      text-align: center;
+      padding: 32px;
+      background: var(--bg3);
+      border: 2px solid var(--border3);
+      margin: 24px 0;
+    }
+    
+    .balance-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--dim);
+      margin-bottom: 8px;
+    }
+    
+    .balance-amount {
+      font-family: var(--px);
+      font-size: 48px;
+      color: var(--yellow);
+      margin-bottom: 8px;
+    }
+    
+    .balance-unit {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
+    .mint-controls {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      margin: 24px 0;
+    }
+    
+    .btn-control {
+      background: var(--bg3);
+      border: 2px solid var(--border2);
+      color: var(--off);
+      width: 48px;
+      height: 48px;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-control:hover {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+    
+    .mint-input {
+      width: 120px;
+      height: 48px;
+      background: var(--bg3);
+      border: 2px solid var(--border2);
+      color: var(--off);
+      font-family: var(--px);
+      font-size: 24px;
+      text-align: center;
+    }
+    
+    .btn-mint {
+      background: var(--green);
+      color: #fff;
+      border: none;
+      padding: 16px 48px;
+      font-family: var(--px);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+      display: block;
+      transition: all 0.2s;
+    }
+    
+    .btn-mint:hover {
+      background: #1fef6a;
+      transform: translateY(-2px);
+    }
+    
+    .btn-mint:disabled {
+      background: var(--dim);
+      cursor: not-allowed;
+    }
+    
+    .btn-connect {
+      background: var(--yellow);
+      color: var(--bg);
+      border: none;
+      padding: 16px 32px;
+      font-family: var(--px);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto;
+    }
+    
+    .message-section {
+      margin-top: 24px;
+      min-height: 60px;
+    }
+    
+    .success-message {
+      background: rgba(30, 215, 96, 0.1);
+      border: 2px solid var(--green);
+      padding: 16px;
+      color: var(--green);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: center;
+    }
+    
+    .error-message {
+      background: rgba(230, 51, 31, 0.1);
+      border: 2px solid var(--red);
+      padding: 16px;
+      color: var(--red);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: center;
+    }
+    
+    .status-message {
+      background: rgba(255, 215, 0, 0.1);
+      border: 2px solid var(--yellow);
+      padding: 16px;
+      color: var(--yellow);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: center;
+    }
+    
+    .tx-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--green);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+    
+    .tx-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* Footer */
+    footer {
+      background: var(--bg2);
+      border-top: 2px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--dim);
+      margin-top: 80px;
+    }
+    
+    footer a {
+      color: var(--yellow);
+      text-decoration: none;
+    }
+    
+    /* Camera Modal - will be added dynamically */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.95);
+      z-index: 1000;
+      padding: 20px;
+      overflow-y: auto;
+    }
+    
+    .modal.open {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background: var(--bg2);
+      border: 2px solid var(--border3);
+      padding: 32px;
+      max-width: 1000px;
+      width: 100%;
+    }
+    
+    /* Mobile */
+    @media (max-width: 768px) {
+      nav {
+        padding: 12px 16px;
+      }
+      
+      .logo {
+        font-size: 18px;
+      }
+      
+      .n-link {
+        display: none;
+      }
+      
+      .container {
+        padding: 40px 16px;
+      }
+      
+      .session-control, .mint-widget {
+        padding: 24px 16px;
+      }
+      
+      .btn-begin {
+        padding: 20px 40px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+  <a href="index.html" class="logo">
+    <span>M</span><span>M</span><span>G</span><span>A</span>
+  </a>
+  <div class="n-right">
+    <a href="info.html" class="n-link">Learn More</a>
+    <button id="nav-wallet-btn" class="n-cta">Connect Wallet</button>
+    <div id="nav-wallet-connected">
+      <span id="nav-wallet-address"></span>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container">
+  
+  <!-- Session Control -->
+  <div class="session-control">
+    <h1>⚔ BEGIN MEDITATION SESSION</h1>
+    <p>EARN 1 $MONK PER SECOND · SPINE ERECT · EYES CLOSED</p>
+    <button class="btn-begin" id="begin-session-btn">START SESSION</button>
+  </div>
+
+  <!-- Mint Widget -->
+  <div class="mint-widget" id="mmga-mint-widget">
+    <h2>💰 MINT YOUR $MONK TOKENS</h2>
+    
+    <!-- Wallet Section -->
+    <div class="wallet-section" id="mmga-wallet-section">
+      <div class="wallet-status">
+        🔗 CONNECT WALLET TO VIEW BALANCE
+      </div>
+      <button class="btn-connect" onclick="connectWallet()">CONNECT WALLET</button>
+    </div>
+    
+    <!-- Balance Display -->
+    <div id="mmga-balance-section"></div>
+    
+    <!-- Mint Controls -->
+    <div class="mint-controls" style="display:none" id="mint-controls">
+      <button class="btn-control" onclick="decrementAmount()">−</button>
+      <input type="number" id="mint-amount" class="mint-input" value="1" min="1" max="100" readonly>
+      <button class="btn-control" onclick="incrementAmount()">+</button>
+    </div>
+    
+    <button class="btn-mint" id="mint-btn" style="display:none" onclick="mintToken()">
+      MINT <span id="mint-btn-amount">1</span> $MONK
+    </button>
+    
+    <!-- Messages -->
+    <div class="message-section" id="mmga-message-section"></div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>MMGA Protocol · Solana Mainnet · <a href="info.html">Learn More</a></p>
+  <p style="margin-top:8px">Token: 4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv</p>
+</footer>
+
+<!-- Camera Modal (will be injected here) -->
+<div id="camModal" class="modal"></div>
+
+<script>
+  // Configuration
+  const BACKEND_URL = 'https://mmga-backend.onrender.com';
+  
+  // State
+  let walletAddress = null;
+  let unmintedBalance = 0;
+  let mintAmount = 1;
+  let isProcessing = false;
+  let totalPts = parseInt(localStorage.getItem('mmga_pts') || '0');
+  
+  // Wallet Functions
+  async function connectWallet() {
+    if (!window.solana) {
+      alert('Please install Phantom wallet');
+      window.open('https://phantom.app/', '_blank');
+      return;
+    }
+    
+    try {
+      await window.solana.connect();
+      walletAddress = window.solana.publicKey.toString();
+      updateNavWallet();
+      showConnectedState();
+      await loadBalance();
+    } catch (error) {
+      console.error('Connection error:', error);
+      showError('Failed to connect wallet');
+    }
+  }
+  
+  function updateNavWallet() {
+    const btn = document.getElementById('nav-wallet-btn');
+    const connected = document.getElementById('nav-wallet-connected');
+    const address = document.getElementById('nav-wallet-address');
+    
+    if (!btn || !connected) return;
+    
+    if (window.solana && window.solana.isConnected && walletAddress) {
+      const short = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
+      address.textContent = '🔗 ' + short;
+      btn.style.display = 'none';
+      connected.style.display = 'block';
+    } else {
+      btn.style.display = 'inline-block';
+      connected.style.display = 'none';
+    }
+  }
+  
+  function showConnectedState() {
+    const section = document.getElementById('mmga-wallet-section');
+    section.innerHTML = `
+      <div class="wallet-status" style="color:var(--green)">
+        ✅ WALLET CONNECTED: ${walletAddress.slice(0,4)}...${walletAddress.slice(-4)}
+      </div>
+    `;
+    document.getElementById('mint-controls').style.display = 'flex';
+    document.getElementById('mint-btn').style.display = 'block';
+  }
+  
+  async function loadBalance() {
+    if (!walletAddress) return;
+    
+    try {
+      const localPoints = parseInt(localStorage.getItem('mmga_pts') || '0');
+      const response = await fetch(`${BACKEND_URL}/api/balance/${walletAddress}`);
+      const data = await response.json();
+      const backendBalance = parseInt(data.unmintedBalance) || 0;
+      
+      unmintedBalance = localPoints + backendBalance;
+      updateBalanceDisplay();
+    } catch (error) {
+      console.error('Balance load error:', error);
+      unmintedBalance = parseInt(localStorage.getItem('mmga_pts') || '0');
+      updateBalanceDisplay();
+    }
+  }
+  
+  function updateBalanceDisplay() {
+    const section = document.getElementById('mmga-balance-section');
+    
+    if (!walletAddress) {
+      section.innerHTML = '';
+      return;
+    }
+    
+    section.innerHTML = `
+      <div class="balance-box">
+        <div class="balance-label">UNMINTED BALANCE</div>
+        <div class="balance-amount">${unmintedBalance}</div>
+        <div class="balance-unit">$MONK TOKENS READY TO MINT</div>
+      </div>
+    `;
+  }
+  
+  function updateMintAmount(amount) {
+    mintAmount = Math.max(1, Math.min(100, Math.min(amount, unmintedBalance)));
+    const input = document.getElementById('mint-amount');
+    const btnAmount = document.getElementById('mint-btn-amount');
+    if (input) input.value = mintAmount;
+    if (btnAmount) btnAmount.textContent = mintAmount;
+  }
+  
+  function incrementAmount() {
+    updateMintAmount(mintAmount + 1);
+  }
+  
+  function decrementAmount() {
+    updateMintAmount(mintAmount - 1);
+  }
+  
+  async function mintToken() {
+    if (!walletAddress || isProcessing) return;
+    
+    if (unmintedBalance === 0) {
+      showError('No MONK to mint! Complete a meditation session first.');
+      return;
+    }
+    
+    if (mintAmount > unmintedBalance) {
+      showError(`Cannot mint ${mintAmount} MONK. You only have ${unmintedBalance} unminted.`);
+      return;
+    }
+    
+    isProcessing = true;
+    const btn = document.getElementById('mint-btn');
+    if (btn) btn.disabled = true;
+    
+    clearMessages();
+    
+    try {
+      // Sync localStorage to backend
+      const localPoints = parseInt(localStorage.getItem('mmga_pts') || '0');
+      if (localPoints > 0) {
+        showStatus(`Syncing ${localPoints} earned MONK...`);
+        await fetch(`${BACKEND_URL}/api/balance/${walletAddress}/add`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: localPoints })
+        });
+      }
+      
+      // Request mint transaction
+      showStatus(`Preparing to mint ${mintAmount} MONK...`);
+      const response = await fetch(`${BACKEND_URL}/api/mint`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userWallet: walletAddress,
+          amount: mintAmount
+        })
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create transaction');
+      }
+      
+      const { transaction, message } = await response.json();
+      showStatus('Please approve transaction in Phantom...');
+      
+      // Sign and send
+      const txBuffer = Buffer.from(transaction, 'base64');
+      const tx = solanaWeb3.Transaction.from(txBuffer);
+      const signedTx = await window.solana.signTransaction(tx);
+      const signature = await window.solana.connection.sendRawTransaction(signedTx.serialize());
+      
+      showStatus('Confirming transaction...');
+      await window.solana.connection.confirmTransaction(signature);
+      
+      // Clear localStorage after successful mint
+      localStorage.setItem('mmga_pts', '0');
+      
+      showSuccess(signature, mintAmount, unmintedBalance - mintAmount);
+      await loadBalance();
+      
+    } catch (error) {
+      console.error('Mint error:', error);
+      showError(error.message || 'Minting failed');
+      await loadBalance();
+    } finally {
+      isProcessing = false;
+      if (btn) btn.disabled = false;
+    }
+  }
+  
+  function showError(message) {
+    document.getElementById('mmga-message-section').innerHTML = `
+      <div class="error-message">❌ ${message}</div>
+    `;
+  }
+  
+  function showStatus(message) {
+    document.getElementById('mmga-message-section').innerHTML = `
+      <div class="status-message">⏳ ${message}</div>
+    `;
+  }
+  
+  function showSuccess(signature, amount, remaining) {
+    document.getElementById('mmga-message-section').innerHTML = `
+      <div class="success-message">
+        ✅ MINTED ${amount} $MONK SUCCESSFULLY!
+        <div style="margin-top:12px;font-size:10px">
+          REMAINING BALANCE: ${remaining} MONK
+        </div>
+        <a href="https://solscan.io/tx/${signature}" target="_blank" class="tx-link">
+          VIEW ON SOLSCAN →
+        </a>
+      </div>
+    `;
+  }
+  
+  function clearMessages() {
+    document.getElementById('mmga-message-section').innerHTML = '';
+  }
+  
+  // Begin Session - Alert for now (camera modal to be added)
+  document.getElementById('begin-session-btn').addEventListener('click', function() {
+    alert('Camera modal coming soon! This will open the meditation session interface.');
+  });
+  
+  // Nav wallet button
+  document.getElementById('nav-wallet-btn').addEventListener('click', connectWallet);
+  
+  // Check wallet on load
+  if (window.solana) {
+    window.solana.on('connect', () => {
+      walletAddress = window.solana.publicKey.toString();
+      showConnectedState();
+      loadBalance();
+      updateNavWallet();
+    });
+    
+    window.solana.on('disconnect', () => {
+      walletAddress = null;
+      unmintedBalance = 0;
+      updateBalanceDisplay();
+      updateNavWallet();
+    });
+    
+    if (window.solana.isConnected) {
+      walletAddress = window.solana.publicKey.toString();
+      showConnectedState();
+      loadBalance();
+      updateNavWallet();
+    }
+  }
+  
+  updateNavWallet();
+</script>
+
+<!-- Solana Web3.js -->
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
+
+</body>
+</html>
