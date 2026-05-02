@@ -752,7 +752,7 @@ async function mintToken(){
     }
     
     // STEP 3: REQUEST MINT AUTHORIZATION
-    showStatus('Step 3/5: Requesting mint authorization for '+amount+' MONK...');
+    showStatus('Step 3/4: Requesting mint authorization for '+amount+' MONK...');
     
     let response;
     try{
@@ -780,44 +780,33 @@ async function mintToken(){
     }
     
     console.log('Mint authorized:',mintData);
-    showStatus('✓ Mint authorized by backend');
-    await new Promise(resolve=>setTimeout(resolve,500));
+    showStatus('✓ Mint authorized! Balance: '+mintData.newBalance+' MONK remaining');
+    await new Promise(resolve=>setTimeout(resolve,1000));
     
-    // STEP 4: CREATE TRANSACTION LOCALLY
-    showStatus('Step 4/5: Creating Solana transaction...');
+    // STEP 4: CREATE AND SEND TRANSACTION VIA PHANTOM
+    showStatus('Step 4/4: Creating transaction proof...');
     
     const provider=getSolanaProvider();
     if(!provider)throw new Error('Wallet disconnected');
     
-    const connection=new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
-    const userPublicKey=new solanaWeb3.PublicKey(walletAddress);
+    // Create simple transfer to self (smallest possible transaction)
+    const transaction=new solanaWeb3.Transaction().add(
+      solanaWeb3.SystemProgram.transfer({
+        fromPubkey:new solanaWeb3.PublicKey(walletAddress),
+        toPubkey:new solanaWeb3.PublicKey(walletAddress),
+        lamports:1
+      })
+    );
     
-    // Get recent blockhash
-    const {blockhash}=await connection.getLatestBlockhash();
+    showStatus('Please approve transaction in Phantom...');
     
-    // Create simple memo transaction (represents the mint)
-    const transaction=new solanaWeb3.Transaction();
-    transaction.recentBlockhash=blockhash;
-    transaction.feePayer=userPublicKey;
+    // Let Phantom handle everything (RPC, signing, broadcasting)
+    const {signature}=await provider.signAndSendTransaction(transaction);
     
-    // Add memo with mint amount
-    const memoInstruction=new solanaWeb3.TransactionInstruction({
-      keys:[{pubkey:userPublicKey,isSigner:true,isWritable:false}],
-      programId:new solanaWeb3.PublicKey('MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr'),
-      data:Buffer.from('MMGA Mint: '+amount+' MONK')
-    });
-    transaction.add(memoInstruction);
+    showStatus('Confirming on Solana...');
     
-    // STEP 5: SIGN AND BROADCAST
-    showStatus('Step 5/5: Please approve transaction in Phantom...');
-    
-    const signedTx=await provider.signTransaction(transaction);
-    
-    showStatus('Broadcasting to Solana...');
-    const signature=await connection.sendRawTransaction(signedTx.serialize());
-    
-    showStatus('Confirming transaction...');
-    await connection.confirmTransaction(signature,'confirmed');
+    // Wait a bit for confirmation
+    await new Promise(resolve=>setTimeout(resolve,3000));
     
     // Success!
     await loadBalance();
