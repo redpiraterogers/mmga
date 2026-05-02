@@ -360,7 +360,6 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   </ul>
   <div class="n-right" id="navRight">
     <button id="nav-wallet-btn" class="n-cta" onclick="if(window.solana){window.solana.connect().then(()=>{document.getElementById('mmga-mint-widget').scrollIntoView({behavior:'smooth'})}).catch(e=>console.error(e))}else{window.open('https://phantom.app/','_blank')}">Connect Wallet</button>
-    <button id="begin-btn" class="btn btn-red btn-sm">▶ Begin</button>
     <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
       <span id="nav-wallet-address"></span>
     </div>
@@ -388,8 +387,8 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     SPINE ERECT &nbsp;+&nbsp; EYES CLOSED &nbsp;+&nbsp; TIME &nbsp;=&nbsp; STILLNESS
   </div>
   <div class="h-ctas">
-    <a href="#mmga-mint-widget" class="btn btn-red">⚔ Mint $MONK Token</a>
-    <a href="#secret" class="btn btn-ghost">Learn the Secret</a>
+    <button class="btn btn-red" id="hero-begin-btn">⚔ Begin the Practice</button>
+    <a href="#mmga-mint-widget" class="btn btn-ghost">Mint $MONK Token</a>
   </div>
   <div class="hero-proof">
     <span class="proof-pill">Camera-verified posture &amp; eye closure</span>
@@ -1904,6 +1903,23 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Begin button handler attached');
   } else {
     console.error('begin-btn not found!');
+  }
+  
+  // Also attach to hero Begin button
+  const heroBeginBtn = document.getElementById('hero-begin-btn');
+  if (heroBeginBtn) {
+    heroBeginBtn.addEventListener('click', function() {
+      console.log('Hero Begin button clicked!');
+      const modal = document.getElementById('camModal');
+      if (modal) {
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        console.log('Camera modal opened from hero');
+      } else {
+        console.error('camModal not found!');
+      }
+    });
+    console.log('Hero Begin button handler attached');
   }
 });
 </script>
