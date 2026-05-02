@@ -401,7 +401,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:32px">
     <button class="btn btn-red" id="hero-begin-btn" style="font-size:clamp(16px,3vw,24px);padding:32px 64px;box-shadow:8px 8px 0 var(--rdk), 12px 12px 0 rgba(0,0,0,0.5);letter-spacing:0.1em;">⚔ BEGIN SESSION</button>
     <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected! Scroll to mint widget.')}).catch(e=>alert('Connection failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:14px;padding:20px 32px">💼 Connect Wallet (Desktop)</button>
-    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:14px;padding:20px 32px">📱 Connect Wallet (Mobile)</button>
+    <button onclick="window.mmgaConnectMobile()" class="btn btn-ghost" style="font-size:14px;padding:20px 32px">📱 Connect Wallet (Mobile)</button>
   </div>
   <div class="h-ctas">
     <a href="#mmga-mint-widget" class="btn btn-ghost btn-sm">Mint $MONK Token</a>
@@ -419,7 +419,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
     <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN SESSION</button>
     <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Connection failed: '+e.message))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect Wallet (Desktop)</button>
-    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect Wallet (Mobile)</button>
+    <button onclick="window.mmgaConnectMobile()" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect Wallet (Mobile)</button>
   </div>
   <p style="font-family:var(--mono);font-size:11px;color:#666;margin-top:12px;letter-spacing:0.05em">FREE · NO SIGNUP · CAMERA REQUIRED</p>
 </div>
@@ -489,7 +489,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
     <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN SESSION</button>
     <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Connection failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
-    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+    <button onclick="window.mmgaConnectMobile()" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
   </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:12px">Takes 60 seconds · Completely free</p>
 </div>
@@ -636,7 +636,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
     <button onclick="openCam()" class="btn btn-red" style="font-size:14px;padding:20px 48px">▶ BEGIN SESSION</button>
     <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
-    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+    <button onclick="window.mmgaConnectMobile()" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
   </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:12px">No music. No voice. Just you.</p>
 </div>
@@ -813,7 +813,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
     <button onclick="openCam()" class="btn btn-red" style="font-size:16px;padding:24px 56px">▶ BEGIN SESSION</button>
     <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Connected!')}).catch(e=>alert('Failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
-    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+    <button onclick="window.mmgaConnectMobile()" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
   </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:16px">Free · 60 seconds · Earn your first $MONK</p>
 </div>
@@ -1004,7 +1004,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:12px">
     <button onclick="openCam()" class="btn btn-red" style="font-size:16px;padding:24px 64px">▶ BEGIN SESSION</button>
     <button onclick="if(window.solana){window.solana.connect().then(()=>{alert('Wallet connected!')}).catch(e=>alert('Failed'))}else{window.open('https://phantom.app/','_blank')}" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">💼 Connect (Desktop)</button>
-    <button onclick="const deepLink='https://phantom.app/ul/v1/connect?app_url='+encodeURIComponent(window.location.href)+'&cluster=mainnet-beta';window.location.href=deepLink" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
+    <button onclick="window.mmgaConnectMobile()" class="btn btn-ghost" style="font-size:12px;padding:16px 32px">📱 Connect (Mobile)</button>
   </div>
   <p style="font-family:var(--mono);font-size:10px;color:#666;margin-top:16px">Completely free · No wallet needed yet</p>
 </div>
@@ -1238,7 +1238,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   let walletAddress = null;
   let isProcessing = false;
   let unmintedBalance = 0;
-  let mintAmount = 1;
+  let mintAmount = 0.1;
 
   // Initialize
   checkWallet();
@@ -1313,39 +1313,116 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   
   // Mobile wallet connection via deep linking
   function connectMobileWallet() {
-    const currentUrl = window.location.href;
-    const deepLink = `https://phantom.app/ul/v1/connect?app_url=${encodeURIComponent(currentUrl)}&cluster=mainnet-beta`;
+    // Store intent to connect
+    sessionStorage.setItem('mmga_wallet_intent', 'connect');
+    sessionStorage.setItem('mmga_return_time', Date.now());
     
-    // Try to open Phantom app
-    window.location.href = deepLink;
+    // Universal link that works for both iOS and Android
+    const appUrl = window.location.origin;
+    const redirect = encodeURIComponent(window.location.href);
     
-    // Show pending message
+    // Try Phantom's universal link for connection
+    const phantomUrl = `https://phantom.app/ul/browse/${redirect}?ref=mmga`;
+    
+    // Update UI
     document.getElementById('mmga-wallet-section').innerHTML = `
       <div class="mmga-wallet-status">
-        🔄 OPENING PHANTOM...
+        🔄 CONNECTING TO PHANTOM...
         <div style="margin-top:12px;font-size:12px;color:#a0a0a0;line-height:1.7;">
-          Approve the connection in the Phantom app, then return here.
+          Opening Phantom app...<br><br>
+          <strong style="color:#ffd700;">In Phantom:</strong><br>
+          1. Tap "Connect" when prompted<br>
+          2. Return to this page after approving<br><br>
+          <em style="color:#666;">If Phantom doesn't open, you may need to install it first.</em>
         </div>
-        <div style="margin-top:16px;">
-          <button onclick="checkWallet()" class="mmga-mint-btn" style="font-size:10px;cursor:pointer;border:none;background:#0a0a0a;border:2px solid #ffd700;">
-            I'VE CONNECTED - REFRESH
+        <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+          <button onclick="location.reload()" class="mmga-mint-btn" style="font-size:10px;cursor:pointer;border:none;background:#0a0a0a;border:2px solid #ffd700;flex:1">
+            ↻ REFRESH PAGE
           </button>
+          <a href="https://phantom.app/download" target="_blank" class="mmga-mint-btn" style="font-size:10px;text-decoration:none;display:block;flex:1;text-align:center;line-height:40px;background:#0a0a0a;border:2px solid #666">
+            INSTALL PHANTOM
+          </a>
         </div>
       </div>
     `;
+    
+    // Open Phantom
+    window.location.href = phantomUrl;
   }
+  
+  // Check if returning from wallet connection
+  window.addEventListener('focus', () => {
+    const intent = sessionStorage.getItem('mmga_wallet_intent');
+    const returnTime = sessionStorage.getItem('mmga_return_time');
+    
+    if (intent === 'connect' && returnTime) {
+      const elapsed = Date.now() - parseInt(returnTime);
+      
+      // If returned within 2 minutes, check wallet
+      if (elapsed < 120000) {
+        console.log('Returned from wallet app, checking connection...');
+        sessionStorage.removeItem('mmga_wallet_intent');
+        sessionStorage.removeItem('mmga_return_time');
+        
+        // Wait a moment for Phantom to inject
+        setTimeout(() => {
+          if (window.solana && window.solana.isConnected) {
+            console.log('Wallet connected!');
+            walletAddress = window.solana.publicKey.toString();
+            showConnectedState();
+            loadBalance();
+          } else {
+            console.log('Wallet not connected yet, asking to refresh');
+            document.getElementById('mmga-wallet-section').innerHTML = `
+              <div class="mmga-wallet-status">
+                ⏳ ALMOST THERE...
+                <div style="margin-top:12px;font-size:12px;color:#a0a0a0;line-height:1.7;">
+                  Did you approve the connection in Phantom?<br><br>
+                  If yes, tap Refresh below.<br>
+                  If no, try connecting again.
+                </div>
+                <div style="margin-top:16px;">
+                  <button onclick="location.reload()" class="mmga-mint-btn" style="font-size:10px;cursor:pointer;border:none;">
+                    ↻ REFRESH TO CONNECT
+                  </button>
+                </div>
+                <div style="margin-top:12px;">
+                  <button onclick="connectMobileWallet()" class="mmga-mint-btn" style="font-size:10px;cursor:pointer;border:none;background:#0a0a0a;border:2px solid #ffd700">
+                    TRY AGAIN
+                  </button>
+                </div>
+              </div>
+            `;
+          }
+        }, 1000);
+      }
+    }
+  });
 
   async function loadBalance() {
     if (!walletAddress) return;
 
     try {
+      // Get locally earned MONK (from meditation sessions before wallet connected)
+      const localPoints = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      
+      // Get backend balance (from server)
       const response = await fetch(`${BACKEND_URL}/api/balance/${walletAddress}`);
       const data = await response.json();
-      unmintedBalance = data.unmintedBalance || 0;
+      const backendBalance = parseFloat(data.unmintedBalance) || 0;
+      
+      // Combine both balances
+      unmintedBalance = localPoints + backendBalance;
+      unmintedBalance = Math.round(unmintedBalance * 10) / 10;  // Round to 1 decimal
+      
+      console.log(`Balance loaded: ${localPoints.toFixed(1)} local + ${backendBalance.toFixed(1)} backend = ${unmintedBalance.toFixed(1)} total`);
+      
       updateBalanceDisplay();
     } catch (error) {
       console.error('Failed to load balance:', error);
-      unmintedBalance = 0;
+      // Fallback to just localStorage if backend fails
+      unmintedBalance = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      unmintedBalance = Math.round(unmintedBalance * 10) / 10;
       updateBalanceDisplay();
     }
   }
@@ -1361,7 +1438,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     balanceSection.innerHTML = `
       <div class="mmga-balance-box">
         <div class="mmga-balance-label">UNMINTED BALANCE</div>
-        <div class="mmga-balance-amount">${unmintedBalance}</div>
+        <div class="mmga-balance-amount">${unmintedBalance.toFixed(1)}</div>
         <div class="mmga-balance-unit">$MONK TOKENS READY TO MINT</div>
       </div>
     `;
@@ -1427,19 +1504,20 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   }
 
   function updateMintAmount(amount) {
-    mintAmount = Math.max(1, Math.min(100, Math.min(amount, unmintedBalance)));
+    mintAmount = Math.max(0.1, Math.min(100, Math.min(amount, unmintedBalance)));
+    mintAmount = Math.round(mintAmount * 10) / 10;  // Round to 1 decimal place
     const input = document.getElementById('mint-amount');
     const btnAmount = document.getElementById('mint-btn-amount');
-    if (input) input.value = mintAmount;
-    if (btnAmount) btnAmount.textContent = mintAmount;
+    if (input) input.value = mintAmount.toFixed(1);
+    if (btnAmount) btnAmount.textContent = mintAmount.toFixed(1);
   }
 
   function incrementAmount() {
-    updateMintAmount(mintAmount + 1);
+    updateMintAmount(mintAmount + 0.1);
   }
 
   function decrementAmount() {
-    updateMintAmount(mintAmount - 1);
+    updateMintAmount(mintAmount - 0.1);
   }
 
   async function connectWallet() {
@@ -1469,13 +1547,13 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   async function mintToken() {
     if (!walletAddress || isProcessing) return;
 
-    if (unmintedBalance === 0) {
-      showError('No MONK to mint! Complete a meditation session to earn MONK.');
+    if (unmintedBalance === 0 || unmintedBalance < 0.1) {
+      showError('No MONK to mint! Complete a meditation session to earn MONK (minimum 0.1).');
       return;
     }
 
     if (mintAmount > unmintedBalance) {
-      showError(`Cannot mint ${mintAmount} MONK. You only have ${unmintedBalance} unminted.`);
+      showError(`Cannot mint ${mintAmount.toFixed(1)} MONK. You only have ${unmintedBalance.toFixed(1)} unminted.`);
       return;
     }
 
@@ -1486,8 +1564,27 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     clearMessages();
 
     try {
+      // Sync localStorage balance to backend before minting
+      const localPoints = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      if (localPoints > 0) {
+        showStatus(`Syncing ${localPoints.toFixed(1)} earned MONK to your wallet...`);
+        try {
+          const syncResponse = await fetch(`${BACKEND_URL}/api/balance/${walletAddress}/add`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: localPoints })
+          });
+          if (syncResponse.ok) {
+            console.log(`Synced ${localPoints} MONK to backend`);
+          }
+        } catch (syncError) {
+          console.error('Failed to sync localStorage balance:', syncError);
+          // Continue with mint anyway
+        }
+      }
+      
       // Step 1: Request transaction from backend
-      showStatus(`Preparing to mint ${mintAmount} MONK...`);
+      showStatus(`Preparing to mint ${mintAmount.toFixed(1)} MONK...`);
       
       const response = await fetch(`${BACKEND_URL}/api/mint`, {
         method: 'POST',
@@ -1523,25 +1620,32 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       );
 
       const signature = await connection.sendRawTransaction(signed.serialize());
-
-      // Step 4: Wait for confirmation
-      showStatus('Confirming transaction...');
       
-      await connection.confirmTransaction({
-        signature,
-        blockhash: txData.blockhash,
-        lastValidBlockHeight: txData.lastValidBlockHeight
-      });
+      showStatus('Confirming transaction...');
+      await connection.confirmTransaction(signature, 'confirmed');
 
-      // Update balance
+      // Success! Clear localStorage balance since it's now minted
+      localStorage.setItem('mmga_pts', '0');
+      totalPts = 0;
+      
+      // Update nav display
+      const navPts = document.querySelector('.n-pts');
+      if (navPts) navPts.textContent = '★ 0 $MONK';
+      
+      // Update camera modal display
+      const modalPts = document.getElementById('modalPts');
+      if (modalPts) modalPts.textContent = '0';
+      
       unmintedBalance = txData.remainingBalance;
       updateBalanceDisplay();
 
-      // Success!
       showSuccess(signature, mintAmount, unmintedBalance);
 
+      // Reload balance to ensure everything is in sync
+      await loadBalance();
+
     } catch (error) {
-      console.error('Mint error:', error);
+      console.error('Minting error:', error);
       showError(error.message || 'Minting failed');
       // Reload balance in case it changed
       await loadBalance();
@@ -1550,17 +1654,6 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
       if (btn) btn.disabled = false;
     }
   }
-
-  function showStatus(message) {
-    const messageSection = document.getElementById('mmga-message-section');
-    messageSection.innerHTML = `
-      <div class="mmga-status-message">
-        ⏳ ${message}
-      </div>
-    `;
-  }
-
-  function showError(message) {
     const messageSection = document.getElementById('mmga-message-section');
     messageSection.innerHTML = `
       <div class="mmga-error-message">
@@ -1573,9 +1666,9 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
     const messageSection = document.getElementById('mmga-message-section');
     messageSection.innerHTML = `
       <div class="mmga-success-message">
-        ✅ MINTED ${amount} $MONK SUCCESSFULLY!
+        ✅ MINTED ${parseFloat(amount).toFixed(1)} $MONK SUCCESSFULLY!
         <div style="margin-top:16px;font-size:10px;">
-          REMAINING BALANCE: ${remaining} MONK
+          REMAINING BALANCE: ${parseFloat(remaining).toFixed(1)} MONK
         </div>
         <a href="https://solscan.io/tx/${signature}" target="_blank" class="mmga-tx-link">
           VIEW ON SOLSCAN →
@@ -1596,6 +1689,7 @@ footer{background:var(--bg2);border-top:2px solid var(--border2);padding:56px 40
   window.mmgaDecrement = decrementAmount;
   window.mmgaUpdateAmount = updateMintAmount;
   window.mmgaReloadBalance = loadBalance;
+  window.mmgaConnectMobile = connectMobileWallet;
 
 })();
 </script>
@@ -1769,7 +1863,7 @@ setInterval(updateEpochCountdown, 3600000); // Update every hour
 
 /* CAMERA */
 let spineOk = false, eyesOk = false, sessActive = false, sessTimer = null, consec = 0, sessElapsed = 0;
-let totalPts = parseInt(localStorage.getItem('mmga_pts') || '0');
+let totalPts = parseFloat(localStorage.getItem('mmga_pts') || '0');
 let faceMesh, pose, mpCam, localStream;
 let latestFace = null, latestPose = null;
 
@@ -1988,16 +2082,16 @@ function toggleSess() {
       document.getElementById('timerLbl').textContent = spineOk&&eyesOk ? 'Verified — minting $MONK' : 'Paused — fix posture or close eyes';
       if (spineOk && eyesOk) {
         consec++;
-        const pct = (consec%60)/60*100;
+        const pct = (consec%10)/10*100;  // Changed from %60 to %10
         document.getElementById('progFill').style.width = pct + '%';
         document.getElementById('progFill').className = 'prog-fill earn';
-        document.getElementById('progNum').textContent = (consec%60) + ' / 60s';
-        if (consec > 0 && consec%60 === 0) awardPoint();
+        document.getElementById('progNum').textContent = (consec%10) + ' / 10s';  // Changed from 60s to 10s
+        if (consec > 0 && consec%10 === 0) awardPoint();  // Changed from %60 to %10
       } else {
         if (consec > 0) { consec = 0; addLog('Posture lost. Counter reset.'); }
         document.getElementById('progFill').style.width = '0%';
         document.getElementById('progFill').className = 'prog-fill';
-        document.getElementById('progNum').textContent = '0 / 60s';
+        document.getElementById('progNum').textContent = '0 / 10s';  // Changed from 60s to 10s
       }
     }, 1000);
   } else {
@@ -2011,16 +2105,17 @@ function toggleSess() {
 }
 
 function awardPoint() {
-  totalPts++;
+  totalPts += 0.1;  // Award 0.1 MONK every 10 seconds
+  totalPts = Math.round(totalPts * 10) / 10;  // Round to 1 decimal place
   localStorage.setItem('mmga_pts', totalPts);
-  document.getElementById('modalPts').textContent = totalPts;
-  addLog('★ $MONK MINTED! Total: ' + totalPts);
+  document.getElementById('modalPts').textContent = totalPts.toFixed(1);
+  addLog('★ +0.1 $MONK! Total: ' + totalPts.toFixed(1));
   const p = document.getElementById('pointPop');
-  p.textContent = '+1 $MONK MINTED ★ (Total: ' + totalPts + ')';
+  p.textContent = '+0.1 $MONK MINTED ★ (Total: ' + totalPts.toFixed(1) + ')';
   p.classList.add('on');
   setTimeout(() => p.classList.remove('on'), 2500);
   const ptEl = document.querySelector('.n-pts');
-  if (ptEl) ptEl.textContent = '★ ' + totalPts + ' $MONK';
+  if (ptEl) ptEl.textContent = '★ ' + totalPts.toFixed(1) + ' $MONK';
   if (window._supa && window._user) {
     window._supa.from('monk_points').upsert({user_id:window._user.id, email:window._user.email, points:totalPts, updated_at:new Date().toISOString()},{onConflict:'user_id'}).then(()=>{}).catch(()=>{});
   }
@@ -2169,6 +2264,17 @@ function closeCam() {
     modal.classList.remove('open');
     document.body.style.overflow = '';
     if (sessActive) toggleSess();
+    
+    // Sync locally earned MONK to backend if wallet is connected
+    if (window.solana && window.solana.isConnected) {
+      const localPoints = parseFloat(localStorage.getItem('mmga_pts') || '0');
+      if (localPoints > 0 && window.mmgaReloadBalance) {
+        console.log('Camera closed, syncing earned MONK to wallet...');
+        setTimeout(() => {
+          window.mmgaReloadBalance(); // This will trigger loadBalance which syncs
+        }, 500);
+      }
+    }
   }
 }
 
