@@ -1,467 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MMGA - Make Meditation Great Again</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --bg2: #121212;
-      --bg3: #1a1a1a;
-      --off: #e8e8e8;
-      --muted: #a0a0a0;
-      --dim: #666;
-      --border: #2a2a2a;
-      --border2: #333;
-      --border3: rgba(255,215,0,0.2);
-      --red: #e6331f;
-      --rdk: #b32818;
-      --yellow: #ffd700;
-      --green: #1ed760;
-      --px: 'Pixelify Sans', cursive;
-      --mono: 'Share Tech Mono', monospace;
-      --serif: Georgia, serif;
-    }
-    
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--off);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-    
-    /* Navigation */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 2px solid var(--border);
-      padding: 16px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      font-family: var(--px);
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-    }
-    
-    .logo span:nth-child(1) { color: var(--red); }
-    .logo span:nth-child(2) { color: var(--off); }
-    .logo span:nth-child(3) { color: var(--green); }
-    .logo span:nth-child(4) { color: var(--yellow); }
-    
-    .n-right {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-    }
-    
-    .n-link {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
-      font-family: var(--mono);
-      transition: color 0.2s;
-    }
-    
-    .n-link:hover {
-      color: var(--yellow);
-    }
-    
-    .n-cta {
-      background: var(--yellow);
-      color: var(--bg);
-      border: none;
-      padding: 12px 24px;
-      font-family: var(--px);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: all 0.2s;
-    }
-    
-    .n-cta:hover {
-      background: #ffed4e;
-      transform: translateY(-2px);
-    }
-    
-    #nav-wallet-connected {
-      display: none;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--yellow);
-      padding: 8px 16px;
-      background: rgba(255,215,0,0.1);
-      border: 2px solid rgba(255,215,0,0.3);
-      border-radius: 4px;
-    }
-    
-    /* Hero Section */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 120px 20px 80px;
-      position: relative;
-      text-align: center;
-    }
-    
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background: 
-        radial-gradient(circle at 50% 50%, rgba(230,51,31,0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255,215,0,0.05) 0%, transparent 50%);
-    }
-    
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 900px;
-    }
-    
-    .h-kicker {
-      font-family: var(--px);
-      font-size: 12px;
-      color: var(--yellow);
-      letter-spacing: 0.2em;
-      margin-bottom: 24px;
-    }
-    
-    .h1 {
-      font-family: var(--px);
-      font-size: clamp(48px, 12vw, 120px);
-      font-weight: 700;
-      line-height: 0.9;
-      letter-spacing: 0.05em;
-      color: var(--red);
-      text-shadow: 4px 4px 0 var(--rdk), 8px 8px 0 rgba(0,0,0,0.5);
-      margin-bottom: 8px;
-    }
-    
-    .h2 {
-      font-family: var(--px);
-      font-size: clamp(36px, 10vw, 100px);
-      font-weight: 700;
-      line-height: 0.9;
-      letter-spacing: 0.05em;
-      color: var(--off);
-      text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
-      margin-bottom: 8px;
-    }
-    
-    .h-tagline {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: clamp(16px, 2vw, 20px);
-      color: var(--muted);
-      margin: 32px 0 48px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    
-    .btn-group {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      align-items: center;
-      margin-bottom: 32px;
-    }
-    
-    .btn-primary {
-      background: var(--red);
-      color: #fff;
-      border: none;
-      padding: 32px 64px;
-      font-family: var(--px);
-      font-size: clamp(18px, 4vw, 28px);
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      cursor: pointer;
-      border-radius: 0;
-      box-shadow: 8px 8px 0 var(--rdk), 12px 12px 0 rgba(0,0,0,0.5);
-      transition: all 0.2s;
-      text-transform: uppercase;
-    }
-    
-    .btn-primary:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 10px 10px 0 var(--rdk), 14px 14px 0 rgba(0,0,0,0.5);
-    }
-    
-    .btn-primary:active {
-      transform: translate(2px, 2px);
-      box-shadow: 4px 4px 0 var(--rdk), 6px 6px 0 rgba(0,0,0,0.5);
-    }
-    
-    .wallet-options {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    
-    .btn-wallet {
-      background: transparent;
-      color: var(--yellow);
-      border: 2px solid var(--yellow);
-      padding: 16px 32px;
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .btn-wallet:hover {
-      background: rgba(255,215,0,0.1);
-      transform: translateY(-2px);
-    }
-    
-    .h-note {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--dim);
-      letter-spacing: 0.05em;
-      margin-top: 24px;
-    }
-    
-    .info-link {
-      display: inline-block;
-      margin-top: 48px;
-      color: var(--yellow);
-      text-decoration: none;
-      font-family: var(--mono);
-      font-size: 12px;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--yellow);
-      transition: all 0.2s;
-    }
-    
-    .info-link:hover {
-      color: var(--off);
-      border-color: var(--off);
-    }
-    
-    /* Footer */
-    footer {
-      background: var(--bg2);
-      border-top: 2px solid var(--border);
-      padding: 32px 20px;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--dim);
-    }
-    
-    footer a {
-      color: var(--yellow);
-      text-decoration: none;
-    }
-    
-    footer a:hover {
-      text-decoration: underline;
-    }
-    
-    /* Mobile */
-    @media (max-width: 768px) {
-      nav {
-        padding: 12px 16px;
-      }
-      
-      .logo {
-        font-size: 18px;
-      }
-      
-      .n-link {
-        display: none;
-      }
-      
-      .btn-primary {
-        padding: 24px 40px;
-        font-size: 20px;
-      }
-      
-      .wallet-options {
-        flex-direction: column;
-        width: 100%;
-        max-width: 300px;
-      }
-      
-      .btn-wallet {
-        width: 100%;
-      }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MMGA — Make Meditation Great Again</title>
+<meta name="description" content="Meditate. Get Paid. Lift the Field."/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f0a;--bg2:#0d120d;--green:#00ff41;--green-dim:#00cc33;--green-glow:rgba(0,255,65,0.3);--yellow:#ffdd00;--white:#e0ffe0;--border:#00ff4144;--term:'Space Mono',monospace;--pixel:'VT323',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:var(--green);font-family:var(--term);overflow-x:hidden;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.95);backdrop-filter:blur(8px);border-bottom:2px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--pixel);font-size:32px;color:var(--green);text-shadow:0 0 10px var(--green-glow);text-decoration:none}
+.logo b{color:var(--yellow)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-link{font-size:13px;color:var(--green);text-decoration:none;transition:all 0.2s}
+.nav-link:hover{color:var(--yellow)}
+.nav-cta{font-family:var(--pixel);font-size:16px;padding:12px 24px;background:var(--yellow);border:3px solid var(--yellow);color:#000;text-decoration:none;box-shadow:0 0 20px rgba(255,221,0,0.3)}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 32px 60px;background:radial-gradient(circle,rgba(0,255,65,0.05),transparent)}
+.hero-content{max-width:900px;text-align:center}
+.hero-badge{font-family:var(--pixel);font-size:14px;color:var(--yellow);margin-bottom:24px;letter-spacing:0.2em}
+.hero-title{font-family:var(--pixel);font-size:72px;color:var(--green);text-shadow:0 0 20px var(--green-glow);margin-bottom:32px;line-height:1.2}
+.hero-title b{color:var(--yellow)}
+.hero-subtitle{font-size:24px;color:var(--white);margin-bottom:16px}
+.hero-desc{font-size:16px;color:var(--green-dim);margin-bottom:48px;line-height:1.8}
+.hero-ctas{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+.btn{font-family:var(--pixel);font-size:20px;padding:20px 40px;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;border:4px solid}
+.btn-primary{background:var(--yellow);border-color:var(--yellow);color:#000;box-shadow:0 0 20px rgba(255,221,0,0.4)}
+.btn-primary:hover{box-shadow:0 0 40px rgba(255,221,0,0.7);transform:translateY(-4px)}
+.btn-secondary{background:transparent;border-color:var(--green);color:var(--green)}
+.btn-secondary:hover{background:var(--green);color:#000}
+.stats{padding:48px 32px;background:var(--bg);border-top:2px solid var(--border);border-bottom:2px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px;max-width:1200px;margin:0 auto}
+.stat{text-align:center;padding:24px;background:var(--bg2);border:2px solid var(--border)}
+.stat-icon{font-size:56px;margin-bottom:16px}
+.stat-num{font-family:var(--pixel);font-size:48px;color:var(--green);display:block;margin-bottom:8px}
+.stat-label{font-size:13px;color:var(--green-dim)}
+.mission{padding:100px 32px;background:var(--bg2)}
+.mission-inner{max-width:900px;margin:0 auto;text-align:center}
+.section-title{font-family:var(--pixel);font-size:48px;color:var(--yellow);margin-bottom:32px}
+.mission-text{font-size:18px;color:var(--white);line-height:2;margin-bottom:24px}
+.mission-text strong{color:var(--green)}
+.how{padding:100px 32px;background:var(--bg)}
+.how-title{font-family:var(--pixel);font-size:48px;color:var(--green);text-align:center;margin-bottom:64px}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;max-width:1200px;margin:0 auto}
+.step{padding:32px;background:var(--bg2);border:2px solid var(--border);text-align:center;transition:all 0.3s}
+.step:hover{border-color:var(--green);box-shadow:0 0 20px var(--green-glow);transform:translateY(-8px)}
+.step-num{font-family:var(--pixel);font-size:72px;color:rgba(0,255,65,0.2);margin-bottom:16px}
+.step-title{font-family:var(--pixel);font-size:18px;color:var(--yellow);margin-bottom:16px}
+.step-desc{font-size:14px;color:var(--green-dim);line-height:1.8}
+.cta{padding:100px 32px;background:linear-gradient(135deg,rgba(0,255,65,0.08),rgba(255,221,0,0.08));border-top:2px solid var(--border);text-align:center}
+.cta-title{font-family:var(--pixel);font-size:56px;color:var(--green);margin-bottom:24px}
+.cta-desc{font-size:18px;color:var(--white);margin-bottom:48px;max-width:700px;margin-left:auto;margin-right:auto}
+footer{padding:48px 32px;background:var(--bg);border-top:2px solid var(--border);text-align:center}
+.footer-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:16px}
+.footer-copyright{font-size:11px;color:var(--green);margin-top:32px}
+@media(max-width:768px){.hero-title{font-size:42px}nav{padding:16px 20px}.logo{font-size:24px}}
+</style>
 </head>
 <body>
 
-<!-- Navigation -->
 <nav>
-  <div class="logo">
-    <span>M</span><span>M</span><span>G</span><span>A</span>
-  </div>
-  <div class="n-right">
-    <a href="info.html" class="n-link">Learn More</a>
-    <button id="nav-wallet-btn" class="n-cta">Connect Wallet</button>
-    <div id="nav-wallet-connected">
-      <span id="nav-wallet-address"></span>
-    </div>
+  <a href="index.html" class="logo">M<b>M</b>GA</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="info.html" class="nav-link">Info</a>
+    <a href="app.html" class="nav-cta">Start Meditating</a>
   </div>
 </nav>
 
-<!-- Hero Section -->
 <section class="hero">
-  <div class="hero-bg"></div>
   <div class="hero-content">
-    <div class="h-kicker">★ THE ROYAL SECRET OF MEDITATION — NOW VERIFIABLE ★</div>
-    
-    <h2 class="h2">MAKE</h2>
-    <h2 class="h2">MEDITATION</h2>
-    <h1 class="h1">GREAT AGAIN</h1>
-    
-    <p class="h-tagline">
-      Every meditation app has been lying to you. The truth: your mind stills itself. 
-      You just create the conditions. We verify them.
+    <div class="hero-badge">◉ THE PLANETARY MEDITATION INITIATIVE</div>
+    <h1 class="hero-title">MAKE MEDITATION<br/>GREAT <b>AGAIN</b></h1>
+    <h2 class="hero-subtitle">MEDITATE. GET PAID. LIFT THE FIELD.</h2>
+    <p class="hero-desc">
+      Your meditation doesn't just change you — it ripples through Earth's morphogenetic field. 
+      Donate your meditation time. Get NFTs as proof. Earn $MONK tokens.
     </p>
-    
-    <div class="btn-group">
-      <button class="btn-primary" id="begin-btn">
-        ⚔ BEGIN THE PRACTICE
-      </button>
-      
-      <div class="wallet-options">
-        <button class="btn-wallet" id="connect-desktop">💼 Connect Wallet (Desktop)</button>
-        <button class="btn-wallet" id="connect-mobile">📱 Connect Wallet (Mobile)</button>
-      </div>
+    <div class="hero-ctas">
+      <a href="app.html" class="btn btn-primary">START MEDITATING</a>
+      <a href="info.html" class="btn btn-secondary">Learn More</a>
     </div>
-    
-    <p class="h-note">FREE · NO SIGNUP · CAMERA REQUIRED</p>
-    <p class="h-note" style="margin-top:8px;color:var(--dim);font-size:10px">
-      Clicking "BEGIN THE PRACTICE" opens the meditation app (app.html)
-    </p>
-    
-    <a href="info.html" class="info-link">
-      Learn how it works →
-    </a>
   </div>
 </section>
 
-<!-- Footer -->
-<footer>
-  <p>MMGA Protocol · Solana Mainnet</p>
-  <p style="margin-top:8px">
-    Token: 4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv · 
-    <a href="info.html">Learn More</a> · 
-    <a href="info.html#whitepaper">Whitepaper</a>
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat">
+      <div class="stat-icon">🧘</div>
+      <span class="stat-num">1,247</span>
+      <span class="stat-label">Contributors Worldwide</span>
+    </div>
+    <div class="stat">
+      <div class="stat-icon">⏱️</div>
+      <span class="stat-num">89,432</span>
+      <span class="stat-label">Minutes Donated</span>
+    </div>
+    <div class="stat">
+      <div class="stat-icon">📡</div>
+      <span class="stat-num">0.3%</span>
+      <span class="stat-label">Toward 1% Critical Mass</span>
+    </div>
+  </div>
+</section>
+
+<section class="mission">
+  <div class="mission-inner">
+    <h2 class="section-title">THE MORPHOGENETIC FIELD</h2>
+    <p class="mission-text">
+      <strong>Rupert Sheldrake's morphogenetic field theory</strong> proposes that consciousness 
+      is a shared field connecting all beings. When you meditate, you strengthen this planetary field.
+    </p>
+    <p class="mission-text">
+      The <strong>Maharishi Effect</strong> proved that 1% of a population meditating creates 
+      measurable societal change. MMGA is building toward this critical mass.
+    </p>
+  </div>
+</section>
+
+<section class="how">
+  <h2 class="how-title">HOW IT WORKS</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">CONNECT</div>
+      <div class="step-desc">
+        Start meditation session with AI camera verification. Posture and liveness tracked in real-time.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">MEDITATE</div>
+      <div class="step-desc">
+        Earn 1 $MONK per minute when posture is correct and liveness verified. Anti-spoof protection active.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">ACCUMULATE 30 MIN</div>
+      <div class="step-desc">
+        Reach 30 minutes total to become eligible for NFT airdrops. Data logged in database.
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">REQUEST AIRDROP</div>
+      <div class="step-desc">
+        Submit application with wallet address. Receive custom NFT within 2-4 hours.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <h2 class="cta-title">JOIN THE GRID</h2>
+  <p class="cta-desc">
+    Your meditation is needed. Be part of the critical mass.
   </p>
+  <a href="app.html" class="btn btn-primary">START MEDITATING NOW</a>
+</section>
+
+<footer>
+  <div class="footer-title">MMGA</div>
+  <div class="footer-copyright">
+    FOCUS IS POWER. TOGETHER, WE REWRITE THE FUTURE.<br/>
+    Powered by on-chain verification • info@mmga.yoga
+  </div>
 </footer>
-
-<script>
-  // Simple wallet connection
-  let walletAddress = null;
-  
-  // Update nav wallet display
-  function updateNavWallet() {
-    const btn = document.getElementById('nav-wallet-btn');
-    const connected = document.getElementById('nav-wallet-connected');
-    const address = document.getElementById('nav-wallet-address');
-    
-    if (!btn || !connected) return;
-    
-    if (window.solana && window.solana.isConnected && walletAddress) {
-      const short = walletAddress.slice(0, 4) + '...' + walletAddress.slice(-4);
-      address.textContent = '🔗 ' + short;
-      btn.style.display = 'none';
-      connected.style.display = 'block';
-    } else {
-      btn.style.display = 'inline-block';
-      connected.style.display = 'none';
-    }
-  }
-  
-  // Connect wallet (desktop)
-  async function connectWalletDesktop() {
-    if (!window.solana) {
-      alert('Please install Phantom wallet extension');
-      window.open('https://phantom.app/', '_blank');
-      return;
-    }
-    
-    try {
-      await window.solana.connect();
-      walletAddress = window.solana.publicKey.toString();
-      updateNavWallet();
-      alert('Wallet connected! You can now use the full platform.');
-    } catch (error) {
-      console.error('Connection error:', error);
-      alert('Failed to connect wallet');
-    }
-  }
-  
-  // Connect wallet (mobile)
-  function connectWalletMobile() {
-    const deepLink = `https://phantom.app/ul/browse/${encodeURIComponent(window.location.href)}?ref=mmga`;
-    window.location.href = deepLink;
-  }
-  
-  // Open full meditation app
-  function openCamera() {
-    window.location.href = 'app.html';
-  }
-  
-  // Event listeners
-  document.getElementById('nav-wallet-btn').addEventListener('click', connectWalletDesktop);
-  document.getElementById('connect-desktop').addEventListener('click', connectWalletDesktop);
-  document.getElementById('connect-mobile').addEventListener('click', connectWalletMobile);
-  document.getElementById('begin-btn').addEventListener('click', openCamera);
-  
-  // Check wallet on load
-  if (window.solana) {
-    window.solana.on('connect', () => {
-      walletAddress = window.solana.publicKey.toString();
-      updateNavWallet();
-    });
-    
-    window.solana.on('disconnect', () => {
-      walletAddress = null;
-      updateNavWallet();
-    });
-    
-    // Check if already connected
-    if (window.solana.isConnected) {
-      walletAddress = window.solana.publicKey.toString();
-      updateNavWallet();
-    }
-  }
-  
-  // Initial update
-  updateNavWallet();
-</script>
-
-<!-- Phantom Wallet -->
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 
 </body>
 </html>
