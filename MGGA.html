@@ -20,7 +20,7 @@
             scroll-behavior: smooth;
             text-transform: uppercase;
         }
-        .mono { font-family: 'IBM+Plex+Mono', monospace; }
+        .mono { font-family: 'IBM Plex Mono', monospace; }
         
         /* CRT Scanline Effect */
         body::before {
@@ -96,6 +96,33 @@
         .marquee-container:hover .marquee-content {
             animation-play-state: paused;
         }
+
+        /* NFT Image Styling */
+        .nft-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: brightness(1.1) contrast(1.2);
+        }
+
+        .nft-image-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nft-image-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 255, 0, 0.1) 100%);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="overflow-x-hidden">
@@ -119,52 +146,122 @@
 
         <div class="marquee-container overflow-hidden py-10 bg-green-950/5">
             <div class="marquee-content gap-8">
-                <!-- NFT Item -->
+                <!-- NFT Item 1 -->
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform flicker">🧘‍♂️</div>
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="10.png" alt="MMGA NFT #10" class="nft-image">
+                    </div>
                     <div class="mt-8 space-y-2">
                         <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #010</span>
-                        <div class="text-2xl font-bold text-white">JESUS ON THE MOON</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">ROBE: JEDI // LOC: LUNAR_CRATER</div>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_010</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
+
+                <!-- NFT Item 2 -->
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform flicker">🧘‍♀️</div>
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="11.png" alt="MMGA NFT #11" class="nft-image">
+                    </div>
                     <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #421</span>
-                        <div class="text-2xl font-bold text-white">BUDDHA AFTER-PARTY</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">ROBE: PAJAMAS // LOC: DIRTY_LOFT</div>
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #011</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_011</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
+
+                <!-- NFT Item 3 -->
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform flicker">🧘</div>
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="12.png" alt="MMGA NFT #12" class="nft-image">
+                    </div>
                     <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #882</span>
-                        <div class="text-2xl font-bold text-white">CLEOPATRA BATMAN</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">ROBE: BAT_SUIT // LOC: SAHARA</div>
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #012</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_012</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
+
+                <!-- NFT Item 4 -->
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform flicker">🧘‍♂️</div>
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="13.png" alt="MMGA NFT #13" class="nft-image">
+                    </div>
                     <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #1954</span>
-                        <div class="text-2xl font-bold text-white">THE ORIGIN_VOID</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">ROBE: NONE // LOC: INFINITY</div>
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #013</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_013</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
-                <!-- Duplicate for marquee -->
+
+                <!-- NFT Item 5 -->
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform flicker">🧘‍♂️</div>
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="14.png" alt="MMGA NFT #14" class="nft-image">
+                    </div>
+                    <div class="mt-8 space-y-2">
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #014</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_014</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    </div>
+                </div>
+
+                <!-- NFT Item 6 -->
+                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="15.png" alt="MMGA NFT #15" class="nft-image">
+                    </div>
+                    <div class="mt-8 space-y-2">
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #015</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_015</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    </div>
+                </div>
+
+                <!-- NFT Item 7 -->
+                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="16.png" alt="MMGA NFT #16" class="nft-image">
+                    </div>
+                    <div class="mt-8 space-y-2">
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #016</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_016</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    </div>
+                </div>
+
+                <!-- NFT Item 8 -->
+                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="17.png" alt="MMGA NFT #17" class="nft-image">
+                    </div>
+                    <div class="mt-8 space-y-2">
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #017</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_017</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    </div>
+                </div>
+
+                <!-- Duplicate for seamless marquee -->
+                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="10.png" alt="MMGA NFT #10" class="nft-image">
+                    </div>
                     <div class="mt-8 space-y-2">
                         <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #010</span>
-                        <div class="text-2xl font-bold text-white">JESUS ON THE MOON</div>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_010</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
+
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center text-9xl group-hover:scale-110 transition-transform flicker">🧘‍♀️</div>
+                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
+                        <img src="11.png" alt="MMGA NFT #11" class="nft-image">
+                    </div>
                     <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #421</span>
-                        <div class="text-2xl font-bold text-white">BUDDHA AFTER-PARTY</div>
+                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #011</span>
+                        <div class="text-2xl font-bold text-white">CYBERMONK_011</div>
+                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
             </div>
@@ -223,17 +320,17 @@
                     <div class="space-y-6">
                         <div class="terminal-border p-8 bg-green-950/20">
                             <span class="text-cyber-yellow text-sm block mb-2 font-bold tracking-widest">[ AXIOM I: EGO INFLATION ]</span>
-                            <div class="text-4xl font-bold mb-4 glow-green">E(i) = &phi;(i) &times; d(A, F)</div>
+                            <div class="text-4xl font-bold mb-4 glow-green">E(i) = φ(i) × d(A, F)</div>
                             <p class="text-sm leading-relaxed mono text-neon-green/70">
-                                The cultural weight of the figure (&phi;) multiplied by the distance (d) between the self and the archetype. Series 1 captures peak inflation.
+                                The cultural weight of the figure (φ) multiplied by the distance (d) between the self and the archetype. Series 1 captures peak inflation.
                             </p>
                         </div>
 
                         <div class="terminal-border p-8 bg-green-950/20">
                             <span class="text-cyber-yellow text-sm block mb-2 font-bold tracking-widest">[ AXIOM II: VALUE INVERSION ]</span>
-                            <div class="text-4xl font-bold mb-4 glow-green">Ve &times; Vs = K</div>
+                            <div class="text-4xl font-bold mb-4 glow-green">Ve × Vs = K</div>
                             <p class="text-sm leading-relaxed mono text-neon-green/70">
-                                Economic rarity (Ve) and Spiritual clarity (Vs) are inverse. Series 1 is the most exclusive collectible; Series &infin; is the void.
+                                Economic rarity (Ve) and Spiritual clarity (Vs) are inverse. Series 1 is the most exclusive collectible; Series ∞ is the void.
                             </p>
                         </div>
                     </div>
