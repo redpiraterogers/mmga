@@ -1,501 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MMGA - Learn More</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  
-  <style>
-    :root {
-      --bg: #0a0a0a;
-      --bg2: #121212;
-      --bg3: #1a1a1a;
-      --off: #e8e8e8;
-      --muted: #a0a0a0;
-      --dim: #666;
-      --border: #2a2a2a;
-      --border2: #333;
-      --border3: rgba(255,215,0,0.2);
-      --red: #e6331f;
-      --rdk: #b32818;
-      --yellow: #ffd700;
-      --green: #1ed760;
-      --px: 'Pixelify Sans', cursive;
-      --mono: 'Share Tech Mono', monospace;
-      --serif: Georgia, serif;
-    }
-    
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--off);
-      line-height: 1.6;
-    }
-    
-    /* Navigation */
-    nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 2px solid var(--border);
-      padding: 16px 32px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    
-    .logo {
-      font-family: var(--px);
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    .logo span:nth-child(1) { color: var(--red); }
-    .logo span:nth-child(2) { color: var(--off); }
-    .logo span:nth-child(3) { color: var(--green); }
-    .logo span:nth-child(4) { color: var(--yellow); }
-    
-    .btn-back {
-      background: var(--yellow);
-      color: var(--bg);
-      border: none;
-      padding: 12px 24px;
-      font-family: var(--px);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      cursor: pointer;
-      border-radius: 4px;
-      text-decoration: none;
-      display: inline-block;
-    }
-    
-    /* Content */
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 80px 20px;
-    }
-    
-    h1 {
-      font-family: var(--px);
-      font-size: 48px;
-      color: var(--red);
-      margin-bottom: 24px;
-      letter-spacing: 0.05em;
-    }
-    
-    h2 {
-      font-family: var(--px);
-      font-size: 32px;
-      color: var(--yellow);
-      margin: 64px 0 24px;
-      letter-spacing: 0.05em;
-    }
-    
-    h3 {
-      font-family: var(--mono);
-      font-size: 18px;
-      color: var(--green);
-      margin: 32px 0 16px;
-      letter-spacing: 0.05em;
-    }
-    
-    p {
-      font-size: 16px;
-      color: var(--muted);
-      margin-bottom: 16px;
-      line-height: 1.8;
-    }
-    
-    .lead {
-      font-size: 20px;
-      color: var(--off);
-      font-family: var(--serif);
-      font-style: italic;
-      margin-bottom: 48px;
-    }
-    
-    .rule-box {
-      background: var(--bg2);
-      border: 2px solid var(--border3);
-      padding: 32px;
-      margin: 32px 0;
-    }
-    
-    .rule-number {
-      font-family: var(--px);
-      font-size: 48px;
-      color: var(--yellow);
-      margin-bottom: 16px;
-    }
-    
-    .rule-title {
-      font-family: var(--px);
-      font-size: 24px;
-      color: var(--red);
-      margin-bottom: 16px;
-    }
-    
-    .rule-text {
-      font-size: 16px;
-      color: var(--muted);
-      line-height: 1.8;
-    }
-    
-    ul, ol {
-      margin-left: 32px;
-      margin-bottom: 24px;
-      color: var(--muted);
-    }
-    
-    li {
-      margin-bottom: 12px;
-    }
-    
-    .highlight {
-      background: rgba(255,215,0,0.1);
-      border-left: 4px solid var(--yellow);
-      padding: 24px;
-      margin: 32px 0;
-    }
-    
-    .highlight p {
-      color: var(--off);
-      margin: 0;
-    }
-    
-    .cta-box {
-      background: var(--red);
-      color: #fff;
-      padding: 48px;
-      text-align: center;
-      margin: 64px 0;
-    }
-    
-    .cta-box h2 {
-      color: #fff;
-      margin-top: 0;
-    }
-    
-    .cta-box p {
-      color: rgba(255,255,255,0.9);
-      font-size: 18px;
-      margin-bottom: 32px;
-    }
-    
-    .btn-large {
-      background: var(--yellow);
-      color: var(--bg);
-      border: none;
-      padding: 20px 48px;
-      font-family: var(--px);
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-      display: inline-block;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
-    }
-    
-    .btn-large:hover {
-      transform: translateY(-2px);
-    }
-    
-    footer {
-      background: var(--bg2);
-      border-top: 2px solid var(--border);
-      padding: 48px 20px;
-      text-align: center;
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--dim);
-    }
-    
-    footer a {
-      color: var(--yellow);
-      text-decoration: none;
-    }
-    
-    footer a:hover {
-      text-decoration: underline;
-    }
-    
-    .footer-links {
-      margin-top: 24px;
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Info — MMGA</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f0a;--bg2:#0d120d;--green:#00ff41;--green-dim:#00cc33;--green-glow:rgba(0,255,65,0.3);--yellow:#ffdd00;--white:#e0ffe0;--border:#00ff4144;--term:'Space Mono',monospace;--pixel:'VT323',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:var(--green);font-family:var(--term);line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.95);backdrop-filter:blur(8px);border-bottom:2px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--pixel);font-size:32px;color:var(--green);text-shadow:0 0 10px var(--green-glow);text-decoration:none}
+.logo b{color:var(--yellow)}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-link{font-size:13px;color:var(--green);text-decoration:none;transition:all 0.2s}
+.nav-link:hover{color:var(--yellow)}
+.nav-cta{font-family:var(--pixel);font-size:16px;padding:12px 24px;background:var(--yellow);border:3px solid var(--yellow);color:#000;text-decoration:none}
+.hero{min-height:40vh;display:flex;align-items:center;justify-content:center;padding:140px 32px 60px;background:radial-gradient(circle,rgba(0,255,65,0.05),transparent);text-align:center}
+.hero-title{font-family:var(--pixel);font-size:56px;color:var(--green);text-shadow:0 0 20px var(--green-glow);margin-bottom:16px}
+.hero-subtitle{font-size:18px;color:var(--green-dim)}
+.section{padding:80px 32px;max-width:900px;margin:0 auto}
+.section-title{font-family:var(--pixel);font-size:36px;color:var(--yellow);margin-bottom:32px}
+.section-text{font-size:16px;color:var(--white);line-height:1.9;margin-bottom:24px}
+.section-text strong{color:var(--green)}
+.tiers{padding:80px 32px;background:var(--bg)}
+.tiers-inner{max-width:1200px;margin:0 auto}
+.tiers-title{font-family:var(--pixel);font-size:42px;color:var(--green);text-align:center;margin-bottom:48px}
+.tiers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.tier-card{background:var(--bg2);border:2px solid var(--border);padding:32px;transition:all 0.3s}
+.tier-card:hover{border-color:var(--green);transform:translateY(-4px)}
+.tier-card.featured{border-color:var(--yellow);background:rgba(255,221,0,0.05)}
+.tier-icon{font-size:64px;margin-bottom:16px}
+.tier-name{font-family:var(--pixel);font-size:18px;color:var(--yellow);margin-bottom:8px}
+.tier-range{font-size:12px;color:var(--green-dim);margin-bottom:16px}
+.tier-desc{font-size:14px;color:var(--white);margin-bottom:16px;line-height:1.7}
+.tier-value{font-family:var(--pixel);font-size:14px;color:var(--green);padding-top:16px;border-top:1px solid var(--border)}
+.faq{padding:80px 32px;max-width:900px;margin:0 auto}
+.faq-title{font-family:var(--pixel);font-size:42px;color:var(--green);margin-bottom:48px;text-align:center}
+.faq-item{margin-bottom:32px;padding:24px;background:var(--bg);border:2px solid var(--border)}
+.faq-q{font-family:var(--pixel);font-size:16px;color:var(--yellow);margin-bottom:16px}
+.faq-a{font-size:14px;color:var(--white);line-height:1.8}
+footer{padding:48px 32px;background:var(--bg);border-top:2px solid var(--border);text-align:center}
+.footer-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:16px}
+.footer-copyright{font-size:11px;color:var(--green);margin-top:32px}
+@media(max-width:768px){.hero-title{font-size:36px}}
+</style>
 </head>
 <body>
 
-<!-- Navigation -->
 <nav>
-  <a href="index.html" class="logo">
-    <span>M</span><span>M</span><span>G</span><span>A</span>
-  </a>
-  <a href="index.html" class="btn-back">← Back to Home</a>
+  <a href="index.html" class="logo">M<b>M</b>GA</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="info.html" class="nav-link">Info</a>
+    <a href="app.html" class="nav-cta">Start Meditating</a>
+  </div>
 </nav>
 
-<!-- Content -->
-<div class="container">
-  <h1>Make Meditation Great Again</h1>
-  <p class="lead">
-    The first meditation protocol that actually verifies you're meditating.
-    No honor system. No self-reporting. Just proof.
-  </p>
-
-  <!-- What It Is -->
-  <h2>What Is MMGA?</h2>
-  <p>
-    MMGA (Make Meditation Great Again) is a meditation verification protocol built on Solana blockchain.
-    Using computer vision AI, we detect two simple rules: spine erect and eyes closed. 
-    Hold both for verified time, earn $MONK tokens as proof of practice.
-  </p>
-  <p>
-    Every meditation app lies. They tell you to "stop your thoughts" or "clear your mind." 
-    You fail, quit, and feel broken. The truth? Your mind stills itself. You just create conditions.
-  </p>
-
-  <!-- The Royal Secret -->
-  <h2>The Royal Secret</h2>
-  <div class="highlight">
-    <p><strong>The mind cannot be forced to be still.</strong></p>
-    <p style="margin-top:16px">
-      It stills itself when you stop interfering. The body knows: erect spine, closed eyes. 
-      That's it. No mantras. No apps guiding you. Just conditions.
-    </p>
+<section class="hero">
+  <div>
+    <h1 class="hero-title">SYSTEM INFO</h1>
+    <p class="hero-subtitle">How the morphogenetic field contribution system works</p>
   </div>
+</section>
 
-  <!-- Two Rules -->
-  <h2>The Two Rules</h2>
+<section class="section">
+  <h2 class="section-title">THE SCIENCE</h2>
+  <p class="section-text">
+    <strong>Rupert Sheldrake's morphogenetic field theory</strong> proposes that consciousness 
+    is not confined to individual brains but exists as a shared field connecting all living beings.
+  </p>
+  <p class="section-text">
+    Studies on the <strong>Maharishi Effect</strong> showed that when just 1% of a population 
+    meditates together, crime drops, violence decreases, collective well-being rises.
+  </p>
+  <p class="section-text">
+    <strong>MMGA is building toward this 1% critical mass.</strong> Every verified minute you contribute 
+    strengthens the field. Your NFTs are permanent proof of service.
+  </p>
+</section>
+
+<section class="tiers">
+  <div class="tiers-inner">
+    <h2 class="tiers-title">CONTRIBUTOR TIERS</h2>
+    <div class="tiers-grid">
+      <div class="tier-card featured">
+        <div class="tier-icon">👑</div>
+        <div class="tier-name">FOUNDING CONTRIBUTOR</div>
+        <div class="tier-range">First 100 Contributors</div>
+        <div class="tier-desc">Your meditation during Earth's awakening critical window.</div>
+        <div class="tier-value">2x AMPLIFICATION • 200 $MONK/NFT</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon">🌅</div>
+        <div class="tier-name">EARLY BUILDER</div>
+        <div class="tier-range">Contributors 101-500</div>
+        <div class="tier-desc">Building the meditation grid in formation phase.</div>
+        <div class="tier-value">1.5x AMPLIFICATION • 150 $MONK/NFT</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon">⭐</div>
+        <div class="tier-name">PIONEER</div>
+        <div class="tier-range">Contributors 501-1000</div>
+        <div class="tier-desc">Strengthening the field toward critical mass.</div>
+        <div class="tier-value">1.2x AMPLIFICATION • 120 $MONK/NFT</div>
+      </div>
+      <div class="tier-card">
+        <div class="tier-icon">🧘</div>
+        <div class="tier-name">CONTRIBUTOR</div>
+        <div class="tier-range">Contributors 1001+</div>
+        <div class="tier-desc">Sustaining planetary consciousness elevation.</div>
+        <div class="tier-value">STANDARD • 100 $MONK/NFT</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <h2 class="faq-title">FREQUENTLY ASKED QUESTIONS</h2>
   
-  <div class="rule-box">
-    <div class="rule-number">01</div>
-    <div class="rule-title">SPINE ERECT</div>
-    <p class="rule-text">
-      Nose above shoulders. Not rigid, not slouched. Your skeleton knows the position.
-      When the spine is aligned, energy flows. The body relaxes into stillness.
-    </p>
+  <div class="faq-item">
+    <div class="faq-q">Q: How does the AI verify my meditation?</div>
+    <div class="faq-a">
+      MediaPipe runs 100% in your browser - zero server transmission. It tracks spine alignment 
+      and detects blinks for liveness. You earn 1 $MONK per minute when posture is correct and liveness verified.
+    </div>
   </div>
 
-  <div class="rule-box">
-    <div class="rule-number">02</div>
-    <div class="rule-title">EYES CLOSED</div>
-    <p class="rule-text">
-      Close your eyes. Not squeezed shut, not peeking. Closed. This cuts 80% of sensory input.
-      The mind has less to process. Stillness emerges naturally.
-    </p>
+  <div class="faq-item">
+    <div class="faq-q">Q: What are $MONK tokens?</div>
+    <div class="faq-a">
+      $MONK is earned during meditation (1 per minute). Accumulated tokens are used to track your progress. 
+      Once you reach 30 minutes total, you can request an NFT airdrop.
+    </div>
   </div>
 
-  <!-- How It Works -->
-  <h2>How It Works</h2>
-  <ol>
-    <li><strong>Open Camera:</strong> Grant camera access (processed locally, never uploaded)</li>
-    <li><strong>AI Detection:</strong> MediaPipe detects your posture in real-time</li>
-    <li><strong>Verification:</strong> Hold spine erect + eyes closed for 1 second</li>
-    <li><strong>Earn MONK:</strong> Receive 1 $MONK token per verified second</li>
-    <li><strong>Mint On-Chain:</strong> Connect wallet and mint tokens to Solana blockchain</li>
-  </ol>
-
-  <h3>Earning Rate</h3>
-  <p>
-    <strong>1 second verified meditation = 1 $MONK token</strong>
-  </p>
-  <ul>
-    <li>1 minute = 60 MONK</li>
-    <li>5 minutes = 300 MONK</li>
-    <li>20 minutes = 1,200 MONK</li>
-    <li>1 hour = 3,600 MONK</li>
-  </ul>
-
-  <!-- Tokenomics -->
-  <h2>$MONK Tokenomics</h2>
-  
-  <h3>Non-Transferable (Soulbound)</h3>
-  <p>
-    $MONK tokens cannot be transferred or sold. They're credentials, not currency.
-    Your practice history stays with your wallet forever.
-  </p>
-
-  <h3>Zero Pre-Mine</h3>
-  <p>
-    No tokens were pre-minted for founders, investors, or team. Every $MONK token in existence
-    was earned through verified meditation. No exceptions.
-  </p>
-
-  <h3>Utility Only</h3>
-  <p>
-    $MONK has no financial value. It's proof-of-practice. Future use cases include:
-  </p>
-  <ul>
-    <li>Meditation teacher credentials (prove 10,000 hours)</li>
-    <li>Corporate wellness verification (companies verify employee engagement)</li>
-    <li>Research participation (recruit verified practitioners)</li>
-    <li>Retreat center access (prove commitment to practice)</li>
-  </ul>
-
-  <!-- Pricing -->
-  <h2>Pricing</h2>
-  
-  <h3>Free Forever</h3>
-  <p>
-    <strong>Earning $MONK is completely free.</strong> No subscription. No hidden fees.
-    Just your time and stillness.
-  </p>
-
-  <h3>Blockchain Fees</h3>
-  <p>
-    When you mint tokens on-chain, you pay Solana network fees:
-  </p>
-  <ul>
-    <li><strong>First mint:</strong> ~$0.36 (creates token account)</li>
-    <li><strong>Subsequent mints:</strong> ~$0.002 each</li>
-  </ul>
-  <p>
-    These fees go to Solana validators, not MMGA. We pay nothing and earn nothing from minting.
-  </p>
-
-  <!-- Use Cases -->
-  <h2>Use Cases</h2>
-
-  <h3>For Teachers</h3>
-  <p>
-    Prove your 10,000 hours. Show students your commitment. Verify your credentials
-    with immutable blockchain proof. No more self-reporting practice time.
-  </p>
-
-  <h3>For Companies</h3>
-  <p>
-    Stop wasting money on unverified wellness apps. See actual engagement.
-    Incentivize employees with verified practice metrics. ROI becomes measurable.
-  </p>
-
-  <h3>For Researchers</h3>
-  <p>
-    Recruit verified practitioners. No more self-reported data. Study participants
-    with proven practice history. Objective measurement of meditation experience.
-  </p>
-
-  <h3>For Individuals</h3>
-  <p>
-    Own your practice data. Portable credentials across platforms. Prove your
-    commitment to yourself. Track progress objectively over years.
-  </p>
-
-  <!-- Technical -->
-  <h2>Technical Architecture</h2>
-
-  <h3>Computer Vision (MediaPipe)</h3>
-  <p>
-    We use Google's MediaPipe AI for pose and face detection. All processing happens
-    locally in your browser. No video is uploaded. Ever.
-  </p>
-
-  <h3>Blockchain (Solana)</h3>
-  <p>
-    Tokens live on Solana mainnet. Fast, cheap transactions. SPL token with freeze
-    authority enabled (non-transferable). Multi-sig governance.
-  </p>
-
-  <h3>Balance Storage</h3>
-  <p>
-    Earned MONK stored on our server until you mint. Connect wallet anytime to mint
-    accumulated balance. Your practice history persists.
-  </p>
-
-  <!-- FAQ -->
-  <h2>FAQ</h2>
-
-  <h3>Can I sell my $MONK tokens?</h3>
-  <p>
-    No. Tokens are non-transferable (soulbound). They're credentials showing you meditated,
-    not currency to trade. This is intentional.
-  </p>
-
-  <h3>Why blockchain?</h3>
-  <p>
-    Immutable proof. No central authority can delete your practice history. Your credentials
-    live forever, independent of any company or platform.
-  </p>
-
-  <h3>Is my video recorded?</h3>
-  <p>
-    No. All AI processing happens locally in your browser. No video leaves your device.
-    We never see your camera feed.
-  </p>
-
-  <h3>What if I already meditate?</h3>
-  <p>
-    Perfect. This verifies what you're already doing. Earn credentials for your existing
-    practice. No need to change your routine.
-  </p>
-
-  <h3>Does this track my thoughts?</h3>
-  <p>
-    No. We only verify physical conditions (posture + eye closure). Your subjective
-    experience is yours alone.
-  </p>
-
-  <h3>What about lying down?</h3>
-  <p>
-    Lying down doesn't count. The protocol requires spine erect (nose above shoulders).
-    This is intentional — the posture matters.
-  </p>
-
-  <!-- CTA -->
-  <div class="cta-box">
-    <h2>Ready to Begin?</h2>
-    <p>
-      No signup required. No payment. Just your camera and 60 seconds.
-    </p>
-    <a href="index.html" class="btn-large">
-      ⚔ START MEDITATING NOW
-    </a>
+  <div class="faq-item">
+    <div class="faq-q">Q: How do I get NFT airdrops?</div>
+    <div class="faq-a">
+      Meditate until you've accumulated 30+ minutes total across all sessions. When you end a session, 
+      if you're eligible, a form appears. Submit your wallet address and we'll send your NFT within 2-4 hours to info@mmga.yoga.
+    </div>
   </div>
 
-  <!-- Contact -->
-  <h2 id="whitepaper">Resources</h2>
-  <p>
-    <strong>Whitepaper:</strong> <a href="/whitepaper.html" style="color:var(--yellow)">Read the full technical whitepaper →</a>
-  </p>
-  <p>
-    <strong>Token Address:</strong> <span style="font-family:var(--mono);color:var(--green)">4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv</span>
-  </p>
-  <p>
-    <strong>Explorer:</strong> <a href="https://solscan.io/token/4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv" target="_blank" style="color:var(--yellow)">View on Solscan →</a>
-  </p>
+  <div class="faq-item">
+    <div class="faq-q">Q: Why do NFTs matter?</div>
+    <div class="faq-a">
+      NFTs are permanent, on-chain proof of your contribution to Earth's morphogenetic field. 
+      They're certificates of service that can never be erased. Future redemption value is locked at your tier rate.
+    </div>
+  </div>
 
-</div>
+  <div class="faq-item">
+    <div class="faq-q">Q: Is my camera data private?</div>
+    <div class="faq-a">
+      Absolutely. MediaPipe processes everything locally in your browser. No video frames ever leave your device. 
+      Only your meditation duration and verification status are recorded.
+    </div>
+  </div>
 
-<!-- Footer -->
+  <div class="faq-item">
+    <div class="faq-q">Q: What's the 30-minute threshold?</div>
+    <div class="faq-a">
+      You must accumulate 30 minutes total (across all sessions) to become eligible for NFT airdrops. 
+      This ensures serious contributors only. Your total is stored in your browser and tracked across sessions.
+    </div>
+  </div>
+</section>
+
 <footer>
-  <p><strong>MMGA Protocol</strong></p>
-  <p style="margin-top:8px">Solana Mainnet · Non-Transferable Tokens · Zero Pre-Mine</p>
-  
-  <div class="footer-links">
-    <a href="index.html">Home</a>
-    <a href="https://solscan.io/token/4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv" target="_blank">Solscan</a>
-    <a href="/whitepaper.html">Whitepaper</a>
-    <a href="mailto:contact@mmga.yoga">Contact</a>
+  <div class="footer-title">FOCUS IS POWER</div>
+  <div class="footer-copyright">
+    MMGA — Make Meditation Great Again<br/>
+    info@mmga.yoga • Powered by on-chain verification
   </div>
-  
-  <p style="margin-top:24px;font-size:10px">
-    Business Registration: 185548046000 · VAT: GR149046575
-  </p>
 </footer>
 
 </body>
