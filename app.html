@@ -3,921 +3,310 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MMGA — Meditation App</title>
-<meta name="description" content="Verified meditation with $MONK token rewards"/>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<title>MMGA Meditation Detector</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0a0a;--bg2:#141414;--bg3:#1c1c1c;--bg4:#242424;--white:#ffffff;--off:#e8e8e8;--muted:#a0a0a0;--dim:#3a3a3a;--dim2:#4a4a4a;--red:#ff0033;--red2:#ff3355;--rdk:#990022;--yellow:#ffd700;--ydim:#ccaa00;--ydark:#5a4d00;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.15);--border3:rgba(255,255,255,0.24);--shadow:rgba(0,0,0,0.5);--px:'Press Start 2P',monospace;--serif:'Instrument Serif',Georgia,serif;--mono:'DM Mono','Courier New',monospace;--green:#1ed760}
+:root{--bg:#0a0f0a;--bg2:#0d120d;--green:#00ff41;--green-dim:#00cc33;--green-glow:rgba(0,255,65,0.3);--yellow:#ffdd00;--red:#ff0033;--white:#e0ffe0;--border:#00ff4144;--term:'Space Mono',monospace;--pixel:'VT323',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--white);font-family:var(--mono);overflow-x:hidden;line-height:1.6}
-::selection{background:var(--yellow);color:var(--bg)}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--dim2)}
-button,input{font:inherit}
-
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(15,20,25,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border3)}
-.n-logo{font-family:var(--px);font-size:13px;color:var(--red);text-shadow:2px 2px 0 var(--rdk);text-decoration:none}.n-logo b{color:var(--yellow)}
-.n-links{display:flex;list-style:none;gap:4px}
-.n-links a{font-size:12px;color:var(--muted);text-decoration:none;padding:8px 14px;transition:all 0.25s ease}
-.n-links a:hover{color:var(--yellow)}
-.n-right{display:flex;align-items:center;gap:12px}
-.n-cta{font-family:var(--mono);font-size:11px;padding:10px 20px;background:var(--yellow);border:2px solid var(--ydim);border-radius:6px;color:#0a0a0a;font-weight:600;cursor:pointer;transition:all 0.25s ease}
-.n-cta:hover{transform:translateY(-2px);background:#ffdd33}
-
-/* BUTTONS */
-.btn{font-family:var(--px);font-size:10px;padding:14px 32px;cursor:pointer;letter-spacing:0.05em;border:3px solid;transition:all 0.15s;background:none}
-.btn:hover{transform:translate(-2px,-2px)}
-.btn-red{background:var(--red);border-color:var(--red2);box-shadow:4px 4px 0 var(--rdk);color:var(--white)}
-.btn-red:hover{box-shadow:6px 6px 0 var(--rdk)}
-.btn-ghost{background:transparent;border-color:var(--border3);box-shadow:4px 4px 0 var(--dim);color:var(--off)}
-.btn-sm{padding:10px 24px;font-size:9px}
-
-/* CAMERA MODAL */
-.cam-modal{position:fixed;inset:0;z-index:1000;background:rgba(11,11,9,0.96);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px}
-.cam-modal.open{display:flex}
-.cam-inner{width:100%;max-width:900px;background:var(--bg2);border:2px solid var(--border3);box-shadow:12px 12px 0 var(--dim);overflow:hidden;max-height:95svh;overflow-y:auto;display:flex;flex-direction:column}
-.cam-top{background:var(--bg3);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--border2)}
-.cam-top-title{font-family:var(--px);font-size:9px;color:var(--yellow)}
-.cam-close-btn{font-family:var(--px);font-size:8px;background:none;border:2px solid var(--border3);color:var(--muted);padding:7px 12px;cursor:pointer}
-.cam-close-btn:hover{border-color:var(--red);color:var(--red)}
-.cam-body{display:grid;grid-template-columns:1fr 320px}
-.cam-left{padding:24px;border-right:2px solid var(--border)}
-.cam-right{padding:24px;display:flex;flex-direction:column;gap:14px}
-.cam-wrap{position:relative;aspect-ratio:4/3;background:#000;border:2px solid var(--border2);overflow:hidden}
-.cam-wrap video,.cam-wrap canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
-.cam-perm{position:absolute;inset:0;z-index:20;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center}
-.cam-overlay-status{position:absolute;top:10px;left:10px;right:10px;z-index:5;display:flex;justify-content:space-between}
-.status-pill{font-family:var(--px);font-size:7px;padding:5px 10px;border:2px solid;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)}
-.sp-ok{border-color:var(--green);color:var(--green)}
-.sp-fail{border-color:var(--red);color:var(--red)}
-.sp-wait{border-color:var(--muted);color:var(--muted)}
-.cam-glow{position:absolute;inset:-2px;border:3px solid var(--green);z-index:3;opacity:0;transition:opacity 0.4s;pointer-events:none;box-shadow:0 0 20px var(--green)}
-.cam-glow.on{opacity:1}
-.pts-big{font-family:var(--px);font-size:28px;color:var(--yellow);text-align:center;display:block}
-.pts-lbl{font-family:var(--px);font-size:7px;color:var(--muted);text-align:center;display:block;margin-top:4px}
-.timer-box{background:var(--bg);border:2px solid var(--border2);padding:14px;text-align:center}
-.timer-big{font-family:var(--px);font-size:22px;color:var(--white)}
-.timer-big.counting{color:var(--green)}
-.prog-track{height:6px;background:var(--bg);border:1px solid var(--dim);overflow:hidden;margin-top:8px}
-.prog-fill{height:100%;background:var(--yellow);width:0;transition:width 0.5s linear}
-.prog-fill.earn{background:var(--green)}
-.med-banner{background:rgba(30,215,96,0.08);border:2px solid rgba(30,215,96,0.3);padding:10px 14px;text-align:center;display:none}
-.med-banner.on{display:block}
-.point-pop{position:fixed;top:72px;left:50%;transform:translateX(-50%);z-index:2000;font-family:var(--px);font-size:11px;background:var(--yellow);color:var(--bg);padding:11px 28px;border:2px solid white;box-shadow:4px 4px 0 var(--ydark);pointer-events:none;opacity:0;transition:opacity 0.3s}
-.point-pop.on{opacity:1}
-
-@media(max-width:980px){
-  .cam-body{grid-template-columns:1fr}.cam-left{border-right:none;border-bottom:2px solid var(--border)}
-}
+body{background:#000;color:var(--green);font-family:var(--term);line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.95);border-bottom:2px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:var(--pixel);font-size:32px;color:var(--green);text-shadow:0 0 10px var(--green-glow);text-decoration:none}
+.logo b{color:var(--yellow)}
+.back-btn{font-family:var(--pixel);font-size:14px;background:none;border:2px solid var(--border);color:var(--green);padding:8px 16px;cursor:pointer;text-decoration:none}
+.back-btn:hover{background:var(--green);color:#000}
+.detector{padding:32px;background:var(--bg2);margin-top:80px}
+.main-grid{display:grid;grid-template-columns:1fr 400px;gap:24px;max-width:1400px;margin:0 auto}
+.left-panel{background:var(--bg);border:2px solid var(--border);padding:24px}
+.cam-feed{position:relative;width:100%;aspect-ratio:4/3;background:#000;border:4px solid var(--green);margin-bottom:24px;overflow:hidden}
+.cam-feed video,.cam-feed canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
+.cam-status{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;z-index:10}
+.status-indicator{font-family:var(--pixel);font-size:14px;padding:8px 12px;background:rgba(0,0,0,0.8);border:2px solid var(--green);color:var(--green)}
+.status-indicator.fail{border-color:var(--red);color:var(--red)}
+.right-panel{background:var(--bg);border:2px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:20px}
+.panel-title{font-family:var(--pixel);font-size:14px;color:var(--white);text-align:center;margin-bottom:12px}
+.earth-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
+.earth{width:200px;height:200px;margin:0 auto;position:relative;display:flex;align-items:center;justify-content:center}
+.earth::before{content:'🌍';font-size:100px;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.token-display{text-align:center;padding:20px;background:rgba(255,221,0,0.1);border:2px solid var(--yellow)}
+.token-num{font-family:var(--pixel);font-size:64px;color:var(--yellow);line-height:1}
+.token-label{font-size:12px;color:var(--white);margin-top:8px}
+.timer-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
+.timer{font-family:var(--pixel);font-size:48px;color:var(--green)}
+.end-btn{width:100%;font-family:var(--pixel);font-size:20px;padding:20px;background:var(--red);border:4px solid #ff0033;color:#fff;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal.show{display:flex}
+.modal-box{background:var(--bg);border:4px solid var(--border);padding:40px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-box.eligible{border-color:var(--green)}
+.modal-box.ineligible{border-color:var(--red)}
+.modal-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:24px;text-align:center}
+.stats-summary{background:var(--bg2);border:2px solid var(--border);padding:24px;margin-bottom:32px}
+.stat-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}
+.stat-row:last-child{border-bottom:none}
+.stat-label{color:var(--green-dim)}
+.stat-value{color:var(--white);font-family:var(--pixel);font-size:18px}
+.stat-value.highlight{color:var(--yellow)}
+.alert{padding:20px;margin-bottom:24px;border:2px solid;font-size:13px;line-height:1.7}
+.alert-warning{background:rgba(255,221,0,0.1);border-color:var(--yellow);color:var(--yellow)}
+.alert-success{background:rgba(0,255,65,0.1);border-color:var(--green);color:var(--green)}
+.form-group{margin-bottom:24px}
+.form-label{font-family:var(--pixel);font-size:14px;color:var(--green);margin-bottom:8px;display:block}
+.form-input{width:100%;padding:14px;background:var(--bg2);border:2px solid var(--border);color:var(--white);font-family:var(--term);font-size:14px}
+.form-input:focus{outline:none;border-color:var(--green)}
+.form-textarea{min-height:100px;resize:vertical}
+.btn-group{display:flex;gap:16px;margin-top:32px}
+.btn{flex:1;font-family:var(--pixel);font-size:16px;padding:16px 32px;cursor:pointer;border:3px solid;text-align:center}
+.btn-primary{background:var(--yellow);border-color:var(--yellow);color:#000}
+.btn-secondary{background:transparent;border-color:var(--green);color:var(--green)}
+.btn-secondary:hover{background:var(--green);color:#000}
+@media(max-width:1200px){.main-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div class="point-pop" id="pointPop">+1 $MONK ★</div>
-
-<!-- NAV -->
 <nav>
-  <a href="index.html" class="n-logo">M<b>M</b>GA</a>
-  <ul class="n-links">
-    <li><a href="info.html">Learn More</a></li>
-  </ul>
-  <div class="n-right">
-    <button id="nav-wallet-btn" class="n-cta" onclick="connectWallet()">Connect Wallet</button>
-    <div id="nav-wallet-connected" style="display:none;font-family:var(--mono);font-size:11px;color:var(--yellow);padding:8px 16px;background:rgba(255,215,0,0.1);border:2px solid rgba(255,215,0,0.3);border-radius:4px;">
-      <span id="nav-wallet-address"></span>
-    </div>
-  </div>
+  <a href="index.html" class="logo">M<b>M</b>GA</a>
+  <a href="index.html" class="back-btn">← Back</a>
 </nav>
 
-<!-- MAIN CONTENT -->
-<div style="padding-top:120px;max-width:900px;margin:0 auto;padding-left:20px;padding-right:20px;padding-bottom:80px">
-  
-  <h1 style="font-family:var(--px);font-size:42px;color:var(--red);margin-bottom:48px;text-align:center">
-    ⚔ MEDITATION SESSION
-  </h1>
-  
-  <!-- THE TWO RULES -->
-  <div style="margin-bottom:48px">
-    <h2 style="font-family:var(--px);font-size:28px;color:var(--yellow);margin-bottom:32px;text-align:center">THE TWO RULES</h2>
-    
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px">
-      <div style="background:var(--bg2);border:2px solid var(--border3);padding:32px">
-        <div style="font-family:var(--px);font-size:48px;color:var(--yellow);margin-bottom:16px">01</div>
-        <div style="font-family:var(--px);font-size:20px;color:var(--red);margin-bottom:12px">SPINE ERECT</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.6">
-          Nose above shoulders. Not rigid, not slouched.
-        </p>
-      </div>
-      
-      <div style="background:var(--bg2);border:2px solid var(--border3);padding:32px">
-        <div style="font-family:var(--px);font-size:48px;color:var(--yellow);margin-bottom:16px">02</div>
-        <div style="font-family:var(--px);font-size:20px;color:var(--red);margin-bottom:12px">EYES CLOSED</div>
-        <p style="font-size:14px;color:var(--muted);line-height:1.6">
-          Close your eyes. Not squeezed shut, not peeking.
-        </p>
+<div class="detector">
+  <div class="main-grid">
+    <div class="left-panel">
+      <div class="cam-feed">
+        <video id="video" autoplay muted playsinline></video>
+        <canvas id="canvas"></canvas>
+        <div class="cam-status">
+          <div class="status-indicator" id="spineStatus">Spine: ○</div>
+          <div class="status-indicator" id="livenessStatus">Live: ○</div>
+        </div>
       </div>
     </div>
-    
-    <!-- Earning Rate -->
-    <div style="background:rgba(255,215,0,0.05);border:2px solid var(--border3);padding:24px;text-align:center">
-      <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:8px">EARNING RATE</div>
-      <div style="font-family:var(--px);font-size:32px;color:var(--yellow);margin-bottom:8px">1 $MONK PER SECOND</div>
-      <p style="font-size:13px;color:var(--muted)">Hold both rules verified = earn tokens</p>
-    </div>
-  </div>
-  
-  <!-- BIOMETRIC DISCLAIMER -->
-  <div style="background:var(--bg3);border:2px solid var(--border);padding:32px;margin-bottom:48px">
-    <div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:16px">⚠️ BIOMETRIC DATA COMPLIANCE</div>
-    
-    <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px">
-      This application uses your device camera to detect posture (spine alignment) and eye closure using 
-      Google MediaPipe AI. <strong style="color:var(--off)">All processing happens locally in your browser.</strong>
-    </p>
-    
-    <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px">
-      <strong style="color:var(--off)">No video or images are recorded, stored, or transmitted.</strong> 
-      No biometric data leaves your device. The camera feed is processed in real-time and immediately discarded.
-    </p>
-    
-    <p style="font-size:14px;color:var(--muted);line-height:1.7">
-      By clicking "BEGIN SESSION" you consent to local camera access for posture verification purposes only.
-      You can revoke camera access at any time through your browser settings.
-    </p>
-  </div>
-  
-  <!-- BEGIN SESSION BUTTON -->
-  <div style="text-align:center;margin-bottom:80px">
-    <button onclick="openCam()" class="btn btn-red" style="padding:32px 64px;font-size:28px">
-      ⚔ BEGIN SESSION
-    </button>
-    <p style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:16px">
-      CAMERA ACCESS REQUIRED · FREE FOREVER
-    </p>
-  </div>
-  
-  <!-- MINT WIDGET -->
-  <div id="mmga-mint-widget" style="max-width:600px;margin:0 auto;background:var(--bg2);border:2px solid var(--border3);padding:48px">
-    
-    <h2 style="font-family:var(--px);font-size:28px;color:var(--yellow);margin-bottom:32px;text-align:center">
-      💰 MINT YOUR $MONK
-    </h2>
-    
-    <!-- Wallet Section -->
-    <div id="mmga-wallet-section">
-      <div style="text-align:center;padding:24px;background:var(--bg3);border:2px solid var(--border);font-family:var(--mono);font-size:14px;color:var(--muted);margin-bottom:16px">
-        🔗 CONNECT WALLET TO VIEW BALANCE
-      </div>
-      <button onclick="connectWallet()" style="background:var(--yellow);color:var(--bg);border:none;padding:16px 32px;font-family:var(--px);font-size:14px;font-weight:700;cursor:pointer;display:block;margin:0 auto;width:100%">
-        CONNECT WALLET
-      </button>
-    </div>
-    
-    <!-- Balance Display -->
-    <div id="mmga-balance-section"></div>
-    
-    <!-- Mint Controls -->
-    <div id="mint-controls" style="display:none;margin:24px 0;text-align:center">
-      <div style="display:flex;gap:16px;align-items:center;justify-content:center">
-        <button onclick="decrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">−</button>
-        <input type="number" id="mint-amount" value="1" min="1" max="100" autocomplete="off" inputmode="numeric" pattern="[0-9]*" style="width:120px;height:48px;background:var(--bg3);border:2px solid var(--border2);color:var(--off);font-family:var(--px);font-size:24px;text-align:center">
-        <button onclick="incrementAmount()" style="background:var(--bg3);border:2px solid var(--border2);color:var(--off);width:48px;height:48px;font-size:24px;cursor:pointer">+</button>
-      </div>
-    </div>
-    
-    <button id="mint-btn" onclick="mintToken()" style="display:none;background:var(--green);color:#fff;border:none;padding:16px 48px;font-family:var(--px);font-size:18px;font-weight:700;cursor:pointer;width:100%;margin-top:16px">
-      MINT <span id="mint-btn-amount">1</span> $MONK
-    </button>
-    
-    <!-- Messages -->
-    <div id="mmga-message-section" style="margin-top:24px;min-height:60px"></div>
-    
-  </div>
-  
-</div>
 
-<!-- CAMERA MODAL -->
-<div class="cam-modal" id="camModal">
-  <div class="cam-inner">
-    <div class="cam-top">
-      <div class="cam-top-title">⚔ $MONK MINTING DETECTOR</div>
-      <button class="cam-close-btn" onclick="closeCam()">✕ Close</button>
-    </div>
-    <div style="background:rgba(30,215,96,0.05);border-bottom:1px solid rgba(30,215,96,0.2);padding:12px 20px">
-      <div style="font-family:var(--px);font-size:7px;color:var(--green);margin-bottom:6px">🛡 CLIENT-SIDE BIOMETRIC PROCESSING</div>
-      <div style="font-size:11px;color:var(--muted);line-height:1.65">
-        <strong style="color:var(--off)">Zero server transmission.</strong> MediaPipe runs 100% in your browser's RAM. No pixel data ever leaves your device.
+    <div class="right-panel">
+      <div class="panel-title">YOU ARE LIFTING<br/>THE MORPHOGENETIC FIELD</div>
+      <div class="earth-box"><div class="earth"></div></div>
+      <div class="token-display">
+        <div class="token-num" id="tokenCount">0</div>
+        <div class="token-label">$MONK EARNED</div>
       </div>
-    </div>
-    <div class="cam-body">
-      <div class="cam-left">
-        <div class="cam-wrap">
-          <div class="cam-perm" id="camPerm">
-            <div style="font-size:36px">📷</div>
-            <div style="font-family:var(--px);font-size:9px">Camera access required</div>
-            <p style="font-size:12px;color:var(--muted);max-width:280px;line-height:1.7">
-              <strong style="color:var(--off)">Local processing only.</strong> No data transmitted.
-            </p>
-            <button class="btn btn-red btn-sm" onclick="startCam()">Enable camera →</button>
-          </div>
-          <video id="camVideo" autoplay playsinline muted></video>
-          <canvas id="camCanvas"></canvas>
-          <div class="cam-glow" id="camGlow"></div>
-          <div class="cam-overlay-status" id="camStatusBar" style="display:none">
-            <div class="status-pill sp-wait" id="spineStatusPill">Spine…</div>
-            <div class="status-pill sp-wait" id="eyesStatusPill">Eyes…</div>
-          </div>
-        </div>
-        <div style="height:3px;background:var(--dim);margin-top:10px;overflow:hidden"><div id="loadFill" style="height:100%;background:var(--yellow);width:0;transition:width 0.3s"></div></div>
-        <div style="display:flex;gap:2px;margin-top:10px">
-          <div id="ruleSpineBox" style="flex:1;background:var(--bg2);border:2px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px">
-            <span id="ruleSpineIcon" style="font-family:var(--px);font-size:10px;color:var(--dim2)">—</span>
-            <div><div style="font-family:var(--px);font-size:6px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Rule 1</div><div style="font-size:11px;color:var(--off)">Spine erect</div></div>
-          </div>
-          <div id="ruleEyesBox" style="flex:1;background:var(--bg2);border:2px solid var(--border);padding:10px 12px;display:flex;align-items:center;gap:8px">
-            <span id="ruleEyesIcon" style="font-family:var(--px);font-size:10px;color:var(--dim2)">—</span>
-            <div><div style="font-family:var(--px);font-size:6px;color:var(--muted);text-transform:uppercase;margin-bottom:2px">Rule 2</div><div style="font-size:11px;color:var(--off)">Eyes closed</div></div>
-          </div>
-        </div>
+      <div class="timer-box">
+        <div class="timer" id="timer">00:00</div>
+        <div style="font-size:11px;color:var(--green-dim);margin-top:8px">Session Time</div>
       </div>
-      <div class="cam-right">
-        <span class="pts-big" id="modalPts">0</span>
-        <span class="pts-lbl">$MONK tokens minted</span>
-        <div class="timer-box">
-          <div class="timer-big" id="timerDisp">00:00</div>
-          <div style="font-family:var(--px);font-size:7px;color:var(--muted);margin-top:5px" id="timerLbl">Not started</div>
-        </div>
-        <div>
-          <div style="font-family:var(--px);font-size:7px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:6px"><span>Next $MONK</span><span id="progNum">PAUSED</span></div>
-          <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-        </div>
-        <div class="med-banner" id="medBanner">
-          <div style="font-family:var(--px);font-size:8px;color:var(--green);margin-bottom:3px">★ MINTING ★</div>
-          <div style="font-size:11px;color:rgba(30,215,96,0.6)">Both rules active</div>
-        </div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-red btn-sm" id="sessBtn" style="flex:1" disabled onclick="toggleSess()">Start session</button>
-          <button class="btn btn-ghost btn-sm" onclick="resetSess()">↺</button>
-        </div>
-        <div id="sessLog" style="background:var(--bg);border:1px solid var(--border);padding:10px;height:130px;overflow-y:auto;font-size:10px;color:var(--muted);line-height:1.5"></div>
-      </div>
+      <button class="end-btn" onclick="endSession()">END SESSION</button>
     </div>
   </div>
 </div>
 
-<!-- FOOTER -->
-<footer style="background:#0d0d0d;border-top:2px solid #2a2a2a;padding:40px 20px;text-align:center">
-  <div style="font-family:var(--px);font-size:18px;color:#e6331f;margin-bottom:12px">MMGA</div>
-  <p style="color:#999;font-size:12px">Make Meditation Great Again · Solana Mainnet</p>
-  <p style="color:#666;font-size:10px;margin-top:8px">
-    <a href="index.html" style="color:#ffd700;text-decoration:none">Home</a> · 
-    <a href="info.html" style="color:#ffd700;text-decoration:none">Learn More</a>
-  </p>
-</footer>
+<!-- INELIGIBLE MODAL -->
+<div class="modal" id="ineligibleModal">
+  <div class="modal-box ineligible">
+    <div class="modal-title">⚠️ NOT YET ELIGIBLE</div>
+    <div style="text-align:center;margin-bottom:32px;color:var(--white)">
+      You need at least 30 minutes total to request NFT airdrops.
+    </div>
+    <div class="stats-summary">
+      <div class="stat-row">
+        <span class="stat-label">This Session:</span>
+        <span class="stat-value" id="ineligSessionMin">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Total Minutes:</span>
+        <span class="stat-value" id="ineligTotalMin">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Still Need:</span>
+        <span class="stat-value highlight" id="ineligRemaining">30</span>
+      </div>
+    </div>
+    <div class="alert alert-warning">
+      <strong>Keep meditating!</strong><br/>
+      Once you reach 30 total minutes, you'll be eligible to request your custom NFT airdrop.
+    </div>
+    <div class="btn-group">
+      <button class="btn btn-secondary" onclick="closeModal('ineligibleModal');window.location.href='index.html'">Return Home</button>
+    </div>
+  </div>
+</div>
 
-<!-- MEDIAPIPE -->
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3/camera_utils.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/face_mesh.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/pose.js" crossorigin="anonymous"></script>
+<!-- AIRDROP MODAL -->
+<div class="modal" id="airdropModal">
+  <div class="modal-box eligible">
+    <div class="modal-title">🎁 NFT AIRDROP ELIGIBLE!</div>
+    <div style="text-align:center;margin-bottom:32px;color:var(--white)">
+      Congratulations! You've accumulated enough $MONK to request your custom NFT airdrop.
+    </div>
+    <div class="stats-summary">
+      <div class="stat-row">
+        <span class="stat-label">This Session:</span>
+        <span class="stat-value" id="airdropSessionMin">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Total Minutes:</span>
+        <span class="stat-value highlight" id="airdropTotalMin">0</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">$MONK Earned:</span>
+        <span class="stat-value highlight" id="airdropMonk">0</span>
+      </div>
+    </div>
+    <div class="alert alert-success">
+      <strong>Next Steps:</strong><br/>
+      Submit your application. Our team will process your request and send your custom NFT within 2-4 hours to info@mmga.yoga.
+    </div>
+    <form action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+      <input type="hidden" name="subject" value="🎁 MMGA NFT Airdrop Request">
+      <div class="form-group">
+        <label class="form-label">FULL NAME *</label>
+        <input type="text" class="form-input" name="fullName" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">EMAIL *</label>
+        <input type="email" class="form-input" name="email" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">SOLANA WALLET *</label>
+        <input type="text" class="form-input" name="wallet" required/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">TWITTER (Optional)</label>
+        <input type="text" class="form-input" name="twitter"/>
+      </div>
+      <input type="hidden" name="sessionMinutes" id="hiddenSessionMin"/>
+      <input type="hidden" name="totalMinutes" id="hiddenTotalMin"/>
+      <input type="hidden" name="monkEarned" id="hiddenMonk"/>
+      <input type="hidden" name="timestamp" id="hiddenTimestamp"/>
+      <div class="btn-group">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('airdropModal');window.location.href='index.html'">Cancel</button>
+        <button type="submit" class="btn btn-primary">REQUEST AIRDROP</button>
+      </div>
+    </form>
+  </div>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
 <script>
-/* CAMERA */
-let spineOk=false,eyesOk=false,sessActive=false,sessTimer=null,consec=0,sessElapsed=0;
-let totalPts=parseInt(localStorage.getItem('mmga_pts')||'0');
-let faceMesh,pose,localStream,mpCam;
-let latestFace=null,latestPose=null;
-let camLoopActive=false;
+let startTime=Date.now(),timerInterval,tokensEarned=0,pose,faceMesh,camera,videoEl,canvasEl,ctx;
+let spineCorrect=false,livenessVerified=false,blinkCount=0;
 
-if(document.getElementById('modalPts'))document.getElementById('modalPts').textContent=totalPts;
+// Get stored total from localStorage
+let totalMinutesAllTime = parseInt(localStorage.getItem('mmga_total_minutes') || '0');
 
-async function startCam(){
-  camLoopActive=false;
-  document.getElementById('camPerm').style.display='none';
-  document.getElementById('loadFill').style.width='30%';
-  
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
-    document.getElementById('camPerm').style.display='flex';
-    document.getElementById('camPerm').innerHTML='<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">CAMERA NOT SUPPORTED</div><p style="font-size:12px;color:var(--muted)">Open in Safari or Chrome</p>';
-    return;
-  }
-  
-  try{
-    const constraints={video:{width:{ideal:640},height:{ideal:480},facingMode:'user'}};
-    localStream=await navigator.mediaDevices.getUserMedia(constraints);
-    const videoEl=document.getElementById('camVideo');
-    videoEl.srcObject=localStream;
-    videoEl.onloadedmetadata=()=>{
-      videoEl.play().then(()=>initDetection()).catch(err=>addLog('Play error: '+err.message));
-    };
-  }catch(e){
-    document.getElementById('camPerm').style.display='flex';
-    document.getElementById('camPerm').innerHTML='<div style="font-size:36px">⚠</div><div style="font-family:var(--px);font-size:9px">CAMERA DENIED</div><p style="font-size:12px;color:var(--muted)">Allow camera in browser settings</p>';
-  }
+// Init MediaPipe
+async function init(){
+videoEl=document.getElementById('video');canvasEl=document.getElementById('canvas');ctx=canvasEl.getContext('2d');
+pose=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}`});
+pose.setOptions({modelComplexity:1,minDetectionConfidence:0.5});
+pose.onResults(onPoseResults);
+faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`});
+faceMesh.setOptions({maxNumFaces:1,minDetectionConfidence:0.5});
+faceMesh.onResults(onFaceResults);
+const stream=await navigator.mediaDevices.getUserMedia({video:true});
+videoEl.srcObject=stream;
+camera=new Camera(videoEl,{onFrame:async()=>{await pose.send({image:videoEl});await faceMesh.send({image:videoEl})},width:1280,height:720});
+camera.start();
+startTimer();
+}
+init();
+
+// Timer
+function startTimer(){
+timerInterval=setInterval(()=>{
+const elapsed=Math.floor((Date.now()-startTime)/1000);
+const mins=Math.floor(elapsed/60),secs=elapsed%60;
+document.getElementById('timer').textContent=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+if(elapsed>0&&elapsed%60===0&&spineCorrect&&livenessVerified){
+tokensEarned++;
+document.getElementById('tokenCount').textContent=tokensEarned;
+}
+},1000);
 }
 
-function initDetection(){
-  if(typeof Camera==='undefined'){
-    setTimeout(initDetection,2000);
-    return;
-  }
-  
-  const videoEl=document.getElementById('camVideo');
-  
-  faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4/${f}`});
-  faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5});
-  faceMesh.onResults(r=>{latestFace=r;checkLogic();});
-
-  pose=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5/${f}`});
-  pose.setOptions({modelComplexity:1,minDetectionConfidence:0.5});
-  pose.onResults(r=>{latestPose=r;checkLogic();});
-
-  mpCam=new Camera(videoEl,{
-    onFrame:async()=>{
-      if(faceMesh)await faceMesh.send({image:videoEl});
-      if(pose)await pose.send({image:videoEl});
-      drawVisuals();
-    },
-    width:640,height:480
-  });
-  
-  mpCam.start().then(()=>{
-    document.getElementById('loadFill').style.width='100%';
-    document.getElementById('camStatusBar').style.display='flex';
-    document.getElementById('sessBtn').disabled=false;
-    addLog('Detection active. Ready to mint $MONK.');
-  });
-}
-
-function checkLogic(){
-  if(latestFace?.multiFaceLandmarks?.[0]){
-    const lm=latestFace.multiFaceLandmarks[0];
-    const LE=[33,160,158,133,153,144],RE=[362,385,387,263,373,380];
-    const d=(a,b)=>Math.hypot(lm[a].x-lm[b].x,lm[a].y-lm[b].y);
-    const ear=idx=>(d(idx[1],idx[5])+d(idx[2],idx[4]))/(2*d(idx[0],idx[3]));
-    const newEyes=((ear(LE)+ear(RE))/2)<0.22;
-    if(newEyes!==eyesOk){eyesOk=newEyes;updateRule('eyes',eyesOk);}
-  }
-  if(latestPose?.poseLandmarks){
-    const lm=latestPose.poseLandmarks;
-    const shoulderY=(lm[11].y+lm[12].y)/2;
-    const newSpine=lm[0].y<shoulderY;
-    if(newSpine!==spineOk){spineOk=newSpine;updateRule('spine',spineOk);}
-  }
-  document.getElementById('medBanner').classList.toggle('on',sessActive&&spineOk&&eyesOk);
-  document.getElementById('camGlow').classList.toggle('on',sessActive&&spineOk&&eyesOk);
-}
-
-function updateRule(type,ok){
-  const isSpine=type==='spine';
-  const icon=document.getElementById(isSpine?'ruleSpineIcon':'ruleEyesIcon');
-  const box=document.getElementById(isSpine?'ruleSpineBox':'ruleEyesBox');
-  const pill=document.getElementById(isSpine?'spineStatusPill':'eyesStatusPill');
-  icon.textContent=ok?'✓':'✗';
-  icon.style.color=ok?'var(--green)':'var(--red)';
-  box.style.borderColor=ok?'var(--green)':'var(--red)';
-  box.style.background=ok?'rgba(30,215,96,0.05)':'rgba(230,51,31,0.05)';
-  pill.className='status-pill '+(ok?'sp-ok':'sp-fail');
-  pill.textContent=(isSpine?'Spine ':'Eyes ')+(ok?'✓':'✗');
-}
-
-function drawVisuals(){
-  const canvas=document.getElementById('camCanvas');
-  const ctx=canvas.getContext('2d');
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(latestFace?.multiFaceLandmarks?.[0]){
-    const lm=latestFace.multiFaceLandmarks[0];
-    const color=eyesOk?'#1ed760':'#e6331f';
-    [33,133,160,153,362,263,385,373].forEach(i=>{
-      ctx.fillStyle=color;
-      ctx.beginPath();
-      ctx.arc(lm[i].x*canvas.width,lm[i].y*canvas.height,2,0,Math.PI*2);
-      ctx.fill();
-    });
-  }
-  if(latestPose?.poseLandmarks){
-    const lm=latestPose.poseLandmarks;
-    const color=spineOk?'#1ed760':'#e6331f';
-    [0,11,12].forEach(i=>{
-      ctx.fillStyle=color;
-      ctx.beginPath();
-      ctx.arc(lm[i].x*canvas.width,lm[i].y*canvas.height,4,0,Math.PI*2);
-      ctx.fill();
-    });
-  }
-}
-
-function toggleSess(){
-  sessActive=!sessActive;
-  const btn=document.getElementById('sessBtn');
-  if(sessActive){
-    btn.textContent='Stop session';
-    btn.style.background='var(--bg3)';
-    addLog('Session started.');
-    sessTimer=setInterval(()=>{
-      sessElapsed++;
-      const m=Math.floor(sessElapsed/60),s=sessElapsed%60;
-      document.getElementById('timerDisp').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-      document.getElementById('timerDisp').className='timer-big'+(spineOk&&eyesOk?' counting':'');
-      document.getElementById('timerLbl').textContent=spineOk&&eyesOk?'Minting':'Paused';
-      if(spineOk&&eyesOk){
-        consec++;
-        document.getElementById('progFill').style.width='100%';
-        document.getElementById('progFill').className='prog-fill earn';
-        document.getElementById('progNum').textContent='MINTING LIVE';
-        awardPoint();
-      }else{
-        if(consec>0){consec=0;addLog('Posture lost.');}
-        document.getElementById('progFill').style.width='0%';
-        document.getElementById('progFill').className='prog-fill';
-        document.getElementById('progNum').textContent='PAUSED';
-      }
-    },1000);
-  }else{
-    clearInterval(sessTimer);
-    btn.textContent='Start session';
-    btn.style.background='var(--red)';
-    document.getElementById('medBanner').classList.remove('on');
-    document.getElementById('camGlow').classList.remove('on');
-    addLog('Session ended — '+totalPts+' total.');
-  }
-}
-
-function awardPoint(){
-  totalPts++;
-  localStorage.setItem('mmga_pts',totalPts);
-  document.getElementById('modalPts').textContent=totalPts;
-  addLog('★ +1 $MONK! Total: '+totalPts);
-  const p=document.getElementById('pointPop');
-  p.textContent='+1 $MONK ★ (Total: '+totalPts+')';
-  p.classList.add('on');
-  setTimeout(()=>p.classList.remove('on'),2500);
-}
-
-function resetSess(){
-  clearInterval(sessTimer);
-  sessActive=false;sessElapsed=0;consec=0;
-  document.getElementById('sessBtn').textContent='Start session';
-  document.getElementById('sessBtn').style.background='var(--red)';
-  document.getElementById('timerDisp').textContent='00:00';
-  document.getElementById('timerLbl').textContent='Not started';
-  document.getElementById('progFill').style.width='0%';
-  document.getElementById('progNum').textContent='PAUSED';
-  document.getElementById('medBanner').classList.remove('on');
-  document.getElementById('camGlow').classList.remove('on');
-  document.getElementById('sessLog').innerHTML='';
-}
-
-function addLog(msg){
-  const log=document.getElementById('sessLog');
-  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  log.innerHTML='<div>['+t+'] '+msg+'</div>'+log.innerHTML;
-}
-
-function openCam(){
-  const modal=document.getElementById('camModal');
-  if(modal){
-    modal.classList.add('open');
-    document.body.style.overflow='hidden';
-    startCam();
-  }
-}
-
-function closeCam(){
-  const modal=document.getElementById('camModal');
-  if(modal){
-    modal.classList.remove('open');
-    document.body.style.overflow='';
-    if(sessActive)toggleSess();
-    camLoopActive=false;
-    if(localStream){
-      localStream.getTracks().forEach(track=>track.stop());
-      document.getElementById('camVideo').srcObject=null;
-    }
-  }
-}
-
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCam();});
-</script>
-
-<script>
-/* WALLET CONNECTION & REAL BLOCKCHAIN MINTING */
-const BACKEND_URL='https://mmga-backend.onrender.com';
-
-// RPC Configuration - Using Helius Free Tier!
-const SOLANA_RPC_URL='https://mainnet.helius-rpc.com/?api-key=2847df2f-bf16-4f0c-9f72-03c04a0cfdaa';
-
-let walletAddress=null;
-let unmintedBalance=0;
-
-function getSolanaProvider(){
-  if(window.solana&&window.solana.isPhantom)return window.solana;
-  if(window.phantom&&window.phantom.solana)return window.phantom.solana;
-  return null;
-}
-
-function updateNavWallet(){
-  const provider=getSolanaProvider();
-  const btn=document.getElementById('nav-wallet-btn');
-  const connected=document.getElementById('nav-wallet-connected');
-  const address=document.getElementById('nav-wallet-address');
-  
-  const pubKey=walletAddress||(provider&&provider.isConnected&&provider.publicKey?provider.publicKey.toString():'');
-  
-  if(pubKey){
-    walletAddress=pubKey;
-    const short=pubKey.slice(0,4)+'...'+pubKey.slice(-4);
-    
-    if(address)address.textContent='🔗 '+short;
-    if(btn)btn.style.display='none';
-    if(connected)connected.style.display='block';
-    
-    const mintSection=document.getElementById('mmga-wallet-section');
-    const mintControls=document.getElementById('mint-controls');
-    const mintBtn=document.getElementById('mint-btn');
-    if(mintSection)mintSection.style.display='none';
-    if(mintControls)mintControls.style.display='flex';
-    if(mintBtn)mintBtn.style.display='block';
-    
-    loadBalance();
-  }else{
-    if(btn)btn.style.display='inline-block';
-    if(connected)connected.style.display='none';
-    
-    const mintSection=document.getElementById('mmga-wallet-section');
-    const mintControls=document.getElementById('mint-controls');
-    const mintBtn=document.getElementById('mint-btn');
-    if(mintSection)mintSection.style.display='block';
-    if(mintControls)mintControls.style.display='none';
-    if(mintBtn)mintBtn.style.display='none';
-  }
-}
-
-async function connectWallet(){
-  const provider=getSolanaProvider();
-  const msg=document.getElementById('mmga-message-section');
-  
-  if(!provider){
-    if(msg){
-      msg.innerHTML='<div style="color:var(--red);padding:16px;border:2px solid var(--red);text-align:center;margin-top:16px">❌ Phantom wallet not found. Install from <a href="https://phantom.app" target="_blank" style="color:var(--red);text-decoration:underline">phantom.app</a></div>';
-    }
-    return;
-  }
-  
-  try{
-    const res=await provider.connect({onlyIfTrusted:false});
-    walletAddress=res.publicKey.toString();
-    updateNavWallet();
-    
-    if(msg){
-      msg.innerHTML='<div style="color:var(--green);padding:16px;border:2px solid var(--green);text-align:center;margin-top:16px">✅ Connected: '+walletAddress.slice(0,4)+'...'+walletAddress.slice(-4)+'</div>';
-      setTimeout(()=>{msg.innerHTML='';},3000);
-    }
-    
-    // Check backend health
-    checkBackendHealth();
-  }catch(error){
-    console.error('Connection error:',error);
-    if(msg){
-      msg.innerHTML='<div style="color:var(--red);padding:16px;border:2px solid var(--red);text-align:center;margin-top:16px">❌ Connection cancelled or failed</div>';
-    }
-  }
-}
-
-async function checkBackendHealth(){
-  try{
-    const response=await fetch(BACKEND_URL+'/health',{method:'GET'});
-    if(response.ok){
-      console.log('✓ Backend is healthy:',BACKEND_URL);
-    }else{
-      console.warn('⚠️ Backend responded but not healthy:',response.status);
-    }
-  }catch(error){
-    console.error('❌ Backend unreachable:',BACKEND_URL);
-    console.error('Error:',error.message);
-    console.log('This means minting will fail. Backend endpoints needed:');
-    console.log('- POST /api/balance/:wallet/add');
-    console.log('- GET /api/balance/:wallet');
-    console.log('- POST /api/mint');
-  }
-}
-
-async function loadBalance(){
-  if(!walletAddress)return;
-  try{
-    const localPoints=parseInt(localStorage.getItem('mmga_pts')||'0',10);
-    console.log('Loading balance - localStorage:',localPoints);
-    
-    // Try to get backend balance
-    let backendBalance=0;
-    try{
-      const response=await fetch(BACKEND_URL+'/api/balance/'+walletAddress);
-      if(response.ok){
-        const data=await response.json();
-        backendBalance=parseInt(data.unmintedBalance)||0;
-        console.log('Backend balance:',backendBalance);
-      }
-    }catch(err){
-      console.warn('Backend balance fetch failed, using localStorage only');
-    }
-    
-    // Total is local + backend
-    unmintedBalance=localPoints+backendBalance;
-    console.log('Total unminted balance:',unmintedBalance);
-    
-    updateBalanceDisplay();
-  }catch(error){
-    console.error('Balance load error:',error);
-  }
-}
-
-function updateBalanceDisplay(){
-  const section=document.getElementById('mmga-balance-section');
-  if(!section||!walletAddress)return;
-  
-  section.innerHTML='<div style="text-align:center;padding:32px;background:var(--bg3);border:2px solid var(--border3);margin:24px 0"><div style="font-family:var(--mono);font-size:11px;color:var(--dim);margin-bottom:8px">UNMINTED BALANCE</div><div style="font-family:var(--px);font-size:48px;color:var(--yellow)">'+unmintedBalance+'</div><div style="font-size:12px;color:var(--muted)">$MONK READY TO MINT</div></div>';
-}
-
-window.connectWallet=connectWallet;
-window.navConnectWallet=connectWallet;
-
-// Setup input field with validation
-const mintAmountInput=document.getElementById('mint-amount');
-if(mintAmountInput){
-  mintAmountInput.addEventListener('input',function(){
-    let val=parseInt(this.value,10);
-    if(isNaN(val)||val<1)val=1;
-    if(val>Math.min(100,unmintedBalance))val=Math.min(100,unmintedBalance);
-    this.value=val;
-    const amountLabel=document.getElementById('mint-btn-amount');
-    if(amountLabel)amountLabel.textContent=val;
-  });
-}
-
-function incrementAmount(){
-  const inputEl=document.getElementById('mint-amount');
-  if(inputEl){
-    let val=parseInt(inputEl.value,10);
-    if(val<Math.min(100,unmintedBalance)){
-      inputEl.value=val+1;
-      const amountLabel=document.getElementById('mint-btn-amount');
-      if(amountLabel)amountLabel.textContent=inputEl.value;
-    }
-  }
-}
-
-function decrementAmount(){
-  const inputEl=document.getElementById('mint-amount');
-  if(inputEl){
-    let val=parseInt(inputEl.value,10);
-    if(val>1){
-      inputEl.value=val-1;
-      const amountLabel=document.getElementById('mint-btn-amount');
-      if(amountLabel)amountLabel.textContent=inputEl.value;
-    }
-  }
-}
-
-async function mintToken(){
-  if(!walletAddress){
-    showError('Please connect wallet first');
-    return;
-  }
-  
-  const inputEl=document.getElementById('mint-amount');
-  const amount=parseInt(inputEl?inputEl.value:'1',10);
-  
-  const localPoints=parseInt(localStorage.getItem('mmga_pts')||'0',10);
-  
-  if(localPoints===0&&unmintedBalance===0){
-    showError('No MONK to mint! Complete a meditation session first.');
-    return;
-  }
-  
-  if(amount>localPoints){
-    showError('Cannot mint '+amount+' MONK. You only have '+localPoints+' unminted.');
-    return;
-  }
-  
-  const btn=document.getElementById('mint-btn');
-  if(btn)btn.disabled=true;
-  
-  try{
-    // STEP 1: SYNC LOCAL POINTS TO BACKEND (REQUIRED)
-    if(localPoints>0){
-      showStatus('Step 1/4: Syncing '+localPoints+' MONK to backend...');
-      
-      let syncResponse;
-      try{
-        syncResponse=await fetch(BACKEND_URL+'/api/balance/'+walletAddress+'/add',{
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({amount:localPoints})
-        });
-      }catch(fetchError){
-        throw new Error('Cannot reach backend sync endpoint. Is backend running? Error: '+fetchError.message);
-      }
-      
-      if(!syncResponse.ok){
-        const errorText=await syncResponse.text();
-        throw new Error('Sync endpoint returned error '+syncResponse.status+': '+errorText+'. The POST /api/balance/:wallet/add endpoint may not be implemented.');
-      }
-      
-      // STEP 2: VERIFY SYNC WORKED
-      showStatus('Step 2/4: Verifying backend received '+localPoints+' MONK...');
-      
-      let balanceCheck;
-      try{
-        balanceCheck=await fetch(BACKEND_URL+'/api/balance/'+walletAddress);
-      }catch(fetchError){
-        throw new Error('Cannot reach balance check endpoint. Error: '+fetchError.message);
-      }
-      
-      if(!balanceCheck.ok){
-        throw new Error('Balance check endpoint error '+balanceCheck.status+'. The GET /api/balance/:wallet endpoint may not be implemented.');
-      }
-      
-      const balanceData=await balanceCheck.json();
-      const backendBalance=parseInt(balanceData.unmintedBalance)||0;
-      
-      console.log('Sync verification - Backend balance:',backendBalance,'Need:',amount);
-      
-      if(backendBalance<amount){
-        throw new Error('SYNC FAILED! Backend shows '+backendBalance+' MONK but you have '+localPoints+' in localStorage. The /api/balance/:wallet/add endpoint is not persisting data correctly. Check backend logs.');
-      }
-      
-      showStatus('✓ Sync verified! Backend confirms '+backendBalance+' MONK');
-      await new Promise(resolve=>setTimeout(resolve,1000));
-      
-      // Clear localStorage ONLY after successful sync verification
-      localStorage.setItem('mmga_pts','0');
-    }
-    
-    // STEP 3: REQUEST MINT AUTHORIZATION
-    showStatus('Step 3/4: Requesting mint authorization for '+amount+' MONK...');
-    
-    let response;
-    try{
-      response=await fetch(BACKEND_URL+'/api/mint',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          userWallet:walletAddress,
-          amount:amount
-        })
-      });
-    }catch(fetchError){
-      throw new Error('Cannot reach mint endpoint. Is backend running? Error: '+fetchError.message);
-    }
-    
-    if(!response.ok){
-      const errorData=await response.json().catch(()=>({error:'Unknown error'}));
-      throw new Error('Mint endpoint error: '+errorData.error+' (Status: '+response.status+'). This usually means the backend balance check failed.');
-    }
-    
-    const mintData=await response.json();
-    
-    if(!mintData.success){
-      throw new Error('Mint not authorized. '+mintData.message);
-    }
-    
-    console.log('Mint authorized:',mintData);
-    showStatus('✓ Mint authorized! Balance deducted: '+amount+' MONK');
-    await new Promise(resolve=>setTimeout(resolve,1000));
-    
-    // STEP 4: CREATE AND BROADCAST BLOCKCHAIN TRANSACTION
-    showStatus('Step 4/4: Creating blockchain transaction...');
-    
-    const provider=getSolanaProvider();
-    if(!provider)throw new Error('Wallet disconnected');
-    
-    // Connect to Solana (uses SOLANA_RPC_URL constant)
-    const connection=new solanaWeb3.Connection(SOLANA_RPC_URL,'confirmed');
-    const userPublicKey=new solanaWeb3.PublicKey(walletAddress);
-    
-    try{
-      // Get recent blockhash
-      const {blockhash}=await connection.getLatestBlockhash();
-      
-      // Create simple transfer transaction (proof of mint)
-      const transaction=new solanaWeb3.Transaction();
-      transaction.recentBlockhash=blockhash;
-      transaction.feePayer=userPublicKey;
-      transaction.add(
-        solanaWeb3.SystemProgram.transfer({
-          fromPubkey:userPublicKey,
-          toPubkey:userPublicKey, // Send to self
-          lamports:1 // Minimal amount
-        })
-      );
-      
-      showStatus('Please approve transaction in Phantom...');
-      
-      // Sign and send via Phantom
-      const {signature}=await provider.signAndSendTransaction(transaction);
-      
-      showStatus('Confirming transaction...');
-      await new Promise(resolve=>setTimeout(resolve,3000));
-      
-      // Success!
-      await loadBalance();
-      showSuccess(signature,amount,mintData.newBalance);
-      
-    }catch(rpcError){
-      console.error('RPC Error:',rpcError);
-      
-      // If RPC fails, show success without blockchain proof
-      await loadBalance();
-      const msgSection=document.getElementById('mmga-message-section');
-      if(msgSection){
-        msgSection.innerHTML='<div style="color:var(--green);padding:16px;border:2px solid var(--green);text-align:center;margin-top:16px">✅ MINTED '+amount+' $MONK!<div style="margin-top:12px;font-size:11px">REMAINING: '+mintData.newBalance+' MONK</div><div style="margin-top:12px;font-size:10px;color:var(--muted)">Note: Blockchain transaction failed ('+rpcError.message+'). Balance updated in database.</div></div>';
-      }
-    }
-    
-  }catch(error){
-    console.error('Mint error:',error);
-    
-    // Restore localStorage if sync verification failed
-    const currentLocal=parseInt(localStorage.getItem('mmga_pts')||'0',10);
-    if(currentLocal===0&&localPoints>0){
-      localStorage.setItem('mmga_pts',localPoints.toString());
-      console.log('Restored',localPoints,'MONK to localStorage');
-    }
-    
-    // Show detailed error with backend debugging info
-    let errorMsg=error.message;
-    
-    if(errorMsg.includes('Sync endpoint')||errorMsg.includes('SYNC FAILED')){
-      errorMsg+=' | BACKEND FIX NEEDED: Ensure POST /api/balance/:wallet/add endpoint persists data to database and GET /api/balance/:wallet returns the updated balance.';
-    }
-    
-    showError(errorMsg);
-  }finally{
-    if(btn)btn.disabled=false;
-  }
-}
-
-function showStatus(message){
-  const msgSection=document.getElementById('mmga-message-section');
-  if(msgSection){
-    msgSection.innerHTML='<div style="color:var(--yellow);padding:16px;border:2px solid var(--yellow);text-align:center;margin-top:16px">⏳ '+message+'</div>';
-  }
-}
-
-function showError(message){
-  const msgSection=document.getElementById('mmga-message-section');
-  if(msgSection){
-    msgSection.innerHTML='<div style="color:var(--red);padding:16px;border:2px solid var(--red);text-align:center;margin-top:16px">❌ '+message+'</div>';
-  }
-}
-
-function showSuccess(signature,amount,remaining){
-  const msgSection=document.getElementById('mmga-message-section');
-  if(msgSection){
-    msgSection.innerHTML='<div style="color:var(--green);padding:16px;border:2px solid var(--green);text-align:center;margin-top:16px">✅ MINTED '+amount+' $MONK SUCCESSFULLY!<div style="margin-top:12px;font-size:11px">REMAINING: '+remaining+' MONK</div><a href="https://solscan.io/tx/'+signature+'" target="_blank" style="display:inline-block;margin-top:8px;color:var(--green);text-decoration:underline">VIEW ON SOLSCAN →</a></div>';
-  }
-}
-
-if(window.solana){
-  window.solana.on('connect',()=>{
-    if(window.solana.publicKey){
-      walletAddress=window.solana.publicKey.toString();
-      updateNavWallet();
-    }
-  });
-  window.solana.on('disconnect',()=>{
-    walletAddress=null;
-    updateNavWallet();
-  });
-  if(window.solana.isConnected){
-    walletAddress=window.solana.publicKey.toString();
-    updateNavWallet();
-  }
-}
-
-window.addEventListener('load',async()=>{
-  const provider=getSolanaProvider();
-  if(!provider){
-    updateNavWallet();
-    return;
-  }
-  
-  try{
-    const res=await provider.connect({onlyIfTrusted:true});
-    if(res.publicKey){
-      walletAddress=res.publicKey.toString();
-    }
-  }catch(e){}
-  
-  updateNavWallet();
+// Pose Results
+function onPoseResults(results){
+if(!results.poseLandmarks)return;
+canvasEl.width=videoEl.videoWidth;canvasEl.height=videoEl.videoHeight;
+ctx.clearRect(0,0,canvasEl.width,canvasEl.height);
+const landmarks=results.poseLandmarks;
+const leftShoulder=landmarks[11],rightShoulder=landmarks[12];
+const leftHip=landmarks[23],rightHip=landmarks[24];
+const shoulderMidY=(leftShoulder.y+rightShoulder.y)/2;
+const hipMidY=(leftHip.y+rightHip.y)/2;
+spineCorrect=Math.abs(shoulderMidY-hipMidY)>0.2;
+document.getElementById('spineStatus').textContent=spineCorrect?'Spine: ✓':'Spine: ✗';
+document.getElementById('spineStatus').className=spineCorrect?'status-indicator':'status-indicator fail';
+// Draw green dots
+ctx.fillStyle='#00ff41';ctx.shadowColor='#00ff41';ctx.shadowBlur=20;
+[landmarks[11],landmarks[12],landmarks[15],landmarks[16]].forEach(l=>{
+const x=l.x*canvasEl.width,y=l.y*canvasEl.height;
+ctx.beginPath();ctx.arc(x,y,20,0,2*Math.PI);ctx.fill();
 });
+}
 
+// Face Results (Blink Detection)
+function onFaceResults(results){
+if(!results.multiFaceLandmarks||results.multiFaceLandmarks.length===0)return;
+const landmarks=results.multiFaceLandmarks[0];
+const leftEAR=calculateEAR(landmarks[33],landmarks[160],landmarks[158],landmarks[133],landmarks[153],landmarks[144]);
+const rightEAR=calculateEAR(landmarks[362],landmarks[385],landmarks[387],landmarks[263],landmarks[373],landmarks[380]);
+const avgEAR=(leftEAR+rightEAR)/2;
+if(avgEAR<0.2){blinkCount++}
+if(blinkCount>=3){livenessVerified=true}
+document.getElementById('livenessStatus').textContent=livenessVerified?'Live: ✓':'Live: ○';
+document.getElementById('livenessStatus').className=livenessVerified?'status-indicator':'status-indicator fail';
+}
+
+function calculateEAR(p1,p2,p3,p4,p5,p6){
+const v1=Math.sqrt(Math.pow(p2.x-p6.x,2)+Math.pow(p2.y-p6.y,2));
+const v2=Math.sqrt(Math.pow(p3.x-p5.x,2)+Math.pow(p3.y-p5.y,2));
+const h=Math.sqrt(Math.pow(p1.x-p4.x,2)+Math.pow(p1.y-p4.y,2));
+return(v1+v2)/(2.0*h);
+}
+
+// End Session
+function endSession(){
+const sessionMin=Math.floor((Date.now()-startTime)/60000);
+if(sessionMin<1){alert('Please meditate for at least 1 minute!');return}
+if(timerInterval)clearInterval(timerInterval);
+if(camera)camera.stop();
+if(videoEl&&videoEl.srcObject){videoEl.srcObject.getTracks().forEach(t=>t.stop())}
+
+// Add to total
+totalMinutesAllTime += sessionMin;
+localStorage.setItem('mmga_total_minutes', totalMinutesAllTime.toString());
+
+// Check eligibility
+if(totalMinutesAllTime>=30&&livenessVerified){
+showAirdropModal(sessionMin,totalMinutesAllTime,tokensEarned);
+}else{
+showIneligibleModal(sessionMin,totalMinutesAllTime);
+}
+}
+
+function showIneligibleModal(sessionMin,totalMin){
+document.getElementById('ineligSessionMin').textContent=sessionMin;
+document.getElementById('ineligTotalMin').textContent=totalMin;
+document.getElementById('ineligRemaining').textContent=Math.max(0,30-totalMin);
+document.getElementById('ineligibleModal').classList.add('show');
+}
+
+function showAirdropModal(sessionMin,totalMin,tokens){
+document.getElementById('airdropSessionMin').textContent=sessionMin;
+document.getElementById('airdropTotalMin').textContent=totalMin;
+document.getElementById('airdropMonk').textContent=tokens;
+document.getElementById('hiddenSessionMin').value=sessionMin+' minutes';
+document.getElementById('hiddenTotalMin').value=totalMin+' minutes';
+document.getElementById('hiddenMonk').value=tokens+' $MONK';
+document.getElementById('hiddenTimestamp').value=new Date().toISOString();
+document.getElementById('airdropModal').classList.add('show');
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('show')}
 </script>
-
-<!-- Solana Web3.js -->
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.min.js"></script>
 
 </body>
 </html>
