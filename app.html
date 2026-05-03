@@ -18,11 +18,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 .detector{padding:32px;background:var(--bg2);margin-top:80px}
 .main-grid{display:grid;grid-template-columns:1fr 400px;gap:24px;max-width:1400px;margin:0 auto}
 .left-panel{background:var(--bg);border:2px solid var(--border);padding:24px}
+.instructions{background:rgba(255,221,0,0.1);border:2px solid var(--yellow);padding:16px;margin-bottom:24px;text-align:center}
+.instructions-title{font-family:var(--pixel);font-size:14px;color:var(--yellow);margin-bottom:8px}
+.instructions-rules{display:flex;gap:24px;justify-content:center;margin-top:12px}
+.rule-item{font-family:var(--pixel);font-size:12px;color:var(--white)}
+.rule-item.active{color:var(--green);text-shadow:0 0 10px var(--green-glow)}
 .cam-feed{position:relative;width:100%;aspect-ratio:4/3;background:#000;border:4px solid var(--green);margin-bottom:24px;overflow:hidden}
 .cam-feed video,.cam-feed canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
 .cam-status{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;z-index:10}
 .status-indicator{font-family:var(--pixel);font-size:14px;padding:8px 12px;background:rgba(0,0,0,0.8);border:2px solid var(--green);color:var(--green)}
 .status-indicator.fail{border-color:var(--red);color:var(--red)}
+.earning-status{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:10;font-family:var(--pixel);font-size:20px;padding:12px 24px;background:rgba(0,0,0,0.9);border:3px solid var(--yellow);color:var(--yellow);text-shadow:0 0 20px rgba(255,221,0,0.8);display:none}
+.earning-status.active{display:block;animation:glow 1s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 10px rgba(255,221,0,0.5)}50%{box-shadow:0 0 30px rgba(255,221,0,1)}}
 .right-panel{background:var(--bg);border:2px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:20px}
 .panel-title{font-family:var(--pixel);font-size:14px;color:var(--white);text-align:center;margin-bottom:12px}
 .earth-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
@@ -30,8 +38,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 .earth::before{content:'🌍';font-size:100px;animation:pulse 3s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 .token-display{text-align:center;padding:20px;background:rgba(255,221,0,0.1);border:2px solid var(--yellow)}
-.token-num{font-family:var(--pixel);font-size:64px;color:var(--yellow);line-height:1}
+.token-num{font-family:var(--pixel);font-size:64px;color:var(--yellow);line-height:1;text-shadow:0 0 20px rgba(255,221,0,0.6)}
 .token-label{font-size:12px;color:var(--white);margin-top:8px}
+.rate-label{font-family:var(--pixel);font-size:10px;color:var(--green);margin-top:4px}
 .timer-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
 .timer{font-family:var(--pixel);font-size:48px;color:var(--green)}
 .end-btn{width:100%;font-family:var(--pixel);font-size:20px;padding:20px;background:var(--red);border:4px solid #ff0033;color:#fff;cursor:pointer}
@@ -73,13 +82,25 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 <div class="detector">
   <div class="main-grid">
     <div class="left-panel">
+      <div class="instructions">
+        <div class="instructions-title">🧘 MEDITATION REQUIREMENTS</div>
+        <div style="font-size:13px;color:var(--white);margin-top:8px">
+          Maintain BOTH conditions to earn $MONK tokens
+        </div>
+        <div class="instructions-rules">
+          <div class="rule-item" id="ruleEyes">👁️ EYES CLOSED</div>
+          <div class="rule-item" id="ruleSpine">🧍 SPINE ERECT</div>
+        </div>
+      </div>
+      
       <div class="cam-feed">
         <video id="video" autoplay muted playsinline></video>
         <canvas id="canvas"></canvas>
         <div class="cam-status">
+          <div class="status-indicator" id="eyesStatus">Eyes: ○</div>
           <div class="status-indicator" id="spineStatus">Spine: ○</div>
-          <div class="status-indicator" id="livenessStatus">Live: ○</div>
         </div>
+        <div class="earning-status" id="earningStatus">+1 $MONK/SEC</div>
       </div>
     </div>
 
@@ -89,6 +110,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
       <div class="token-display">
         <div class="token-num" id="tokenCount">0</div>
         <div class="token-label">$MONK EARNED</div>
+        <div class="rate-label" id="rateLabel">WAITING...</div>
       </div>
       <div class="timer-box">
         <div class="timer" id="timer">00:00</div>
@@ -190,74 +212,177 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
 <script>
-let startTime=Date.now(),timerInterval,tokensEarned=0,pose,faceMesh,camera,videoEl,canvasEl,ctx;
-let spineCorrect=false,livenessVerified=false,blinkCount=0;
-
-// Get stored total from localStorage
+let startTime=Date.now(),timerInterval,earningInterval,tokensEarned=0,pose,faceMesh,camera,videoEl,canvasEl,ctx;
+let spineCorrect=false,eyesClosed=false;
 let totalMinutesAllTime = parseInt(localStorage.getItem('mmga_total_minutes') || '0');
+
+// Eye landmark indices for drawing
+const LEFT_EYE = [33, 160, 158, 133, 153, 144, 145, 153, 154, 155, 133];
+const RIGHT_EYE = [362, 385, 387, 263, 373, 380, 381, 373, 374, 380, 263];
 
 // Init MediaPipe
 async function init(){
-videoEl=document.getElementById('video');canvasEl=document.getElementById('canvas');ctx=canvasEl.getContext('2d');
+videoEl=document.getElementById('video');
+canvasEl=document.getElementById('canvas');
+ctx=canvasEl.getContext('2d');
+
 pose=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}`});
 pose.setOptions({modelComplexity:1,minDetectionConfidence:0.5});
 pose.onResults(onPoseResults);
+
 faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`});
-faceMesh.setOptions({maxNumFaces:1,minDetectionConfidence:0.5});
+faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5});
 faceMesh.onResults(onFaceResults);
+
 const stream=await navigator.mediaDevices.getUserMedia({video:true});
 videoEl.srcObject=stream;
-camera=new Camera(videoEl,{onFrame:async()=>{await pose.send({image:videoEl});await faceMesh.send({image:videoEl})},width:1280,height:720});
+camera=new Camera(videoEl,{
+  onFrame:async()=>{
+    await pose.send({image:videoEl});
+    await faceMesh.send({image:videoEl});
+  },
+  width:1280,
+  height:720
+});
 camera.start();
 startTimer();
+startEarning();
 }
 init();
 
-// Timer
+// Timer (updates every second)
 function startTimer(){
 timerInterval=setInterval(()=>{
-const elapsed=Math.floor((Date.now()-startTime)/1000);
-const mins=Math.floor(elapsed/60),secs=elapsed%60;
-document.getElementById('timer').textContent=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-if(elapsed>0&&elapsed%60===0&&spineCorrect&&livenessVerified){
-tokensEarned++;
-document.getElementById('tokenCount').textContent=tokensEarned;
-}
+  const elapsed=Math.floor((Date.now()-startTime)/1000);
+  const mins=Math.floor(elapsed/60),secs=elapsed%60;
+  document.getElementById('timer').textContent=
+    `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
 },1000);
 }
 
-// Pose Results
+// Earning (every 1 second)
+function startEarning(){
+earningInterval=setInterval(()=>{
+  // BOTH conditions must be met
+  if(eyesClosed && spineCorrect){
+    tokensEarned++;
+    document.getElementById('tokenCount').textContent=tokensEarned;
+    
+    // Show earning status
+    document.getElementById('earningStatus').classList.add('active');
+    document.getElementById('rateLabel').textContent='EARNING: +1/SEC';
+    document.getElementById('rateLabel').style.color='var(--green)';
+  } else {
+    // Not earning
+    document.getElementById('earningStatus').classList.remove('active');
+    document.getElementById('rateLabel').textContent='NOT EARNING';
+    document.getElementById('rateLabel').style.color='var(--red)';
+  }
+},1000);
+}
+
+// Pose Results (Spine Detection)
 function onPoseResults(results){
 if(!results.poseLandmarks)return;
-canvasEl.width=videoEl.videoWidth;canvasEl.height=videoEl.videoHeight;
-ctx.clearRect(0,0,canvasEl.width,canvasEl.height);
+
 const landmarks=results.poseLandmarks;
 const leftShoulder=landmarks[11],rightShoulder=landmarks[12];
 const leftHip=landmarks[23],rightHip=landmarks[24];
 const shoulderMidY=(leftShoulder.y+rightShoulder.y)/2;
 const hipMidY=(leftHip.y+rightHip.y)/2;
 spineCorrect=Math.abs(shoulderMidY-hipMidY)>0.2;
-document.getElementById('spineStatus').textContent=spineCorrect?'Spine: ✓':'Spine: ✗';
-document.getElementById('spineStatus').className=spineCorrect?'status-indicator':'status-indicator fail';
-// Draw green dots
-ctx.fillStyle='#00ff41';ctx.shadowColor='#00ff41';ctx.shadowBlur=20;
-[landmarks[11],landmarks[12],landmarks[15],landmarks[16]].forEach(l=>{
-const x=l.x*canvasEl.width,y=l.y*canvasEl.height;
-ctx.beginPath();ctx.arc(x,y,20,0,2*Math.PI);ctx.fill();
-});
+
+// Update spine status
+const spineStatus=document.getElementById('spineStatus');
+const ruleSpine=document.getElementById('ruleSpine');
+if(spineCorrect){
+  spineStatus.textContent='Spine: ✓';
+  spineStatus.className='status-indicator';
+  ruleSpine.classList.add('active');
+}else{
+  spineStatus.textContent='Spine: ✗';
+  spineStatus.className='status-indicator fail';
+  ruleSpine.classList.remove('active');
+}
 }
 
-// Face Results (Blink Detection)
+// Face Results (Eye Detection with Vertices)
 function onFaceResults(results){
-if(!results.multiFaceLandmarks||results.multiFaceLandmarks.length===0)return;
+if(!results.multiFaceLandmarks||results.multiFaceLandmarks.length===0){
+  eyesClosed=false;
+  updateEyeStatus();
+  return;
+}
+
 const landmarks=results.multiFaceLandmarks[0];
-const leftEAR=calculateEAR(landmarks[33],landmarks[160],landmarks[158],landmarks[133],landmarks[153],landmarks[144]);
-const rightEAR=calculateEAR(landmarks[362],landmarks[385],landmarks[387],landmarks[263],landmarks[373],landmarks[380]);
+
+// Clear canvas
+canvasEl.width=videoEl.videoWidth;
+canvasEl.height=videoEl.videoHeight;
+ctx.clearRect(0,0,canvasEl.width,canvasEl.height);
+
+// Calculate Eye Aspect Ratios
+const leftEAR=calculateEAR(
+  landmarks[33],landmarks[160],landmarks[158],
+  landmarks[133],landmarks[153],landmarks[144]
+);
+const rightEAR=calculateEAR(
+  landmarks[362],landmarks[385],landmarks[387],
+  landmarks[263],landmarks[373],landmarks[380]
+);
 const avgEAR=(leftEAR+rightEAR)/2;
-if(avgEAR<0.2){blinkCount++}
-if(blinkCount>=3){livenessVerified=true}
-document.getElementById('livenessStatus').textContent=livenessVerified?'Live: ✓':'Live: ○';
-document.getElementById('livenessStatus').className=livenessVerified?'status-indicator':'status-indicator fail';
+
+// Eyes closed if EAR < threshold
+eyesClosed=avgEAR<0.2;
+
+// Determine eye color: GREEN if closed, RED if open
+const eyeColor=eyesClosed?'#00ff41':'#ff0033';
+
+// Draw eye vertices
+ctx.fillStyle=eyeColor;
+ctx.shadowColor=eyeColor;
+ctx.shadowBlur=15;
+
+// Draw left eye landmarks
+LEFT_EYE.forEach(idx=>{
+  const landmark=landmarks[idx];
+  if(landmark){
+    const x=landmark.x*canvasEl.width;
+    const y=landmark.y*canvasEl.height;
+    ctx.beginPath();
+    ctx.arc(x,y,4,0,2*Math.PI);
+    ctx.fill();
+  }
+});
+
+// Draw right eye landmarks
+RIGHT_EYE.forEach(idx=>{
+  const landmark=landmarks[idx];
+  if(landmark){
+    const x=landmark.x*canvasEl.width;
+    const y=landmark.y*canvasEl.height;
+    ctx.beginPath();
+    ctx.arc(x,y,4,0,2*Math.PI);
+    ctx.fill();
+  }
+});
+
+// Update eye status
+updateEyeStatus();
+}
+
+function updateEyeStatus(){
+const eyesStatus=document.getElementById('eyesStatus');
+const ruleEyes=document.getElementById('ruleEyes');
+if(eyesClosed){
+  eyesStatus.textContent='Eyes: ✓';
+  eyesStatus.className='status-indicator';
+  ruleEyes.classList.add('active');
+}else{
+  eyesStatus.textContent='Eyes: ✗';
+  eyesStatus.className='status-indicator fail';
+  ruleEyes.classList.remove('active');
+}
 }
 
 function calculateEAR(p1,p2,p3,p4,p5,p6){
@@ -269,21 +394,24 @@ return(v1+v2)/(2.0*h);
 
 // End Session
 function endSession(){
-const sessionMin=Math.floor((Date.now()-startTime)/60000);
+const sessionSec=Math.floor((Date.now()-startTime)/1000);
+const sessionMin=Math.floor(sessionSec/60);
 if(sessionMin<1){alert('Please meditate for at least 1 minute!');return}
+
 if(timerInterval)clearInterval(timerInterval);
+if(earningInterval)clearInterval(earningInterval);
 if(camera)camera.stop();
 if(videoEl&&videoEl.srcObject){videoEl.srcObject.getTracks().forEach(t=>t.stop())}
 
-// Add to total
-totalMinutesAllTime += sessionMin;
-localStorage.setItem('mmga_total_minutes', totalMinutesAllTime.toString());
+// Add to total (convert seconds to minutes for storage)
+totalMinutesAllTime+=sessionMin;
+localStorage.setItem('mmga_total_minutes',totalMinutesAllTime.toString());
 
 // Check eligibility
-if(totalMinutesAllTime>=30&&livenessVerified){
-showAirdropModal(sessionMin,totalMinutesAllTime,tokensEarned);
+if(totalMinutesAllTime>=30){
+  showAirdropModal(sessionMin,totalMinutesAllTime,tokensEarned);
 }else{
-showIneligibleModal(sessionMin,totalMinutesAllTime);
+  showIneligibleModal(sessionMin,totalMinutesAllTime);
 }
 }
 
