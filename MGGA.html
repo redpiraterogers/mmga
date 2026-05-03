@@ -111,6 +111,8 @@
         .nft-image-container {
             position: relative;
             overflow: hidden;
+            width: 100%;
+            height: 100%;
         }
 
         .nft-image-container::after {
@@ -132,11 +134,11 @@
         SYSTEM STATUS: ONLINE // INITIALIZING COSMIC DANCE // DISIDENTIFICATION PROTOCOL ACTIVE
     </div>
 
-    <!-- 1. The Collection (Leading with visuals) -->
+    <!-- 1. The Collection (Visual Data Stream First) -->
     <section id="collection" class="pt-20 pb-10 border-b-2 border-neon-green/20">
         <div class="container mx-auto px-6 mb-8 flex justify-between items-end">
             <div>
-                <h2 class="text-4xl font-bold glow-green">STREAMING_IDENTITIES.EXE</h2>
+                <h2 class="text-4xl font-bold glow-green tracking-tighter">STREAMING_IDENTITIES.LOG</h2>
                 <div class="h-1 w-48 bg-neon-green glow-green"></div>
             </div>
             <div class="mono text-xs opacity-50 hidden md:block">
@@ -194,54 +196,6 @@
                     </div>
                 </div>
 
-                <!-- NFT Item 5 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="14.png" alt="MMGA NFT #14" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #014</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_014</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
-
-                <!-- NFT Item 6 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="15.png" alt="MMGA NFT #15" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #015</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_015</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
-
-                <!-- NFT Item 7 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="16.png" alt="MMGA NFT #16" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #016</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_016</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
-
-                <!-- NFT Item 8 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="17.png" alt="MMGA NFT #17" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #017</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_017</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
-
                 <!-- Duplicate for seamless marquee -->
                 <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
                     <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
@@ -253,50 +207,42 @@
                         <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
                     </div>
                 </div>
-
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="11.png" alt="MMGA NFT #11" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #011</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_011</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- 2. Hero Section (Slogan / CTA) -->
-    <section class="min-h-screen flex flex-col justify-center items-center px-6 relative border-b-2 border-green-900">
-        <div class="z-10 text-center max-w-6xl space-y-8">
+    <!-- 2. Hero Section (The Slogan) -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-6 relative border-b-2 border-green-900 bg-black">
+        <div class="z-10 text-center max-w-6xl space-y-10">
             <h2 class="text-xl tracking-[0.4em] glow-green flicker">THE PLANETARY MEDITATION INITIATIVE</h2>
             
-            <div class="space-y-2">
-                <h1 class="text-5xl md:text-8xl font-bold leading-none glow-green">
+            <div class="space-y-4">
+                <h1 class="text-6xl md:text-[8rem] font-bold leading-[0.8] glow-green tracking-tighter">
                     ALL IDENTITIES DANCING
                 </h1>
-                <h1 class="text-5xl md:text-8xl font-bold leading-none glow-yellow">
+                <h1 class="text-6xl md:text-[8rem] font-bold leading-[0.8] glow-yellow tracking-tighter">
                     THE COSMIC DANCE
+                </h1>
+                <h1 class="text-4xl md:text-6xl font-bold leading-none text-white opacity-90">
+                    OF ASSOCIATION.
                 </h1>
             </div>
 
-            <p class="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-                THE MORPHOGENETIC DANCE OF ASSOCIATION.
+            <p class="text-2xl md:text-4xl font-bold tracking-widest mb-4 glow-green">
+                MORPHOGENETIC DRIFT DETECTED.
             </p>
 
-            <p class="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-neon-green opacity-80 mono">
-                Strip the ego. Tokenize the void. 1,954 iterations of archetypal collision. 
-                Lock down collectibles. Lift the field. Secure the proof.
+            <p class="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-neon-green opacity-80 mono lowercase">
+                // strip the ego. // tokenize the void. // 1,954 iterations. <br>
+                Lock down collectibles. lift the field. secure the proof.
             </p>
             
             <div class="flex flex-col md:flex-row gap-6 justify-center pt-8">
-                <a href="#" class="btn-yellow-solid text-2xl">
-                    ENTER THE DANCE
+                <a href="#collection" class="btn-yellow-solid text-3xl tracking-tighter">
+                    JOIN THE DANCE
                 </a>
-                <a href="#logic" class="btn-green-outline text-2xl">
-                    VIEW LOGIC
+                <a href="#logic" class="btn-green-outline text-3xl tracking-tighter">
+                    VIEW_LOGIC.SYS
                 </a>
             </div>
         </div>
@@ -307,29 +253,29 @@
     </section>
 
     <!-- 3. The Logic (Mathematical Proof) -->
-    <section id="logic" class="py-32 border-b-2 border-green-900 bg-black/50">
+    <section id="logic" class="py-32 border-b-2 border-green-900 bg-zinc-950">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                <div class="space-y-8">
-                    <h3 class="text-5xl font-bold leading-none glow-green underline">THE PROOF OF<br>INHERENT RARITY</h3>
-                    <p class="text-lg leading-relaxed mono">
-                        > MMGA is a mathematical practice. 
+                <div class="space-y-12">
+                    <h3 class="text-6xl font-bold leading-none glow-green underline tracking-tighter">THE PROOF OF<br>INHERENT RARITY</h3>
+                    <p class="text-xl leading-relaxed mono lowercase opacity-70">
+                        > MMGA is a mathematical practice. <br>
                         > We use tokenized deflation to map the distance between the ego and enlightenment.
                     </p>
                     
                     <div class="space-y-6">
-                        <div class="terminal-border p-8 bg-green-950/20">
-                            <span class="text-cyber-yellow text-sm block mb-2 font-bold tracking-widest">[ AXIOM I: EGO INFLATION ]</span>
-                            <div class="text-4xl font-bold mb-4 glow-green">E(i) = φ(i) × d(A, F)</div>
-                            <p class="text-sm leading-relaxed mono text-neon-green/70">
+                        <div class="terminal-border p-10 bg-green-950/20">
+                            <span class="text-cyber-yellow text-sm block mb-4 font-bold tracking-widest">[ AXIOM I: EGO INFLATION ]</span>
+                            <div class="text-5xl font-bold mb-6 glow-green">E(i) = φ(i) × d(A, F)</div>
+                            <p class="text-base leading-relaxed mono text-neon-green/70 lowercase">
                                 The cultural weight of the figure (φ) multiplied by the distance (d) between the self and the archetype. Series 1 captures peak inflation.
                             </p>
                         </div>
 
-                        <div class="terminal-border p-8 bg-green-950/20">
-                            <span class="text-cyber-yellow text-sm block mb-2 font-bold tracking-widest">[ AXIOM II: VALUE INVERSION ]</span>
-                            <div class="text-4xl font-bold mb-4 glow-green">Ve × Vs = K</div>
-                            <p class="text-sm leading-relaxed mono text-neon-green/70">
+                        <div class="terminal-border p-10 bg-green-950/20">
+                            <span class="text-cyber-yellow text-sm block mb-4 font-bold tracking-widest">[ AXIOM II: VALUE INVERSION ]</span>
+                            <div class="text-5xl font-bold mb-6 glow-green">Ve × Vs = K</div>
+                            <p class="text-base leading-relaxed mono text-neon-green/70 lowercase">
                                 Economic rarity (Ve) and Spiritual clarity (Vs) are inverse. Series 1 is the most exclusive collectible; Series ∞ is the void.
                             </p>
                         </div>
@@ -337,13 +283,13 @@
                 </div>
                 
                 <div class="relative flex justify-center">
-                    <div class="w-full max-w-md aspect-square terminal-border bg-black flex flex-col items-center justify-center p-8 text-center space-y-4">
-                        <div class="text-xs opacity-50 mono mb-8">CPU_SCARCITY_MONITOR</div>
-                        <h4 class="text-3xl font-bold">SERIES 1 LOGS</h4>
-                        <div class="text-8xl font-bold glow-yellow">1,954</div>
-                        <div class="text-sm tracking-[0.3em] opacity-80">ORIGINAL ITERATIONS DETECTED</div>
-                        <div class="pt-8 mono text-xs text-green-700">
-                            "The origin point is mathematically superior as it initiates the descent."
+                    <div class="w-full max-w-md aspect-square terminal-border bg-black flex flex-col items-center justify-center p-10 text-center space-y-6">
+                        <div class="text-xs opacity-50 mono mb-8 tracking-[0.5em]">CPU_SCARCITY_MONITOR</div>
+                        <h4 class="text-4xl font-bold tracking-widest">SERIES 1 LOGS</h4>
+                        <div class="text-[10rem] font-bold glow-yellow leading-none">1,954</div>
+                        <div class="text-lg tracking-[0.4em] opacity-80 font-bold">ORIGINAL ITERATIONS</div>
+                        <div class="pt-8 mono text-sm text-green-700 italic">
+                            "The origin point is mathematically superior."
                         </div>
                     </div>
                 </div>
@@ -351,25 +297,40 @@
         </div>
     </section>
 
-    <!-- 4. Fine Art Mandate -->
-    <section class="py-32 bg-neon-green text-black">
+    <!-- 4. Fine Art Mandate (Fixed Disclaimer Section) -->
+    <section id="mandate" class="py-32 bg-black border-t-2 border-neon-green/30 relative z-10">
         <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto border-8 border-black p-12 space-y-8">
-                <h3 class="text-5xl font-bold tracking-tighter">[ SYSTEM MANDATE ]</h3>
-                <p class="text-2xl font-bold leading-none">
-                    MMGA IS A FINE ART PROTOCOL. THESE ARE DIGITAL COLLECTIBLES FOR ENJOYMENT AND MORPHOGENETIC LIFTING ONLY.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg font-bold leading-tight">
-                    <div class="space-y-4">
-                        <div>[+] ARTISTIC UTILITY: UNIQUE ARCHETYPAL MERGES.</div>
-                        <div>[+] RARITY: MATHEMATICALLY CAPPED AT 1,954.</div>
+            <div class="max-w-4xl mx-auto terminal-border p-12 md:p-16 space-y-12 bg-black">
+                <h3 class="text-6xl md:text-7xl font-bold tracking-tighter leading-none glow-green flicker">[ SYSTEM MANDATE ]</h3>
+                <div class="space-y-8">
+                    <p class="text-3xl md:text-5xl font-bold leading-tight text-white glow-green">
+                        MMGA IS A FINE ART PROTOCOL. THESE ARE DIGITAL COLLECTIBLES FOR ARTISTIC APPRECIATION AND MORPHOGENETIC FIELD LIFTING ONLY.
+                    </p>
+                    <div class="h-1 w-full bg-neon-green/30"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-xl font-bold leading-tight">
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-4">
+                            <span class="text-3xl glow-green">[+]</span>
+                            <span class="text-neon-green">ARTISTIC UTILITY: UNIQUE ARCHETYPAL MERGES SECURED IN CODE.</span>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-3xl glow-green">[+]</span>
+                            <span class="text-neon-green">RARITY: MATHEMATICALLY CAPPED AT 1,954 FOR SERIES 1.</span>
+                        </div>
                     </div>
-                    <div class="space-y-4">
-                        <div>[-] NOT AN INVESTMENT: PROFIT IS ILLUSION.</div>
-                        <div>[-] NO ADVICE: SYSTEM IS DECENTRALIZED.</div>
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-4">
+                            <span class="text-3xl glow-yellow">[-]</span>
+                            <span class="text-cyber-yellow">NOT AN INVESTMENT: PROFIT IS A TEMPORARY SIMULATION.</span>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <span class="text-3xl glow-yellow">[-]</span>
+                            <span class="text-cyber-yellow">NO FINANCIAL ADVICE: SYSTEM OPERATES ON LOGIC, NOT LUCK.</span>
+                        </div>
                     </div>
                 </div>
-                <div class="p-4 bg-black text-neon-green text-center font-bold text-xl tracking-[0.2em] flicker">
+                <div class="p-8 bg-neon-green text-black text-center font-bold text-2xl md:text-4xl tracking-[0.2em] flicker mt-10 shadow-[0_0_30px_rgba(0,255,0,0.5)]">
                     COLLECTOR RESPONSIBILITY IS THE PATH TO ENLIGHTENMENT.
                 </div>
             </div>
@@ -377,26 +338,26 @@
     </section>
 
     <!-- Footer -->
-    <footer class="py-20 border-t-2 border-neon-green/20 bg-black">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-12">
+    <footer class="py-24 border-t-2 border-neon-green/20 bg-black">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-16">
             <div class="text-center md:text-left">
-                <div class="text-5xl font-bold glow-green">MMGA</div>
-                <p class="text-xs mono opacity-50 tracking-[0.4em]">FINE_ART_PROTOCOL_V2.0</p>
+                <div class="text-6xl font-bold glow-green tracking-tighter">MMGA</div>
+                <p class="text-sm mono opacity-50 tracking-[0.6em]">FINE_ART_PROTOCOL_V2.0</p>
             </div>
             
-            <div class="flex gap-12 text-sm">
+            <div class="flex gap-16 text-sm">
                 <div class="text-center">
-                    <span class="block text-green-900 text-xs font-bold">NETWORK</span>
-                    <span class="font-bold glow-green">SOLANA_MAINNET</span>
+                    <span class="block text-green-900 text-xs font-bold mb-2">NETWORK</span>
+                    <span class="text-2xl font-bold glow-green tracking-tight">SOLANA_MAINNET</span>
                 </div>
                 <div class="text-center">
-                    <span class="block text-green-900 text-xs font-bold">FIELD_STATUS</span>
-                    <span class="text-cyber-yellow font-bold">LIFTING...</span>
+                    <span class="block text-green-900 text-xs font-bold mb-2">FIELD_STATUS</span>
+                    <span class="text-2xl text-cyber-yellow font-bold tracking-tight">LIFTING...</span>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-12 text-[10px] opacity-20 mono">
-            TERMINATE SESSION // 0x001954
+        <div class="text-center mt-20 text-[12px] opacity-20 mono tracking-[1em]">
+            TERMINATE SESSION // 0x001954 // GOODBYE_EGO
         </div>
     </footer>
 
