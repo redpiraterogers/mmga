@@ -90,143 +90,361 @@
         }
         .marquee-content {
             display: flex;
-            animation: marquee 40s linear infinite;
+            animation: marquee 120s linear infinite;
         }
 
         .marquee-container:hover .marquee-content {
             animation-play-state: paused;
         }
 
-        /* NFT Image Styling */
+        /* NFT Card Styling */
+        .nft-card {
+            min-width: 350px;
+            height: 500px;
+            transition: all 0.3s ease;
+        }
+
+        .nft-card:hover {
+            transform: scale(1.05);
+            z-index: 50;
+            box-shadow: 0 0 30px var(--neon-green);
+        }
+
         .nft-image {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            height: 280px;
             object-fit: contain;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
         }
 
-        .nft-image-container {
-            position: relative;
-            overflow: hidden;
+        .spec-label {
+            color: rgba(0, 255, 0, 0.5);
+            font-size: 12px;
+        }
+
+        .spec-value {
+            color: #fff;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. Infinite Scrolling NFT Marquee (Top) -->
-    <section class="py-12 border-b-2 border-green-900 overflow-hidden marquee-container">
-        <div class="marquee-content">
-            <!-- First set of NFTs -->
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/1.png" alt="CYBERMONK #1" class="nft-image">
+    <!-- System Status Bar -->
+    <div class="fixed top-0 w-full z-[100] bg-neon-green text-black py-1 px-4 text-center text-xs font-bold tracking-widest">
+        SYSTEM_STATUS: ONLINE // CYBERMONKS-V1 // 1,954 GENESIS ITERATIONS
+    </div>
+
+    <!-- 1. NFT Carousel (20 Items) -->
+    <section class="pt-12 pb-8 border-b-2 border-green-900 overflow-hidden marquee-container">
+        <div class="marquee-content gap-6 px-4">
+            
+            <!-- NFT #1 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="1.png" alt="CYBERMONK #1" class="nft-image">
                 </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #001</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_001</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #001</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">BILL CLINTON</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SPACE TRAVELLER</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
                 </div>
             </div>
 
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/2.png" alt="CYBERMONK #2" class="nft-image">
+            <!-- NFT #2 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="2.png" alt="CYBERMONK #2" class="nft-image">
                 </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #002</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_002</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
-                </div>
-            </div>
-
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/3.png" alt="CYBERMONK #3" class="nft-image">
-                </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #003</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_003</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #002</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EPSTEIN</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">JEDI ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
                 </div>
             </div>
 
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/4.png" alt="CYBERMONK #4" class="nft-image">
+            <!-- NFT #3 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="3.png" alt="CYBERMONK #3" class="nft-image">
                 </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #004</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_004</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
-                </div>
-            </div>
-
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/5.png" alt="CYBERMONK #5" class="nft-image">
-                </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #005</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_005</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #003</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SPACE TRAVELLER</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
                 </div>
             </div>
 
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/6.png" alt="CYBERMONK #6" class="nft-image">
+            <!-- NFT #4 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="4.png" alt="CYBERMONK #4" class="nft-image">
                 </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #006</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_006</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
-                </div>
-            </div>
-
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/7.png" alt="CYBERMONK #7" class="nft-image">
-                </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #007</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_007</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #004</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EMINEM</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SWIMWEAR</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">AFTER PARTY</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
                 </div>
             </div>
 
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/8.png" alt="CYBERMONK #8" class="nft-image">
+            <!-- NFT #5 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="5.png" alt="CYBERMONK #5" class="nft-image">
                 </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #008</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_008</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
-                </div>
-            </div>
-
-            <!-- Duplicate for seamless loop -->
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/1.png" alt="CYBERMONK #1" class="nft-image">
-                </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #001</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_001</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #005</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">ARIANA GRANDE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">ELECTRIC JELLYFISH</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERTED ISLAND</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
                 </div>
             </div>
 
-            <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair mx-4">
-                <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                    <img src="images/2.png" alt="CYBERMONK #2" class="nft-image">
+            <!-- NFT #6 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="6.png" alt="CYBERMONK #6" class="nft-image">
                 </div>
-                <div class="mt-8 space-y-2">
-                    <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #002</span>
-                    <div class="text-2xl font-bold text-white">CYBERMONK_002</div>
-                    <div class="text-xs mono text-green-700 tracking-tighter">GENESIS // COMPRESSED</div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #006</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">ARIANA GRANDE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SWIMWEAR</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERTED ISLAND</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #7 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="7.png" alt="CYBERMONK #7" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #007</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">GEORGE BUSH</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">LBGQ GOTH</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #8 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="8.png" alt="CYBERMONK #8" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #008</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">NAPOLEON</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">MATRIX ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #9 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="9.png" alt="CYBERMONK #9" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #009</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">DOCTOR ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #10 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="10.png" alt="CYBERMONK #10" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #010</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">ALEXANDER THE GREAT</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">JEDI ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">MOON</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #11 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="11.png" alt="CYBERMONK #11" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #011</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">COSMIC ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #12 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="12.png" alt="CYBERMONK #12" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #012</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">CLEOPATRA</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SPACE TRAVELLER</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">ZEN GARDEN</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #13 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="13.png" alt="CYBERMONK #13" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #013</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">MATRIX ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #14 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="14.png" alt="CYBERMONK #14" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #014</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EPSTEIN</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">HAWAI ROBE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #15 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="15.png" alt="CYBERMONK #15" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #015</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">BUDDHA</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">BATMAN SUITE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">ZEN GARDEN</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #16 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="16.png" alt="CYBERMONK #16" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #016</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">MANSA MUSA</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">LEGEND ZELDA</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">INDIA</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #17 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="17.png" alt="CYBERMONK #17" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #017</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">DONALD TRUMP</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">COSMIC ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">INDIA</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #18 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="18.png" alt="CYBERMONK #18" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #018</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">HISTORICAL_FIGURE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">LEGEND ZELDA</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
+                    <div class="pt-2 text-xs text-red-700">[GENESIS] [FORBIDDEN]</div>
+                </div>
+            </div>
+
+            <!-- NFT #19 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="19.png" alt="CYBERMONK #19" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #019</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EPSTEIN</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">BATMAN SUITE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERTED ISLAND</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- NFT #20 -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="20.png" alt="CYBERMONK #20" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #020</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">KAMALA HARRIS</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">BATMAN SUITE</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <!-- Duplicate first 5 for seamless loop -->
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="1.png" alt="CYBERMONK #1" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #001</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">BILL CLINTON</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SPACE TRAVELLER</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
+                </div>
+            </div>
+
+            <div class="nft-card terminal-border bg-black p-4">
+                <div class="mb-4">
+                    <img src="2.png" alt="CYBERMONK #2" class="nft-image">
+                </div>
+                <div class="space-y-2 mono text-sm">
+                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #002</div>
+                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EPSTEIN</span></div>
+                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">JEDI ROBES</span></div>
+                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
+                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
                 </div>
             </div>
         </div>
@@ -251,17 +469,17 @@
             </p>
 
             <p class="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-neon-green opacity-80 mono">
-                Terminal-grade digital art exploring ego dissolution through the cosmic dance. 
+                Terminal-grade digital art exploring ego dissolution. 
                 Each Cybermonk tokenizes a collision: legendary figures × absurd contexts × meditation protocol. 
-                Jesus on the moon. Buddha after-party. Cleopatra in desert Batman gear.
+                Mathematical rarity. Morphogenetic field lifting. Fine art collectibles.
             </p>
             
             <div class="flex flex-col md:flex-row gap-6 justify-center pt-8">
                 <a href="#mint" class="btn-yellow-solid text-2xl">
-                    MINT_NOW
+                    ENTER_PROTOCOL
                 </a>
                 <a href="#logic" class="btn-green-outline text-2xl">
-                    VIEW_PROTOCOL
+                    VIEW_PROOFS
                 </a>
             </div>
         </div>
@@ -273,40 +491,34 @@
             <h2 class="text-5xl md:text-7xl font-bold mb-16 text-center glow-green">DEFLATION_PROTOCOL</h2>
             
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Proof 1 -->
                 <div class="terminal-border p-8 bg-black">
                     <h3 class="text-2xl font-bold mb-4 glow-yellow">EGO_INFLATION_THEOREM</h3>
                     <div class="mono text-sm space-y-2 text-green-400">
                         <p>∀x ∈ SELF_NARRATIVES:</p>
                         <p>VALUE(x) ∝ 1/MEDITATION_TIME</p>
-                        <p class="pt-4">Inverse relationship established.</p>
-                        <p>More meditation = Less ego inflation.</p>
+                        <p class="pt-4">More meditation = Less ego inflation.</p>
                         <p class="text-cyber-yellow font-bold pt-2">Q.E.D.</p>
                     </div>
                 </div>
 
-                <!-- Proof 2 -->
                 <div class="terminal-border p-8 bg-black">
                     <h3 class="text-2xl font-bold mb-4 glow-yellow">SERIES_DEFLATION</h3>
                     <div class="mono text-sm space-y-2 text-green-400">
                         <p>SERIES_1 = ORIGIN_POINT</p>
                         <p>|SUPPLY| = 1954</p>
                         <p>RARITY = GENESIS</p>
-                        <p class="pt-4">No subsequent mints.</p>
-                        <p>Mathematical cap enforced.</p>
+                        <p class="pt-4">Mathematical cap enforced.</p>
                         <p class="text-cyber-yellow font-bold pt-2">PROVEN</p>
                     </div>
                 </div>
 
-                <!-- Proof 3 -->
                 <div class="terminal-border p-8 bg-black">
                     <h3 class="text-2xl font-bold mb-4 glow-yellow">FIELD_ACTIVATION</h3>
                     <div class="mono text-sm space-y-2 text-green-400">
                         <p>∑(MEDITATION_TIME) → FIELD_LIFT</p>
                         <p>COLLECTIVE > INDIVIDUAL</p>
                         <p>PROOF-OF-DISIDENTIFICATION</p>
-                        <p class="pt-4">Morphogenetic resonance verified.</p>
-                        <p>On-chain authentication secured.</p>
+                        <p class="pt-4">On-chain authentication secured.</p>
                         <p class="text-cyber-yellow font-bold pt-2">VALIDATED</p>
                     </div>
                 </div>
@@ -314,54 +526,45 @@
         </div>
     </section>
 
-    <!-- 4. Mint Section -->
-    <section id="mint" class="min-h-screen flex flex-col justify-center items-center px-6 py-24 border-b-2 border-green-900">
+    <!-- 4. Disclaimer -->
+    <section id="mint" class="py-24 px-6 border-b-2 border-green-900">
         <div class="max-w-4xl mx-auto text-center space-y-8">
-            <h2 class="text-5xl md:text-7xl font-bold glow-green mb-8">MINT_ACCESS</h2>
+            <h2 class="text-5xl md:text-7xl font-bold glow-green mb-8">LEGAL_DISCLAIMER</h2>
             
-            <div class="terminal-border p-12 bg-black space-y-6">
-                <div class="text-2xl mono">
-                    <p class="text-cyber-yellow">SUPPLY: 1954</p>
-                    <p class="text-green-400">BLOCKCHAIN: SOLANA</p>
-                    <p class="text-green-400">FORMAT: COMPRESSED_NFTS</p>
-                    <p class="text-green-400">COST: TBD</p>
-                </div>
-                
-                <div class="pt-8">
-                    <p class="text-xl mb-6 text-green-500 mono">
-                        SYSTEM_STATUS: DEPLOYMENT_PENDING
-                    </p>
-                    <button class="btn-yellow-solid text-3xl" disabled>
-                        MINTING_SOON
-                    </button>
-                </div>
-            </div>
-
-            <div class="pt-12 space-y-4 text-left terminal-border p-8 bg-black">
-                <h3 class="text-2xl font-bold glow-yellow mb-4">⚠️ LEGAL_DISCLAIMER</h3>
-                <p class="mono text-sm text-green-400 leading-relaxed">
-                    These digital art collectibles are NOT financial instruments. 
-                    No investment promises. No profit expectations. 
-                    Purpose: personal collection, artistic appreciation, philosophical exploration only. 
-                    Risk: total loss possible. No market guaranteed. 
-                    Morphogenetic field participation optional. 
-                    Strip the ego. Tokenize the void. Join the planetary meditation initiative.
+            <div class="terminal-border p-12 bg-black text-left space-y-6">
+                <p class="mono text-lg text-green-400 leading-relaxed">
+                    CYBERMONKS-V1 // SERIES_1_GENESIS // 1,954 ARCHETYPAL ITERATIONS
                 </p>
+                <p class="mono text-sm text-green-400 leading-relaxed">
+                    These digital art collectibles are <span class="text-cyber-yellow font-bold">NOT financial instruments</span>. 
+                    No investment promises. No profit expectations. No financial advice.
+                </p>
+                <p class="mono text-sm text-green-400 leading-relaxed">
+                    Purpose: Personal collection, artistic appreciation, philosophical exploration only. 
+                    Risk: Total loss possible. No market guaranteed.
+                </p>
+                <p class="mono text-sm text-green-400 leading-relaxed">
+                    Strip the ego. Tokenize the void. Join the planetary meditation initiative. 
+                    Proof-of-disidentification secured on Solana mainnet.
+                </p>
+                <div class="pt-8 text-center">
+                    <p class="text-2xl glow-green">SYSTEM_STATUS: ONLINE // DEFLATION_PROTOCOL: ACTIVE</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- 5. Footer -->
-    <footer class="py-12 px-6 text-center">
+    <footer class="py-12 px-6 text-center bg-black">
         <div class="max-w-4xl mx-auto space-y-6">
-            <p class="text-2xl glow-green flicker">PROOF-OF-DISIDENTIFICATION SECURED ON SOLANA MAINNET</p>
+            <p class="text-3xl glow-green flicker font-bold">CYBERMONKS-V1</p>
             <p class="mono text-sm text-green-700">
-                CYBERMONKS-V1 // SERIES_1_GENESIS // DEFLATION_PROTOCOL_ACTIVE
+                COMPRESSED_NFTS // SOLANA_MAINNET // GENESIS_SERIES
             </p>
             <div class="flex justify-center gap-6 pt-4">
                 <a href="#" class="text-cyber-yellow hover:glow-yellow">TWITTER</a>
                 <a href="#" class="text-cyber-yellow hover:glow-yellow">DISCORD</a>
-                <a href="#" class="text-cyber-yellow hover:glow-yellow">DOCS</a>
+                <a href="#" class="text-cyber-yellow hover:glow-yellow">CROSSMINT</a>
             </div>
         </div>
     </footer>
