@@ -90,39 +90,101 @@
         }
         .marquee-content {
             display: flex;
-            animation: marquee 40s linear infinite;
+            animation: marquee 60s linear infinite;
         }
 
         .marquee-container:hover .marquee-content {
             animation-play-state: paused;
         }
 
-        /* NFT Image Styling */
-        .nft-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            filter: brightness(1.1) contrast(1.2);
+        .nft-card {
+            min-width: 350px;
+            height: 540px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+            background: black;
+            border: 2px solid var(--neon-green);
+        }
+        
+        .nft-card:hover {
+            transform: scale(1.05);
+            z-index: 50;
+            box-shadow: 0 0 30px var(--neon-green);
+            border-color: var(--cyber-yellow);
         }
 
         .nft-image-container {
             position: relative;
+            height: 350px;
             overflow: hidden;
-            width: 100%;
-            height: 100%;
+            border-bottom: 2px solid var(--neon-green);
         }
 
-        .nft-image-container::after {
-            content: '';
+        .nft-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            image-rendering: pixelated;
+            transition: transform 0.5s ease;
+        }
+
+        .nft-card:hover .nft-image {
+            transform: scale(1.25);
+        }
+
+        .spec-container {
+            padding: 15px;
+            background: linear-gradient(180deg, rgba(0, 51, 0, 0.3) 0%, rgba(0, 0, 0, 1) 100%);
+            height: 190px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .spec-header {
+            font-size: 14px;
+            color: var(--cyber-yellow);
+            border-bottom: 1px solid rgba(0, 255, 0, 0.2);
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            letter-spacing: 2px;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .spec-label {
+            color: rgba(0, 255, 0, 0.6);
+            width: 80px;
+        }
+
+        .spec-value {
+            color: #fff;
+            text-align: right;
+            flex-grow: 1;
+            text-shadow: 0 0 5px var(--neon-green);
+        }
+
+        .spec-footer {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--neon-green);
+            opacity: 0.5;
+            display: flex;
+            gap: 10px;
+        }
+
+        .scanline-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, transparent 0%, rgba(0, 255, 0, 0.1) 100%);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+            background-size: 100% 2px;
             pointer-events: none;
         }
     </style>
@@ -134,103 +196,211 @@
         SYSTEM STATUS: ONLINE // INITIALIZING COSMIC DANCE // DISIDENTIFICATION PROTOCOL ACTIVE
     </div>
 
-    <!-- 1. The Collection (Visual Data Stream First) -->
+    <!-- 1. The Collection (Visual Stream Leading) -->
     <section id="collection" class="pt-20 pb-10 border-b-2 border-neon-green/20">
         <div class="container mx-auto px-6 mb-8 flex justify-between items-end">
             <div>
-                <h2 class="text-4xl font-bold glow-green tracking-tighter">STREAMING_IDENTITIES.LOG</h2>
+                <h2 class="text-4xl font-bold glow-green tracking-tighter">IDENTITIES.DATABASE_STREAM</h2>
                 <div class="h-1 w-48 bg-neon-green glow-green"></div>
             </div>
             <div class="mono text-xs opacity-50 hidden md:block">
-                SCANNING_MORPHOGENETIC_FIELD...
+                SIGNAL_STRENGTH: 99.8% // PARSING_METADATA...
             </div>
         </div>
 
         <div class="marquee-container overflow-hidden py-10 bg-green-950/5">
             <div class="marquee-content gap-8">
-                <!-- NFT Item 1 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="10.png" alt="MMGA NFT #10" class="nft-image">
+                <!-- NFT 1: Bill Clinton -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="1.jpg" alt="MMGA #1" class="nft-image">
+                        <div class="scanline-overlay"></div>
                     </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #010</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_010</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
-
-                <!-- NFT Item 2 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="11.png" alt="MMGA NFT #11" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #011</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_011</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#001</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">bill_clinton</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">astro_voyager</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">red_desert</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
                     </div>
                 </div>
 
-                <!-- NFT Item 3 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="12.png" alt="MMGA NFT #12" class="nft-image">
+                <!-- NFT 2: Barack Obama -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="2.jpg" alt="MMGA #2" class="nft-image">
+                        <div class="scanline-overlay"></div>
                     </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #012</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_012</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
-                    </div>
-                </div>
-
-                <!-- NFT Item 4 -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="13.png" alt="MMGA NFT #13" class="nft-image">
-                    </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #013</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_013</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#002</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">barack_obama</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">silk_electric</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">red_desert</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
                     </div>
                 </div>
 
-                <!-- Duplicate for seamless marquee -->
-                <div class="min-w-[320px] h-[450px] terminal-border bg-black p-6 group cursor-crosshair">
-                    <div class="h-64 flex items-center justify-center group-hover:scale-110 transition-transform flicker nft-image-container">
-                        <img src="10.png" alt="MMGA NFT #10" class="nft-image">
+                <!-- NFT 3: Mark Zuckerberg (Laurel) -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="3.jpg" alt="MMGA #3" class="nft-image">
+                        <div class="scanline-overlay"></div>
                     </div>
-                    <div class="mt-8 space-y-2">
-                        <span class="text-cyber-yellow text-sm block font-bold tracking-widest">ID: #010</span>
-                        <div class="text-2xl font-bold text-white">CYBERMONK_010</div>
-                        <div class="text-xs mono text-green-700 tracking-tighter">SERIES_1 // AUTHENTICATED</div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#003</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">zuck_imperator</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">astro_voyager</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">hollywood_hills</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 4: Justin Bieber -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="4.jpg" alt="MMGA #4" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#004</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">justin_bieber</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">party_pajamas</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">messy_loft</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 5: Kim Kardashian (Blue) -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="5.jpg" alt="MMGA #5" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#005</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">kim_kardashian</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">electric_blue</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">private_island</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 6: Kim Kardashian (Orange) -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="6.jpg" alt="MMGA #6" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#006</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">kim_kardashian</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">party_pajamas</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">private_island</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 7: George W. Bush -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="7.jpg" alt="MMGA #7" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#007</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">george_w_bush</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">acid_rider</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">hollywood_hills</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 8: Napoleon -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="8.jpg" alt="MMGA #8" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#008</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">napoleon_matrix</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">digital_code</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">hollywood_hills</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 9: Mark Zuckerberg (Doctor) -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="9.jpg" alt="MMGA #9" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#009</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">zuck_surgeon</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">scrubs_clinical</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">red_desert</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- NFT 10: Jesus -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="10.jpg" alt="MMGA #10" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#010</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">messiah_void</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">silk_electric</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">lunar_void</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
+                    </div>
+                </div>
+
+                <!-- Duplicate first to complete marquee -->
+                <div class="nft-card group">
+                    <div class="nft-image-container">
+                        <img src="1.jpg" alt="MMGA #1" class="nft-image">
+                        <div class="scanline-overlay"></div>
+                    </div>
+                    <div class="spec-container">
+                        <div class="spec-header"><span>SERIES_01</span><span class="flicker">● ACTIVE</span></div>
+                        <div class="spec-row"><span class="spec-label">ID_TAG:</span><span class="spec-value">#001</span></div>
+                        <div class="spec-row"><span class="spec-label">FIGURE:</span><span class="spec-value">bill_clinton</span></div>
+                        <div class="spec-row"><span class="spec-label">SUIT:</span><span class="spec-value">astro_voyager</span></div>
+                        <div class="spec-row"><span class="spec-label">LOC:</span><span class="spec-value">red_desert</span></div>
+                        <div class="spec-footer"><span>[AUTHENTICATED]</span><span>[GEN_NULL]</span></div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 2. Hero Section (The Slogan) -->
+    <!-- 2. Hero Section -->
     <section class="min-h-screen flex flex-col justify-center items-center px-6 relative border-b-2 border-green-900 bg-black">
         <div class="z-10 text-center max-w-6xl space-y-10">
             <h2 class="text-xl tracking-[0.4em] glow-green flicker">THE PLANETARY MEDITATION INITIATIVE</h2>
             
             <div class="space-y-4">
-                <h1 class="text-6xl md:text-[8rem] font-bold leading-[0.8] glow-green tracking-tighter">
-                    ALL IDENTITIES DANCING
-                </h1>
-                <h1 class="text-6xl md:text-[8rem] font-bold leading-[0.8] glow-yellow tracking-tighter">
-                    THE COSMIC DANCE
-                </h1>
-                <h1 class="text-4xl md:text-6xl font-bold leading-none text-white opacity-90">
-                    OF ASSOCIATION.
-                </h1>
+                <h1 class="text-6xl md:text-[8rem] font-bold leading-[0.8] glow-green tracking-tighter">ALL IDENTITIES DANCING</h1>
+                <h1 class="text-6xl md:text-[8rem] font-bold leading-[0.8] glow-yellow tracking-tighter">THE COSMIC DANCE</h1>
+                <h1 class="text-4xl md:text-6xl font-bold leading-none text-white opacity-90">OF ASSOCIATION.</h1>
             </div>
 
-            <p class="text-2xl md:text-4xl font-bold tracking-widest mb-4 glow-green">
-                MORPHOGENETIC DRIFT DETECTED.
-            </p>
+            <p class="text-2xl md:text-4xl font-bold tracking-widest mb-4 glow-green">MORPHOGENETIC DRIFT DETECTED.</p>
 
             <p class="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-neon-green opacity-80 mono lowercase">
                 // strip the ego. // tokenize the void. // 1,954 iterations. <br>
@@ -238,21 +408,14 @@
             </p>
             
             <div class="flex flex-col md:flex-row gap-6 justify-center pt-8">
-                <a href="#collection" class="btn-yellow-solid text-3xl tracking-tighter">
-                    JOIN THE DANCE
-                </a>
-                <a href="#logic" class="btn-green-outline text-3xl tracking-tighter">
-                    VIEW_LOGIC.SYS
-                </a>
+                <a href="#collection" class="btn-yellow-solid text-3xl tracking-tighter">JOIN THE DANCE</a>
+                <a href="#logic" class="btn-green-outline text-3xl tracking-tighter">VIEW_LOGIC.SYS</a>
             </div>
         </div>
-
-        <div class="absolute bottom-10 text-xs tracking-[0.5em] opacity-40">
-            [ SCANNING_SERIES_1_RARITY_METRICS ]
-        </div>
+        <div class="absolute bottom-10 text-xs tracking-[0.5em] opacity-40">[ SCANNING_SERIES_1_RARITY_METRICS ]</div>
     </section>
 
-    <!-- 3. The Logic (Mathematical Proof) -->
+    <!-- 3. The Logic -->
     <section id="logic" class="py-32 border-b-2 border-green-900 bg-zinc-950">
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
@@ -288,19 +451,17 @@
                         <h4 class="text-4xl font-bold tracking-widest">SERIES 1 LOGS</h4>
                         <div class="text-[10rem] font-bold glow-yellow leading-none">1,954</div>
                         <div class="text-lg tracking-[0.4em] opacity-80 font-bold">ORIGINAL ITERATIONS</div>
-                        <div class="pt-8 mono text-sm text-green-700 italic">
-                            "The origin point is mathematically superior."
-                        </div>
+                        <div class="pt-8 mono text-sm text-green-700 italic">"The origin point is mathematically superior."</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 4. Fine Art Mandate (Fixed Disclaimer Section) -->
+    <!-- 4. System Mandate -->
     <section id="mandate" class="py-32 bg-black border-t-2 border-neon-green/30 relative z-10">
         <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto terminal-border p-12 md:p-16 space-y-12 bg-black">
+            <div class="max-w-4xl mx-auto terminal-border p-12 md:p-16 space-y-12 bg-black shadow-[0_0_50px_rgba(0,255,0,0.1)]">
                 <h3 class="text-6xl md:text-7xl font-bold tracking-tighter leading-none glow-green flicker">[ SYSTEM MANDATE ]</h3>
                 <div class="space-y-8">
                     <p class="text-3xl md:text-5xl font-bold leading-tight text-white glow-green">
@@ -344,21 +505,12 @@
                 <div class="text-6xl font-bold glow-green tracking-tighter">MMGA</div>
                 <p class="text-sm mono opacity-50 tracking-[0.6em]">FINE_ART_PROTOCOL_V2.0</p>
             </div>
-            
             <div class="flex gap-16 text-sm">
-                <div class="text-center">
-                    <span class="block text-green-900 text-xs font-bold mb-2">NETWORK</span>
-                    <span class="text-2xl font-bold glow-green tracking-tight">SOLANA_MAINNET</span>
-                </div>
-                <div class="text-center">
-                    <span class="block text-green-900 text-xs font-bold mb-2">FIELD_STATUS</span>
-                    <span class="text-2xl text-cyber-yellow font-bold tracking-tight">LIFTING...</span>
-                </div>
+                <div class="text-center"><span class="block text-green-900 text-xs font-bold mb-2">NETWORK</span><span class="text-2xl font-bold glow-green tracking-tight">SOLANA_MAINNET</span></div>
+                <div class="text-center"><span class="block text-green-900 text-xs font-bold mb-2">FIELD_STATUS</span><span class="text-2xl text-cyber-yellow font-bold tracking-tight">LIFTING...</span></div>
             </div>
         </div>
-        <div class="text-center mt-20 text-[12px] opacity-20 mono tracking-[1em]">
-            TERMINATE SESSION // 0x001954 // GOODBYE_EGO
-        </div>
+        <div class="text-center mt-20 text-[12px] opacity-20 mono tracking-[1em]">TERMINATE SESSION // 0x001954 // GOODBYE_EGO</div>
     </footer>
 
     <script>
