@@ -1,687 +1,776 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MMGA Whitepaper | Make Meditation Great Again</title>
-<style>
-:root {
-  --bg: #0a0a0a;
-  --text: #e8e8e8;
-  --red: #e6331f;
-  --rdk: #8b1e10;
-  --yellow: #ffd700;
-  --muted: #999;
-  --border: #2a2a2a;
-}
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-header {
-  text-align: center;
-  padding: 60px 20px 40px;
-  border-bottom: 2px solid var(--border);
-  margin-bottom: 60px;
-}
-.logo {
-  font-family: 'Courier New', monospace;
-  font-size: 48px;
-  font-weight: 900;
-  color: var(--red);
-  letter-spacing: 0.05em;
-  margin-bottom: 16px;
-}
-.logo b { color: var(--text); }
-.subtitle {
-  font-size: 20px;
-  color: var(--muted);
-  margin-bottom: 20px;
-}
-.version {
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-  color: var(--yellow);
-  letter-spacing: 0.1em;
-}
-h1 {
-  font-size: 32px;
-  color: var(--red);
-  margin: 60px 0 20px;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-h2 {
-  font-size: 24px;
-  color: var(--yellow);
-  margin: 40px 0 16px;
-  letter-spacing: -0.01em;
-}
-h3 {
-  font-size: 18px;
-  color: var(--text);
-  margin: 32px 0 12px;
-  font-weight: 600;
-}
-p {
-  margin-bottom: 16px;
-  color: var(--text);
-}
-ul, ol {
-  margin: 16px 0 16px 32px;
-}
-li {
-  margin-bottom: 8px;
-  color: var(--text);
-}
-strong {
-  color: var(--yellow);
-  font-weight: 600;
-}
-em {
-  color: var(--muted);
-  font-style: italic;
-}
-code {
-  background: #1a1a1a;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  color: var(--yellow);
-}
-pre {
-  background: #1a1a1a;
-  padding: 16px;
-  border-radius: 4px;
-  overflow-x: auto;
-  margin: 16px 0;
-  border-left: 3px solid var(--red);
-}
-pre code {
-  background: none;
-  padding: 0;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 24px 0;
-}
-th, td {
-  padding: 12px;
-  text-align: left;
-  border: 1px solid var(--border);
-}
-th {
-  background: #1a1a1a;
-  color: var(--yellow);
-  font-weight: 600;
-}
-.abstract {
-  background: #1a1a1a;
-  padding: 32px;
-  border-left: 4px solid var(--red);
-  margin: 40px 0;
-  font-size: 16px;
-  line-height: 1.8;
-}
-.toc {
-  background: #1a1a1a;
-  padding: 24px;
-  border-radius: 4px;
-  margin: 40px 0;
-}
-.toc h2 {
-  margin-top: 0;
-  font-size: 20px;
-}
-.toc ul {
-  margin-left: 0;
-  list-style: none;
-}
-.toc li {
-  padding: 8px 0;
-  border-bottom: 1px solid var(--border);
-}
-.toc li:last-child {
-  border-bottom: none;
-}
-.toc a {
-  color: var(--text);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.toc a:hover {
-  color: var(--red);
-}
-hr {
-  border: none;
-  border-top: 2px solid var(--border);
-  margin: 60px 0;
-}
-footer {
-  text-align: center;
-  padding: 60px 20px;
-  border-top: 2px solid var(--border);
-  margin-top: 80px;
-  color: var(--muted);
-  font-size: 14px;
-}
-.download-btn {
-  display: inline-block;
-  background: var(--red);
-  color: #fff;
-  padding: 16px 32px;
-  text-decoration: none;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  transition: all 0.2s;
-  border: 2px solid var(--red);
-  font-family: 'Courier New', monospace;
-  margin: 20px 0;
-}
-.download-btn:hover {
-  background: var(--rdk);
-  border-color: var(--rdk);
-  transform: translateY(-2px);
-}
-@media (max-width: 768px) {
-  .logo { font-size: 32px; }
-  h1 { font-size: 24px; }
-  h2 { font-size: 20px; }
-  .container { padding: 20px 16px; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERMONKS-V1 | WHITEPAPER // SPIRITUAL TOKENIZATION PROTOCOL</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-green: #00ff00;
+            --cyber-yellow: #ffff00;
+            --black: #050505;
+            --dark-green: #003300;
+        }
+        body {
+            background-color: var(--black);
+            color: var(--neon-green);
+            font-family: 'VT323', monospace;
+            scroll-behavior: smooth;
+            text-transform: uppercase;
+        }
+        .mono { font-family: 'IBM Plex Mono', monospace; }
+        .lowercase { text-transform: none; }
+        
+        /* CRT Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
+            z-index: 1000;
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+
+        .glow-green {
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+        }
+
+        .glow-yellow {
+            text-shadow: 0 0 10px var(--cyber-yellow), 0 0 20px var(--cyber-yellow);
+            color: var(--cyber-yellow);
+        }
+
+        .terminal-border {
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 15px var(--dark-green);
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.9; }
+            5% { opacity: 0.8; }
+            10% { opacity: 0.9; }
+            15% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+        .flicker { animation: flicker 0.1s infinite; }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        .diagram-node {
+            transition: all 0.3s ease;
+        }
+
+        .diagram-node:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px var(--neon-green);
+        }
+
+        .arrow {
+            stroke: var(--neon-green);
+            stroke-width: 3;
+            fill: none;
+            animation: pulse-glow 2s infinite;
+        }
+
+        .graph-line {
+            stroke: var(--cyber-yellow);
+            stroke-width: 3;
+            fill: none;
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">M<b>M</b>GA</div>
-  <div class="subtitle">Make Meditation Great Again</div>
-  <div class="version">VERSION 1.0 | MAY 2026</div>
-</header>
-
-<div class="container">
-
-<div class="abstract">
-<strong>Abstract</strong><br><br>
-MMGA (Make Meditation Great Again) introduces the world's first blockchain-based meditation verification protocol that operates at zero cost to participants. Through biometric verification of physical stillness and ocular closure, users earn non-transferable $MONK tokens that represent verified minutes of meditation practice. By combining computer vision, pose estimation, and Solana's high-throughput architecture, MMGA eliminates the traditional barrier between contemplative practice and tokenized participation, creating a proof-of-stillness consensus mechanism that requires no capital investment, only time and discipline.
-</div>
-
-<div class="toc">
-<h2>Table of Contents</h2>
-<ul>
-<li><a href="#introduction">1. Introduction: The Problem</a></li>
-<li><a href="#metaphysical">2. The Metaphysical Framework</a></li>
-<li><a href="#technical">3. Technical Architecture</a></li>
-<li><a href="#tokenomics">4. Tokenomics</a></li>
-<li><a href="#usecases">5. Use Cases</a></li>
-<li><a href="#regulatory">6. Regulatory Compliance</a></li>
-<li><a href="#implementation">7. Technical Implementation Details</a></li>
-<li><a href="#roadmap">8. Roadmap</a></li>
-<li><a href="#competitive">9. Competitive Analysis</a></li>
-<li><a href="#philosophy">10. Economic Philosophy</a></li>
-<li><a href="#risks">11. Risks & Limitations</a></li>
-<li><a href="#conclusion">12. Conclusion</a></li>
-</ul>
-</div>
-
-<h1 id="introduction">1. Introduction: The Problem</h1>
-
-<h2>1.1 The Commodification of Contemplation</h2>
-<p>The modern wellness industry has transformed meditation from a disciplined practice into a consumer product. Subscription-based apps charge $10-15 monthly for guided audio tracks that require no verification of actual practice. Corporate "mindfulness" programs sell meditation as productivity optimization. Influencers monetize stillness through affiliate marketing and sponsored content.</p>
-
-<p><strong>The result:</strong> Meditation has become something you <em>purchase</em> rather than something you <em>do</em>.</p>
-
-<h2>1.2 The Verification Problem</h2>
-<p>Traditional meditation tracking relies on self-reporting, which is trivially falsified. Apps record "sessions" based on user-initiated timers with no verification that the user is actually meditating. Claims of "10,000 hours of practice" cannot be independently verified. The absence of objective measurement creates:</p>
-
-<ul>
-<li><strong>Credential inflation:</strong> Anyone can claim mastery</li>
-<li><strong>Participation fraud:</strong> Users game systems for badges/streaks</li>
-<li><strong>Teaching credibility gaps:</strong> No way to verify instructor experience</li>
-<li><strong>Institutional trust deficits:</strong> Corporations cannot verify employee compliance</li>
-</ul>
-
-<h2>1.3 The Capital Barrier</h2>
-<p>Blockchain participation typically requires capital investment. To earn tokens, users must:</p>
-<ul>
-<li>Purchase coins to stake</li>
-<li>Provide liquidity and absorb impermanent loss</li>
-<li>Mine tokens using expensive hardware</li>
-<li>Speculate on volatile assets</li>
-</ul>
-
-<p><strong>This creates a systemic bias:</strong> Only those with capital can participate in the token economy, regardless of skill, discipline, or contribution to the network.</p>
-
-<h2>1.4 The MMGA Solution</h2>
-<p>MMGA solves these problems through:</p>
-<ol>
-<li><strong>Biometric Verification:</strong> Computer vision confirms spine erect + eyes closed</li>
-<li><strong>Zero Capital Requirements:</strong> Users earn tokens through time and stillness only</li>
-<li><strong>Non-Transferable Tokens:</strong> $MONK cannot be sold, eliminating financial speculation</li>
-<li><strong>Solana Infrastructure:</strong> Zero gas fees for users; sub-second finality</li>
-<li><strong>Proof-of-Stillness Consensus:</strong> Network validates internal states through external observation</li>
-</ol>
-
-<hr>
-
-<h1 id="metaphysical">2. The Metaphysical Framework</h1>
-
-<h2>2.1 Money as Life Force Energy</h2>
-<p>MMGA's design is rooted in the understanding that money, at its essence, is crystallized life force—qi, prana, kundalini energy made liquid and transferable. Every dollar earned represents hours of biological attention compressed into portable value. The meditation economy makes this explicit: time × attention × discipline = tokenized verification of internal work.</p>
-
-<h2>2.2 Morphogenetic Fields and Collective Consciousness</h2>
-<p>Rupert Sheldrake's concept of morphogenetic fields suggests that patterns of behavior resonate across space through non-local information fields. When millions meditate simultaneously in verified sessions, MMGA creates a measurable morphogenetic field of collective stillness—a global consciousness network operating on Solana's 50,000 TPS infrastructure.</p>
-
-<h2>2.3 Vibrational Attunement</h2>
-<p>Hindu, Buddhist, and Christian contemplative traditions converge on a core insight: sustained stillness attunes consciousness to higher vibrational frequencies. MMGA doesn't tokenize the <em>result</em> of meditation (enlightenment cannot be tokenized) but rather the <em>discipline</em> of practice—the daily commitment to sit, regardless of outcome.</p>
-
-<hr>
-
-<h1 id="technical">3. Technical Architecture</h1>
-
-<h2>3.1 System Overview</h2>
-<pre><code>User Layer:
-├── Browser (Camera + MediaPipe)
-├── Wallet (Phantom/Solflare)
-└── MMGA Frontend
-
-Verification Layer:
-├── MediaPipe Face Mesh (eye closure detection)
-├── MediaPipe Pose (spine alignment detection)
-└── Session Timer (60-second verification windows)
-
-Backend Layer:
-├── Node.js Server (Render deployment)
-├── Balance Storage (monk-balances.json)
-└── Minting API (Solana SPL token calls)
-
-Blockchain Layer:
-├── Solana Mainnet
-├── $MONK SPL Token (Non-Transferable)
-└── Multi-Sig Governance (Squads Protocol)</code></pre>
-
-<h2>3.2 Biometric Verification System</h2>
-
-<h3>3.2.1 Face Mesh Detection</h3>
-<p>MediaPipe's Face Mesh model detects 468 3D facial landmarks in real-time. MMGA monitors eight key landmarks around the eyes:</p>
-<p><strong>Left Eye:</strong> Landmarks 33, 160, 158, 133, 153, 144<br>
-<strong>Right Eye:</strong> Landmarks 362, 385, 387, 263, 373, 380</p>
-
-<p><strong>Eye Aspect Ratio (EAR) Calculation:</strong></p>
-<pre><code>EAR = (||p2 - p6|| + ||p3 - p5||) / (2 * ||p1 - p4||)</code></pre>
-
-<p>Where p1-p6 are eye landmark coordinates. When EAR < 0.22 for both eyes, the system registers "eyes closed."</p>
-
-<h3>3.2.2 Pose Estimation</h3>
-<p>MediaPipe Pose detects 33 body keypoints. MMGA monitors:</p>
-<ul>
-<li><strong>Nose (0):</strong> Head position</li>
-<li><strong>Left Shoulder (11):</strong> Upper body alignment</li>
-<li><strong>Right Shoulder (12):</strong> Upper body alignment</li>
-</ul>
-
-<p><strong>Spine Erect Logic:</strong></p>
-<pre><code>shoulderY = (landmark[11].y + landmark[12].y) / 2
-spineErect = landmark[0].y < shoulderY</code></pre>
-
-<p>When the nose is above the shoulder midpoint, posture is valid.</p>
-
-<h3>3.2.3 Consecutive Verification</h3>
-<p>Both conditions (eyes closed + spine erect) must hold continuously for 60 seconds. Any postural break or eye opening resets the counter. This prevents gaming through micro-sessions or alternating states.</p>
-
-<h2>3.3 Token Architecture</h2>
-
-<h3>3.3.1 SPL Token Specification</h3>
-<pre><code>Token Address: 4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv
-Decimals: 0
-Mint Authority: Disabled (immutable supply)
-Freeze Authority: Enabled (non-transferable enforcement)</code></pre>
-
-<h3>3.3.2 Non-Transferability Implementation</h3>
-<p>All $MONK token accounts have their freeze authority set immediately upon minting. This creates permanent transferability restrictions at the token account level. Unlike social tokens that rely on marketplace blacklists (easily circumvented), MMGA enforces non-transferability through Solana's native freeze mechanism.</p>
-
-<hr>
-
-<h1 id="tokenomics">4. Tokenomics</h1>
-
-<h2>4.1 Supply Mechanics</h2>
-<ul>
-<li><strong>Initial Supply:</strong> 0 (zero pre-mine)</li>
-<li><strong>Maximum Supply:</strong> Unlimited (one token per verified minute)</li>
-<li><strong>Issuance Rate:</strong> 1 $MONK per 60 consecutive seconds of verified stillness</li>
-<li><strong>Burn Mechanism:</strong> None (meditation cannot be "unmeditated")</li>
-</ul>
-
-<p><strong>Projected Supply Growth:</strong></p>
-<ul>
-<li>Year 1: ~500,000 MONK (1,000 daily active users averaging 90 minutes/week)</li>
-<li>Year 5: ~13,000,000 MONK (10,000 DAU)</li>
-<li>Year 10: ~65,000,000 MONK (50,000 DAU)</li>
-</ul>
-
-<h2>4.2 Value Proposition</h2>
-<p>$MONK carries <strong>zero transferable value</strong> by design. Its utility derives from:</p>
-<ol>
-<li><strong>Verifiable Credentials:</strong> Proof of practice for teaching applications</li>
-<li><strong>Institutional Compliance:</strong> Corporate wellness programs can verify employee participation</li>
-<li><strong>Social Signaling:</strong> Non-financial status marker within contemplative communities</li>
-<li><strong>Access Gating:</strong> Future premium features may require minimum MONK holdings</li>
-<li><strong>Research Participation:</strong> Academic studies may recruit based on verified practice hours</li>
-</ol>
-
-<h2>4.3 Anti-Speculation Design</h2>
-<p>Traditional tokens create speculative bubbles through transferability → secondary markets → price discovery → speculation.</p>
-
-<p><strong>MMGA eliminates speculation through:</strong></p>
-<ul>
-<li>Non-transferability → no secondary markets → no price discovery → no speculation</li>
-<li>No staking rewards → no yield farming → no vampire attacks</li>
-<li>Zero capital requirement → no "bags" to pump or dump</li>
-</ul>
-
-<p><strong>Result:</strong> Participants engage with meditation itself, not with financial engineering around meditation tokens.</p>
-
-<hr>
-
-<h1 id="usecases">5. Use Cases</h1>
-
-<h2>5.1 Individual Practitioners</h2>
-<p><strong>Problem:</strong> Cannot prove practice history when applying to meditation teacher training programs, Vipassana courses, or Zen centers with intensive retreat prerequisites.</p>
-<p><strong>Solution:</strong> MMGA balance serves as verifiable credential. "2,400 MONK tokens" = 2,400 verified minutes = 40 hours of documented practice.</p>
-
-<h2>5.2 Meditation Teachers</h2>
-<p><strong>Problem:</strong> Instructor credibility depends on unverifiable claims ("20 years of practice").</p>
-<p><strong>Solution:</strong> Teachers display MONK balance on websites/bios. A teacher with 50,000 MONK (833 hours verified) has objective proof of sustained practice.</p>
-
-<h2>5.3 Corporate Wellness Programs</h2>
-<p><strong>Problem:</strong> Companies invest $50-150 per employee annually in mindfulness apps with no usage verification.</p>
-<p><strong>Solution:</strong> MMGA provides verification dashboard with aggregate company statistics, individual compliance tracking, and ROI measurement.</p>
-
-<h2>5.4 Research Applications</h2>
-<p><strong>Problem:</strong> Meditation research suffers from small sample sizes, self-reported data, and compliance verification issues.</p>
-<p><strong>Solution:</strong> MMGA provides large-scale recruitment pool, objective compliance data, and longitudinal tracking across years of verified practice history.</p>
-
-<h2>5.5 Retreat Centers & Sanghas</h2>
-<p><strong>Problem:</strong> Silent retreats rely on honor system with no verification that participants actually meditate during 10+ hour sitting days.</p>
-<p><strong>Solution:</strong> Retreat centers deploy MMGA stations where participants verify practice while maintaining noble silence.</p>
-
-<hr>
-
-<h1 id="regulatory">6. Regulatory Compliance</h1>
-
-<h2>6.1 Securities Analysis</h2>
-<p><strong>Howey Test Application:</strong></p>
-<ol>
-<li><strong>Investment of Money:</strong> No capital required → <strong>FAIL</strong></li>
-<li><strong>Common Enterprise:</strong> Participants practice independently → <strong>FAIL</strong></li>
-<li><strong>Expectation of Profits:</strong> Non-transferable token has no profit potential → <strong>FAIL</strong></li>
-<li><strong>Efforts of Others:</strong> Biometric verification is automated → <strong>FAIL</strong></li>
-</ol>
-
-<p><strong>Conclusion:</strong> $MONK is <strong>not a security</strong> under U.S. law.</p>
-
-<h2>6.2 GDPR Compliance</h2>
-<p>MMGA collects wallet addresses (pseudonymous), biometric data (processed client-side only), and session timestamps (deletable on request).</p>
-
-<p><strong>Data Processing:</strong></p>
-<ul>
-<li><strong>Camera feed:</strong> Never leaves user's browser (MediaPipe runs locally)</li>
-<li><strong>Facial landmarks:</strong> Calculated client-side, only boolean results sent to server</li>
-<li><strong>Pose data:</strong> Same as above—raw video never transmitted</li>
-</ul>
-
-<p><strong>User Rights:</strong></p>
-<ul>
-<li><strong>Access:</strong> Users can download complete session history via API</li>
-<li><strong>Deletion:</strong> <code>DELETE /api/user/:wallet</code> removes all associated data</li>
-<li><strong>Portability:</strong> Data export in JSON format</li>
-</ul>
-
-<hr>
-
-<h1 id="implementation">7. Technical Implementation Details</h1>
-
-<h2>7.1 Frontend Stack</h2>
-<ul>
-<li><strong>Framework:</strong> Vanilla JavaScript (no framework dependencies)</li>
-<li><strong>Wallet Integration:</strong> Solana Wallet Adapter (Phantom, Solflare, Backpack)</li>
-<li><strong>Computer Vision:</strong> MediaPipe (via CDN)</li>
-</ul>
-
-<h2>7.2 Backend Stack</h2>
-<ul>
-<li><strong>Runtime:</strong> Node.js 18+</li>
-<li><strong>Framework:</strong> Express.js</li>
-<li><strong>Hosting:</strong> Render (auto-scaling)</li>
-<li><strong>Storage:</strong> File-based JSON (upgradeable to PostgreSQL)</li>
-</ul>
-
-<h2>7.3 Solana Integration</h2>
-<ul>
-<li><strong>RPC Provider:</strong> Helius</li>
-<li><strong>SDK:</strong> @solana/web3.js + @solana/spl-token</li>
-<li><strong>Transaction Fees:</strong> Paid by backend (zero-cost for users)</li>
-<li><strong>Cost Analysis:</strong> ~$0.0007 per mint = $255/year at 1,000 mints/day</li>
-</ul>
-
-<hr>
-
-<h1 id="roadmap">8. Roadmap</h1>
-
-<h2>Phase 1: Foundation (Q2 2026) ✅</h2>
-<ul>
-<li>$MONK token deployed on Solana</li>
-<li>Multi-sig governance via Squads</li>
-<li>Frontend with biometric verification</li>
-<li>Backend balance storage system</li>
-<li>Zero-cost minting for users</li>
-</ul>
-
-<h2>Phase 2: Scale (Q3 2026)</h2>
-<ul>
-<li>Mobile apps (iOS/Android native)</li>
-<li>Enterprise tier (corporate wellness dashboard)</li>
-<li>API access for third-party integrations</li>
-<li>PostgreSQL migration</li>
-<li>Multi-language support</li>
-</ul>
-
-<h2>Phase 3: Decentralization (Q4 2026)</h2>
-<ul>
-<li>On-chain verification checkpoints</li>
-<li>IPFS deployment of frontend</li>
-<li>Chainlink oracle integration</li>
-<li>DAO formation</li>
-</ul>
-
-<h2>Phase 4: Ecosystem (Q1 2027)</h2>
-<ul>
-<li>Teacher marketplace</li>
-<li>Retreat center integrations</li>
-<li>Research partnerships</li>
-<li>NFT credentials (milestone achievements)</li>
-</ul>
-
-<h2>Phase 5: Global Infrastructure (Q2-Q4 2027)</h2>
-<ul>
-<li>Zero-knowledge proof system</li>
-<li>Cross-chain bridges</li>
-<li>AI coaching</li>
-<li>Hardware integrations (Muse, Oura)</li>
-</ul>
-
-<hr>
-
-<h1 id="competitive">9. Competitive Analysis</h1>
-
-<table>
-<thead>
-<tr>
-<th>Platform</th>
-<th>Model</th>
-<th>Verification</th>
-<th>Cost</th>
-<th>Tokens</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Headspace</td>
-<td>Subscription</td>
-<td>Self-report</td>
-<td>$70/year</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Calm</td>
-<td>Subscription</td>
-<td>Self-report</td>
-<td>$70/year</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Insight Timer</td>
-<td>Freemium</td>
-<td>Self-report</td>
-<td>$60/year</td>
-<td>No</td>
-</tr>
-<tr>
-<td>Waking Up</td>
-<td>Subscription</td>
-<td>Self-report</td>
-<td>$100/year</td>
-<td>No</td>
-</tr>
-<tr>
-<td><strong>MMGA</strong></td>
-<td><strong>Free</strong></td>
-<td><strong>Biometric</strong></td>
-<td><strong>$0</strong></td>
-<td><strong>Yes</strong></td>
-</tr>
-</tbody>
-</table>
-
-<p><strong>Key Differentiators:</strong></p>
-<ul>
-<li>Only platform with biometric verification</li>
-<li>Only platform with zero-cost participation</li>
-<li>Only platform with blockchain-verified credentials</li>
-<li>Only platform with non-transferable token design</li>
-</ul>
-
-<hr>
-
-<h1 id="philosophy">10. Economic Philosophy</h1>
-
-<h2>10.1 Beyond Speculation</h2>
-<p>MMGA rejects the dominant blockchain narrative that tokens must appreciate in price to have value. This narrative has produced pump-and-dump schemes, predatory tokenomics, and gambling culture.</p>
-
-<p><strong>MMGA's counterproposal:</strong> A token can have utility value without exchange value. $MONK's value derives from what it verifies—sustained contemplative practice—not from what it can be traded for.</p>
-
-<h2>10.2 The Stillness Economy</h2>
-<p>Traditional economies measure productivity: output per labor hour. The stillness economy measures <strong>anti-productivity</strong>: verified non-action.</p>
-
-<p>As AI automates knowledge work and robotics automate physical labor, humanity faces an abundance crisis: what do people do when labor is no longer scarce? MMGA suggests an answer: we train attention itself, the one resource that remains irreducibly human.</p>
-
-<h2>10.3 Proof-of-Stillness as Consensus Mechanism</h2>
-<p>Bitcoin introduced Proof-of-Work: nodes compete to solve cryptographic puzzles, burning electricity.</p>
-<p>Ethereum introduced Proof-of-Stake: nodes lock capital to validate transactions.</p>
-
-<p><strong>MMGA introduces Proof-of-Stillness:</strong> nodes (human bodies) achieve consensus on internal states through external biometric observation. Security derives not from energy or capital, but from the irreducible time required to sit still.</p>
-
-<p><strong>Philosophical Implication:</strong> If consciousness is the fundamental substrate of reality, then a network secured by verified conscious stillness is the ultimate consensus mechanism—anchoring blockchain not in energy or money, but in awareness itself.</p>
-
-<hr>
-
-<h1 id="risks">11. Risks & Limitations</h1>
-
-<h2>11.1 Technical Risks</h2>
-<ul>
-<li><strong>Biometric Spoofing:</strong> Advanced attackers could use deepfakes. <em>Mitigation: liveness detection, hardware attestation.</em></li>
-<li><strong>Centralization:</strong> Current backend is centralized. <em>Mitigation: decentralization roadmap (Phase 3-4).</em></li>
-<li><strong>Scaling Bottlenecks:</strong> File-based storage breaks at 100k+ users. <em>Mitigation: PostgreSQL migration at 10k users.</em></li>
-</ul>
-
-<h2>11.2 Adoption Risks</h2>
-<ul>
-<li><strong>Network Effects:</strong> Meditation is solitary; viral growth is limited. <em>Mitigation: corporate wellness partnerships.</em></li>
-<li><strong>Verification Friction:</strong> Camera access is significant UX barrier. <em>Mitigation: clear privacy guarantees.</em></li>
-<li><strong>Competitor Cloning:</strong> Open-source protocol can be forked. <em>Mitigation: brand moat, first-mover advantage.</em></li>
-</ul>
-
-<h2>11.3 Regulatory Risks</h2>
-<ul>
-<li><strong>Privacy Laws:</strong> Biometric data regulation tightening. <em>Mitigation: client-side processing, GDPR compliance.</em></li>
-<li><strong>Token Classification:</strong> Future regulations may reclassify non-transferable tokens. <em>Mitigation: zero capital requirement ensures non-security status.</em></li>
-</ul>
-
-<hr>
-
-<h1 id="conclusion">12. Conclusion</h1>
-
-<p>MMGA represents a fundamental reimagining of what blockchain can do. Rather than financializing meditation, it <em>verifies</em> meditation. Rather than creating speculative instruments, it creates non-transferable credentials. Rather than requiring capital, it requires only time and stillness.</p>
-
-<p>The protocol's success does not depend on token price appreciation, liquidity provision, or yield farming. It depends on a simpler question: Will people sit still for an hour a day?</p>
-
-<p>Humanity has answered "yes" to this question for 2,500 years across Buddhist, Hindu, Taoist, Sufi, and Christian contemplative traditions. MMGA simply makes the answer verifiable, portable, and tamper-proof.</p>
-
-<p><strong>The ultimate vision:</strong> A global network of verified stillness—millions sitting simultaneously, their practice recorded on an immutable ledger, creating a morphogenetic field of collective consciousness that resonates across the blockchain. Not as metaphor. As measurable reality.</p>
-
-<p style="font-size: 24px; color: var(--red); text-align: center; margin: 60px 0; font-weight: 700; letter-spacing: 0.05em;">
-MAKE MEDITATION GREAT AGAIN.
-</p>
-
-<hr>
-
-<h2>Appendices</h2>
-
-<h3>Appendix A: Token Contract Details</h3>
-<pre><code>Token Program: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
-Token Address: 4ec5P6tYDUCQbv6VcqLPqXtD8h5FEnU5VEHSUht5Hzhv
-Decimals: 0
-Supply: Dynamic (starts at 0, increases by 1 per verified minute)</code></pre>
-
-<h3>Appendix B: Multi-Sig Configuration</h3>
-<pre><code>Squad Address: 7yyyxcNzjjQ5mc6tCFgFkU4nh4F7w2pwrMnaKcQmYkN3
-Threshold: 3 of 5
-Members: [Redacted for security]</code></pre>
-
-<h3>Appendix C: API Documentation</h3>
-<p>Full API documentation available at: <a href="https://docs.mmga.yoga" style="color: var(--yellow);">https://docs.mmga.yoga</a> (coming Q3 2026)</p>
-
-<h3>Appendix D: Research Partnerships</h3>
-<p>MMGA is open to academic research collaborations. Contact: <a href="mailto:research@mmga.yoga" style="color: var(--yellow);">research@mmga.yoga</a></p>
-
-<h3>Appendix E: Contact Information</h3>
-<p>
-<strong>General Inquiries:</strong> <a href="mailto:info@mmga.yoga" style="color: var(--yellow);">info@mmga.yoga</a><br>
-<strong>Enterprise Sales:</strong> <a href="mailto:enterprise@mmga.yoga" style="color: var(--yellow);">enterprise@mmga.yoga</a><br>
-<strong>Press:</strong> <a href="mailto:press@mmga.yoga" style="color: var(--yellow);">press@mmga.yoga</a><br>
-<strong>Bug Reports:</strong> <a href="mailto:security@mmga.yoga" style="color: var(--yellow);">security@mmga.yoga</a>
-</p>
-
-</div>
-
-<footer>
-  <p><strong>End of Whitepaper</strong></p>
-  <p style="margin-top: 20px;">This document represents the current state of the MMGA protocol as of May 2026.<br>
-  The protocol is under active development. Technical specifications, tokenomics, and roadmap items are subject to change.</p>
-  <p style="margin-top: 20px;">For the latest version, visit: <a href="https://mmga.yoga/whitepaper" style="color: var(--yellow);">https://mmga.yoga/whitepaper</a></p>
-  <p style="margin-top: 40px; font-size: 12px;">© 2026 MMGA · Proof-of-Stillness Protocol</p>
-</footer>
+    <!-- System Status Bar -->
+    <div class="fixed top-0 w-full z-[100] bg-neon-green text-black py-1 px-4 text-center text-xs font-bold tracking-widest">
+        ⚠️ PHILOSOPHICAL EXPLORATION ONLY // NOT FINANCIAL ADVICE // PURE ART & CONSCIOUSNESS RESEARCH ⚠️
+    </div>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex flex-col justify-center items-center px-6 pt-16 pb-24 border-b-2 border-green-900">
+        <div class="max-w-5xl mx-auto text-center space-y-8">
+            <h1 class="text-6xl md:text-8xl font-bold glow-green flicker mb-4">WHITEPAPER_V1.0</h1>
+            <h2 class="text-3xl md:text-5xl font-bold glow-yellow mb-8">FROM MATERIAL CURRENCY TO SPIRITUAL TOKENIZATION</h2>
+            
+            <div class="terminal-border p-8 bg-black text-left space-y-4">
+                <p class="text-xl md:text-2xl leading-relaxed lowercase">
+                    This document explores the philosophical transformation of value perception through digital art collectibles. 
+                    <span class="text-cyber-yellow">CYBERMONKS-V1</span> is an artistic investigation into consciousness, meditation time as currency, 
+                    and the morphogenetic field as a system for collective aura enhancement.
+                </p>
+                <p class="text-lg lowercase text-green-400">
+                    <span class="text-cyber-yellow font-bold">CRITICAL DISCLAIMER:</span> This is not financial advice. These are art collectibles 
+                    exploring philosophical concepts. No investment value, no profit promises, no securities offered. Pure consciousness research.
+                </p>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 justify-center pt-8">
+                <a href="#transformation" class="px-8 py-4 terminal-border bg-cyber-yellow text-black font-bold text-2xl hover:bg-neon-green transition-all">
+                    BEGIN_EXPLORATION
+                </a>
+                <a href="index.html" class="px-8 py-4 terminal-border bg-black text-neon-green font-bold text-2xl hover:bg-green-900 transition-all">
+                    BACK_TO_COLLECTION
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: The Transformation Diagram -->
+    <section id="transformation" class="min-h-screen py-24 px-6 border-b-2 border-green-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center glow-green">THE_TRANSFORMATION_PROTOCOL</h2>
+            
+            <div class="terminal-border p-8 bg-black mb-12">
+                <p class="text-2xl mb-8 glow-yellow">PHASE_TRANSITION: MATERIAL → SPIRITUAL</p>
+                
+                <!-- SVG Diagram -->
+                <svg viewBox="0 0 1000 400" class="w-full h-auto">
+                    <!-- Material Currency Node -->
+                    <rect x="50" y="150" width="180" height="100" fill="#050505" stroke="#ff0000" stroke-width="3"/>
+                    <text x="140" y="195" text-anchor="middle" fill="#ff0000" font-size="18" font-family="VT323">MATERIAL</text>
+                    <text x="140" y="220" text-anchor="middle" fill="#ff0000" font-size="18" font-family="VT323">CURRENCY</text>
+                    
+                    <!-- Arrow 1 -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#00ff00" />
+                        </marker>
+                    </defs>
+                    <line x1="230" y1="200" x2="330" y2="200" class="arrow" marker-end="url(#arrowhead)"/>
+                    <text x="280" y="190" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">MEDITATION</text>
+                    <text x="280" y="230" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">TIME_INVESTED</text>
+
+                    <!-- Meditation Node -->
+                    <rect x="330" y="150" width="180" height="100" fill="#050505" stroke="#00ff00" stroke-width="3"/>
+                    <text x="420" y="195" text-anchor="middle" fill="#00ff00" font-size="18" font-family="VT323">CONSCIOUSNESS</text>
+                    <text x="420" y="220" text-anchor="middle" fill="#00ff00" font-size="18" font-family="VT323">PRACTICE</text>
+                    
+                    <!-- Arrow 2 -->
+                    <line x1="510" y1="200" x2="610" y2="200" class="arrow" marker-end="url(#arrowhead)"/>
+                    <text x="560" y="190" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">EGO</text>
+                    <text x="560" y="230" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">DISSOLUTION</text>
+
+                    <!-- Morphogenetic Field Node -->
+                    <rect x="610" y="150" width="180" height="100" fill="#050505" stroke="#ffff00" stroke-width="3"/>
+                    <text x="700" y="195" text-anchor="middle" fill="#ffff00" font-size="18" font-family="VT323">MORPHOGENETIC</text>
+                    <text x="700" y="220" text-anchor="middle" fill="#ffff00" font-size="18" font-family="VT323">FIELD</text>
+
+                    <!-- Spiritual Tokenization Node -->
+                    <rect x="770" y="150" width="180" height="100" fill="#050505" stroke="#ffff00" stroke-width="3"/>
+                    <text x="860" y="195" text-anchor="middle" fill="#ffff00" font-size="18" font-family="VT323">SPIRITUAL</text>
+                    <text x="860" y="220" text-anchor="middle" fill="#ffff00" font-size="18" font-family="VT323">TOKENIZATION</text>
+
+                    <!-- Return Arrow (Celebration Loop) -->
+                    <path d="M 860 250 Q 500 350 140 250" stroke="#00ff00" stroke-width="2" fill="none" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+                    <text x="500" y="360" text-anchor="middle" fill="#00ff00" font-size="16" font-family="IBM Plex Mono">CELEBRATION_OF_LIFE_LOOP</text>
+                </svg>
+
+                <div class="mt-12 space-y-6 lowercase">
+                    <p class="text-lg text-green-400 leading-relaxed">
+                        <span class="text-cyber-yellow font-bold">The transformation begins</span> when we stop measuring value in material terms alone. 
+                        Traditional currency represents survival mode—accumulation, scarcity, competition. But when meditation time becomes the new currency, 
+                        we shift from <span class="text-red-500">survival</span> to <span class="text-cyber-yellow">celebration</span>.
+                    </p>
+                    <p class="text-lg text-green-400 leading-relaxed">
+                        <span class="text-cyber-yellow font-bold">Each hour of meditation</span> is not "lost productivity"—it's an investment in the morphogenetic field. 
+                        Your aura expands. The collective consciousness lifts. This is spiritual tokenization: converting inner work into collective upgrade.
+                    </p>
+                    <p class="text-lg text-green-400 leading-relaxed">
+                        <span class="text-cyber-yellow font-bold">The NFT becomes a proof-of-practice</span>—not a speculative asset, but a witness mark. 
+                        "I meditated. I dissolved ego. I lifted the field." The token doesn't hold monetary value; it holds <span class="text-cyber-yellow">consciousness coordinates</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Ego Centralization Graph -->
+    <section class="min-h-screen py-24 px-6 border-b-2 border-green-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center glow-green">EGO_CENTRALIZATION_THEOREM</h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Left: Graph -->
+                <div class="terminal-border p-8 bg-black">
+                    <p class="text-2xl mb-8 glow-yellow text-center">INFLATION_OF_MEANING</p>
+                    
+                    <svg viewBox="0 0 400 400" class="w-full h-auto">
+                        <!-- Axes -->
+                        <line x1="50" y1="350" x2="350" y2="350" stroke="#00ff00" stroke-width="2"/>
+                        <line x1="50" y1="350" x2="50" y2="50" stroke="#00ff00" stroke-width="2"/>
+                        
+                        <!-- Labels -->
+                        <text x="200" y="380" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">EGO_CENTRALIZATION →</text>
+                        <text x="20" y="200" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono" transform="rotate(-90 20 200)">MEANING_INFLATION →</text>
+                        
+                        <!-- Exponential curve -->
+                        <path d="M 50 350 Q 150 300, 200 200 T 350 50" class="graph-line"/>
+                        
+                        <!-- Data points -->
+                        <circle cx="80" cy="330" r="5" fill="#ffff00"/>
+                        <text x="90" y="325" fill="#00ff00" font-size="12" font-family="VT323">GROUNDED</text>
+                        
+                        <circle cx="150" cy="280" r="5" fill="#ffff00"/>
+                        <text x="160" y="275" fill="#00ff00" font-size="12" font-family="VT323">SELF_AWARE</text>
+                        
+                        <circle cx="250" cy="150" r="5" fill="#ff0000"/>
+                        <text x="260" y="145" fill="#ff0000" font-size="12" font-family="VT323">EGO_INFLATED</text>
+                        
+                        <circle cx="330" cy="70" r="5" fill="#ff0000"/>
+                        <text x="270" y="65" fill="#ff0000" font-size="12" font-family="VT323">META^META_SPIRAL</text>
+                        
+                        <!-- Danger Zone -->
+                        <rect x="200" y="50" width="150" height="150" fill="rgba(255,0,0,0.1)" stroke="#ff0000" stroke-width="2" stroke-dasharray="5,5"/>
+                        <text x="275" y="130" text-anchor="middle" fill="#ff0000" font-size="14" font-family="VT323">DANGER</text>
+                        <text x="275" y="150" text-anchor="middle" fill="#ff0000" font-size="14" font-family="VT323">ZONE</text>
+                    </svg>
+                </div>
+
+                <!-- Right: Explanation -->
+                <div class="space-y-8">
+                    <div class="terminal-border p-6 bg-black">
+                        <h3 class="text-2xl font-bold mb-4 glow-yellow">THE_PROBLEM:</h3>
+                        <p class="text-lg lowercase text-green-400 leading-relaxed">
+                            As personality becomes more centralized—more "important," more curated, more performed—meaning inflates exponentially. 
+                            Every gesture becomes symbolic. Every post needs meta-commentary. Every thought requires a thought about the thought.
+                        </p>
+                    </div>
+
+                    <div class="terminal-border p-6 bg-black">
+                        <h3 class="text-2xl font-bold mb-4 glow-yellow">META^META_SPIRAL:</h3>
+                        <p class="text-lg lowercase text-green-400 leading-relaxed">
+                            The danger zone: thinking about thinking about thinking. Analysis paralysis. Irony poisoning. 
+                            The ego becomes so centralized it collapses into itself—a black hole of self-reference with no grounding in reality.
+                        </p>
+                    </div>
+
+                    <div class="terminal-border p-6 bg-black">
+                        <h3 class="text-2xl font-bold mb-4 glow-green">THE_SOLUTION:</h3>
+                        <p class="text-lg lowercase text-green-400 leading-relaxed">
+                            <span class="text-cyber-yellow font-bold">Ego dissolution through practice.</span> Meditation brings you back to reality. 
+                            Not meta^meta, but body. Breath. Present moment. The token is proof you chose grounding over spiral.
+                        </p>
+                    </div>
+
+                    <div class="terminal-border p-6 bg-black">
+                        <h3 class="text-2xl font-bold mb-4 glow-green">MATHEMATICAL_PROOF:</h3>
+                        <div class="mono text-sm text-green-400 space-y-2">
+                            <p>∀p ∈ PERSONALITY_CENTRALIZATION:</p>
+                            <p>MEANING(p) = e^(p²)</p>
+                            <p>GROUNDING(p) = 1/MEANING(p)</p>
+                            <p class="pt-2">∴ As p → ∞, GROUNDING → 0</p>
+                            <p class="text-cyber-yellow">MEDITATION breaks the loop.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: Time as Morphogenetic Currency -->
+    <section class="min-h-screen py-24 px-6 border-b-2 border-green-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center glow-green">TIME_AS_MORPHOGENETIC_CURRENCY</h2>
+            
+            <div class="terminal-border p-12 bg-black mb-12">
+                <div class="grid md:grid-cols-3 gap-8 mb-12">
+                    <!-- Input: Time -->
+                    <div class="text-center space-y-4">
+                        <div class="w-32 h-32 mx-auto terminal-border bg-black flex items-center justify-center">
+                            <span class="text-6xl">⏱️</span>
+                        </div>
+                        <p class="text-2xl glow-yellow">TIME_INVESTED</p>
+                        <p class="text-sm lowercase text-green-400">1 hour meditation = 1 unit morphogenetic contribution</p>
+                    </div>
+
+                    <!-- Process: Meditation -->
+                    <div class="text-center space-y-4">
+                        <div class="w-32 h-32 mx-auto terminal-border bg-black flex items-center justify-center">
+                            <span class="text-6xl">🧘</span>
+                        </div>
+                        <p class="text-2xl glow-yellow">MEDITATION_PROTOCOL</p>
+                        <p class="text-sm lowercase text-green-400">Ego dissolves → field participation increases</p>
+                    </div>
+
+                    <!-- Output: Aura Upgrade -->
+                    <div class="text-center space-y-4">
+                        <div class="w-32 h-32 mx-auto terminal-border bg-black flex items-center justify-center flicker">
+                            <span class="text-6xl glow-green">✨</span>
+                        </div>
+                        <p class="text-2xl glow-green">AURA_ENHANCEMENT</p>
+                        <p class="text-sm lowercase text-green-400">Personal + collective consciousness upgrade</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 lowercase text-lg text-green-400 leading-relaxed">
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Traditional economics:</span> Time = Money. 
+                        You sell hours for dollars. The more you work, the more you earn. But this loop keeps you in survival mode.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Spiritual economics:</span> Time = Consciousness Upgrade. 
+                        You invest hours in meditation. The more you practice, the more your aura enhances. This loop moves you to celebration mode.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">The morphogenetic field</span> is the collective unconscious—the shared resonance of all beings. 
+                        When you meditate, you don't just improve yourself; you lift the field. Your inner work becomes collective benefit.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">The NFT is the receipt.</span> Not "I own this jpeg for profit." 
+                        But "I participated in the field. I donated meditation time. I chose consciousness over consumption." 
+                        The token is <span class="text-cyber-yellow">proof-of-practice</span>, not proof-of-stake.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mathematical Formula -->
+            <div class="terminal-border p-8 bg-black">
+                <h3 class="text-3xl font-bold mb-6 text-center glow-yellow">THE_AURA_ENHANCEMENT_EQUATION</h3>
+                <div class="text-center space-y-4 mb-8">
+                    <p class="text-4xl glow-green mono">A(t) = A₀ × (1 + r)^(mt)</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8 lowercase text-green-400">
+                    <div class="space-y-2">
+                        <p><span class="text-cyber-yellow">A(t)</span> = Aura strength at time t</p>
+                        <p><span class="text-cyber-yellow">A₀</span> = Initial aura (birth state)</p>
+                        <p><span class="text-cyber-yellow">r</span> = Morphogenetic resonance rate</p>
+                    </div>
+                    <div class="space-y-2">
+                        <p><span class="text-cyber-yellow">m</span> = Meditation hours per day</p>
+                        <p><span class="text-cyber-yellow">t</span> = Time invested (days)</p>
+                        <p><span class="text-cyber-yellow">Result:</span> Exponential consciousness growth</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Celebration vs Survival -->
+    <section class="min-h-screen py-24 px-6 border-b-2 border-green-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center glow-green">CELEBRATION_VS_SURVIVAL_MATRIX</h2>
+            
+            <div class="terminal-border p-8 bg-black">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-green-900">
+                            <th class="p-4 text-cyber-yellow text-2xl">PARADIGM</th>
+                            <th class="p-4 text-red-500 text-2xl">SURVIVAL_MODE</th>
+                            <th class="p-4 text-neon-green text-2xl">CELEBRATION_MODE</th>
+                        </tr>
+                    </thead>
+                    <tbody class="lowercase">
+                        <tr class="border-b border-green-900">
+                            <td class="p-4 text-cyber-yellow font-bold">currency_concept</td>
+                            <td class="p-4 text-red-500">Scarcity-based. Dollars = survival.</td>
+                            <td class="p-4 text-green-400">Abundance-based. Time = consciousness.</td>
+                        </tr>
+                        <tr class="border-b border-green-900">
+                            <td class="p-4 text-cyber-yellow font-bold">value_measurement</td>
+                            <td class="p-4 text-red-500">External: bank account, status symbols.</td>
+                            <td class="p-4 text-green-400">Internal: aura strength, peace level.</td>
+                        </tr>
+                        <tr class="border-b border-green-900">
+                            <td class="p-4 text-cyber-yellow font-bold">time_allocation</td>
+                            <td class="p-4 text-red-500">Work more → earn more → buy more.</td>
+                            <td class="p-4 text-green-400">Meditate more → be more → share more.</td>
+                        </tr>
+                        <tr class="border-b border-green-900">
+                            <td class="p-4 text-cyber-yellow font-bold">ego_relationship</td>
+                            <td class="p-4 text-red-500">Centralized. "I must protect my story."</td>
+                            <td class="p-4 text-green-400">Dissolved. "I am field, not form."</td>
+                        </tr>
+                        <tr class="border-b border-green-900">
+                            <td class="p-4 text-cyber-yellow font-bold">meaning_structure</td>
+                            <td class="p-4 text-red-500">Inflated. Meta^meta spiral.</td>
+                            <td class="p-4 text-green-400">Grounded. Present moment reality.</td>
+                        </tr>
+                        <tr class="border-b border-green-900">
+                            <td class="p-4 text-cyber-yellow font-bold">collective_impact</td>
+                            <td class="p-4 text-red-500">Competition. Zero-sum games.</td>
+                            <td class="p-4 text-green-400">Cooperation. Morphogenetic lift.</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 text-cyber-yellow font-bold">nft_purpose</td>
+                            <td class="p-4 text-red-500">Speculate. Flip for profit.</td>
+                            <td class="p-4 text-green-400">Witness. Proof-of-practice.</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="mt-12 space-y-6 lowercase text-lg text-green-400 leading-relaxed">
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Survival mode</span> is not "bad"—it's necessary. 
+                        We all need food, shelter, safety. But when survival becomes the only mode, life contracts. 
+                        Every action is defensive. Every decision is scarcity-driven.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Celebration mode</span> doesn't deny survival needs. 
+                        It transcends them. You still pay rent, but you're not defined by it. You still use money, but it's not your measure. 
+                        You shift from "I must accumulate" to "I choose to contribute."
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">CYBERMONKS-V1 invites this shift.</span> 
+                        Not through investment returns (there are none), but through artistic contemplation. 
+                        Each NFT is a meditation prompt: "What if time was the real currency? What if aura was the real wealth?"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: The Aesthetic Gateway -->
+    <section class="min-h-screen py-24 px-6 border-b-2 border-green-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center glow-green">THE_AESTHETIC_GATEWAY</h2>
+            <h3 class="text-3xl md:text-4xl font-bold mb-12 text-center glow-yellow">RIGHT_BRAIN_FEMININE_VS_LEFT_BRAIN_MASCULINE</h3>
+            
+            <div class="terminal-border p-12 bg-black mb-12">
+                <p class="text-2xl mb-12 glow-yellow text-center">NFTs_AS_PORTALS_FROM_SPECULATION_TO_APPRECIATION</p>
+                
+                <!-- Brain Hemisphere Comparison -->
+                <div class="grid md:grid-cols-2 gap-12 mb-12">
+                    <!-- Left Brain / Masculine -->
+                    <div class="terminal-border border-red-500 p-8 bg-black">
+                        <div class="text-center mb-6">
+                            <div class="w-24 h-24 mx-auto mb-4 terminal-border border-red-500 bg-black flex items-center justify-center">
+                                <span class="text-6xl">📊</span>
+                            </div>
+                            <h4 class="text-3xl font-bold text-red-500 mb-2">LEFT_BRAIN</h4>
+                            <p class="text-xl text-red-400">MASCULINE_PRINCIPLE</p>
+                        </div>
+                        
+                        <div class="space-y-3 lowercase text-red-400">
+                            <p>→ Analytical processing</p>
+                            <p>→ Monetary valuation</p>
+                            <p>→ Speculation mindset</p>
+                            <p>→ "What can I flip this for?"</p>
+                            <p>→ Market obsession</p>
+                            <p>→ Floor price tracking</p>
+                            <p>→ ROI calculations</p>
+                            <p>→ Rarity rankings</p>
+                            <p>→ Comparison with others</p>
+                            <p>→ Status signaling</p>
+                            <p>→ Zero-sum thinking</p>
+                            <p>→ Accumulation drive</p>
+                        </div>
+                        
+                        <p class="text-sm text-red-500 mt-6 text-center font-bold">NOT WRONG // INCOMPLETE</p>
+                    </div>
+
+                    <!-- Right Brain / Feminine -->
+                    <div class="terminal-border border-green-500 p-8 bg-black">
+                        <div class="text-center mb-6">
+                            <div class="w-24 h-24 mx-auto mb-4 terminal-border border-green-500 bg-black flex items-center justify-center flicker">
+                                <span class="text-6xl">🎨</span>
+                            </div>
+                            <h4 class="text-3xl font-bold text-neon-green mb-2">RIGHT_BRAIN</h4>
+                            <p class="text-xl text-green-400">FEMININE_PRINCIPLE</p>
+                        </div>
+                        
+                        <div class="space-y-3 lowercase text-green-400">
+                            <p>→ Aesthetic appreciation</p>
+                            <p>→ Emotional resonance</p>
+                            <p>→ Contemplation mindset</p>
+                            <p>→ "How does this make me feel?"</p>
+                            <p>→ Beauty obsession</p>
+                            <p>→ Artistic value sensing</p>
+                            <p>→ Meaning absorption</p>
+                            <p>→ Personal connection</p>
+                            <p>→ Internal experience</p>
+                            <p>→ Soul expression</p>
+                            <p>→ Abundance thinking</p>
+                            <p>→ Appreciation practice</p>
+                        </div>
+                        
+                        <p class="text-sm text-neon-green mt-6 text-center font-bold">THE_GATEWAY // THE_RETURN</p>
+                    </div>
+                </div>
+
+                <!-- The Gateway Diagram -->
+                <div class="terminal-border p-8 bg-black mb-12">
+                    <h4 class="text-2xl font-bold mb-8 text-center glow-yellow">THE_CULTURAL_SHIFT_DIAGRAM</h4>
+                    
+                    <svg viewBox="0 0 1000 300" class="w-full h-auto mb-8">
+                        <!-- Left side: Speculation -->
+                        <rect x="50" y="100" width="200" height="100" fill="#050505" stroke="#ff0000" stroke-width="3"/>
+                        <text x="150" y="140" text-anchor="middle" fill="#ff0000" font-size="20" font-family="VT323">MONETARY</text>
+                        <text x="150" y="165" text-anchor="middle" fill="#ff0000" font-size="20" font-family="VT323">SPECULATION</text>
+                        
+                        <!-- Arrow with "NFT AS GATEWAY" -->
+                        <defs>
+                            <marker id="gateway-arrow" markerWidth="15" markerHeight="15" refX="13" refY="7.5" orient="auto">
+                                <polygon points="0 0, 15 7.5, 0 15" fill="#ffff00" />
+                            </marker>
+                        </defs>
+                        <line x1="250" y1="150" x2="700" y2="150" stroke="#ffff00" stroke-width="4" marker-end="url(#gateway-arrow)"/>
+                        <text x="475" y="130" text-anchor="middle" fill="#ffff00" font-size="18" font-family="IBM Plex Mono">NFT_AS_GATEWAY</text>
+                        <text x="475" y="190" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">(through meditation)</text>
+                        
+                        <!-- Right side: Appreciation -->
+                        <rect x="700" y="100" width="200" height="100" fill="#050505" stroke="#00ff00" stroke-width="3"/>
+                        <text x="800" y="140" text-anchor="middle" fill="#00ff00" font-size="20" font-family="VT323">AESTHETIC</text>
+                        <text x="800" y="165" text-anchor="middle" fill="#00ff00" font-size="20" font-family="VT323">APPRECIATION</text>
+                        
+                        <!-- Labels below -->
+                        <text x="150" y="240" text-anchor="middle" fill="#ff0000" font-size="14" font-family="IBM Plex Mono">LEFT_BRAIN</text>
+                        <text x="150" y="260" text-anchor="middle" fill="#ff0000" font-size="14" font-family="IBM Plex Mono">MASCULINE</text>
+                        
+                        <text x="800" y="240" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">RIGHT_BRAIN</text>
+                        <text x="800" y="260" text-anchor="middle" fill="#00ff00" font-size="14" font-family="IBM Plex Mono">FEMININE</text>
+                    </svg>
+                </div>
+
+                <div class="space-y-6 lowercase text-lg text-green-400 leading-relaxed">
+                    <p>
+                        <span class="text-cyber-yellow font-bold">The current NFT culture is left-brain dominated.</span> 
+                        Floor price. Gas wars. Rarity tools. Discord alpha. Whale tracking. Every conversation returns to money. 
+                        "Wen moon?" "What's the utility?" "Did you flip for profit?" The art becomes secondary—a vehicle for speculation, 
+                        not an object of contemplation.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">This is the masculine principle in overdrive.</span> 
+                        Not "masculine" as in male humans, but masculine as in <span class="text-red-500">analytical, extractive, competitive, 
+                        dominance-seeking energy</span>. It's the same energy that commodifies everything—nature, relationships, 
+                        consciousness itself. It asks: "What can I take from this?"
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">The feminine principle asks differently.</span> 
+                        Not "what can I extract?" but <span class="text-neon-green">"what can I receive? what beauty lives here? 
+                        how does this move me?"</span> The feminine is receptive, appreciative, relational. It doesn't need to own 
+                        or control—it wants to <span class="text-neon-green">feel, witness, connect</span>.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">NFTs can be the gateway back.</span> 
+                        Not by rejecting the left brain (analysis has its place), but by <span class="text-cyber-yellow">restoring balance</span>. 
+                        The token gives you permission to stop optimizing and start appreciating. You're not flipping—you're 
+                        <span class="text-neon-green">sitting with the art</span>. You're not tracking floor price—you're 
+                        <span class="text-neon-green">feeling the aesthetic resonance</span>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- The Integration Grid -->
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="terminal-border p-8 bg-black">
+                    <h4 class="text-2xl font-bold mb-6 glow-yellow">THE_MASCULINE_TRAP:</h4>
+                    <div class="space-y-4 lowercase text-red-400">
+                        <p><span class="text-cyber-yellow">→</span> You buy NFT for speculation</p>
+                        <p><span class="text-cyber-yellow">→</span> You watch floor price daily</p>
+                        <p><span class="text-cyber-yellow">→</span> You compare with other holders</p>
+                        <p><span class="text-cyber-yellow">→</span> You feel anxiety when price drops</p>
+                        <p><span class="text-cyber-yellow">→</span> You never actually look at the art</p>
+                        <p><span class="text-cyber-yellow">→</span> You're in survival mode</p>
+                        <p><span class="text-cyber-yellow">→</span> The NFT owns you</p>
+                    </div>
+                </div>
+
+                <div class="terminal-border p-8 bg-black">
+                    <h4 class="text-2xl font-bold mb-6 glow-green">THE_FEMININE_PATH:</h4>
+                    <div class="space-y-4 lowercase text-green-400">
+                        <p><span class="text-cyber-yellow">→</span> You acquire NFT for beauty</p>
+                        <p><span class="text-cyber-yellow">→</span> You contemplate it during meditation</p>
+                        <p><span class="text-cyber-yellow">→</span> You feel internal resonance</p>
+                        <p><span class="text-cyber-yellow">→</span> You don't check price—irrelevant</p>
+                        <p><span class="text-cyber-yellow">→</span> You study the visual language</p>
+                        <p><span class="text-cyber-yellow">→</span> You're in celebration mode</p>
+                        <p><span class="text-cyber-yellow">→</span> You own the experience</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The Rebalancing Theorem -->
+            <div class="terminal-border p-12 bg-black mb-12">
+                <h4 class="text-3xl font-bold mb-8 text-center glow-yellow">THE_REBALANCING_THEOREM</h4>
+                
+                <div class="text-center space-y-6 mb-12">
+                    <p class="text-2xl glow-green mono">MASCULINE + FEMININE = WHOLENESS</p>
+                    <p class="text-xl text-green-400 mono">ANALYSIS + APPRECIATION = CONSCIOUSNESS</p>
+                    <p class="text-xl text-green-400 mono">SPECULATION + CONTEMPLATION = INTEGRATION</p>
+                </div>
+
+                <div class="space-y-6 lowercase text-lg text-green-400 leading-relaxed">
+                    <p>
+                        <span class="text-cyber-yellow font-bold">We don't reject the masculine.</span> 
+                        Logic has value. Markets serve functions. Analysis reveals patterns. But when the masculine 
+                        <span class="text-red-500">dominates completely</span>, culture becomes extractive, anxious, spiritually barren.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">The feminine has been suppressed.</span> 
+                        "Stop being emotional." "Art doesn't pay bills." "Beauty is subjective—prove ROI." 
+                        We've been trained to distrust aesthetic response, to mock contemplation, to privilege 
+                        <span class="text-red-500">monetization over meaning</span>.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">NFTs offer a strange alchemy.</span> 
+                        They arrive packaged in <span class="text-red-500">masculine language</span> (blockchain! scarcity! ownership!), 
+                        but they can smuggle in the <span class="text-neon-green">feminine experience</span> (beauty! feeling! presence!). 
+                        You came for the speculation. You stayed for the soul work.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Meditation facilitates the crossing.</span> 
+                        In stillness, the left brain quiets. The analytical voice softens. And suddenly you're 
+                        <span class="text-neon-green">seeing the art</span>—not as an investment vehicle, 
+                        but as a <span class="text-neon-green">portal into aesthetic experience</span>, 
+                        a reminder that beauty exists independent of utility.
+                    </p>
+                </div>
+            </div>
+
+            <!-- The Cultural Deprogramming -->
+            <div class="terminal-border p-8 bg-black">
+                <h4 class="text-2xl font-bold mb-6 glow-yellow text-center">CULTURAL_DEPROGRAMMING_PROTOCOL</h4>
+                
+                <div class="space-y-6 lowercase text-green-400">
+                    <div class="border-l-4 border-cyber-yellow pl-6">
+                        <p class="text-xl font-bold text-cyber-yellow mb-2">Old program:</p>
+                        <p class="text-red-400">"Art is only valuable if someone will pay more for it tomorrow."</p>
+                    </div>
+                    <div class="border-l-4 border-neon-green pl-6">
+                        <p class="text-xl font-bold text-neon-green mb-2">New program:</p>
+                        <p class="text-green-400">"Art is valuable when it creates aesthetic experience in me right now."</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 mt-12 lowercase text-green-400">
+                    <div class="border-l-4 border-cyber-yellow pl-6">
+                        <p class="text-xl font-bold text-cyber-yellow mb-2">Old program:</p>
+                        <p class="text-red-400">"I need utility. What does this NFT DO?"</p>
+                    </div>
+                    <div class="border-l-4 border-neon-green pl-6">
+                        <p class="text-xl font-bold text-neon-green mb-2">New program:</p>
+                        <p class="text-green-400">"Beauty is the utility. Contemplation is the function."</p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 mt-12 lowercase text-green-400">
+                    <div class="border-l-4 border-cyber-yellow pl-6">
+                        <p class="text-xl font-bold text-cyber-yellow mb-2">Old program:</p>
+                        <p class="text-red-400">"Floor price matters most."</p>
+                    </div>
+                    <div class="border-l-4 border-neon-green pl-6">
+                        <p class="text-xl font-bold text-neon-green mb-2">New program:</p>
+                        <p class="text-green-400">"Personal resonance matters most."</p>
+                    </div>
+                </div>
+
+                <p class="text-2xl text-center text-cyber-yellow mt-12 pt-8 border-t-2 border-green-900">
+                    THE_AESTHETIC_GATEWAY_OPENS_WHEN_YOU_STOP_ASKING_"WHAT'S_IT_WORTH?"_AND_START_ASKING_"HOW_DOES_IT_FEEL?"
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 6: The Practical Protocol -->
+    <section class="min-h-screen py-24 px-6 border-b-2 border-green-900">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-5xl md:text-7xl font-bold mb-12 text-center glow-green">THE_PRACTICAL_PROTOCOL</h2>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="terminal-border p-8 bg-black space-y-6">
+                    <h3 class="text-3xl font-bold glow-yellow mb-6">MEDITATION_INSTRUCTIONS:</h3>
+                    <div class="space-y-4 lowercase text-green-400">
+                        <p><span class="text-cyber-yellow">1.</span> Sit comfortably. Spine straight.</p>
+                        <p><span class="text-cyber-yellow">2.</span> Close eyes. Focus on breath.</p>
+                        <p><span class="text-cyber-yellow">3.</span> Notice thoughts. Let them pass.</p>
+                        <p><span class="text-cyber-yellow">4.</span> When ego arises ("I'm meditating well!"), acknowledge it. Release it.</p>
+                        <p><span class="text-cyber-yellow">5.</span> 20 minutes minimum. Daily practice.</p>
+                        <p><span class="text-cyber-yellow">6.</span> Log time. Track aura upgrades subjectively.</p>
+                        <p><span class="text-cyber-yellow">7.</span> No performance. No competition. Just practice.</p>
+                    </div>
+                </div>
+
+                <div class="terminal-border p-8 bg-black space-y-6">
+                    <h3 class="text-3xl font-bold glow-yellow mb-6">FIELD_PARTICIPATION:</h3>
+                    <div class="space-y-4 lowercase text-green-400">
+                        <p><span class="text-cyber-yellow">→</span> Your meditation benefits everyone.</p>
+                        <p><span class="text-cyber-yellow">→</span> Their meditation benefits you.</p>
+                        <p><span class="text-cyber-yellow">→</span> This is not metaphor—it's morphogenetic resonance.</p>
+                        <p><span class="text-cyber-yellow">→</span> The field lifts collectively.</p>
+                        <p><span class="text-cyber-yellow">→</span> The NFT is optional. Practice is primary.</p>
+                        <p><span class="text-cyber-yellow">→</span> You don't need to "own" anything to participate.</p>
+                        <p><span class="text-cyber-yellow">→</span> Consciousness is open-source.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terminal-border p-12 bg-black mt-12">
+                <h3 class="text-4xl font-bold glow-green text-center mb-8">THE_FINAL_EQUATION:</h3>
+                <div class="text-center space-y-8">
+                    <p class="text-3xl glow-yellow mono">MEDITATION_TIME → EGO_DISSOLUTION → FIELD_LIFT → AURA_ENHANCEMENT → CELEBRATION_OF_LIFE</p>
+                    <p class="text-2xl glow-green mono">NFT = PROOF_OF_PRACTICE (NOT PROOF_OF_PROFIT)</p>
+                </div>
+                <div class="mt-12 space-y-4 lowercase text-lg text-green-400 leading-relaxed text-center">
+                    <p>The token doesn't make you spiritual.</p>
+                    <p>The practice does.</p>
+                    <p>The token witnesses the practice.</p>
+                    <p class="text-cyber-yellow text-2xl pt-8">STRIP THE EGO. TOKENIZE THE VOID. LIFT THE FIELD.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Legal Disclaimer Section -->
+    <section class="py-24 px-6 border-b-2 border-red-900 bg-red-950/20">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-5xl font-bold text-center mb-12 text-red-500">⚠️ CRITICAL_LEGAL_DISCLAIMER ⚠️</h2>
+            
+            <div class="terminal-border border-red-500 p-12 bg-black space-y-6">
+                <p class="text-2xl text-red-500 font-bold mb-4">THIS IS NOT FINANCIAL ADVICE OR SECURITIES OFFERING</p>
+                
+                <div class="space-y-4 lowercase text-green-400 text-lg leading-relaxed">
+                    <p>
+                        <span class="text-cyber-yellow font-bold">CYBERMONKS-V1 are digital art collectibles</span> created for philosophical and artistic exploration. 
+                        They are NOT investments, NOT securities, and carry NO expectation of profit.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">No financial value:</span> These tokens have no inherent monetary worth. 
+                        Any concepts of "value," "currency," or "tokenization" discussed in this whitepaper are purely philosophical metaphors 
+                        for consciousness practices—not economic propositions.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">No investment returns:</span> There is no business plan, no revenue model, 
+                        no promise of appreciation. The "aura enhancement" and "morphogenetic field" are spiritual/artistic concepts, not financial metrics.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Risk disclosure:</span> You may lose all money spent. There is no guaranteed market. 
+                        The tokens may become worthless. Buy only if you appreciate the art and philosophy—never as an investment.
+                    </p>
+                    <p>
+                        <span class="text-cyber-yellow font-bold">Purpose:</span> Personal collection, artistic appreciation, and philosophical contemplation only. 
+                        This is consciousness research documented as digital art.
+                    </p>
+                    <p class="text-red-500 font-bold text-xl pt-6">
+                        BY INTERACTING WITH THIS PROJECT, YOU ACKNOWLEDGE THESE ARE ART PIECES WITH NO FINANCIAL PURPOSE OR VALUE.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 text-center bg-black">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <p class="text-3xl glow-green flicker font-bold">CYBERMONKS-V1 // WHITEPAPER_V1.0</p>
+            <p class="mono text-sm text-green-700 lowercase">
+                philosophical exploration // not financial advice // pure consciousness research
+            </p>
+            <div class="flex justify-center gap-6 pt-4">
+                <a href="index.html" class="text-cyber-yellow hover:glow-yellow">BACK_TO_COLLECTION</a>
+                <a href="#transformation" class="text-cyber-yellow hover:glow-yellow">RE-READ_PROTOCOL</a>
+            </div>
+        </div>
+    </footer>
 
 </body>
 </html>
