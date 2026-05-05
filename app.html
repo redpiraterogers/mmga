@@ -25,7 +25,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 .left-panel{background:var(--bg);border:2px solid var(--border);padding:24px}
 .instructions{background:rgba(255,221,0,0.1);border:2px solid var(--yellow);padding:16px;margin-bottom:24px;text-align:center}
 .instructions-title{font-family:var(--pixel);font-size:14px;color:var(--yellow);margin-bottom:8px}
-.instructions-rules{display:flex;gap:24px;justify-content:center;margin-top:12px}
+.instructions-rules{display:flex;gap:24px;justify-center;margin-top:12px}
 .rule-item{font-family:var(--pixel);font-size:12px;color:var(--white)}
 .rule-item.active{color:var(--green);text-shadow:0 0 10px var(--green-glow)}
 .cam-feed{position:relative;width:100%;aspect-ratio:4/3;background:#000;border:4px solid var(--green);margin-bottom:24px;overflow:hidden}
@@ -85,6 +85,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
   <div class="nav-right">
     <button onclick="connectWallet()" class="wallet-btn" id="walletBtn">Connect Wallet</button>
     <span class="wallet-status" id="walletStatus"></span>
+    <button onclick="showHelp()" class="back-btn">❓ Setup Help</button>
     <a href="index.html" class="back-btn">← Back</a>
   </div>
 </nav>
@@ -129,6 +130,148 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
         <div style="font-size:11px;color:var(--green-dim);margin-top:8px">Session Time</div>
       </div>
       <button class="end-btn" onclick="endSession()">END SESSION</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="helpModal">
+  <div class="modal-box" style="max-width:800px">
+    <div class="modal-title">🎓 SETUP GUIDE FOR BEGINNERS</div>
+    
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        📱 STEP 1: USE THE RIGHT BROWSER
+      </div>
+      <div style="color:var(--white);line-height:1.8">
+        This app works on <strong>desktop/laptop computers</strong> using these browsers:
+        <br/><br/>
+        ✅ <strong>Chrome</strong> (recommended) - <a href="https://www.google.com/chrome/" target="_blank" style="color:var(--green)">Download Chrome</a><br/>
+        ✅ <strong>Brave</strong> - <a href="https://brave.com/" target="_blank" style="color:var(--green)">Download Brave</a><br/>
+        ✅ <strong>Edge</strong> - Built into Windows<br/>
+        ✅ <strong>Firefox</strong> - <a href="https://www.mozilla.org/firefox/" target="_blank" style="color:var(--green)">Download Firefox</a><br/>
+        <br/>
+        ❌ <strong>Safari</strong> may have issues - use Chrome instead<br/>
+        ❌ <strong>Mobile browsers</strong> not fully supported yet
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        💼 STEP 2: INSTALL METAMASK WALLET
+      </div>
+      <div style="color:var(--white);line-height:1.8">
+        MetaMask is a free digital wallet for cryptocurrency. Think of it like a digital bank account.
+        <br/><br/>
+        <strong>Installation (5 minutes):</strong><br/>
+        1. Go to <a href="https://metamask.io" target="_blank" style="color:var(--green);font-size:16px"><strong>metamask.io</strong></a><br/>
+        2. Click <strong>"Download"</strong> button<br/>
+        3. Click <strong>"Install MetaMask for Chrome"</strong> (or your browser)<br/>
+        4. Click <strong>"Add to Chrome"</strong><br/>
+        5. Click <strong>"Add Extension"</strong><br/>
+        6. The MetaMask fox icon appears in your browser toolbar (top-right corner)<br/>
+        <br/>
+        <strong>Setup Your Wallet (10 minutes):</strong><br/>
+        1. Click the fox icon<br/>
+        2. Click <strong>"Create a new wallet"</strong><br/>
+        3. Create a strong password (you'll need this every time!)<br/>
+        4. Watch the short security video<br/>
+        5. Write down your <strong>12 secret words</strong> on paper (VERY IMPORTANT!)<br/>
+        6. Confirm your secret words<br/>
+        7. Done! Your wallet is ready! 🎉
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        ⚠️ IMPORTANT SECURITY TIPS
+      </div>
+      <div class="alert alert-warning" style="text-align:left">
+        <strong>Your 12 secret words (seed phrase):</strong><br/>
+        ✅ Write them on paper and store safely<br/>
+        ✅ Never share with anyone, ever<br/>
+        ✅ MMGA team will NEVER ask for them<br/>
+        ✅ These words restore your wallet if you forget password<br/>
+        <br/>
+        <strong>Your password:</strong><br/>
+        ✅ Used to unlock MetaMask on your computer<br/>
+        ✅ Store it somewhere safe (password manager)<br/>
+        ✅ If you forget it, you'll need your 12 words to recover
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        🔌 STEP 3: CONNECT YOUR WALLET
+      </div>
+      <div style="color:var(--white);line-height:1.8">
+        Once MetaMask is installed:<br/><br/>
+        1. Come back to this MMGA meditation app<br/>
+        2. Click the <strong>"Connect Wallet"</strong> button (top-right)<br/>
+        3. MetaMask popup will appear<br/>
+        4. Click <strong>"Next"</strong><br/>
+        5. Click <strong>"Connect"</strong><br/>
+        6. The app will ask to switch to <strong>Polygon network</strong><br/>
+        7. Click <strong>"Approve"</strong> or <strong>"Switch Network"</strong><br/>
+        8. You're connected! The button will show "Connected" ✅
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        📹 STEP 4: ALLOW CAMERA ACCESS
+      </div>
+      <div style="color:var(--white);line-height:1.8">
+        The app needs your camera to detect meditation:<br/><br/>
+        1. When the page loads, your browser will ask: <strong>"Allow camera?"</strong><br/>
+        2. Click <strong>"Allow"</strong> or <strong>"Yes"</strong><br/>
+        3. Your video feed will appear on screen<br/>
+        4. You'll see red/green dots on your eyes<br/>
+        <br/>
+        <strong>Troubleshooting:</strong><br/>
+        • No camera popup? Check if your browser blocked it (look for camera icon in address bar)<br/>
+        • Click the camera icon and select "Allow"<br/>
+        • Still not working? Refresh the page and try again
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        🧘 STEP 5: START MEDITATING!
+      </div>
+      <div style="color:var(--white);line-height:1.8">
+        Once everything is set up:<br/><br/>
+        1. Sit comfortably with <strong>spine straight</strong><br/>
+        2. <strong>Close your eyes</strong><br/>
+        3. Watch the counter increase: +1 token per second<br/>
+        4. Meditate for as long as you want<br/>
+        5. Click <strong>"MINT TO BLOCKCHAIN"</strong> to save tokens permanently<br/>
+        6. Click <strong>"END SESSION"</strong> when done<br/>
+        <br/>
+        <strong>Your $MONK tokens will appear in MetaMask!</strong>
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px">
+      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
+        💰 VIEWING YOUR TOKENS IN METAMASK
+      </div>
+      <div style="color:var(--white);line-height:1.8">
+        After minting, see your tokens:<br/><br/>
+        1. Click the MetaMask fox icon (top-right of browser)<br/>
+        2. Make sure you're on <strong>"Polygon Mainnet"</strong> network (top of popup)<br/>
+        3. Scroll down to <strong>"Import tokens"</strong><br/>
+        4. Click <strong>"Import tokens"</strong><br/>
+        5. Paste this contract address:<br/>
+        <code style="background:var(--bg2);padding:8px;display:block;margin:8px 0;color:var(--green);font-size:12px;word-break:break-all">0x3Aa4790Ba1b1aC9359ae1360085b736999C5b0a6</code>
+        6. Token symbol will auto-fill: <strong>MONK</strong><br/>
+        7. Click <strong>"Add custom token"</strong><br/>
+        8. Click <strong>"Import tokens"</strong><br/>
+        9. Your $MONK balance appears! 🎉
+      </div>
+    </div>
+
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="closeModal('helpModal')">GOT IT! LET'S START</button>
     </div>
   </div>
 </div>
@@ -222,28 +365,17 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
 <script>
-// ⚙️ PRODUCTION CONFIGURATION
-const BACKEND_API = 'https://mmga-backend2-production.up.railway.app';
-const POLYGON_CHAIN_ID = '0x89';
-const MINT_BATCH_SIZE = 60;
-
-// 🎯 STATE
+const BACKEND_API='https://mmga-backend2-production.up.railway.app';
+const POLYGON_CHAIN_ID='0x89';
 let startTime=Date.now(),timerInterval,earningInterval,tokensEarned=0,pose,faceMesh,camera,videoEl,canvasEl,ctx;
 let spineCorrect=false,eyesClosed=false;
 let totalMinutesAllTime=parseInt(localStorage.getItem('mmga_total_minutes')||'0');
 let userWallet=null;
-let lastMintedTokens=0;
-
 const LEFT_EYE=[33,160,158,133,153,144,145,153,154,155,133];
 const RIGHT_EYE=[362,385,387,263,373,380,381,373,374,380,263];
 
-// 🔐 CONNECT METAMASK
 async function connectWallet(){
-if(!window.ethereum){
-alert('Please install MetaMask from metamask.io');
-window.open('https://metamask.io/','_blank');
-return;
-}
+if(!window.ethereum){showHelp();return}
 try{
 const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
 userWallet=accounts[0];
@@ -253,102 +385,66 @@ await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chai
 }catch(e){
 if(e.code===4902){
 await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:POLYGON_CHAIN_ID,chainName:'Polygon Mainnet',nativeCurrency:{name:'MATIC',symbol:'MATIC',decimals:18},rpcUrls:['https://polygon-rpc.com/'],blockExplorerUrls:['https://polygonscan.com/']}]});
-}
-}
+}}
 document.getElementById('walletBtn').textContent='Connected';
 document.getElementById('walletBtn').classList.add('connected');
 document.getElementById('walletStatus').textContent=userWallet.slice(0,6)+'...'+userWallet.slice(-4);
 document.getElementById('blockchainStatus').textContent='Minting to Polygon';
 updateMintButton();
 fetchBalance();
-}catch(err){
-console.error('Connection failed:',err);
-alert('Failed to connect wallet');
-}
-}
+}catch(err){console.error('Connection failed:',err);alert('Failed to connect wallet')}}
 
-// 💰 FETCH BALANCE
 async function fetchBalance(){
 if(!userWallet)return;
 try{
 const r=await fetch(`${BACKEND_API}/api/balance/${userWallet}`);
 const d=await r.json();
 console.log('💰 Balance:',d.balance,'$MONK');
-}catch(e){console.error('Balance fetch failed:',e)}
-}
+}catch(e){console.error('Balance fetch failed:',e)}}
 
-// 🪙 MANUAL MINT BUTTON
 async function manualMint(){
-if(!userWallet){
-alert('⚠️ Please connect your wallet first!');
-return;
-}
-if(tokensEarned<=0){
-alert('⚠️ No tokens to mint! Start meditating first.');
-return;
-}
+if(!userWallet){alert('⚠️ Please connect your wallet first!');return}
+if(tokensEarned<=0){alert('⚠️ No tokens to mint!');return}
 const mintBtn=document.getElementById('mintBtn');
 mintBtn.disabled=true;
 mintBtn.textContent='MINTING...';
 const amountToMint=tokensEarned;
-const success=await mintMonk(amountToMint);
-if(success){
+const sessionData={minutes:Math.floor((Date.now()-startTime)/60000),eyesClosed:true,spineCorrect:true,timestamp:new Date().toISOString()};
+try{
+console.log(`🔄 Minting ${amountToMint} $MONK...`);
+const r=await fetch(`${BACKEND_API}/api/mint-monk`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({walletAddress:userWallet,amount:amountToMint,sessionData:sessionData})});
+const d=await r.json();
+if(d.success){
 alert(`✅ Successfully minted ${amountToMint} $MONK to blockchain!`);
 tokensEarned=0;
 document.getElementById('tokenCount').textContent='0';
 document.getElementById('blockchainStatus').textContent=`✅ Minted ${amountToMint} $MONK!`;
 }else{
-alert('❌ Mint failed. Please try again.');
-}
+console.error('❌ Mint failed:',d.error);
+alert('❌ Mint failed: '+d.error)}}
+catch(e){console.error('❌ Error:',e);alert('❌ Connection failed: '+e.message)}
 mintBtn.disabled=false;
-mintBtn.textContent='MINT TO BLOCKCHAIN';
-}
+mintBtn.textContent='MINT TO BLOCKCHAIN'}
 
-// 🔄 UPDATE MINT BUTTON VISIBILITY
 function updateMintButton(){
 const mintBtn=document.getElementById('mintBtn');
-if(userWallet&&tokensEarned>0){
-mintBtn.style.display='block';
-}else{
-mintBtn.style.display='none';
-}
-}
+if(userWallet&&tokensEarned>0){mintBtn.style.display='block'}else{mintBtn.style.display='none'}}
 
-// ⛏️ MINT TOKENS
 async function mintMonk(amount){
-if(!userWallet){
-console.log('⚠️ Wallet not connected');
-return false;
-}
-const sessionData={
-minutes:Math.floor((Date.now()-startTime)/60000),
-eyesClosed:eyesClosed,
-spineCorrect:spineCorrect,
-timestamp:new Date().toISOString()
-};
+if(!userWallet){console.log('⚠️ Wallet not connected');return false}
+const sessionData={minutes:Math.floor((Date.now()-startTime)/60000),eyesClosed:true,spineCorrect:true,timestamp:new Date().toISOString()};
 try{
 console.log(`🔄 Minting ${amount} $MONK...`);
-const r=await fetch(`${BACKEND_API}/api/mint-monk`,{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({walletAddress:userWallet,amount:amount,sessionData:sessionData})
-});
+const r=await fetch(`${BACKEND_API}/api/mint-monk`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({walletAddress:userWallet,amount:amount,sessionData:sessionData})});
 const d=await r.json();
 if(d.success){
 console.log('✅ Minted! Tx:',d.transactionHash);
 document.getElementById('blockchainStatus').textContent=`Minted ${amount} $MONK on-chain ✓`;
-return true;
-}else{
+return true}else{
 console.error('❌ Mint failed:',d.error);
-return false;
-}
-}catch(e){
-console.error('❌ Error:',e);
-return false;
-}
-}
+return false}}
+catch(e){console.error('❌ Error:',e);return false}}
 
-// 🎬 INIT MEDIAPIPE
 async function init(){
 videoEl=document.getElementById('video');
 canvasEl=document.getElementById('canvas');
@@ -361,26 +457,19 @@ faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0
 faceMesh.onResults(onFaceResults);
 const stream=await navigator.mediaDevices.getUserMedia({video:true});
 videoEl.srcObject=stream;
-camera=new Camera(videoEl,{
-onFrame:async()=>{await pose.send({image:videoEl});await faceMesh.send({image:videoEl})},
-width:1280,height:720
-});
+camera=new Camera(videoEl,{onFrame:async()=>{await pose.send({image:videoEl});await faceMesh.send({image:videoEl})},width:1280,height:720});
 camera.start();
 startTimer();
-startEarning();
-}
+startEarning()}
 init();
 
-// ⏱️ TIMER
 function startTimer(){
 timerInterval=setInterval(()=>{
 const elapsed=Math.floor((Date.now()-startTime)/1000);
 const mins=Math.floor(elapsed/60),secs=elapsed%60;
 document.getElementById('timer').textContent=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-},1000);
-}
+},1000)}
 
-// 💰 EARNING LOOP
 function startEarning(){
 earningInterval=setInterval(()=>{
 if(eyesClosed&&spineCorrect){
@@ -390,16 +479,12 @@ document.getElementById('earningStatus').classList.add('active');
 document.getElementById('rateLabel').textContent='EARNING: +1/SEC';
 document.getElementById('rateLabel').style.color='var(--green)';
 document.getElementById('blockchainStatus').textContent=`${tokensEarned} $MONK ready to mint`;
-updateMintButton();
-}else{
+updateMintButton()}else{
 document.getElementById('earningStatus').classList.remove('active');
 document.getElementById('rateLabel').textContent='NOT EARNING';
-document.getElementById('rateLabel').style.color='var(--red)';
-}
-},1000);
-}
+document.getElementById('rateLabel').style.color='var(--red)'}
+},1000)}
 
-// 🦴 POSE DETECTION
 function onPoseResults(results){
 if(!results.poseLandmarks)return;
 const landmarks=results.poseLandmarks;
@@ -413,21 +498,14 @@ const ruleSpine=document.getElementById('ruleSpine');
 if(spineCorrect){
 spineStatus.textContent='Spine: ✓';
 spineStatus.className='status-indicator';
-ruleSpine.classList.add('active');
-}else{
+ruleSpine.classList.add('active')}else{
 spineStatus.textContent='Spine: ✗';
 spineStatus.className='status-indicator fail';
-ruleSpine.classList.remove('active');
-}
-}
+ruleSpine.classList.remove('active')}}
 
-// 👁️ FACE DETECTION
 function onFaceResults(results){
 if(!results.multiFaceLandmarks||results.multiFaceLandmarks.length===0){
-eyesClosed=false;
-updateEyeStatus();
-return;
-}
+eyesClosed=false;updateEyeStatus();return}
 const landmarks=results.multiFaceLandmarks[0];
 canvasEl.width=videoEl.videoWidth;
 canvasEl.height=videoEl.videoHeight;
@@ -447,9 +525,7 @@ const x=landmark.x*canvasEl.width;
 const y=landmark.y*canvasEl.height;
 ctx.beginPath();
 ctx.arc(x,y,4,0,2*Math.PI);
-ctx.fill();
-}
-});
+ctx.fill()}});
 RIGHT_EYE.forEach(idx=>{
 const landmark=landmarks[idx];
 if(landmark){
@@ -457,11 +533,8 @@ const x=landmark.x*canvasEl.width;
 const y=landmark.y*canvasEl.height;
 ctx.beginPath();
 ctx.arc(x,y,4,0,2*Math.PI);
-ctx.fill();
-}
-});
-updateEyeStatus();
-}
+ctx.fill()}});
+updateEyeStatus()}
 
 function updateEyeStatus(){
 const eyesStatus=document.getElementById('eyesStatus');
@@ -469,22 +542,17 @@ const ruleEyes=document.getElementById('ruleEyes');
 if(eyesClosed){
 eyesStatus.textContent='Eyes: ✓';
 eyesStatus.className='status-indicator';
-ruleEyes.classList.add('active');
-}else{
+ruleEyes.classList.add('active')}else{
 eyesStatus.textContent='Eyes: ✗';
 eyesStatus.className='status-indicator fail';
-ruleEyes.classList.remove('active');
-}
-}
+ruleEyes.classList.remove('active')}}
 
 function calculateEAR(p1,p2,p3,p4,p5,p6){
 const v1=Math.sqrt(Math.pow(p2.x-p6.x,2)+Math.pow(p2.y-p6.y,2));
 const v2=Math.sqrt(Math.pow(p3.x-p5.x,2)+Math.pow(p3.y-p5.y,2));
 const h=Math.sqrt(Math.pow(p1.x-p4.x,2)+Math.pow(p1.y-p4.y,2));
-return(v1+v2)/(2.0*h);
-}
+return(v1+v2)/(2.0*h)}
 
-// 🛑 END SESSION
 async function endSession(){
 const sessionSec=Math.floor((Date.now()-startTime)/1000);
 const sessionMin=Math.floor(sessionSec/60);
@@ -493,53 +561,40 @@ if(timerInterval)clearInterval(timerInterval);
 if(earningInterval)clearInterval(earningInterval);
 if(camera)camera.stop();
 if(videoEl&&videoEl.srcObject){videoEl.srcObject.getTracks().forEach(t=>t.stop())}
-
-// 🪙 MINT REMAINING TOKENS IF ANY
 if(userWallet&&tokensEarned>0){
 const remaining=tokensEarned;
 document.getElementById('blockchainStatus').textContent=`Minting ${remaining} $MONK to blockchain...`;
 const success=await mintMonk(remaining);
 if(success){
-document.getElementById('blockchainStatus').textContent=`✅ Minted ${remaining} $MONK on-chain!`;
-}else{
-document.getElementById('blockchainStatus').textContent=`⚠️ Mint failed - ${remaining} tokens tracked locally`;
-}
-}else if(!userWallet&&tokensEarned>0){
-alert(`⚠️ Wallet not connected - your ${tokensEarned} tokens are tracked locally but not on blockchain. Connect wallet next time!`);
-}
-
+document.getElementById('blockchainStatus').textContent=`✅ Minted ${remaining} $MONK on-chain!`}else{
+document.getElementById('blockchainStatus').textContent=`⚠️ Mint failed - ${remaining} tokens tracked locally`}}else if(!userWallet&&tokensEarned>0){
+alert(`⚠️ Wallet not connected - your ${tokensEarned} tokens are tracked locally but not on blockchain. Connect wallet next time!`)}
 totalMinutesAllTime+=sessionMin;
 localStorage.setItem('mmga_total_minutes',totalMinutesAllTime.toString());
 if(totalMinutesAllTime>=30){
-showAirdropModal(sessionMin,totalMinutesAllTime,tokensEarned);
-}else{
-showIneligibleModal(sessionMin,totalMinutesAllTime);
-}
-}
+showAirdropModal(sessionMin,totalMinutesAllTime,tokensEarned)}else{
+showIneligibleModal(sessionMin,totalMinutesAllTime)}}
 
 function showIneligibleModal(sessionMin,totalMin){
 document.getElementById('ineligSessionMin').textContent=sessionMin;
 document.getElementById('ineligTotalMin').textContent=totalMin;
 document.getElementById('ineligRemaining').textContent=Math.max(0,30-totalMin);
-document.getElementById('ineligibleModal').classList.add('show');
-}
+document.getElementById('ineligibleModal').classList.add('show')}
 
 function showAirdropModal(sessionMin,totalMin,tokens){
 document.getElementById('airdropSessionMin').textContent=sessionMin;
 document.getElementById('airdropTotalMin').textContent=totalMin;
 document.getElementById('airdropMonk').textContent=tokens;
 if(userWallet){
-document.getElementById('airdropWalletInput').value=userWallet;
-}
+document.getElementById('airdropWalletInput').value=userWallet}
 document.getElementById('hiddenSessionMin').value=sessionMin+' minutes';
 document.getElementById('hiddenTotalMin').value=totalMin+' minutes';
 document.getElementById('hiddenMonk').value=tokens+' $MONK';
 document.getElementById('hiddenTimestamp').value=new Date().toISOString();
-document.getElementById('airdropModal').classList.add('show');
-}
+document.getElementById('airdropModal').classList.add('show')}
 
 function closeModal(id){document.getElementById(id).classList.remove('show')}
+function showHelp(){document.getElementById('helpModal').classList.add('show')}
 </script>
-
 </body>
 </html>
