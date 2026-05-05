@@ -3,598 +3,761 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MMGA Meditation Detector</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<title>MONKCOIN | Level Up Your Mind</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0f0a;--bg2:#0d120d;--green:#00ff41;--green-dim:#00cc33;--green-glow:rgba(0,255,65,0.3);--yellow:#ffdd00;--red:#ff0033;--white:#e0ffe0;--border:#00ff4144;--term:'Space Mono',monospace;--pixel:'VT323',monospace}
+:root{
+  --bg:#0f0f14;
+  --surface:#1a1a24;
+  --card:#25253a;
+  --accent:#00ff9d;
+  --purple:#a78bfa;
+  --pink:#f472b6;
+  --blue:#60a5fa;
+  --yellow:#fbbf24;
+  --text:#e4e4e7;
+  --muted:#a1a1aa;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#000;color:var(--green);font-family:var(--term);line-height:1.6}
-body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999}
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.95);border-bottom:2px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:var(--pixel);font-size:32px;color:var(--green);text-shadow:0 0 10px var(--green-glow);text-decoration:none}
-.logo b{color:var(--yellow)}
-.nav-right{display:flex;gap:16px;align-items:center}
-.wallet-btn{font-family:var(--pixel);font-size:14px;background:none;border:2px solid var(--border);color:var(--green);padding:8px 16px;cursor:pointer}
-.wallet-btn:hover{background:var(--green);color:#000}
-.wallet-btn.connected{background:var(--green);color:#000;border-color:var(--green)}
-.wallet-status{font-size:10px;color:var(--green);font-family:var(--pixel)}
-.back-btn{font-family:var(--pixel);font-size:14px;background:none;border:2px solid var(--border);color:var(--green);padding:8px 16px;cursor:pointer;text-decoration:none}
-.back-btn:hover{background:var(--green);color:#000}
-.detector{padding:32px;background:var(--bg2);margin-top:80px}
-.main-grid{display:grid;grid-template-columns:1fr 400px;gap:24px;max-width:1400px;margin:0 auto}
-.left-panel{background:var(--bg);border:2px solid var(--border);padding:24px}
-.instructions{background:rgba(255,221,0,0.1);border:2px solid var(--yellow);padding:16px;margin-bottom:24px;text-align:center}
-.instructions-title{font-family:var(--pixel);font-size:14px;color:var(--yellow);margin-bottom:8px}
-.instructions-rules{display:flex;gap:24px;justify-center;margin-top:12px}
-.rule-item{font-family:var(--pixel);font-size:12px;color:var(--white)}
-.rule-item.active{color:var(--green);text-shadow:0 0 10px var(--green-glow)}
-.cam-feed{position:relative;width:100%;aspect-ratio:4/3;background:#000;border:4px solid var(--green);margin-bottom:24px;overflow:hidden}
-.cam-feed video,.cam-feed canvas{position:absolute;inset:0;width:100%;height:100%;transform:scaleX(-1)}
-.cam-status{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;z-index:10}
-.status-indicator{font-family:var(--pixel);font-size:14px;padding:8px 12px;background:rgba(0,0,0,0.8);border:2px solid var(--green);color:var(--green)}
-.status-indicator.fail{border-color:var(--red);color:var(--red)}
-.earning-status{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:10;font-family:var(--pixel);font-size:20px;padding:12px 24px;background:rgba(0,0,0,0.9);border:3px solid var(--yellow);color:var(--yellow);text-shadow:0 0 20px rgba(255,221,0,0.8);display:none}
-.earning-status.active{display:block;animation:glow 1s ease-in-out infinite}
-@keyframes glow{0%,100%{box-shadow:0 0 10px rgba(255,221,0,0.5)}50%{box-shadow:0 0 30px rgba(255,221,0,1)}}
-.right-panel{background:var(--bg);border:2px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:20px}
-.panel-title{font-family:var(--pixel);font-size:14px;color:var(--white);text-align:center;margin-bottom:12px}
-.earth-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
-.earth{width:200px;height:200px;margin:0 auto;display:flex;align-items:center;justify-content:center}
-.earth::before{content:'🌍';font-size:100px;animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-.token-display{text-align:center;padding:20px;background:rgba(255,221,0,0.1);border:2px solid var(--yellow)}
-.token-num{font-family:var(--pixel);font-size:64px;color:var(--yellow);line-height:1;text-shadow:0 0 20px rgba(255,221,0,0.6)}
-.token-label{font-size:12px;color:var(--white);margin-top:8px}
-.rate-label{font-family:var(--pixel);font-size:10px;color:var(--green);margin-top:4px}
-.blockchain-status{font-size:9px;color:var(--green-dim);margin-top:4px}
-.mint-btn{width:100%;font-family:var(--pixel);font-size:16px;padding:12px;margin-top:12px;background:var(--yellow);border:3px solid var(--yellow);color:#000;cursor:pointer;transition:all 0.3s}
-.mint-btn:hover{background:var(--green);border-color:var(--green);transform:scale(1.05)}
-.mint-btn:disabled{background:#333;border-color:#555;color:#666;cursor:not-allowed;transform:scale(1)}
-.timer-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
-.timer{font-family:var(--pixel);font-size:48px;color:var(--green)}
-.end-btn{width:100%;font-family:var(--pixel);font-size:20px;padding:20px;background:var(--red);border:4px solid #ff0033;color:#fff;cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:5000;display:none;align-items:center;justify-content:center;padding:20px}
-.modal.show{display:flex}
-.modal-box{background:var(--bg);border:4px solid var(--border);padding:40px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
-.modal-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:24px;text-align:center}
-.stats-summary{background:var(--bg2);border:2px solid var(--border);padding:24px;margin-bottom:32px}
-.stat-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px}
-.stat-row:last-child{border-bottom:none}
-.stat-label{color:var(--green-dim)}
-.stat-value{color:var(--white);font-family:var(--pixel);font-size:18px}
-.stat-value.highlight{color:var(--yellow)}
-.alert{padding:20px;margin-bottom:24px;border:2px solid;font-size:13px;line-height:1.7}
-.alert-warning{background:rgba(255,221,0,0.1);border-color:var(--yellow);color:var(--yellow)}
-.alert-success{background:rgba(0,255,65,0.1);border-color:var(--green);color:var(--green)}
-.form-group{margin-bottom:24px}
-.form-label{font-family:var(--pixel);font-size:14px;color:var(--green);margin-bottom:8px;display:block}
-.form-input{width:100%;padding:14px;background:var(--bg2);border:2px solid var(--border);color:var(--white);font-family:var(--term);font-size:14px}
-.form-input:focus{outline:none;border-color:var(--green)}
-.btn-group{display:flex;gap:16px;margin-top:32px}
-.btn{flex:1;font-family:var(--pixel);font-size:16px;padding:16px 32px;cursor:pointer;border:3px solid;text-align:center}
-.btn-primary{background:var(--yellow);border-color:var(--yellow);color:#000}
-.btn-secondary{background:transparent;border-color:var(--green);color:var(--green)}
-.btn-secondary:hover{background:var(--green);color:#000}
-@media(max-width:1200px){.main-grid{grid-template-columns:1fr}}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'IBM Plex Mono',monospace;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+.grain{
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity:0.03;
+  pointer-events:none;
+  z-index:100;
+}
+.scanline{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0,255,157,0.02) 50%
+  );
+  background-size:100% 4px;
+  pointer-events:none;
+  z-index:101;
+  animation:scan 8s linear infinite;
+}
+@keyframes scan{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(100vh)}
+}
+.glow-orb{
+  position:fixed;
+  width:600px;
+  height:600px;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:0.3;
+  pointer-events:none;
+  z-index:0;
+}
+.orb-1{
+  background:var(--accent);
+  top:-200px;
+  right:-200px;
+  animation:float 20s ease-in-out infinite;
+}
+.orb-2{
+  background:var(--purple);
+  bottom:-200px;
+  left:-200px;
+  animation:float 25s ease-in-out infinite reverse;
+}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,50px)}}
+.container{
+  position:relative;
+  z-index:10;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+}
+nav{
+  padding:24px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:0.05em;
+}
+.logo-icon{
+  width:32px;
+  height:32px;
+  color:var(--accent);
+  transition:all 0.3s;
+  filter:drop-shadow(0 0 10px var(--accent));
+}
+.logo:hover .logo-icon{
+  color:var(--purple);
+  filter:drop-shadow(0 0 20px var(--purple));
+  transform:rotate(360deg);
+}
+.nav-cta{
+  padding:12px 24px;
+  background:var(--accent);
+  color:var(--bg);
+  border:none;
+  border-radius:100px;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-decoration:none;
+  display:inline-block;
+}
+.nav-cta:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(0,255,157,0.5);
+}
+.hero{
+  padding:80px 0 120px;
+  text-align:center;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 16px;
+  background:rgba(0,255,157,0.1);
+  border:1px solid var(--accent);
+  border-radius:4px;
+  font-size:12px;
+  margin-bottom:24px;
+  animation:fadeUp 0.8s ease-out;
+  font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.pulse-dot{
+  width:8px;
+  height:8px;
+  background:var(--accent);
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.2)}}
+h1{
+  font-family:'Cinzel',serif;
+  font-size:72px;
+  font-weight:900;
+  line-height:1.1;
+  margin-bottom:24px;
+  letter-spacing:-0.01em;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--purple) 50%,var(--pink) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:fadeUp 0.8s ease-out 0.2s both;
+  text-shadow:0 0 30px rgba(0,255,157,0.3);
+  position:relative;
+}
+h1::before{
+  content:attr(data-text);
+  position:absolute;
+  left:2px;
+  text-shadow:-2px 0 var(--accent);
+  top:0;
+  color:var(--accent);
+  background:transparent;
+  overflow:hidden;
+  opacity:0;
+  animation:glitch 3s infinite;
+}
+@keyframes glitch{
+  2%,64%{transform:translate(2px,0) skew(0deg);opacity:0.75}
+  4%,60%{transform:translate(-2px,0) skew(0deg);opacity:0.75}
+  62%{transform:translate(0,0) skew(5deg);opacity:0.75}
+}
+.subtitle{
+  font-size:20px;
+  color:var(--muted);
+  max-width:600px;
+  margin:0 auto 40px;
+  animation:fadeUp 0.8s ease-out 0.4s both;
+}
+.cta-group{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  animation:fadeUp 0.8s ease-out 0.6s both;
+}
+.btn{
+  padding:16px 32px;
+  border-radius:4px;
+  font-weight:600;
+  font-size:14px;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-decoration:none;
+  display:inline-block;
+  font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.btn-primary{
+  background:var(--accent);
+  color:var(--bg);
+  box-shadow:0 0 20px rgba(0,255,157,0.4);
+  border:2px solid var(--accent);
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,255,157,0.6);
+  background:transparent;
+  color:var(--accent);
+}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:2px solid var(--purple);
+}
+.btn-secondary:hover{
+  background:var(--purple);
+  color:var(--bg);
+  box-shadow:0 0 30px rgba(167,139,250,0.4);
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px;
+  margin-top:80px;
+}
+.stat{
+  text-align:center;
+  padding:24px;
+  background:var(--surface);
+  border-radius:8px;
+  border:2px solid var(--accent);
+  box-shadow:0 0 20px rgba(0,255,157,0.1);
+  position:relative;
+}
+.stat::before{
+  content:'>';
+  position:absolute;
+  top:8px;
+  left:12px;
+  color:var(--accent);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+}
+.stat-value{
+  font-family:'Cinzel',serif;
+  font-size:48px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:8px;
+}
+.stat-label{
+  font-size:14px;
+  color:var(--muted);
+}
+.how-it-works{
+  padding:120px 0;
+}
+.section-header{
+  text-align:center;
+  margin-bottom:64px;
+}
+.section-title{
+  font-family:'Cinzel',serif;
+  font-size:48px;
+  font-weight:900;
+  margin-bottom:16px;
+}
+.section-desc{
+  font-size:18px;
+  color:var(--muted);
+}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px;
+}
+.step{
+  padding:32px;
+  background:var(--surface);
+  border-radius:8px;
+  border:2px solid rgba(0,255,157,0.2);
+  transition:all 0.3s;
+  position:relative;
+}
+.step::before{
+  content:'$ ./meditate';
+  position:absolute;
+  top:12px;
+  right:16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+  opacity:0.5;
+}
+.step:hover{
+  transform:translateY(-8px);
+  border-color:var(--accent);
+  box-shadow:0 20px 40px rgba(0,255,157,0.2);
+}
+.step-number{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  font-weight:900;
+  margin-bottom:24px;
+  color:var(--bg);
+}
+.step h3{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  margin-bottom:12px;
+  font-weight:700;
+}
+.step p{
+  color:var(--muted);
+  line-height:1.7;
+}
+.features{
+  padding:120px 0;
+  background:linear-gradient(180deg,transparent,var(--surface),transparent);
+}
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:32px;
+}
+.feature-card{
+  padding:40px;
+  background:var(--card);
+  border-radius:8px;
+  border:2px solid rgba(0,255,157,0.15);
+  transition:all 0.3s;
+  position:relative;
+}
+.feature-card::after{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.feature-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-4px);
+  box-shadow:0 8px 32px rgba(0,255,157,0.2);
+}
+.feature-card:hover::after{
+  opacity:1;
+}
+.feature-icon{
+  width:64px;
+  height:64px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  margin-bottom:24px;
+}
+.feature-card h3{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  margin-bottom:12px;
+  font-weight:700;
+}
+.feature-card p{
+  color:var(--muted);
+  line-height:1.7;
+}
+.leaderboard{
+  padding:120px 0;
+}
+.leaderboard-preview{
+  max-width:800px;
+  margin:0 auto;
+  background:var(--surface);
+  border-radius:8px;
+  padding:40px;
+  border:2px solid var(--accent);
+  box-shadow:0 0 40px rgba(0,255,157,0.15);
+  position:relative;
+}
+.leaderboard-preview::before{
+  content:'● ● ●';
+  position:absolute;
+  top:16px;
+  left:24px;
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:4px;
+}
+.leaderboard-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:32px;
+  padding-bottom:24px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.leaderboard-title{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  font-weight:700;
+}
+.rank-item{
+  display:flex;
+  align-items:center;
+  padding:20px;
+  background:var(--card);
+  border-radius:4px;
+  margin-bottom:12px;
+  transition:all 0.3s;
+  border:1px solid rgba(0,255,157,0.2);
+}
+.rank-item:hover{
+  transform:translateX(8px);
+  background:rgba(0,255,157,0.05);
+  border-color:var(--accent);
+  box-shadow:0 4px 20px rgba(0,255,157,0.2);
+}
+.rank-number{
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  margin-right:16px;
+}
+.rank-number.top{
+  background:linear-gradient(135deg,var(--yellow),#f59e0b);
+  color:var(--bg);
+}
+.rank-avatar{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  margin-right:16px;
+}
+.rank-info{
+  flex:1;
+}
+.rank-name{
+  font-weight:600;
+  margin-bottom:4px;
+}
+.rank-level{
+  font-size:13px;
+  color:var(--muted);
+}
+.rank-hours{
+  font-family:'Cinzel',serif;
+  font-size:20px;
+  font-weight:700;
+  color:var(--accent);
+}
+.cta-final{
+  padding:120px 0;
+  text-align:center;
+}
+.cta-box{
+  max-width:700px;
+  margin:0 auto;
+  padding:64px;
+  background:var(--surface);
+  border-radius:8px;
+  border:2px solid var(--accent);
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,255,157,0.2);
+}
+.cta-box::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  opacity:0.05;
+}
+.cta-box::after{
+  content:'[READY]';
+  position:absolute;
+  top:16px;
+  right:24px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--accent);
+  letter-spacing:2px;
+}
+.cta-box h2{
+  font-family:'Cinzel',serif;
+  font-size:48px;
+  font-weight:900;
+  margin-bottom:16px;
+  position:relative;
+}
+.cta-box p{
+  font-size:18px;
+  color:var(--muted);
+  margin-bottom:32px;
+  position:relative;
+}
+footer{
+  padding:48px 0;
+  border-top:1px solid rgba(255,255,255,0.05);
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+}
+footer a{
+  color:var(--accent);
+  text-decoration:none;
+  transition:all 0.3s;
+}
+footer a:hover{
+  color:var(--purple);
+}
+@media(max-width:1024px){
+  h1{font-size:56px}
+  .stats,.steps,.feature-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  h1{font-size:40px}
+  .subtitle{font-size:16px}
+  .cta-group{flex-direction:column}
+  .btn{width:100%}
+  .stats{gap:16px}
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="logo">M<b>M</b>GA</a>
-  <div class="nav-right">
-    <button onclick="connectWallet()" class="wallet-btn" id="walletBtn">Connect Wallet</button>
-    <span class="wallet-status" id="walletStatus"></span>
-    <button onclick="showHelp()" class="back-btn">❓ Setup Help</button>
-    <a href="index.html" class="back-btn">← Back</a>
-  </div>
-</nav>
+<div class="grain"></div>
+<div class="scanline"></div>
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
 
-<div class="detector">
-  <div class="main-grid">
-    <div class="left-panel">
-      <div class="instructions">
-        <div class="instructions-title">🧘 MEDITATION REQUIREMENTS</div>
-        <div style="font-size:13px;color:var(--white);margin-top:8px">
-          Maintain BOTH conditions to earn $MONK tokens
+<div class="container">
+  <nav>
+    <div class="logo">
+      <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 8 L16 4 M12 10 L9 7 M20 10 L23 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 14 Q16 18 22 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <ellipse cx="13.5" cy="13" rx="1" ry="1.5" fill="currentColor"/>
+        <ellipse cx="18.5" cy="13" rx="1" ry="1.5" fill="currentColor"/>
+        <path d="M10 20 Q12 24 16 26 Q20 24 22 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M8 22 L6 26 M24 22 L26 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>MMGA</span>
+    </div>
+    <a href="app.html" class="nav-cta">Start Playing</a>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">
+      <div class="pulse-dot"></div>
+      <span>Live Now • Earn as You Meditate</span>
+    </div>
+    <h1>Meditation<br/>Meets Gaming</h1>
+    <p class="subtitle">
+      Close your eyes. Sit up straight. Earn +1 MONK per second. 
+      Compete with friends. Level up your mind. It's meditation, but actually fun.
+    </p>
+    <div class="cta-group">
+      <a href="app.html" class="btn btn-primary">Play Now</a>
+      <a href="#how" class="btn btn-secondary">How It Works</a>
+    </div>
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">+1/s</div>
+        <div class="stat-label">Tokens Earned</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Max Score</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Active Players</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="how-it-works" id="how">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">How to Play</h2>
+      <p class="section-desc">Three steps to earn MONK tokens and climb the leaderboard</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Connect Wallet</h3>
+        <p>
+          One-click MetaMask connection. We'll add you to the Polygon network automatically. 
+          Takes 30 seconds, costs nothing.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Start Session</h3>
+        <p>
+          Allow camera access. Our AI detects closed eyes + erect spine in real-time. 
+          No cheating, just authentic meditation.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Earn & Compete</h3>
+        <p>
+          +1 MONK per second. Hit milestones for NFT drops. Check leaderboards. 
+          Challenge friends. Make meditation a game.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Game Features</h2>
+      <p class="section-desc">Everything you need to level up your practice</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>AI Verification</h3>
+        <p>
+          Real-time detection of eyes closed + spine erect. No manual tracking. 
+          No honor system. Just AI watching your posture so you can focus on the breath.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Leaderboards</h3>
+        <p>
+          See who's meditating the most. Compete with friends, monasteries, or the whole planet. 
+          Monthly resets keep it fresh.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3>NFT Rewards</h3>
+        <p>
+          Hit 30 minutes total? Request your custom NFT airdrop. Exclusive proof-of-meditation 
+          collectibles minted on Polygon.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Minting</h3>
+        <p>
+          Mint your tokens to blockchain anytime. Each mint costs ~$0.001 in gas. 
+          Your meditation, permanently verified on-chain.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="leaderboard">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Live Leaderboard</h2>
+      <p class="section-desc">Who's winning this month?</p>
+    </div>
+    <div class="leaderboard-preview">
+      <div class="leaderboard-header">
+        <div class="leaderboard-title">🏆 Top Meditators</div>
+        <div style="color:var(--muted);font-size:14px">May 2026</div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-number top">1</div>
+        <div class="rank-avatar"></div>
+        <div class="rank-info">
+          <div class="rank-name">ZenMaster_420</div>
+          <div class="rank-level">Level 47 • Isha Yoga Center</div>
         </div>
-        <div class="instructions-rules">
-          <div class="rule-item" id="ruleEyes">👁️ EYES CLOSED</div>
-          <div class="rule-item" id="ruleSpine">🧍 SPINE ERECT</div>
+        <div class="rank-hours">87.2h</div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-number">2</div>
+        <div class="rank-avatar"></div>
+        <div class="rank-info">
+          <div class="rank-name">MindfulMonk</div>
+          <div class="rank-level">Level 42 • Solo Player</div>
         </div>
+        <div class="rank-hours">71.5h</div>
       </div>
-      
-      <div class="cam-feed">
-        <video id="video" autoplay muted playsinline></video>
-        <canvas id="canvas"></canvas>
-        <div class="cam-status">
-          <div class="status-indicator" id="eyesStatus">Eyes: ○</div>
-          <div class="status-indicator" id="spineStatus">Spine: ○</div>
+      <div class="rank-item">
+        <div class="rank-number">3</div>
+        <div class="rank-avatar"></div>
+        <div class="rank-info">
+          <div class="rank-name">InnerPeace_</div>
+          <div class="rank-level">Level 38 • Art of Living</div>
         </div>
-        <div class="earning-status" id="earningStatus">+1 $MONK/SEC</div>
+        <div class="rank-hours">64.3h</div>
       </div>
-    </div>
-
-    <div class="right-panel">
-      <div class="panel-title">YOU ARE LIFTING<br/>THE MORPHOGENETIC FIELD</div>
-      <div class="earth-box"><div class="earth"></div></div>
-      <div class="token-display">
-        <div class="token-num" id="tokenCount">0</div>
-        <div class="token-label">$MONK EARNED</div>
-        <div class="rate-label" id="rateLabel">WAITING...</div>
-        <div class="blockchain-status" id="blockchainStatus">Connect wallet to mint on-chain</div>
-        <button class="mint-btn" id="mintBtn" onclick="manualMint()" style="display:none">MINT TO BLOCKCHAIN</button>
-      </div>
-      <div class="timer-box">
-        <div class="timer" id="timer">00:00</div>
-        <div style="font-size:11px;color:var(--green-dim);margin-top:8px">Session Time</div>
-      </div>
-      <button class="end-btn" onclick="endSession()">END SESSION</button>
     </div>
   </div>
-</div>
+</section>
 
-<div class="modal" id="helpModal">
-  <div class="modal-box" style="max-width:800px">
-    <div class="modal-title">🎓 SETUP GUIDE FOR BEGINNERS</div>
-    
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        📱 STEP 1: USE THE RIGHT BROWSER
-      </div>
-      <div style="color:var(--white);line-height:1.8">
-        This app works on <strong>desktop/laptop computers</strong> using these browsers:
-        <br/><br/>
-        ✅ <strong>Chrome</strong> (recommended) - <a href="https://www.google.com/chrome/" target="_blank" style="color:var(--green)">Download Chrome</a><br/>
-        ✅ <strong>Brave</strong> - <a href="https://brave.com/" target="_blank" style="color:var(--green)">Download Brave</a><br/>
-        ✅ <strong>Edge</strong> - Built into Windows<br/>
-        ✅ <strong>Firefox</strong> - <a href="https://www.mozilla.org/firefox/" target="_blank" style="color:var(--green)">Download Firefox</a><br/>
-        <br/>
-        ❌ <strong>Safari</strong> may have issues - use Chrome instead<br/>
-        ❌ <strong>Mobile browsers</strong> not fully supported yet
-      </div>
-    </div>
-
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        💼 STEP 2: INSTALL METAMASK WALLET
-      </div>
-      <div style="color:var(--white);line-height:1.8">
-        MetaMask is a free digital wallet for cryptocurrency. Think of it like a digital bank account.
-        <br/><br/>
-        <strong>Installation (5 minutes):</strong><br/>
-        1. Go to <a href="https://metamask.io" target="_blank" style="color:var(--green);font-size:16px"><strong>metamask.io</strong></a><br/>
-        2. Click <strong>"Download"</strong> button<br/>
-        3. Click <strong>"Install MetaMask for Chrome"</strong> (or your browser)<br/>
-        4. Click <strong>"Add to Chrome"</strong><br/>
-        5. Click <strong>"Add Extension"</strong><br/>
-        6. The MetaMask fox icon appears in your browser toolbar (top-right corner)<br/>
-        <br/>
-        <strong>Setup Your Wallet (10 minutes):</strong><br/>
-        1. Click the fox icon<br/>
-        2. Click <strong>"Create a new wallet"</strong><br/>
-        3. Create a strong password (you'll need this every time!)<br/>
-        4. Watch the short security video<br/>
-        5. Write down your <strong>12 secret words</strong> on paper (VERY IMPORTANT!)<br/>
-        6. Confirm your secret words<br/>
-        7. Done! Your wallet is ready! 🎉
-      </div>
-    </div>
-
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        ⚠️ IMPORTANT SECURITY TIPS
-      </div>
-      <div class="alert alert-warning" style="text-align:left">
-        <strong>Your 12 secret words (seed phrase):</strong><br/>
-        ✅ Write them on paper and store safely<br/>
-        ✅ Never share with anyone, ever<br/>
-        ✅ MMGA team will NEVER ask for them<br/>
-        ✅ These words restore your wallet if you forget password<br/>
-        <br/>
-        <strong>Your password:</strong><br/>
-        ✅ Used to unlock MetaMask on your computer<br/>
-        ✅ Store it somewhere safe (password manager)<br/>
-        ✅ If you forget it, you'll need your 12 words to recover
-      </div>
-    </div>
-
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        🔌 STEP 3: CONNECT YOUR WALLET
-      </div>
-      <div style="color:var(--white);line-height:1.8">
-        Once MetaMask is installed:<br/><br/>
-        1. Come back to this MMGA meditation app<br/>
-        2. Click the <strong>"Connect Wallet"</strong> button (top-right)<br/>
-        3. MetaMask popup will appear<br/>
-        4. Click <strong>"Next"</strong><br/>
-        5. Click <strong>"Connect"</strong><br/>
-        6. The app will ask to switch to <strong>Polygon network</strong><br/>
-        7. Click <strong>"Approve"</strong> or <strong>"Switch Network"</strong><br/>
-        8. You're connected! The button will show "Connected" ✅
-      </div>
-    </div>
-
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        📹 STEP 4: ALLOW CAMERA ACCESS
-      </div>
-      <div style="color:var(--white);line-height:1.8">
-        The app needs your camera to detect meditation:<br/><br/>
-        1. When the page loads, your browser will ask: <strong>"Allow camera?"</strong><br/>
-        2. Click <strong>"Allow"</strong> or <strong>"Yes"</strong><br/>
-        3. Your video feed will appear on screen<br/>
-        4. You'll see red/green dots on your eyes<br/>
-        <br/>
-        <strong>Troubleshooting:</strong><br/>
-        • No camera popup? Check if your browser blocked it (look for camera icon in address bar)<br/>
-        • Click the camera icon and select "Allow"<br/>
-        • Still not working? Refresh the page and try again
-      </div>
-    </div>
-
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        🧘 STEP 5: START MEDITATING!
-      </div>
-      <div style="color:var(--white);line-height:1.8">
-        Once everything is set up:<br/><br/>
-        1. Sit comfortably with <strong>spine straight</strong><br/>
-        2. <strong>Close your eyes</strong><br/>
-        3. Watch the counter increase: +1 token per second<br/>
-        4. Meditate for as long as you want<br/>
-        5. Click <strong>"MINT TO BLOCKCHAIN"</strong> to save tokens permanently<br/>
-        6. Click <strong>"END SESSION"</strong> when done<br/>
-        <br/>
-        <strong>Your $MONK tokens will appear in MetaMask!</strong>
-      </div>
-    </div>
-
-    <div style="margin-bottom:32px">
-      <div style="font-family:var(--pixel);font-size:20px;color:var(--yellow);margin-bottom:16px">
-        💰 VIEWING YOUR TOKENS IN METAMASK
-      </div>
-      <div style="color:var(--white);line-height:1.8">
-        After minting, see your tokens:<br/><br/>
-        1. Click the MetaMask fox icon (top-right of browser)<br/>
-        2. Where it says "Tokens" on the middle of the tab click the three dots on the right 
-        3. Click "Import tokens"</strong><br/>
-        4. Click <strong>"Custom Token"</strong><br/>
-        5. Paste this contract address:<br/>
-        <code style="background:var(--bg2);padding:8px;display:block;margin:8px 0;color:var(--green);font-size:12px;word-break:break-all">0x98823C52037aF043c2628185C74D7E98b16e3444</code>
-        6. Token symbol will auto-fill: <strong>MONK</strong><br/>
-        7. Click <strong>"Add custom token"</strong><br/>
-        8. Click <strong>"Import tokens"</strong><br/>
-        9. Your $MONK balance appears! 🎉
-      </div>
-    </div>
-
-    <div class="btn-group">
-      <button class="btn btn-primary" onclick="closeModal('helpModal')">GOT IT! LET'S START</button>
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Ready to Play?</h2>
+      <p>Join thousands of meditators earning MONK tokens right now. Free to start. No credit card needed.</p>
+      <a href="app.html" class="btn btn-primary" style="font-size:18px;padding:20px 48px">
+        Start Meditation Game
+      </a>
     </div>
   </div>
-</div>
+</section>
 
-<div class="modal" id="ineligibleModal">
-  <div class="modal-box">
-    <div class="modal-title">⚠️ NOT YET ELIGIBLE</div>
-    <div style="text-align:center;margin-bottom:32px;color:var(--white)">
-      You need at least 30 minutes total to request NFT airdrops.
-    </div>
-    <div class="stats-summary">
-      <div class="stat-row">
-        <span class="stat-label">This Session:</span>
-        <span class="stat-value" id="ineligSessionMin">0</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-label">Total Minutes:</span>
-        <span class="stat-value" id="ineligTotalMin">0</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-label">Still Need:</span>
-        <span class="stat-value highlight" id="ineligRemaining">30</span>
-      </div>
-    </div>
-    <div class="alert alert-warning">
-      <strong>Keep meditating!</strong><br/>
-      Once you reach 30 total minutes, you'll be eligible to request your custom NFT airdrop.
-    </div>
-    <div class="btn-group">
-      <button class="btn btn-secondary" onclick="closeModal('ineligibleModal');window.location.href='index.html'">Return Home</button>
-    </div>
+<footer>
+  <div class="container">
+    <p>
+      MONKCOIN © 2026 | Make Meditation Great Again<br/>
+      <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" target="_blank">Smart Contract</a> • 
+      <a href="mailto:info@mmga.yoga">Contact</a> • 
+      <a href="https://twitter.com/monkcoin" target="_blank">Twitter</a>
+    </p>
   </div>
-</div>
+</footer>
 
-<div class="modal" id="airdropModal">
-  <div class="modal-box">
-    <div class="modal-title">🎁 NFT AIRDROP ELIGIBLE!</div>
-    <div style="text-align:center;margin-bottom:32px;color:var(--white)">
-      Congratulations! You've accumulated enough $MONK to request your custom NFT airdrop.
-    </div>
-    <div class="stats-summary">
-      <div class="stat-row">
-        <span class="stat-label">This Session:</span>
-        <span class="stat-value" id="airdropSessionMin">0</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-label">Total Minutes:</span>
-        <span class="stat-value highlight" id="airdropTotalMin">0</span>
-      </div>
-      <div class="stat-row">
-        <span class="stat-label">$MONK Earned:</span>
-        <span class="stat-value highlight" id="airdropMonk">0</span>
-      </div>
-    </div>
-    <div class="alert alert-success">
-      <strong>Next Steps:</strong><br/>
-      Submit your application. Our team will process your request and send your custom NFT within 2-4 hours to info@mmga.yoga.
-    </div>
-    <form action="https://api.web3forms.com/submit" method="POST">
-      <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY_HERE">
-      <input type="hidden" name="subject" value="🎁 MMGA NFT Airdrop Request">
-      <div class="form-group">
-        <label class="form-label">FULL NAME *</label>
-        <input type="text" class="form-input" name="fullName" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">EMAIL *</label>
-        <input type="email" class="form-input" name="email" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">WALLET ADDRESS *</label>
-        <input type="text" class="form-input" name="wallet" id="airdropWalletInput" required/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">TWITTER (Optional)</label>
-        <input type="text" class="form-input" name="twitter"/>
-      </div>
-      <input type="hidden" name="sessionMinutes" id="hiddenSessionMin"/>
-      <input type="hidden" name="totalMinutes" id="hiddenTotalMin"/>
-      <input type="hidden" name="monkEarned" id="hiddenMonk"/>
-      <input type="hidden" name="timestamp" id="hiddenTimestamp"/>
-      <div class="btn-group">
-        <button type="button" class="btn btn-secondary" onclick="closeModal('airdropModal');window.location.href='index.html'">Cancel</button>
-        <button type="submit" class="btn btn-primary">REQUEST AIRDROP</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
-<script>
-const BACKEND_API='https://mmga-backend2.onrender.com';
-const POLYGON_CHAIN_ID='0x89';
-let startTime=Date.now(),timerInterval,earningInterval,tokensEarned=0,pose,faceMesh,camera,videoEl,canvasEl,ctx;
-let spineCorrect=false,eyesClosed=false;
-let totalMinutesAllTime=parseInt(localStorage.getItem('mmga_total_minutes')||'0');
-let userWallet=null;
-const LEFT_EYE=[33,160,158,133,153,144,145,153,154,155,133];
-const RIGHT_EYE=[362,385,387,263,373,380,381,373,374,380,263];
-
-async function connectWallet(){
-if(!window.ethereum){showHelp();return}
-try{
-const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
-userWallet=accounts[0];
-console.log('✅ Connected:',userWallet);
-try{
-await window.ethereum.request({method:'wallet_switchEthereumChain',params:[{chainId:POLYGON_CHAIN_ID}]});
-}catch(e){
-if(e.code===4902){
-await window.ethereum.request({method:'wallet_addEthereumChain',params:[{chainId:POLYGON_CHAIN_ID,chainName:'Polygon Mainnet',nativeCurrency:{name:'MATIC',symbol:'MATIC',decimals:18},rpcUrls:['https://polygon-rpc.com/'],blockExplorerUrls:['https://polygonscan.com/']}]});
-}}
-document.getElementById('walletBtn').textContent='Connected';
-document.getElementById('walletBtn').classList.add('connected');
-document.getElementById('walletStatus').textContent=userWallet.slice(0,6)+'...'+userWallet.slice(-4);
-document.getElementById('blockchainStatus').textContent='Minting to Polygon';
-updateMintButton();
-fetchBalance();
-}catch(err){console.error('Connection failed:',err);alert('Failed to connect wallet')}}
-
-async function fetchBalance(){
-if(!userWallet)return;
-try{
-const r=await fetch(`${BACKEND_API}/api/balance/${userWallet}`);
-const d=await r.json();
-console.log('💰 Balance:',d.balance,'$MONK');
-}catch(e){console.error('Balance fetch failed:',e)}}
-
-async function manualMint(){
-if(!userWallet){alert('⚠️ Please connect your wallet first!');return}
-if(tokensEarned<=0){alert('⚠️ No tokens to mint!');return}
-const mintBtn=document.getElementById('mintBtn');
-mintBtn.disabled=true;
-mintBtn.textContent='MINTING...';
-const amountToMint=tokensEarned;
-const sessionData={minutes:Math.floor((Date.now()-startTime)/60000),eyesClosed:true,spineCorrect:true,timestamp:new Date().toISOString()};
-try{
-console.log(`🔄 Minting ${amountToMint} $MONK...`);
-const r=await fetch(`${BACKEND_API}/api/mint-monk`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({walletAddress:userWallet,amount:amountToMint,sessionData:sessionData})});
-const d=await r.json();
-if(d.success){
-alert(`✅ Successfully minted ${amountToMint} $MONK to blockchain!`);
-tokensEarned=0;
-document.getElementById('tokenCount').textContent='0';
-document.getElementById('blockchainStatus').textContent=`✅ Minted ${amountToMint} $MONK!`;
-}else{
-console.error('❌ Mint failed:',d.error);
-alert('❌ Mint failed: '+d.error)}}
-catch(e){console.error('❌ Error:',e);alert('❌ Connection failed: '+e.message)}
-mintBtn.disabled=false;
-mintBtn.textContent='MINT TO BLOCKCHAIN'}
-
-function updateMintButton(){
-const mintBtn=document.getElementById('mintBtn');
-if(userWallet&&tokensEarned>0){mintBtn.style.display='block'}else{mintBtn.style.display='none'}}
-
-async function mintMonk(amount){
-if(!userWallet){console.log('⚠️ Wallet not connected');return false}
-const sessionData={minutes:Math.floor((Date.now()-startTime)/60000),eyesClosed:true,spineCorrect:true,timestamp:new Date().toISOString()};
-try{
-console.log(`🔄 Minting ${amount} $MONK...`);
-const r=await fetch(`${BACKEND_API}/api/mint-monk`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({walletAddress:userWallet,amount:amount,sessionData:sessionData})});
-const d=await r.json();
-if(d.success){
-console.log('✅ Minted! Tx:',d.transactionHash);
-document.getElementById('blockchainStatus').textContent=`Minted ${amount} $MONK on-chain ✓`;
-return true}else{
-console.error('❌ Mint failed:',d.error);
-return false}}
-catch(e){console.error('❌ Error:',e);return false}}
-
-async function init(){
-videoEl=document.getElementById('video');
-canvasEl=document.getElementById('canvas');
-ctx=canvasEl.getContext('2d');
-pose=new Pose({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/pose/${f}`});
-pose.setOptions({modelComplexity:1,minDetectionConfidence:0.5});
-pose.onResults(onPoseResults);
-faceMesh=new FaceMesh({locateFile:f=>`https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${f}`});
-faceMesh.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:0.5});
-faceMesh.onResults(onFaceResults);
-const stream=await navigator.mediaDevices.getUserMedia({video:true});
-videoEl.srcObject=stream;
-camera=new Camera(videoEl,{onFrame:async()=>{await pose.send({image:videoEl});await faceMesh.send({image:videoEl})},width:1280,height:720});
-camera.start();
-startTimer();
-startEarning()}
-init();
-
-function startTimer(){
-timerInterval=setInterval(()=>{
-const elapsed=Math.floor((Date.now()-startTime)/1000);
-const mins=Math.floor(elapsed/60),secs=elapsed%60;
-document.getElementById('timer').textContent=`${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
-},1000)}
-
-function startEarning(){
-earningInterval=setInterval(()=>{
-if(eyesClosed&&spineCorrect){
-tokensEarned++;
-document.getElementById('tokenCount').textContent=tokensEarned;
-document.getElementById('earningStatus').classList.add('active');
-document.getElementById('rateLabel').textContent='EARNING: +1/SEC';
-document.getElementById('rateLabel').style.color='var(--green)';
-document.getElementById('blockchainStatus').textContent=`${tokensEarned} $MONK ready to mint`;
-updateMintButton()}else{
-document.getElementById('earningStatus').classList.remove('active');
-document.getElementById('rateLabel').textContent='NOT EARNING';
-document.getElementById('rateLabel').style.color='var(--red)'}
-},1000)}
-
-function onPoseResults(results){
-if(!results.poseLandmarks)return;
-const landmarks=results.poseLandmarks;
-const leftShoulder=landmarks[11],rightShoulder=landmarks[12];
-const leftHip=landmarks[23],rightHip=landmarks[24];
-const shoulderMidY=(leftShoulder.y+rightShoulder.y)/2;
-const hipMidY=(leftHip.y+rightHip.y)/2;
-spineCorrect=Math.abs(shoulderMidY-hipMidY)>0.2;
-const spineStatus=document.getElementById('spineStatus');
-const ruleSpine=document.getElementById('ruleSpine');
-if(spineCorrect){
-spineStatus.textContent='Spine: ✓';
-spineStatus.className='status-indicator';
-ruleSpine.classList.add('active')}else{
-spineStatus.textContent='Spine: ✗';
-spineStatus.className='status-indicator fail';
-ruleSpine.classList.remove('active')}}
-
-function onFaceResults(results){
-if(!results.multiFaceLandmarks||results.multiFaceLandmarks.length===0){
-eyesClosed=false;updateEyeStatus();return}
-const landmarks=results.multiFaceLandmarks[0];
-canvasEl.width=videoEl.videoWidth;
-canvasEl.height=videoEl.videoHeight;
-ctx.clearRect(0,0,canvasEl.width,canvasEl.height);
-const leftEAR=calculateEAR(landmarks[33],landmarks[160],landmarks[158],landmarks[133],landmarks[153],landmarks[144]);
-const rightEAR=calculateEAR(landmarks[362],landmarks[385],landmarks[387],landmarks[263],landmarks[373],landmarks[380]);
-const avgEAR=(leftEAR+rightEAR)/2;
-eyesClosed=avgEAR<0.2;
-const eyeColor=eyesClosed?'#00ff41':'#ff0033';
-ctx.fillStyle=eyeColor;
-ctx.shadowColor=eyeColor;
-ctx.shadowBlur=15;
-LEFT_EYE.forEach(idx=>{
-const landmark=landmarks[idx];
-if(landmark){
-const x=landmark.x*canvasEl.width;
-const y=landmark.y*canvasEl.height;
-ctx.beginPath();
-ctx.arc(x,y,4,0,2*Math.PI);
-ctx.fill()}});
-RIGHT_EYE.forEach(idx=>{
-const landmark=landmarks[idx];
-if(landmark){
-const x=landmark.x*canvasEl.width;
-const y=landmark.y*canvasEl.height;
-ctx.beginPath();
-ctx.arc(x,y,4,0,2*Math.PI);
-ctx.fill()}});
-updateEyeStatus()}
-
-function updateEyeStatus(){
-const eyesStatus=document.getElementById('eyesStatus');
-const ruleEyes=document.getElementById('ruleEyes');
-if(eyesClosed){
-eyesStatus.textContent='Eyes: ✓';
-eyesStatus.className='status-indicator';
-ruleEyes.classList.add('active')}else{
-eyesStatus.textContent='Eyes: ✗';
-eyesStatus.className='status-indicator fail';
-ruleEyes.classList.remove('active')}}
-
-function calculateEAR(p1,p2,p3,p4,p5,p6){
-const v1=Math.sqrt(Math.pow(p2.x-p6.x,2)+Math.pow(p2.y-p6.y,2));
-const v2=Math.sqrt(Math.pow(p3.x-p5.x,2)+Math.pow(p3.y-p5.y,2));
-const h=Math.sqrt(Math.pow(p1.x-p4.x,2)+Math.pow(p1.y-p4.y,2));
-return(v1+v2)/(2.0*h)}
-
-async function endSession(){
-const sessionSec=Math.floor((Date.now()-startTime)/1000);
-const sessionMin=Math.floor(sessionSec/60);
-if(sessionMin<1){alert('Please meditate for at least 1 minute!');return}
-if(timerInterval)clearInterval(timerInterval);
-if(earningInterval)clearInterval(earningInterval);
-if(camera)camera.stop();
-if(videoEl&&videoEl.srcObject){videoEl.srcObject.getTracks().forEach(t=>t.stop())}
-if(userWallet&&tokensEarned>0){
-const remaining=tokensEarned;
-document.getElementById('blockchainStatus').textContent=`Minting ${remaining} $MONK to blockchain...`;
-const success=await mintMonk(remaining);
-if(success){
-document.getElementById('blockchainStatus').textContent=`✅ Minted ${remaining} $MONK on-chain!`}else{
-document.getElementById('blockchainStatus').textContent=`⚠️ Mint failed - ${remaining} tokens tracked locally`}}else if(!userWallet&&tokensEarned>0){
-alert(`⚠️ Wallet not connected - your ${tokensEarned} tokens are tracked locally but not on blockchain. Connect wallet next time!`)}
-totalMinutesAllTime+=sessionMin;
-localStorage.setItem('mmga_total_minutes',totalMinutesAllTime.toString());
-if(totalMinutesAllTime>=30){
-showAirdropModal(sessionMin,totalMinutesAllTime,tokensEarned)}else{
-showIneligibleModal(sessionMin,totalMinutesAllTime)}}
-
-function showIneligibleModal(sessionMin,totalMin){
-document.getElementById('ineligSessionMin').textContent=sessionMin;
-document.getElementById('ineligTotalMin').textContent=totalMin;
-document.getElementById('ineligRemaining').textContent=Math.max(0,30-totalMin);
-document.getElementById('ineligibleModal').classList.add('show')}
-
-function showAirdropModal(sessionMin,totalMin,tokens){
-document.getElementById('airdropSessionMin').textContent=sessionMin;
-document.getElementById('airdropTotalMin').textContent=totalMin;
-document.getElementById('airdropMonk').textContent=tokens;
-if(userWallet){
-document.getElementById('airdropWalletInput').value=userWallet}
-document.getElementById('hiddenSessionMin').value=sessionMin+' minutes';
-document.getElementById('hiddenTotalMin').value=totalMin+' minutes';
-document.getElementById('hiddenMonk').value=tokens+' $MONK';
-document.getElementById('hiddenTimestamp').value=new Date().toISOString();
-document.getElementById('airdropModal').classList.add('show')}
-
-function closeModal(id){document.getElementById(id).classList.remove('show')}
-function showHelp(){document.getElementById('helpModal').classList.add('show')}
-</script>
 </body>
 </html>
