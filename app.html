@@ -47,6 +47,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
 .token-label{font-size:12px;color:var(--white);margin-top:8px}
 .rate-label{font-family:var(--pixel);font-size:10px;color:var(--green);margin-top:4px}
 .blockchain-status{font-size:9px;color:var(--green-dim);margin-top:4px}
+.mint-btn{width:100%;font-family:var(--pixel);font-size:16px;padding:12px;margin-top:12px;background:var(--yellow);border:3px solid var(--yellow);color:#000;cursor:pointer;transition:all 0.3s}
+.mint-btn:hover{background:var(--green);border-color:var(--green);transform:scale(1.05)}
+.mint-btn:disabled{background:#333;border-color:#555;color:#666;cursor:not-allowed;transform:scale(1)}
 .timer-box{text-align:center;padding:20px;background:var(--bg2);border:2px solid var(--border)}
 .timer{font-family:var(--pixel);font-size:48px;color:var(--green)}
 .end-btn{width:100%;font-family:var(--pixel);font-size:20px;padding:20px;background:var(--red);border:4px solid #ff0033;color:#fff;cursor:pointer}
@@ -119,6 +122,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.
         <div class="token-label">$MONK EARNED</div>
         <div class="rate-label" id="rateLabel">WAITING...</div>
         <div class="blockchain-status" id="blockchainStatus">Connect wallet to mint on-chain</div>
+        <button class="mint-btn" id="mintBtn" onclick="manualMint()" style="display:none">MINT TO BLOCKCHAIN</button>
       </div>
       <div class="timer-box">
         <div class="timer" id="timer">00:00</div>
@@ -255,6 +259,7 @@ document.getElementById('walletBtn').textContent='Connected';
 document.getElementById('walletBtn').classList.add('connected');
 document.getElementById('walletStatus').textContent=userWallet.slice(0,6)+'...'+userWallet.slice(-4);
 document.getElementById('blockchainStatus').textContent='Minting to Polygon';
+updateMintButton();
 fetchBalance();
 }catch(err){
 console.error('Connection failed:',err);
@@ -270,6 +275,43 @@ const r=await fetch(`${BACKEND_API}/api/balance/${userWallet}`);
 const d=await r.json();
 console.log('💰 Balance:',d.balance,'$MONK');
 }catch(e){console.error('Balance fetch failed:',e)}
+}
+
+// 🪙 MANUAL MINT BUTTON
+async function manualMint(){
+if(!userWallet){
+alert('⚠️ Please connect your wallet first!');
+return;
+}
+if(tokensEarned<=0){
+alert('⚠️ No tokens to mint! Start meditating first.');
+return;
+}
+const mintBtn=document.getElementById('mintBtn');
+mintBtn.disabled=true;
+mintBtn.textContent='MINTING...';
+const amountToMint=tokensEarned;
+const success=await mintMonk(amountToMint);
+if(success){
+alert(`✅ Successfully minted ${amountToMint} $MONK to blockchain!`);
+tokensEarned=0;
+document.getElementById('tokenCount').textContent='0';
+document.getElementById('blockchainStatus').textContent=`✅ Minted ${amountToMint} $MONK!`;
+}else{
+alert('❌ Mint failed. Please try again.');
+}
+mintBtn.disabled=false;
+mintBtn.textContent='MINT TO BLOCKCHAIN';
+}
+
+// 🔄 UPDATE MINT BUTTON VISIBILITY
+function updateMintButton(){
+const mintBtn=document.getElementById('mintBtn');
+if(userWallet&&tokensEarned>0){
+mintBtn.style.display='block';
+}else{
+mintBtn.style.display='none';
+}
 }
 
 // ⛏️ MINT TOKENS
@@ -348,6 +390,7 @@ document.getElementById('earningStatus').classList.add('active');
 document.getElementById('rateLabel').textContent='EARNING: +1/SEC';
 document.getElementById('rateLabel').style.color='var(--green)';
 document.getElementById('blockchainStatus').textContent=`${tokensEarned} $MONK ready to mint`;
+updateMintButton();
 }else{
 document.getElementById('earningStatus').classList.remove('active');
 document.getElementById('rateLabel').textContent='NOT EARNING';
@@ -451,17 +494,18 @@ if(earningInterval)clearInterval(earningInterval);
 if(camera)camera.stop();
 if(videoEl&&videoEl.srcObject){videoEl.srcObject.getTracks().forEach(t=>t.stop())}
 
-// 🪙 MINT ALL ACCUMULATED TOKENS TO BLOCKCHAIN
+// 🪙 MINT REMAINING TOKENS IF ANY
 if(userWallet&&tokensEarned>0){
-document.getElementById('blockchainStatus').textContent=`Minting ${tokensEarned} $MONK to blockchain...`;
-const success=await mintMonk(tokensEarned);
+const remaining=tokensEarned;
+document.getElementById('blockchainStatus').textContent=`Minting ${remaining} $MONK to blockchain...`;
+const success=await mintMonk(remaining);
 if(success){
-document.getElementById('blockchainStatus').textContent=`✅ Minted ${tokensEarned} $MONK on-chain!`;
+document.getElementById('blockchainStatus').textContent=`✅ Minted ${remaining} $MONK on-chain!`;
 }else{
-document.getElementById('blockchainStatus').textContent=`⚠️ Mint failed - tokens tracked locally`;
+document.getElementById('blockchainStatus').textContent=`⚠️ Mint failed - ${remaining} tokens tracked locally`;
 }
-}else if(!userWallet){
-alert('⚠️ Wallet not connected - your tokens are tracked locally but not on blockchain. Connect wallet next time!');
+}else if(!userWallet&&tokensEarned>0){
+alert(`⚠️ Wallet not connected - your ${tokensEarned} tokens are tracked locally but not on blockchain. Connect wallet next time!`);
 }
 
 totalMinutesAllTime+=sessionMin;
