@@ -417,12 +417,12 @@ h1{
   line-height:1;
   margin-bottom:48px;
   color:var(--accent);
-  text-shadow:0 0 40px var(--accent);
+  text-shadow:0 0 30px rgba(212,165,116,0.4);
   text-align:center;
 }
 .equation-sub{
   font-size:32px;
-  color:var(--purple);
+  color:var(--sage);
   margin-bottom:80px;
   font-family:'Cinzel',serif;
   text-align:center;
@@ -456,10 +456,12 @@ h1{
   margin:0 auto 80px;
 }
 .inversion-card{
-  background:var(--card);
-  border:2px solid rgba(0,255,157,0.2);
+  background:linear-gradient(135deg, var(--card), var(--wood));
+  border:2px solid rgba(212,165,116,0.25);
   padding:48px;
   position:relative;
+  border-radius:20px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
 }
 .inversion-card::before{
   content:'';
@@ -468,10 +470,11 @@ h1{
   left:0;
   width:100%;
   height:4px;
-  background:linear-gradient(90deg,#ff0033,transparent);
+  background:linear-gradient(90deg,#c17854,transparent);
+  border-radius:20px 20px 0 0;
 }
 .inversion-card.new::before{
-  background:linear-gradient(90deg,var(--accent),transparent);
+  background:linear-gradient(90deg,var(--sage),transparent);
 }
 .card-label{
   font-family:'Cinzel',serif;
@@ -481,10 +484,10 @@ h1{
   margin-bottom:16px;
 }
 .card-label.old{
-  color:#ff0033;
+  color:var(--rust);
 }
 .card-label.new{
-  color:var(--accent);
+  color:var(--sage);
 }
 .card-title{
   font-family:'Cinzel',serif;
