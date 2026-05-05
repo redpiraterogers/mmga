@@ -162,15 +162,24 @@ body{
   position:fixed;
   bottom:20px;
   right:20px;
-  background:rgba(0,0,0,0.9);
+  background:rgba(0,0,0,0.95);
   border:2px solid var(--yellow);
   padding:12px;
-  font-size:12px;
+  font-size:11px;
   color:var(--yellow);
-  max-width:300px;
-  max-height:200px;
+  max-width:350px;
+  max-height:250px;
   overflow-y:auto;
   z-index:1000;
+  font-family:monospace;
+}
+.debug-title{
+  color:var(--yellow);
+  font-family:var(--pixel);
+  font-size:10px;
+  margin-bottom:8px;
+  border-bottom:1px solid var(--yellow);
+  padding-bottom:4px;
 }
 @media(max-width:1024px){
   .container{grid-template-columns:1fr;margin-top:120px}
@@ -181,7 +190,7 @@ body{
 
 <div class="warning">
   ⚠️ USE FIREFOX! Chrome can't display MONK tokens (glitch) | 
-  <a href="https://mozilla.org/firefox" style="color:#000;text-decoration:underline">DOWNLOAD</a>
+  <a href="https://mozilla.org/firefox" style="color:#000;text-decoration:underline;font-weight:bold">DOWNLOAD FIREFOX</a>
 </div>
 
 <div class="container">
@@ -238,20 +247,20 @@ body{
   </div>
 </div>
 
-<div class="debug" id="debug">
-  <div style="color:var(--yellow);font-family:var(--pixel);font-size:10px;margin-bottom:8px">DEBUG LOG:</div>
+<div class="debug" id="debugPanel">
+  <div class="debug-title">DEBUG LOG</div>
   <div id="debugLog"></div>
 </div>
 
-<script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
 <script>
+// NO EXTERNAL LIBRARIES - PURE JAVASCRIPT + METAMASK
 const BACKEND = 'https://mmga-backend2.onrender.com';
 const TOKEN = '0x98823C52037aF043c2628185C74D7E98b16e3444';
-const CHAIN_ID = '0x89';
+const CHAIN_ID = '0x89'; // Polygon
+const CHAIN_ID_DEC = 137;
 
 let state = {
   address: null,
-  provider: null,
   meditating: false,
   earned: 0,
   sessionSec: 0,
@@ -261,89 +270,129 @@ let state = {
 let intervals = [];
 
 function log(msg) {
-  console.log('[MONKCOIN]', msg);
+  const timestamp = new Date().toLocaleTimeString();
+  console.log('[' + timestamp + ']', msg);
   const logDiv = document.getElementById('debugLog');
-  logDiv.innerHTML = msg + '<br/>' + logDiv.innerHTML;
-  logDiv.innerHTML = logDiv.innerHTML.split('<br/>').slice(0, 10).join('<br/>');
+  logDiv.innerHTML = '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' + timestamp + '] ' + msg + '</div>' + logDiv.innerHTML;
+  // Keep only last 15 logs
+  const logs = logDiv.children;
+  while (logs.length > 15) {
+    logDiv.removeChild(logs[logs.length - 1]);
+  }
 }
+
+log('App loaded - no external libraries needed');
 
 // CONNECT WALLET
 document.getElementById('connectBtn').onclick = async () => {
   try {
-    log('Connecting wallet...');
+    log('🔌 Connecting wallet...');
     
     if (!window.ethereum) {
-      alert('Install MetaMask first!');
+      log('❌ MetaMask not found!');
+      alert('Please install MetaMask!\n\nGo to: metamask.io');
       window.open('https://metamask.io/download/', '_blank');
       return;
     }
 
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    log('✓ MetaMask detected');
+
+    // Request accounts
+    const accounts = await window.ethereum.request({ 
+      method: 'eth_requestAccounts' 
+    });
+    
     state.address = accounts[0];
-    state.provider = new ethers.providers.Web3Provider(window.ethereum);
+    log('✓ Connected: ' + state.address.slice(0, 10) + '...');
     
-    log('Connected: ' + state.address.slice(0, 10) + '...');
+    // Check current chain
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    log('Current chain: ' + chainId);
     
-    // Switch to Polygon
-    try {
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: CHAIN_ID }]
-      });
-      log('Switched to Polygon');
-    } catch (e) {
-      if (e.code === 4902) {
+    // Switch to Polygon if needed
+    if (chainId !== CHAIN_ID) {
+      log('⚠ Wrong network, switching to Polygon...');
+      try {
         await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [{
-            chainId: CHAIN_ID,
-            chainName: 'Polygon',
-            rpcUrls: ['https://polygon-rpc.com'],
-            nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 }
-          }]
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: CHAIN_ID }]
         });
-        log('Added Polygon network');
+        log('✓ Switched to Polygon');
+      } catch (switchError) {
+        // Chain not added
+        if (switchError.code === 4902) {
+          log('Adding Polygon network...');
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: CHAIN_ID,
+              chainName: 'Polygon Mainnet',
+              rpcUrls: ['https://polygon-rpc.com'],
+              nativeCurrency: {
+                name: 'MATIC',
+                symbol: 'MATIC',
+                decimals: 18
+              },
+              blockExplorerUrls: ['https://polygonscan.com']
+            }]
+          });
+          log('✓ Polygon network added');
+        } else {
+          throw switchError;
+        }
       }
+    } else {
+      log('✓ Already on Polygon');
     }
 
+    // Update UI
     document.getElementById('address').textContent = 
       state.address.slice(0,6) + '...' + state.address.slice(-4);
     document.getElementById('walletInfo').style.display = 'block';
     document.getElementById('connectBtn').style.display = 'none';
     document.getElementById('startBtn').disabled = false;
     
+    log('Fetching balance...');
     await fetchBalance();
+    log('✅ Wallet connected successfully!');
     
   } catch (e) {
-    log('ERROR: ' + e.message);
-    alert('Connection failed: ' + e.message);
+    log('❌ ERROR: ' + e.message);
+    alert('Connection failed:\n\n' + e.message);
   }
 };
 
 async function fetchBalance() {
   try {
     const res = await fetch(`${BACKEND}/api/balance/${state.address}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
-    document.getElementById('balance').textContent = Math.floor(data.balance);
-    log('Balance: ' + Math.floor(data.balance));
+    const balance = Math.floor(parseFloat(data.balance));
+    document.getElementById('balance').textContent = balance;
+    log('Balance: ' + balance + ' MONK');
   } catch (e) {
-    log('Balance fetch failed: ' + e.message);
+    log('⚠ Balance fetch failed: ' + e.message);
+    document.getElementById('balance').textContent = '?';
   }
 }
 
 // START SESSION
 document.getElementById('startBtn').onclick = async () => {
   try {
-    log('Starting session...');
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    log('🎥 Requesting camera...');
+    const stream = await navigator.mediaDevices.getUserMedia({ 
+      video: { width: 640, height: 480 }
+    });
     document.getElementById('video').srcObject = stream;
-    log('Camera active');
+    log('✓ Camera active');
     
     state.meditating = true;
     state.sessionSec = 0;
     
     document.getElementById('startBtn').disabled = true;
     document.getElementById('stopBtn').disabled = false;
+    
+    log('🧘 Session started!');
     
     // Timer
     intervals.push(setInterval(() => {
@@ -355,7 +404,7 @@ document.getElementById('startBtn').onclick = async () => {
       document.getElementById('totalTime').textContent = formatTime(state.totalSec);
     }, 1000));
     
-    // Earning simulation
+    // Earning simulation (80% chance of earning each second)
     intervals.push(setInterval(() => {
       if (!state.meditating) return;
       
@@ -363,51 +412,64 @@ document.getElementById('startBtn').onclick = async () => {
       const spineErect = Math.random() > 0.2;
       const earning = eyesClosed && spineErect;
       
-      document.getElementById('eyesBadge').className = eyesClosed ? 'badge active' : 'badge';
-      document.getElementById('eyesBadge').textContent = eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
+      // Update badges
+      const eyesBadge = document.getElementById('eyesBadge');
+      eyesBadge.className = eyesClosed ? 'badge active' : 'badge';
+      eyesBadge.textContent = eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
       
-      document.getElementById('spineBadge').className = spineErect ? 'badge active' : 'badge';
-      document.getElementById('spineBadge').textContent = spineErect ? '🧘 SPINE: ERECT' : '🧘 SPINE: SLOUCH';
+      const spineBadge = document.getElementById('spineBadge');
+      spineBadge.className = spineErect ? 'badge active' : 'badge';
+      spineBadge.textContent = spineErect ? '🧘 SPINE: ERECT' : '🧘 SPINE: SLOUCH';
       
-      document.getElementById('earnBadge').className = earning ? 'badge active' : 'badge';
-      document.getElementById('earnBadge').textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
+      const earnBadge = document.getElementById('earnBadge');
+      earnBadge.className = earning ? 'badge active' : 'badge';
+      earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
       
+      // Earn token
       if (earning) {
         state.earned++;
         document.getElementById('earned').textContent = state.earned;
         document.getElementById('mintBtn').disabled = false;
+        
+        if (state.earned % 10 === 0) {
+          log('Earned ' + state.earned + ' tokens so far');
+        }
       }
     }, 1000));
     
-    log('Session started');
-    
   } catch (e) {
-    log('ERROR: ' + e.message);
-    alert('Camera failed: ' + e.message);
+    log('❌ Camera error: ' + e.message);
+    alert('Camera failed:\n\n' + e.message + '\n\nPlease allow camera access!');
   }
 };
 
 // STOP SESSION
 document.getElementById('stopBtn').onclick = async () => {
-  log('Stopping session...');
+  log('🛑 Stopping session...');
   state.meditating = false;
   
+  // Stop camera
   const video = document.getElementById('video');
   if (video.srcObject) {
-    video.srcObject.getTracks().forEach(t => t.stop());
+    video.srcObject.getTracks().forEach(track => {
+      track.stop();
+      log('Camera stopped');
+    });
   }
   
+  // Clear intervals
   intervals.forEach(i => clearInterval(i));
   intervals = [];
   
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled = true;
   
+  log('Session ended: ' + state.sessionSec + 's, ' + state.earned + ' tokens');
+  
+  // Auto-mint if tokens earned
   if (state.earned > 0) {
-    log('Auto-minting ' + state.earned + ' tokens...');
+    log('Auto-minting tokens...');
     await mint();
-  } else {
-    log('Session ended, no tokens earned');
   }
 };
 
@@ -415,10 +477,13 @@ document.getElementById('stopBtn').onclick = async () => {
 document.getElementById('mintBtn').onclick = mint;
 
 async function mint() {
-  if (state.earned === 0) return;
+  if (state.earned === 0) {
+    log('⚠ No tokens to mint');
+    return;
+  }
   
   try {
-    log('Minting ' + state.earned + ' tokens...');
+    log('🪙 Minting ' + state.earned + ' tokens...');
     document.getElementById('mintBtn').textContent = 'MINTING...';
     document.getElementById('mintBtn').disabled = true;
     
@@ -431,24 +496,45 @@ async function mint() {
       })
     });
     
+    if (!res.ok) {
+      throw new Error('HTTP ' + res.status);
+    }
+    
     const data = await res.json();
     
     if (data.success) {
-      log('✅ Minted! TX: ' + data.transactionHash.slice(0, 20) + '...');
-      alert(`✅ SUCCESS!\n\nMinted ${state.earned} MONK tokens!\n\nTX: ${data.transactionHash.slice(0,20)}...\n\n⚠️ Chrome can't display tokens. Use Firefox!`);
+      const txHash = data.transactionHash;
+      log('✅ MINTED! TX: ' + txHash.slice(0, 20) + '...');
+      
+      alert(
+        '✅ SUCCESS!\n\n' +
+        'Minted ' + state.earned + ' MONK tokens!\n\n' +
+        'TX: ' + txHash.slice(0, 20) + '...\n\n' +
+        '⚠️ IMPORTANT:\n' +
+        'Chrome MetaMask has a glitch.\n' +
+        'Tokens ARE on blockchain but Chrome can\'t display them.\n\n' +
+        'Use Firefox to see tokens in MetaMask!'
+      );
+      
       state.earned = 0;
       document.getElementById('earned').textContent = 0;
+      
+      log('Updating balance...');
       await fetchBalance();
+      
     } else {
-      log('❌ Mint failed: ' + data.message);
-      alert('Mint failed: ' + data.message);
+      log('❌ Mint failed: ' + (data.message || 'Unknown error'));
+      alert('Mint failed:\n\n' + (data.message || 'Unknown error'));
     }
     
   } catch (e) {
-    log('❌ ERROR: ' + e.message);
-    alert('Mint error: ' + e.message);
+    log('❌ Mint error: ' + e.message);
+    alert('Mint error:\n\n' + e.message);
   } finally {
     document.getElementById('mintBtn').textContent = 'MINT TOKENS';
+    if (state.earned > 0) {
+      document.getElementById('mintBtn').disabled = false;
+    }
   }
 }
 
@@ -458,10 +544,27 @@ function formatTime(sec) {
   return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 
-// Show total time on load
+// Initialize total time display
 document.getElementById('totalTime').textContent = formatTime(state.totalSec);
 
-log('App loaded');
+// Handle MetaMask events
+if (window.ethereum) {
+  window.ethereum.on('accountsChanged', (accounts) => {
+    log('Account changed, reloading...');
+    location.reload();
+  });
+  
+  window.ethereum.on('chainChanged', (chainId) => {
+    log('Network changed, reloading...');
+    location.reload();
+  });
+  
+  log('✓ MetaMask event listeners registered');
+} else {
+  log('⚠ MetaMask not detected - install it first!');
+}
+
+log('✅ Ready to connect wallet!');
 </script>
 
 </body>
