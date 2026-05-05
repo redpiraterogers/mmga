@@ -1,592 +1,300 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBERMONKS-V1 | TERMINAL ACCESS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --neon-green: #00ff00;
-            --cyber-yellow: #ffff00;
-            --black: #050505;
-            --dark-green: #003300;
-        }
-        body {
-            background-color: var(--black);
-            color: var(--neon-green);
-            font-family: 'VT323', monospace;
-            scroll-behavior: smooth;
-            text-transform: uppercase;
-        }
-        .mono { font-family: 'IBM Plex Mono', monospace; }
-        
-        /* CRT Scanline Effect */
-        body::before {
-            content: " ";
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 255, 0, 0.06));
-            z-index: 1000;
-            background-size: 100% 4px, 3px 100%;
-            pointer-events: none;
-        }
-
-        .glow-green {
-            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
-        }
-
-        .glow-yellow {
-            text-shadow: 0 0 10px var(--cyber-yellow), 0 0 20px var(--cyber-yellow);
-            color: var(--cyber-yellow);
-        }
-
-        .terminal-border {
-            border: 2px solid var(--neon-green);
-            box-shadow: 0 0 15px var(--dark-green);
-        }
-
-        .btn-green-outline {
-            border: 2px solid var(--neon-green);
-            color: var(--neon-green);
-            padding: 1rem 2rem;
-            transition: all 0.2s ease;
-        }
-        .btn-green-outline:hover {
-            background: var(--neon-green);
-            color: var(--black);
-            box-shadow: 0 0 20px var(--neon-green);
-        }
-
-        .btn-yellow-solid {
-            background: var(--cyber-yellow);
-            color: var(--black);
-            padding: 1rem 2rem;
-            font-weight: bold;
-            transition: all 0.2s ease;
-        }
-        .btn-yellow-solid:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--cyber-yellow);
-        }
-
-        @keyframes flicker {
-            0% { opacity: 0.9; }
-            5% { opacity: 0.8; }
-            10% { opacity: 0.9; }
-            15% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-        .flicker { animation: flicker 0.1s infinite; }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        .marquee-content {
-            display: flex;
-            animation: marquee 120s linear infinite;
-        }
-
-        .marquee-container:hover .marquee-content {
-            animation-play-state: paused;
-        }
-
-        /* NFT Card Styling */
-        .nft-card {
-            min-width: 350px;
-            height: 500px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nft-card:hover {
-            transform: scale(1.05);
-            z-index: 50;
-            box-shadow: 0 0 30px var(--neon-green);
-        }
-
-        /* NFT Image Container with Viral Green Tint */
-        .nft-image-wrapper {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            overflow: hidden;
-            background: #000;
-        }
-
-        .nft-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Viral Green Screen Tint with Light Rays */
-        .nft-image-wrapper::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(ellipse at top left, rgba(0, 255, 0, 0.3) 0%, transparent 50%),
-                radial-gradient(ellipse at top right, rgba(0, 255, 0, 0.2) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(0, 255, 0, 0.15) 0%, transparent 60%);
-            mix-blend-mode: screen;
-            z-index: 2;
-            pointer-events: none;
-        }
-
-        /* Animated light rays */
-        .nft-image-wrapper::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            right: -50%;
-            bottom: -50%;
-            background: 
-                linear-gradient(0deg, transparent 40%, rgba(0, 255, 0, 0.1) 50%, transparent 60%),
-                linear-gradient(60deg, transparent 40%, rgba(0, 255, 0, 0.08) 50%, transparent 60%),
-                linear-gradient(120deg, transparent 40%, rgba(0, 255, 0, 0.08) 50%, transparent 60%);
-            animation: rotate-rays 8s linear infinite;
-            z-index: 3;
-            pointer-events: none;
-            mix-blend-mode: screen;
-        }
-
-        @keyframes rotate-rays {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Green glow on hover */
-        .nft-card:hover .nft-image-wrapper::before {
-            background: 
-                radial-gradient(ellipse at top left, rgba(0, 255, 0, 0.5) 0%, transparent 50%),
-                radial-gradient(ellipse at top right, rgba(0, 255, 0, 0.4) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom, rgba(0, 255, 0, 0.3) 0%, transparent 60%);
-        }
-
-        .spec-label {
-            color: rgba(0, 255, 0, 0.5);
-            font-size: 12px;
-        }
-
-        .spec-value {
-            color: #fff;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MONKCOIN | The Anti-Currency</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{--pixel:'Press Start 2P',cursive;--retro:'VT323',monospace;--bg:#0a0a0f;--green:#00ff41;--pink:#ff10f0;--blue:#00d4ff;--yellow:#fff000;--orange:#ff6b35;--purple:#9d4edd}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--green);font-family:var(--retro);line-height:1.6;overflow-x:hidden}
+.scanline{position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999;animation:flicker 0.15s infinite}
+@keyframes flicker{0%{opacity:0.97}50%{opacity:1}100%{opacity:0.98}}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,15,0.95);border-bottom:4px solid var(--green);padding:16px 24px;box-shadow:0 0 20px var(--green);backdrop-filter:blur(10px)}
+.nav-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:16px;text-decoration:none}
+.infinity-logo{width:80px;height:40px}
+.logo-text{font-family:var(--pixel);font-size:18px;color:var(--green);text-shadow:0 0 10px var(--green);animation:glow 2s ease-in-out infinite alternate}
+@keyframes glow{from{text-shadow:0 0 10px var(--green)}to{text-shadow:0 0 20px var(--green),0 0 30px var(--green)}}
+.nav-btn{padding:12px 24px;background:var(--pink);color:var(--bg);border:3px solid var(--pink);font-family:var(--pixel);font-size:10px;cursor:pointer;box-shadow:0 0 20px var(--pink);transition:all 0.3s;text-decoration:none;display:inline-block}
+.nav-btn:hover{background:transparent;color:var(--pink);transform:scale(1.05)}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 60px}
+.hero-infinity{width:300px;height:150px;margin:0 auto 40px}
+h1{font-family:var(--pixel);font-size:56px;line-height:1.3;margin-bottom:32px;background:linear-gradient(90deg,var(--green),var(--pink),var(--blue),var(--yellow),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rainbow 4s linear infinite;background-size:200% 100%}
+@keyframes rainbow{to{background-position:200% center}}
+.subtitle{font-size:22px;color:var(--blue);max-width:700px;margin:0 auto 48px;text-shadow:0 0 10px var(--blue);line-height:1.8}
+.cta-group{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:80px}
+.btn{padding:20px 40px;font-family:var(--pixel);font-size:13px;border:4px solid;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;text-transform:uppercase;letter-spacing:2px}
+.btn-pink{background:var(--pink);border-color:var(--pink);color:var(--bg);box-shadow:0 0 30px var(--pink)}
+.btn-pink:hover{background:transparent;color:var(--pink);transform:translateY(-4px)}
+.btn-outline{background:transparent;border-color:var(--green);color:var(--green);box-shadow:0 0 20px rgba(0,255,65,0.5)}
+.btn-outline:hover{background:var(--green);color:var(--bg)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.stat{padding:32px;background:rgba(0,255,65,0.05);border:4px solid var(--green);box-shadow:0 0 30px rgba(0,255,65,0.3);position:relative}
+.stat::before{content:'▲';position:absolute;top:10px;left:12px;color:var(--yellow);font-size:16px}
+.stat-value{font-family:var(--pixel);font-size:48px;color:var(--pink);text-shadow:0 0 20px var(--pink);margin-bottom:12px}
+.stat-label{font-size:18px;color:var(--blue)}
+.section{padding:120px 0}
+.section-title{font-family:var(--pixel);font-size:40px;text-align:center;margin-bottom:24px;color:var(--yellow);text-shadow:0 0 20px var(--yellow)}
+.section-desc{text-align:center;font-size:22px;color:var(--blue);margin-bottom:80px}
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.feature{padding:48px;background:rgba(157,78,221,0.1);border:4px solid var(--purple);transition:all 0.3s;box-shadow:0 0 20px rgba(157,78,221,0.3)}
+.feature:hover{transform:translateY(-8px);box-shadow:0 0 40px var(--purple);border-color:var(--pink)}
+.feature-icon{font-size:56px;margin-bottom:24px}
+.feature h3{font-family:var(--pixel);font-size:18px;color:var(--pink);margin-bottom:20px;text-shadow:0 0 10px var(--pink)}
+.feature p{font-size:20px;color:var(--green);line-height:1.8}
+.firefox-box{margin:80px auto;max-width:900px;padding:48px;background:rgba(255,107,53,0.15);border:6px solid var(--orange);text-align:center;animation:pulse-box 2s ease-in-out infinite;position:relative}
+@keyframes pulse-box{0%,100%{box-shadow:0 0 20px var(--orange)}50%{box-shadow:0 0 60px var(--orange)}}
+.firefox-box::before{content:'⚠';position:absolute;top:20px;left:30px;font-size:48px;color:var(--yellow);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.firefox-box h3{font-family:var(--pixel);font-size:28px;color:var(--yellow);margin-bottom:20px;text-shadow:0 0 15px var(--yellow)}
+.firefox-box p{font-size:22px;color:var(--pink);line-height:1.8;margin-bottom:28px}
+.firefox-btn{display:inline-block;padding:20px 40px;background:var(--orange);color:var(--bg);font-family:var(--pixel);font-size:14px;border:4px solid var(--orange);text-decoration:none;box-shadow:0 0 30px var(--orange);transition:all 0.3s}
+.firefox-btn:hover{background:transparent;color:var(--orange);transform:scale(1.05)}
+.philosophy{background:linear-gradient(180deg,transparent,rgba(10,10,15,0.9),transparent);padding:120px 0}
+.equation{font-family:var(--pixel);font-size:96px;text-align:center;margin-bottom:40px;background:linear-gradient(90deg,var(--green),var(--pink),var(--blue),var(--yellow),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rainbow 4s linear infinite;background-size:200% 100%}
+.equation-sub{font-family:var(--pixel);font-size:28px;text-align:center;color:var(--blue);margin-bottom:80px;text-shadow:0 0 15px var(--blue)}
+.manifesto{max-width:900px;margin:0 auto 100px;font-size:22px;line-height:2;text-align:center}
+.manifesto p{margin-bottom:40px;color:var(--green)}
+.highlight{color:var(--pink);font-weight:bold;text-shadow:0 0 15px var(--pink)}
+.gold{color:var(--yellow);font-family:var(--pixel);font-size:24px;text-shadow:0 0 15px var(--yellow)}
+.inversion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin:80px 0}
+.inv-card{padding:48px;background:rgba(10,10,15,0.7);border:4px solid;position:relative;transition:transform 0.3s}
+.inv-card:hover{transform:translateY(-8px)}
+.inv-card.old{border-color:var(--orange);box-shadow:0 0 30px rgba(255,107,53,0.3)}
+.inv-card.new{border-color:var(--green);box-shadow:0 0 30px rgba(0,255,65,0.3)}
+.card-label{font-family:var(--pixel);font-size:14px;margin-bottom:20px;letter-spacing:2px}
+.inv-card.old .card-label{color:var(--orange);text-shadow:0 0 10px var(--orange)}
+.inv-card.new .card-label{color:var(--green);text-shadow:0 0 10px var(--green)}
+.card-title{font-family:var(--pixel);font-size:22px;color:var(--pink);margin-bottom:24px;text-shadow:0 0 12px var(--pink)}
+.card-text{font-size:18px;line-height:1.9;color:var(--blue)}
+.ring-section{text-align:center;padding:100px 0}
+.big-infinity{width:400px;height:200px;margin:0 auto 40px}
+.ring-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:32px;text-shadow:0 0 20px var(--yellow)}
+.ring-text{font-size:22px;line-height:2;color:var(--green);max-width:700px;margin:0 auto}
+.cta-final{padding:120px 0;text-align:center}
+.cta-box{max-width:900px;margin:0 auto;padding:80px 48px;background:rgba(0,255,65,0.05);border:6px solid var(--green);box-shadow:0 0 60px var(--green);position:relative}
+.cta-box h2{font-family:var(--pixel);font-size:40px;color:var(--pink);margin-bottom:28px;text-shadow:0 0 25px var(--pink)}
+.cta-box p{font-size:22px;color:var(--blue);margin-bottom:48px;line-height:1.8}
+footer{padding:60px 24px;border-top:4px solid var(--green);text-align:center;background:rgba(10,10,15,0.9)}
+footer p{font-size:18px;color:var(--green);line-height:2.2}
+footer a{color:var(--pink);text-decoration:none;text-shadow:0 0 10px var(--pink);transition:color 0.3s}
+footer a:hover{color:var(--yellow);text-shadow:0 0 15px var(--yellow)}
+@media(max-width:768px){h1{font-size:36px}.section-title{font-size:28px}.equation{font-size:56px}.features,.stats,.inversion-grid{grid-template-columns:1fr}.big-infinity{width:280px;height:140px}}
+</style>
 </head>
 <body>
 
-    <!-- System Status Bar -->
-    <div class="fixed top-0 w-full z-[100] bg-neon-green text-black py-1 px-4 text-center text-xs font-bold tracking-widest">
-        SYSTEM_STATUS: ONLINE // CYBERMONKS-V1 // 1,954 GENESIS ITERATIONS
+<div class="scanline"></div>
+
+<nav>
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <svg class="infinity-logo" viewBox="0 0 120 60"><defs><filter id="navGlow"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="navGrad" x1="0%" x2="100%"><stop offset="0%" style="stop-color:#00ff41"/><stop offset="50%" style="stop-color:#ff10f0"/><stop offset="100%" style="stop-color:#00d4ff"/></linearGradient></defs><path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#navGrad)" stroke-width="4" stroke-linecap="round" filter="url(#navGlow)"/></svg>
+      <span class="logo-text">MMGA</span>
+    </a>
+    <a href="app.html" class="nav-btn">PLAY NOW</a>
+  </div>
+</nav>
+
+<div class="container">
+  <section class="hero">
+    <div>
+      <svg class="hero-infinity" viewBox="0 0 120 60"><defs><filter id="heroGlow"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="heroGrad"><stop offset="0%" style="stop-color:#00ff41"><animate attributeName="stop-color" values="#00ff41;#ff10f0;#00d4ff;#fff000;#00ff41" dur="4s" repeatCount="indefinite"/></stop><stop offset="50%" style="stop-color:#ff10f0"><animate attributeName="stop-color" values="#ff10f0;#00d4ff;#fff000;#00ff41;#ff10f0" dur="4s" repeatCount="indefinite"/></stop><stop offset="100%" style="stop-color:#00d4ff"><animate attributeName="stop-color" values="#00d4ff;#fff000;#00ff41;#ff10f0;#00d4ff" dur="4s" repeatCount="indefinite"/></stop></linearGradient></defs><path d="M 10,30 C 10,15 18,8 28,8 C 38,8 48,15 60,30 C 72,45 82,52 92,52 C 102,52 110,45 110,33 C 110,21 102,14 92,14 C 82,14 72,21 60,30 C 48,39 38,46 28,46 C 18,46 10,39 10,27 Z" fill="none" stroke="url(#heroGrad)" stroke-width="8" stroke-linecap="round" filter="url(#heroGlow)"><animate attributeName="stroke-width" values="8;10;8" dur="2s" repeatCount="indefinite"/></path></svg>
+      
+      <h1>THE NO-CURRENCY<br/>CURRENCY</h1>
+      
+      <p class="subtitle">
+        Close your eyes. Earn $MONK. Mint to blockchain.<br/>
+        The anti-utility token. The paradox. The counter-ring.
+      </p>
+      
+      <div class="cta-group">
+        <a href="app.html" class="btn btn-pink">Start Meditating</a>
+        <a href="#philosophy" class="btn btn-outline">The Philosophy</a>
+      </div>
+      
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">+1/s</div>
+          <div class="stat-label">Earn Rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">∞</div>
+          <div class="stat-label">Max Supply</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">$0</div>
+          <div class="stat-label">Token Value</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="section" id="features">
+  <div class="container">
+    <h2 class="section-title">HOW IT WORKS</h2>
+    <p class="section-desc">◆ Proof of presence meditation gaming ◆</p>
+    
+    <div class="firefox-box">
+      <h3>⚠ BROWSER NOTICE ⚠</h3>
+      <p>
+        Chrome MetaMask has a display glitch with $MONK tokens!<br/>
+        Your tokens ARE minted to blockchain, Chrome just can't show them.
+      </p>
+      <p style="font-size:26px;color:var(--green)">
+        👉 USE FIREFOX FOR BEST EXPERIENCE 👈
+      </p>
+      <a href="https://www.mozilla.org/firefox/" target="_blank" class="firefox-btn">
+        DOWNLOAD FIREFOX
+      </a>
     </div>
 
-    <!-- 1. NFT Carousel (17 Items: #10-26) -->
-    <section class="pt-12 pb-8 border-b-2 border-green-900 overflow-hidden marquee-container">
-        <div class="marquee-content gap-6 px-4">
-            
-            <!-- NFT #10 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="10.png" alt="CYBERMONK #10" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #010</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">ALEXANDER THE GREAT</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">JEDI ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">MOON</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <h3>AI VERIFICATION</h3>
+        <p>
+          Real-time camera detection. Eyes closed + spine erect = tokens flowing. No cheating. Just presence.
+        </p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3>INSTANT MINTING</h3>
+        <p>
+          Earn locally, mint when ready. ~$0.001 gas. Your meditation, permanently on Polygon blockchain.
+        </p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">🏆</div>
+        <h3>LEADERBOARDS</h3>
+        <p>
+          Compete globally. Monthly resets. Prove your meditation power level. Make zen a game.
+        </p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">💎</div>
+        <h3>NFT REWARDS</h3>
+        <p>
+          Hit 30 minutes total? Request exclusive proof-of-meditation NFTs. Flex your consciousness.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
 
-            <!-- NFT #11 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="11.png" alt="CYBERMONK #11" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #011</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">COSMIC ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+<section class="philosophy" id="philosophy">
+  <div class="container">
+    <div class="equation">0 = 1</div>
+    <p class="equation-sub">THE INVERSION</p>
+    
+    <div class="manifesto">
+      <p>
+        There is <span class="highlight">one thing</span> that neither time nor money can buy.
+      </p>
+      <p>
+        It is <span class="gold">the moment</span> when time stops being currency—<br/>
+        when survival becomes celebration—<br/>
+        when zero equals one.
+      </p>
+      <p>
+        <span class="highlight">MONKCOIN</span> is not a cryptocurrency.<br/>
+        It is the <span class="gold">anti-currency</span>.<br/>
+        The utility token with <span class="highlight">no utility</span>.
+      </p>
+    </div>
 
-            <!-- NFT #12 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="12.png" alt="CYBERMONK #12" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #012</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">CLEOPATRA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">SPACE TRAVELLER</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">ZEN GARDEN</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+    <h2 class="section-title" style="margin-top:80px">THE GREAT INVERSION</h2>
+    <p class="section-desc">◆ Old paradigm → New paradigm ◆</p>
 
-            <!-- NFT #13 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="13.png" alt="CYBERMONK #13" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #013</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">MATRIX ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+    <div class="inversion-grid">
+      <div class="inv-card old">
+        <div class="card-label">⚠ OLD WORLD</div>
+        <h3 class="card-title">Time = Currency</h3>
+        <p class="card-text">
+          Every second measured by productivity. Every breath calculated by output. 
+          You trade hours for dollars. Days for survival. Years for retirement.
+          Monday through Friday, you rent yourself.
+        </p>
+      </div>
 
-            <!-- NFT #14 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="14.png" alt="CYBERMONK #14" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #014</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EPSTEIN</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">HAWAI ROBE</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+      <div class="inv-card new">
+        <div class="card-label">✓ NEW WORLD</div>
+        <h3 class="card-title">Time = Celebration</h3>
+        <p class="card-text">
+          Every second is an act of rebellion. Every breath refuses the transaction. 
+          You earn by being present. By closing your eyes. By sitting up straight.
+          There is no Monday. There is only now.
+        </p>
+      </div>
 
-            <!-- NFT #15 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="15.png" alt="CYBERMONK #15" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #015</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">BUDDHA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">BATMAN SUITE</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">ZEN GARDEN</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+      <div class="inv-card old">
+        <div class="card-label">⚠ UTILITY TOKENS</div>
+        <h3 class="card-title">Value = Utility</h3>
+        <p class="card-text">
+          Every token must do something. Governance. Staking. Yield farming. 
+          The crypto world recreates the same trap: productivity worship. 
+          Your tokens must work. Must earn. Must justify themselves.
+        </p>
+      </div>
 
-            <!-- NFT #16 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="16.png" alt="CYBERMONK #16" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #016</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">MANSA MUSA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">LEGEND ZELDA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">INDIA</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+      <div class="inv-card new">
+        <div class="card-label">✓ MONKCOIN</div>
+        <h3 class="card-title">Value = Presence</h3>
+        <p class="card-text">
+          This token does nothing. It cannot be traded. It serves no purpose. 
+          Its only utility is proof of meditation. Proof that you were present. 
+          The anti-utility token. The paradox. The loop that breaks the loop.
+        </p>
+      </div>
+    </div>
 
-            <!-- NFT #17 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="17.png" alt="CYBERMONK #17" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #017</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">DONALD TRUMP</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">COSMIC ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">INDIA</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
+    <div class="ring-section">
+      <svg class="big-infinity" viewBox="0 0 120 60"><defs><filter id="bigGlow"><feGaussianBlur stdDeviation="5"/><feMerge><feMergeNode/><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="bigGrad"><stop offset="0%" style="stop-color:#fff000"/><stop offset="50%" style="stop-color:#ff10f0"/><stop offset="100%" style="stop-color:#fff000"/></linearGradient></defs><path d="M 10,30 C 10,15 18,8 28,8 C 38,8 48,15 60,30 C 72,45 82,52 92,52 C 102,52 110,45 110,33 C 110,21 102,14 92,14 C 82,14 72,21 60,30 C 48,39 38,46 28,46 C 18,46 10,39 10,27 Z" fill="none" stroke="url(#bigGrad)" stroke-width="10" stroke-linecap="round" filter="url(#bigGlow)"><animate attributeName="stroke-width" values="10;12;10" dur="3s" repeatCount="indefinite"/></path></svg>
+      
+      <h3 class="ring-title">∞ THE COUNTER-RING</h3>
+      <p class="ring-text">
+        One ring to rule them all.<br/>
+        But this is the <span class="highlight">counter-ring</span>.<br/>
+        It rules by refusing to rule.<br/>
+        It binds by setting free.
+      </p>
+    </div>
+  </div>
+</section>
 
-            <!-- NFT #18 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="18.png" alt="CYBERMONK #18" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #018</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">HISTORICAL_FIGURE</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">LEGEND ZELDA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
-                    <div class="pt-2 text-xs text-red-700">[GENESIS] [FORBIDDEN]</div>
-                </div>
-            </div>
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-box">
+      <h2>READY PLAYER ZEN?</h2>
+      <p>
+        Join the cyber monks. Earn while you meditate.<br/>
+        Free to play. Blockchain verified. Zero utility.
+      </p>
+      <a href="app.html" class="btn btn-pink" style="font-size:16px;padding:24px 56px">
+        ENTER THE TEMPLE
+      </a>
+    </div>
+  </div>
+</section>
 
-            <!-- NFT #19 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="19.png" alt="CYBERMONK #19" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #019</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">EPSTEIN</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">BATMAN SUITE</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERTED ISLAND</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #20 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="20.png" alt="CYBERMONK #20" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #020</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">KAMALA HARRIS</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">BATMAN SUITE</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #21 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="21.png" alt="CYBERMONK #21" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #021</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">CLEOPATRA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">LBGQ GOTH</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #22 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="22.png" alt="CYBERMONK #22" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #022</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">PIKACHU ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">AFTER PARTY</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #23 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="23.png" alt="CYBERMONK #23" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #023</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">GEORGE BUSH</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">COSMIC ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">CALIFORNIA</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #24 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="24.png" alt="CYBERMONK #24" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #024</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">MILEY CYRUS</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">DOCTOR ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">AFTER PARTY</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #25 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="25.png" alt="CYBERMONK #25" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #025</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">BUDDHA</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">GOTH ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- NFT #26 -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="26.png" alt="CYBERMONK #26" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #026</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">ALEXANDER THE GREAT</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">OSHO ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERTED ISLAND</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <!-- Duplicate first 5 for seamless loop -->
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="10.png" alt="CYBERMONK #10" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #010</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">ALEXANDER THE GREAT</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">JEDI ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">MOON</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-            <div class="nft-card terminal-border bg-black p-4">
-                <div class="nft-image-wrapper mb-4">
-                    <img src="11.png" alt="CYBERMONK #11" class="nft-image">
-                </div>
-                <div class="space-y-2 mono text-sm">
-                    <div class="text-cyber-yellow font-bold text-lg">CYBERMONK #011</div>
-                    <div class="flex justify-between"><span class="spec-label">FIGURE:</span><span class="spec-value">JULIUS CAESAR</span></div>
-                    <div class="flex justify-between"><span class="spec-label">ATTIRE:</span><span class="spec-value">COSMIC ROBES</span></div>
-                    <div class="flex justify-between"><span class="spec-label">LOCATION:</span><span class="spec-value">DESERT</span></div>
-                    <div class="pt-2 text-xs text-green-700">[GENESIS] [COMPRESSED]</div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 2. Hero Section -->
-    <section class="min-h-screen flex flex-col justify-center items-center px-6 relative border-b-2 border-green-900">
-        <div class="z-10 text-center max-w-6xl space-y-8">
-            <h2 class="text-xl tracking-[0.4em] glow-green flicker">SERIES_1_GENESIS // 1,954 ARCHETYPAL ITERATIONS</h2>
-            
-            <div class="space-y-2">
-                <h1 class="text-5xl md:text-8xl font-bold leading-none glow-green">
-                    CYBERMONKS-V1
-                </h1>
-                <h1 class="text-5xl md:text-8xl font-bold leading-none glow-yellow">
-                    THE COSMIC DANCE
-                </h1>
-            </div>
-
-            <p class="text-3xl md:text-4xl font-bold tracking-tighter mb-4">
-                ARCHETYPAL MEDITATION COLLISION PROTOCOL
-            </p>
-
-            <p class="text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-neon-green opacity-80 mono">
-                Terminal-grade digital art exploring ego dissolution. 
-                Each Cybermonk tokenizes a collision: legendary figures × absurd contexts × meditation protocol. 
-                Mathematical rarity. Morphogenetic field lifting. Fine art collectibles.
-            </p>
-            
-            <div class="flex flex-col md:flex-row gap-6 justify-center pt-8">
-                <a href="#mint" class="btn-yellow-solid text-2xl">
-                    ENTER_PROTOCOL
-                </a>
-                <a href="#logic" class="btn-green-outline text-2xl">
-                    VIEW_PROOFS
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. Mathematical Proofs -->
-    <section id="logic" class="min-h-screen py-24 px-6 border-b-2 border-green-900">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-5xl md:text-7xl font-bold mb-16 text-center glow-green">DEFLATION_PROTOCOL</h2>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="terminal-border p-8 bg-black">
-                    <h3 class="text-2xl font-bold mb-4 glow-yellow">EGO_INFLATION_THEOREM</h3>
-                    <div class="mono text-sm space-y-2 text-green-400">
-                        <p>∀x ∈ SELF_NARRATIVES:</p>
-                        <p>VALUE(x) ∝ 1/MEDITATION_TIME</p>
-                        <p class="pt-4">More meditation = Less ego inflation.</p>
-                        <p class="text-cyber-yellow font-bold pt-2">Q.E.D.</p>
-                    </div>
-                </div>
-
-                <div class="terminal-border p-8 bg-black">
-                    <h3 class="text-2xl font-bold mb-4 glow-yellow">SERIES_DEFLATION</h3>
-                    <div class="mono text-sm space-y-2 text-green-400">
-                        <p>SERIES_1 = ORIGIN_POINT</p>
-                        <p>|SUPPLY| = 1954</p>
-                        <p>RARITY = GENESIS</p>
-                        <p class="pt-4">Mathematical cap enforced.</p>
-                        <p class="text-cyber-yellow font-bold pt-2">PROVEN</p>
-                    </div>
-                </div>
-
-                <div class="terminal-border p-8 bg-black">
-                    <h3 class="text-2xl font-bold mb-4 glow-yellow">FIELD_ACTIVATION</h3>
-                    <div class="mono text-sm space-y-2 text-green-400">
-                        <p>∑(MEDITATION_TIME) → FIELD_LIFT</p>
-                        <p>COLLECTIVE > INDIVIDUAL</p>
-                        <p>PROOF-OF-DISIDENTIFICATION</p>
-                        <p class="pt-4">On-chain authentication secured.</p>
-                        <p class="text-cyber-yellow font-bold pt-2">VALIDATED</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. Disclaimer -->
-    <section id="mint" class="py-24 px-6 border-b-2 border-green-900">
-        <div class="max-w-4xl mx-auto text-center space-y-8">
-            <h2 class="text-5xl md:text-7xl font-bold glow-green mb-8">LEGAL_DISCLAIMER</h2>
-            
-            <div class="terminal-border p-12 bg-black text-left space-y-6">
-                <p class="mono text-lg text-green-400 leading-relaxed">
-                    CYBERMONKS-V1 // SERIES_1_GENESIS // 1,954 ARCHETYPAL ITERATIONS
-                </p>
-                <p class="mono text-sm text-green-400 leading-relaxed">
-                    These digital art collectibles are <span class="text-cyber-yellow font-bold">NOT financial instruments</span>. 
-                    No investment promises. No profit expectations. No financial advice.
-                </p>
-                <p class="mono text-sm text-green-400 leading-relaxed">
-                    Purpose: Personal collection, artistic appreciation, philosophical exploration only. 
-                    Risk: Total loss possible. No market guaranteed.
-                </p>
-                <p class="mono text-sm text-green-400 leading-relaxed">
-                    Strip the ego. Tokenize the void. Join the planetary meditation initiative. 
-                    Proof-of-disidentification secured on Solana mainnet.
-                </p>
-                <div class="pt-8 text-center">
-                    <p class="text-2xl glow-green">SYSTEM_STATUS: ONLINE // DEFLATION_PROTOCOL: ACTIVE</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. Footer -->
-    <footer class="py-12 px-6 text-center bg-black">
-        <div class="max-w-4xl mx-auto space-y-6">
-            <p class="text-3xl glow-green flicker font-bold">CYBERMONKS-V1</p>
-            <p class="mono text-sm text-green-700">
-                COMPRESSED_NFTS // SOLANA_MAINNET // GENESIS_SERIES
-            </p>
-            <div class="flex justify-center gap-6 pt-4">
-                <a href="#" class="text-cyber-yellow hover:glow-yellow">TWITTER</a>
-                <a href="#" class="text-cyber-yellow hover:glow-yellow">DISCORD</a>
-                <a href="#" class="text-cyber-yellow hover:glow-yellow">CROSSMINT</a>
-            </div>
-        </div>
-    </footer>
+<footer>
+  <div class="container">
+    <p>
+      MONKCOIN © 2026 | MAKE MEDITATION GREAT AGAIN<br/>
+      <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" target="_blank">SMART CONTRACT</a> • 
+      <a href="mailto:info@mmga.yoga">CONTACT</a><br/>
+      <br/>
+      ◆ USE FIREFOX • TOKENS ARE PROOF OF PRESENCE ◆
+    </p>
+  </div>
+</footer>
 
 </body>
 </html>
