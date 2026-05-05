@@ -3,517 +3,183 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MONKCOIN | The Meditation Revolution</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<title>The No-Currency Currency</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#1a1510;
-  --void:#0d0a08;
-  --surface:#2a2218;
-  --card:#3a3028;
-  --accent:#d4a574;
-  --cream:#f5e6d3;
-  --sage:#8b9a7e;
-  --rust:#c17854;
+  --void:#000000;
+  --off-white:#f8f8f0;
+  --soft-black:#1a1a1a;
   --gold:#d4a574;
-  --yellow:#e8b86d;
-  --text:#e8dcc8;
-  --muted:#b8a890;
-  --bark:#2a2218;
-  --wood:#4a3c2a;
+  --muted:#888;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  background:var(--bg);
-  color:var(--text);
+  background:var(--void);
+  color:var(--off-white);
   font-family:'IBM Plex Mono',monospace;
-  line-height:1.6;
+  line-height:2;
   overflow-x:hidden;
-  background-image:
-    radial-gradient(circle at 20% 50%, rgba(212,165,116,0.03) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(139,154,126,0.03) 0%, transparent 50%);
+  font-weight:300;
 }
-.grain{
-  position:fixed;
-  inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity:0.06;
-  pointer-events:none;
-  z-index:100;
-  mix-blend-mode:overlay;
-}
-.scanline{
-  position:fixed;
-  inset:0;
-  background:radial-gradient(ellipse at center, transparent 0%, rgba(212,165,116,0.02) 100%);
-  pointer-events:none;
-  z-index:101;
-}
-.glow-orb{
-  position:fixed;
-  width:600px;
-  height:600px;
-  border-radius:50%;
-  filter:blur(120px);
-  opacity:0.15;
-  pointer-events:none;
-  z-index:0;
-}
-.orb-1{
-  background:var(--sage);
-  top:-200px;
-  right:-200px;
-  animation:float 25s ease-in-out infinite;
-}
-.orb-2{
-  background:var(--rust);
-  bottom:-200px;
-  left:-200px;
-  animation:float 30s ease-in-out infinite reverse;
-}
-@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,50px)}}
 .container{
-  position:relative;
-  z-index:10;
-  max-width:1200px;
+  max-width:800px;
   margin:0 auto;
-  padding:0 24px;
+  padding:0 32px;
 }
-nav{
+.spacer{
+  height:120px;
+}
+.banner{
   position:fixed;
   top:0;
   left:0;
   right:0;
   z-index:1000;
-  background:rgba(26,21,16,0.95);
-  border-bottom:2px solid rgba(212,165,116,0.3);
-  padding:20px 0;
-  backdrop-filter:blur(10px);
-  box-shadow:0 2px 20px rgba(212,165,116,0.1);
-}
-.nav-container{
-  max-width:1200px;
-  margin:0 auto;
-  padding:0 24px;
+  padding:24px 40px;
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  align-items:center;
+  background:rgba(0,0,0,0.8);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(212,165,116,0.2);
 }
-.logo{
+.logo-container{
   display:flex;
   align-items:center;
-  gap:12px;
-  font-family:'Cinzel',serif;
-  font-size:24px;
-  color:var(--accent);
-  text-decoration:none;
-  letter-spacing:2px;
+  gap:16px;
 }
 .infinity-ring{
-  width:36px;
-  height:36px;
+  width:48px;
+  height:48px;
   border-radius:50%;
-  border:3px solid var(--accent);
+  border:3px solid var(--gold);
   position:relative;
-  box-shadow:0 0 15px rgba(212,165,116,0.4);
-  animation:ringGlow 4s ease-in-out infinite;
+  opacity:0.9;
 }
-@keyframes ringGlow{0%,100%{box-shadow:0 0 15px rgba(212,165,116,0.4)}50%{box-shadow:0 0 25px rgba(212,165,116,0.7)}}
 .infinity-ring::before{
   content:'∞';
   position:absolute;
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:20px;
+  font-size:28px;
   color:var(--gold);
   font-weight:bold;
 }
-.nav-links{
-  display:flex;
-  gap:32px;
-  align-items:center;
-}
-.nav-link{
-  color:var(--muted);
-  text-decoration:none;
-  font-size:13px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-  transition:all 0.3s;
-}
-.nav-link:hover{
-  color:var(--accent);
-}
-.nav-cta{
-  padding:10px 24px;
-  background:var(--accent);
-  color:var(--bg);
-  border:2px solid var(--accent);
-  font-size:12px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-  cursor:pointer;
-  transition:all 0.3s;
-  text-decoration:none;
-  display:inline-block;
-}
-.nav-cta:hover{
-  background:transparent;
-  color:var(--accent);
-  box-shadow:0 0 20px rgba(0,255,157,0.4);
-}
-.hero{
-  padding:120px 0 80px;
-  text-align:center;
-  animation:fadeIn 1.5s ease-out;
-}
-@keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.hero-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 16px;
-  background:rgba(0,255,157,0.1);
-  border:1px solid var(--accent);
-  border-radius:4px;
-  font-size:12px;
-  margin-bottom:24px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-.pulse-dot{
-  width:8px;
-  height:8px;
-  background:var(--accent);
-  border-radius:50%;
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.2)}}
-h1{
+.logo{
   font-family:'Cinzel',serif;
-  font-size:72px;
-  font-weight:900;
-  line-height:1.1;
-  margin-bottom:24px;
-  letter-spacing:-0.01em;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--rust) 50%,var(--sage) 100%);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  text-shadow:0 0 20px rgba(212,165,116,0.2);
-}
-.subtitle{
-  font-size:20px;
-  color:var(--muted);
-  max-width:600px;
-  margin:0 auto 40px;
-  line-height:1.8;
-}
-.cta-group{
-  display:flex;
-  gap:16px;
-  justify-content:center;
-  margin-bottom:80px;
-}
-.btn{
-  padding:16px 32px;
-  border-radius:12px;
-  font-weight:600;
-  font-size:14px;
-  border:none;
-  cursor:pointer;
-  transition:all 0.4s;
-  text-decoration:none;
-  display:inline-block;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-.btn-primary{
-  background:var(--accent);
-  color:var(--void);
-  box-shadow:0 4px 20px rgba(212,165,116,0.3);
-  border:2px solid var(--accent);
-}
-.btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(212,165,116,0.5);
-  background:var(--rust);
-  border-color:var(--rust);
-}
-.btn-secondary{
-  background:transparent;
-  color:var(--cream);
-  border:2px solid var(--sage);
-}
-.btn-secondary:hover{
-  background:var(--sage);
-  color:var(--void);
-  box-shadow:0 4px 20px rgba(139,154,126,0.3);
-}
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:32px;
-}
-.stat{
-  text-align:center;
-  padding:24px;
-  background:linear-gradient(135deg, var(--surface), var(--bark));
-  border-radius:16px;
-  border:2px solid rgba(212,165,116,0.3);
-  box-shadow:0 4px 20px rgba(0,0,0,0.3);
-  position:relative;
-}
-.stat::before{
-  content:'◈';
-  position:absolute;
-  top:12px;
-  left:16px;
-  color:var(--accent);
-  font-size:12px;
-}
-.stat-value{
-  font-family:'Cinzel',serif;
-  font-size:48px;
-  font-weight:900;
-  background:linear-gradient(135deg,var(--accent),var(--rust));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  margin-bottom:8px;
-}
-.stat-label{
-  font-size:14px;
-  color:var(--muted);
+  font-size:18px;
+  letter-spacing:4px;
+  color:var(--gold);
+  opacity:0.9;
 }
 .section{
-  padding:120px 0;
-}
-.section-header{
-  text-align:center;
-  margin-bottom:80px;
-}
-.section-title{
-  font-family:'Cinzel',serif;
-  font-size:48px;
-  font-weight:900;
-  margin-bottom:16px;
-  color:var(--gold);
-}
-.section-desc{
-  font-size:18px;
-  color:var(--muted);
-}
-.steps{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:32px;
-}
-.step{
-  padding:32px;
-  background:linear-gradient(135deg, var(--surface), var(--wood));
-  border-radius:20px;
-  border:2px solid rgba(212,165,116,0.25);
-  transition:all 0.4s;
-  position:relative;
-  box-shadow:0 4px 15px rgba(0,0,0,0.2);
-}
-.step::before{
-  content:'✦';
-  position:absolute;
-  top:16px;
-  right:20px;
-  font-size:14px;
-  color:var(--accent);
-  opacity:0.4;
-}
-.step:hover{
-  transform:translateY(-8px);
-  border-color:var(--accent);
-  box-shadow:0 12px 30px rgba(212,165,116,0.25);
-}
-.step-number{
-  width:48px;
-  height:48px;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--accent),var(--rust));
+  min-height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
+  text-align:center;
+}
+.statement{
   font-family:'Cinzel',serif;
-  font-size:24px;
+  font-size:64px;
   font-weight:900;
-  margin-bottom:24px;
-  color:var(--void);
-  box-shadow:0 4px 12px rgba(212,165,116,0.3);
+  line-height:1.2;
+  margin-bottom:80px;
+  color:var(--off-white);
+  animation:fadeIn 2s ease-out;
 }
-.step h3{
-  font-family:'Cinzel',serif;
-  font-size:24px;
-  margin-bottom:12px;
-  font-weight:700;
-}
-.step p{
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.sub{
+  font-size:16px;
+  line-height:2;
   color:var(--muted);
-  line-height:1.7;
-}
-.feature-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:32px;
-}
-.feature-card{
-  padding:40px;
-  background:linear-gradient(135deg, var(--card), var(--bark));
-  border-radius:20px;
-  border:2px solid rgba(212,165,116,0.2);
-  transition:all 0.4s;
-  position:relative;
-  box-shadow:0 4px 20px rgba(0,0,0,0.3);
-}
-.feature-card::after{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:3px;
-  background:linear-gradient(90deg,var(--accent),transparent);
-  opacity:0;
-  transition:opacity 0.4s;
-  border-radius:20px 20px 0 0;
-}
-.feature-card:hover{
-  border-color:var(--accent);
-  transform:translateY(-4px);
-  box-shadow:0 12px 35px rgba(212,165,116,0.3);
-}
-.feature-card:hover::after{
-  opacity:1;
-}
-.feature-icon{
-  font-size:48px;
-  margin-bottom:24px;
-}
-.feature-card h3{
-  font-family:'Cinzel',serif;
-  font-size:24px;
-  margin-bottom:12px;
-  font-weight:700;
-}
-.feature-card p{
-  color:var(--muted);
-  line-height:1.7;
-}
-.philosophy-section{
-  background:linear-gradient(180deg,transparent,var(--void),transparent);
-  padding:120px 0;
+  max-width:600px;
+  margin:0 auto;
+  font-weight:300;
 }
 .equation{
   font-family:'Cinzel',serif;
   font-size:120px;
   font-weight:900;
   line-height:1;
-  margin-bottom:48px;
-  color:var(--accent);
-  text-shadow:0 0 30px rgba(212,165,116,0.4);
-  text-align:center;
-}
-.equation-sub{
-  font-size:32px;
-  color:var(--sage);
-  margin-bottom:80px;
-  font-family:'Cinzel',serif;
-  text-align:center;
-}
-.manifesto{
-  max-width:900px;
-  margin:0 auto 120px;
-  font-size:18px;
-  line-height:2;
-  color:var(--text);
-  text-align:center;
-}
-.manifesto p{
-  margin-bottom:32px;
-}
-.highlight{
-  color:var(--accent);
-  font-weight:600;
-  text-shadow:0 0 10px rgba(0,255,157,0.3);
-}
-.gold-text{
   color:var(--gold);
-  font-weight:600;
-  font-family:'Cinzel',serif;
+  margin-bottom:40px;
 }
-.inversion-grid{
+.manifest{
+  font-size:18px;
+  line-height:2.2;
+  max-width:700px;
+  margin:0 auto 60px;
+  text-align:left;
+}
+.manifest p{
+  margin-bottom:40px;
+}
+.inverse{
+  color:var(--gold);
+  font-weight:400;
+}
+.strikethrough{
+  text-decoration:line-through;
+  opacity:0.4;
+}
+.grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:32px;
-  max-width:1200px;
-  margin:0 auto 80px;
+  gap:1px;
+  background:var(--void);
+  max-width:900px;
+  margin:80px auto;
+  border:1px solid rgba(212,165,116,0.2);
 }
-.inversion-card{
-  background:linear-gradient(135deg, var(--card), var(--wood));
-  border:2px solid rgba(212,165,116,0.25);
-  padding:48px;
-  position:relative;
-  border-radius:20px;
-  box-shadow:0 4px 20px rgba(0,0,0,0.3);
+.cell{
+  background:var(--soft-black);
+  padding:60px 40px;
+  text-align:center;
 }
-.inversion-card::before{
-  content:'';
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:4px;
-  background:linear-gradient(90deg,#c17854,transparent);
-  border-radius:20px 20px 0 0;
-}
-.inversion-card.new::before{
-  background:linear-gradient(90deg,var(--sage),transparent);
-}
-.card-label{
+.cell-title{
   font-family:'Cinzel',serif;
   font-size:14px;
   text-transform:uppercase;
-  letter-spacing:2px;
-  margin-bottom:16px;
-}
-.card-label.old{
-  color:var(--rust);
-}
-.card-label.new{
-  color:var(--sage);
-}
-.card-title{
-  font-family:'Cinzel',serif;
-  font-size:36px;
+  letter-spacing:3px;
   margin-bottom:24px;
-  line-height:1.2;
+  color:var(--muted);
 }
-.card-desc{
+.cell-content{
+  font-family:'Cinzel',serif;
+  font-size:32px;
+  font-weight:700;
+  line-height:1.4;
+}
+.list{
+  max-width:700px;
+  margin:80px auto;
+  text-align:left;
+}
+.list-item{
+  padding:32px 0;
+  border-bottom:1px solid rgba(212,165,116,0.1);
   font-size:16px;
-  line-height:1.8;
-  color:rgba(255,255,255,0.8);
+  line-height:2;
 }
-.ring-visual{
-  text-align:center;
-  padding:80px 0;
+.list-item:last-child{
+  border-bottom:none;
+}
+.number{
+  color:var(--gold);
+  font-family:'Cinzel',serif;
+  margin-right:16px;
 }
 .ring{
-  display:inline-block;
-  width:300px;
-  height:300px;
-  border:4px solid var(--gold);
+  width:200px;
+  height:200px;
+  border:2px solid var(--gold);
   border-radius:50%;
+  margin:80px auto;
   position:relative;
-  animation:ringPulse 4s ease-in-out infinite;
 }
-@keyframes ringPulse{0%,100%{transform:scale(1);box-shadow:0 0 40px var(--gold)}50%{transform:scale(1.05);box-shadow:0 0 80px var(--gold)}}
 .ring::before{
   content:'∞';
   position:absolute;
@@ -521,338 +187,213 @@ h1{
   left:50%;
   transform:translate(-50%,-50%);
   font-family:'Cinzel',serif;
-  font-size:120px;
+  font-size:80px;
   color:var(--gold);
-  text-shadow:0 0 40px var(--gold);
 }
-.ring-label{
-  font-family:'Cinzel',serif;
-  font-size:24px;
+.cta{
+  display:inline-block;
+  padding:20px 48px;
+  border:2px solid var(--gold);
   color:var(--gold);
-  margin-top:32px;
-}
-.cta-final{
-  padding:120px 0;
-  text-align:center;
-}
-.cta-box{
-  max-width:700px;
-  margin:0 auto;
-  padding:64px;
-  background:var(--surface);
-  border-radius:8px;
-  border:2px solid var(--accent);
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 0 60px rgba(0,255,157,0.2);
-}
-.cta-box::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(135deg,var(--accent),var(--purple));
-  opacity:0.05;
-}
-.cta-box::after{
-  content:'[READY]';
-  position:absolute;
-  top:16px;
-  right:24px;
-  font-size:10px;
-  color:var(--accent);
+  text-decoration:none;
+  font-size:14px;
+  text-transform:uppercase;
   letter-spacing:2px;
+  transition:all 0.4s;
+  margin-top:60px;
 }
-.cta-box h2{
-  font-family:'Cinzel',serif;
-  font-size:48px;
-  font-weight:900;
-  margin-bottom:16px;
-  position:relative;
+.cta:hover{
+  background:var(--gold);
+  color:var(--void);
 }
-.cta-box p{
-  font-size:18px;
-  color:var(--muted);
-  margin-bottom:32px;
-  position:relative;
-  line-height:1.8;
+.divider{
+  width:60px;
+  height:1px;
+  background:var(--gold);
+  margin:80px auto;
 }
 footer{
-  padding:48px 0;
-  border-top:1px solid rgba(0,255,157,0.2);
   text-align:center;
-  font-size:14px;
+  padding:80px 32px;
+  font-size:12px;
   color:var(--muted);
+  border-top:1px solid rgba(212,165,116,0.1);
 }
-footer a{
-  color:var(--accent);
-  text-decoration:none;
-  transition:all 0.3s;
-}
-footer a:hover{
-  color:var(--purple);
-}
-@media(max-width:1024px){
-  h1{font-size:56px}
-  .equation{font-size:80px}
-  .steps,.feature-grid,.inversion-grid{grid-template-columns:1fr}
-  .stats{grid-template-columns:1fr}
-}
-@media(max-width:640px){
-  h1{font-size:40px}
-  .equation{font-size:56px}
-  .subtitle{font-size:16px}
-  .cta-group{flex-direction:column}
-  .btn{width:100%}
-  .nav-links{display:none}
+@media(max-width:768px){
+  .statement{font-size:40px}
+  .equation{font-size:72px}
+  .grid{grid-template-columns:1fr;gap:0}
+  .cell-content{font-size:24px}
 }
 </style>
 </head>
 <body>
 
-<div class="grain"></div>
-<div class="scanline"></div>
-<div class="glow-orb orb-1"></div>
-<div class="glow-orb orb-2"></div>
-
-<nav>
-  <div class="nav-container">
-    <a href="#" class="logo">
-      <div class="infinity-ring"></div>
-      <span>MMGA</span>
-    </a>
-    <div class="nav-links">
-      <a href="#play" class="nav-link">Play</a>
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#philosophy" class="nav-link">Philosophy</a>
-      <a href="app.html" class="nav-cta">Start Now</a>
-    </div>
+<div class="banner">
+  <div class="logo-container">
+    <div class="infinity-ring"></div>
+    <div class="logo">MMGA</div>
   </div>
-</nav>
-
-<div class="container">
-  <section class="hero">
-    <div class="hero-badge">
-      <div class="pulse-dot"></div>
-      <span>Live Now • Earn as You Meditate</span>
-    </div>
-    <h1>Meditation<br/>Meets Gaming</h1>
-    <p class="subtitle">
-      Close your eyes. Sit up straight. Earn +1 MONK per second. 
-      Compete with friends. Level up your mind. It's meditation, but actually fun.
-    </p>
-    <div class="cta-group">
-      <a href="app.html" class="btn btn-primary">Play Now</a>
-      <a href="#philosophy" class="btn btn-secondary">Learn More</a>
-    </div>
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-value">+1/s</div>
-        <div class="stat-label">Tokens Earned</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">∞</div>
-        <div class="stat-label">Max Score</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">24/7</div>
-        <div class="stat-label">Active Players</div>
-      </div>
-    </div>
-  </section>
+  <a href="app.html" style="color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.8;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Enter</a>
 </div>
 
-<section class="section" id="play">
+<div class="spacer"></div>
+
+<section class="section">
   <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">How to Play</h2>
-      <p class="section-desc">Three steps to earn MONK tokens and climb the leaderboard</p>
-    </div>
-    <div class="steps">
-      <div class="step">
-        <div class="step-number">1</div>
-        <h3>Connect Wallet</h3>
-        <p>
-          One-click MetaMask connection. We'll add you to the Polygon network automatically. 
-          Takes 30 seconds, costs nothing.
-        </p>
-      </div>
-      <div class="step">
-        <div class="step-number">2</div>
-        <h3>Start Session</h3>
-        <p>
-          Allow camera access. Our AI detects closed eyes + erect spine in real-time. 
-          No cheating, just authentic meditation.
-        </p>
-      </div>
-      <div class="step">
-        <div class="step-number">3</div>
-        <h3>Earn & Compete</h3>
-        <p>
-          +1 MONK per second. Hit milestones for NFT drops. Check leaderboards. 
-          Challenge friends. Make meditation a game.
-        </p>
-      </div>
-    </div>
+    <h1 class="statement">
+      The No-Currency<br/>Currency
+    </h1>
+    <p class="sub">
+      A token with no value. A brand with no logo. A utility with no function.<br/>
+      The inverse of everything that exists.
+    </p>
   </div>
 </section>
 
-<section class="section" id="features" style="background:var(--void)">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">Game Features</h2>
-      <p class="section-desc">Everything you need to level up your practice</p>
-    </div>
-    <div class="feature-grid">
-      <div class="feature-card">
-        <div class="feature-icon">🎮</div>
-        <h3>AI Verification</h3>
-        <p>
-          Real-time detection of eyes closed + spine erect. No manual tracking. 
-          No honor system. Just AI watching your posture so you can focus on the breath.
-        </p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🏆</div>
-        <h3>Leaderboards</h3>
-        <p>
-          See who's meditating the most. Compete with friends, monasteries, or the whole planet. 
-          Monthly resets keep it fresh.
-        </p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">💎</div>
-        <h3>NFT Rewards</h3>
-        <p>
-          Hit 30 minutes total? Request your custom NFT airdrop. Exclusive proof-of-meditation 
-          collectibles minted on Polygon.
-        </p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">⚡</div>
-        <h3>Instant Minting</h3>
-        <p>
-          Mint your tokens to blockchain anytime. Each mint costs ~$0.001 in gas. 
-          Your meditation, permanently verified on-chain.
-        </p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:64px">
-      <a href="app.html" class="btn btn-primary" style="font-size:18px;padding:20px 48px">
-        Start Playing Now
-      </a>
-    </div>
-  </div>
-</section>
-
-<section class="philosophy-section" id="philosophy">
+<section class="section">
   <div class="container">
     <div class="equation">0 = 1</div>
-    <div class="equation-sub">The Inversion</div>
-    <div class="manifesto">
+    <div class="manifest">
       <p>
-        There is <span class="highlight">one thing</span> that neither time nor money can buy.
+        In a world where <span class="strikethrough">time = money</span>,<br/>
+        we propose: <span class="inverse">time = life</span>.
       </p>
       <p>
-        It is <span class="gold-text">the moment</span> when time stops being currency—<br/>
-        when survival becomes celebration—<br/>
-        when zero equals one.
+        In a world where <span class="strikethrough">currency = utility</span>,<br/>
+        we propose: <span class="inverse">currency = presence</span>.
       </p>
       <p>
-        <span class="highlight">MONKCOIN</span> is not a cryptocurrency.<br/>
-        It is the <span class="gold-text">anti-currency</span>.<br/>
-        The utility token with <span class="highlight">no utility</span>.<br/>
-        The ring to rule them all.
+        In a world where <span class="strikethrough">brands = identity</span>,<br/>
+        we propose: <span class="inverse">no brand = true identity</span>.
       </p>
     </div>
-
-    <div class="section-header">
-      <h2 class="section-title">The Great Inversion</h2>
-      <p class="section-desc">Old World → New World</p>
-    </div>
-
-    <div class="inversion-grid">
-      <div class="inversion-card">
-        <div class="card-label old">⚠ OLD WORLD</div>
-        <h3 class="card-title">Time = Currency</h3>
-        <p class="card-desc">
-          Every second measured by productivity. Every breath calculated by output. 
-          You trade hours for dollars. Days for survival. Years for retirement.
-          <br/><br/>
-          Monday through Friday, you rent yourself. Saturday and Sunday, you recover from the rental.
-          <br/><br/>
-          Time is money. Money is time. The equation enslaves you.
-        </p>
-      </div>
-
-      <div class="inversion-card new">
-        <div class="card-label new">✓ NEW WORLD</div>
-        <h3 class="card-title">Time = Celebration</h3>
-        <p class="card-desc">
-          Every second is an act of rebellion. Every breath refuses the transaction. 
-          You earn tokens by being present. By closing your eyes. By sitting up straight.
-          <br/><br/>
-          Every day is sacred. There is no Monday. There is no grind. There is only now.
-          <br/><br/>
-          Time is life. Life is infinite. The equation liberates you.
-        </p>
-      </div>
-    </div>
-
-    <div class="inversion-grid">
-      <div class="inversion-card">
-        <div class="card-label old">⚠ UTILITY TOKENS</div>
-        <h3 class="card-title">Value = Utility</h3>
-        <p class="card-desc">
-          Every token must do something. Governance. Staking. Yield farming. Access passes.
-          <br/><br/>
-          The crypto world recreates the same trap: <span class="highlight">productivity worship</span>.
-          <br/><br/>
-          Your tokens must work. Must earn. Must justify themselves. The machine keeps spinning.
-        </p>
-      </div>
-
-      <div class="inversion-card new">
-        <div class="card-label new">✓ MONKCOIN</div>
-        <h3 class="card-title">Value = Presence</h3>
-        <p class="card-desc">
-          This token does nothing. It cannot be traded. It cannot be sold. It serves no purpose.
-          <br/><br/>
-          Its only utility is <span class="gold-text">proof of meditation</span>. Proof that you were present. Proof that you chose life over currency.
-          <br/><br/>
-          The anti-utility token. The paradox. The loop that breaks the loop.
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="ring-visual">
-    <div class="ring"></div>
-    <div class="ring-label">∞ The Ring of Presence</div>
   </div>
 </section>
 
-<section class="cta-final">
+<section class="section">
   <div class="container">
-    <div class="cta-box">
-      <h2>Join The Inversion</h2>
-      <p>
-        When critical mass is reached, all currencies invert. Time becomes celebration. 
-        Zero equals one. The ring is broken.
-      </p>
-      <a href="app.html" class="btn btn-primary" style="font-size:18px;padding:20px 48px">
-        Start Meditating Now
-      </a>
+    <h2 class="statement" style="font-size:48px">The Paradox</h2>
+    <div class="grid">
+      <div class="cell">
+        <div class="cell-title">What It Is</div>
+        <div class="cell-content">Nothing</div>
+      </div>
+      <div class="cell">
+        <div class="cell-title">What It Does</div>
+        <div class="cell-content">Nothing</div>
+      </div>
+      <div class="cell">
+        <div class="cell-title">What It's Worth</div>
+        <div class="cell-content">Nothing</div>
+      </div>
+      <div class="cell">
+        <div class="cell-title">Why It Matters</div>
+        <div class="cell-content">Everything</div>
+      </div>
     </div>
   </div>
 </section>
+
+<section class="section">
+  <div class="container">
+    <div class="manifest">
+      <p>
+        This is not a cryptocurrency.<br/>
+        This is not a meditation app.<br/>
+        This is not a movement.
+      </p>
+      <p>
+        This is the <span class="inverse">anti-currency</span>.<br/>
+        The <span class="inverse">anti-app</span>.<br/>
+        The <span class="inverse">anti-movement</span>.
+      </p>
+      <p>
+        It does not exist to be used.<br/>
+        It exists to <span class="inverse">prove you were present</span>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="statement" style="font-size:48px">The Principles</h2>
+    <div class="list">
+      <div class="list-item">
+        <span class="number">01</span>
+        The token cannot be bought. It can only be <span class="inverse">earned through presence</span>.
+      </div>
+      <div class="list-item">
+        <span class="number">02</span>
+        The token cannot be sold. It can only be <span class="inverse">held as proof</span>.
+      </div>
+      <div class="list-item">
+        <span class="number">03</span>
+        The token has no utility. Its only function is <span class="inverse">to have no function</span>.
+      </div>
+      <div class="list-item">
+        <span class="number">04</span>
+        The brand has no identity. It is <span class="inverse">the absence of branding</span>.
+      </div>
+      <div class="list-item">
+        <span class="number">05</span>
+        The value increases when <span class="inverse">the world stops measuring value</span>.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="ring"></div>
+    <div class="manifest" style="text-align:center">
+      <p>
+        One ring to rule them all.<br/>
+        But this is the <span class="inverse">counter-ring</span>.
+      </p>
+      <p>
+        It rules by refusing to rule.<br/>
+        It binds by setting free.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="statement" style="font-size:48px">The Inversion</h2>
+    <div class="manifest">
+      <p>
+        When enough people stop treating time as currency,<br/>
+        time stops being currency.
+      </p>
+      <p>
+        When enough people stop seeking utility,<br/>
+        utility stops being the measure of worth.
+      </p>
+      <p>
+        When enough people reject branding,<br/>
+        the no-brand becomes the only brand.
+      </p>
+      <p style="margin-top:60px">
+        This is not marketing.<br/>
+        This is <span class="inverse">the end of marketing</span>.
+      </p>
+    </div>
+    <div class="divider"></div>
+    <a href="app.html" class="cta">Enter</a>
+  </div>
+</section>
+
+<div class="spacer"></div>
 
 <footer>
   <div class="container">
-    <p>
-      MONKCOIN © 2026 | Make Meditation Great Again<br/>
-      <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" target="_blank">Smart Contract</a> • 
-      <a href="mailto:info@mmga.yoga">Contact</a>
-    </p>
+    MONKCOIN © 2026<br/>
+    The No-Currency Currency<br/>
+    <br/>
+    <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" style="color:var(--gold);text-decoration:none" target="_blank">Smart Contract</a>
   </div>
 </footer>
 
