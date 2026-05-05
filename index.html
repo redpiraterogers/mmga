@@ -3,170 +3,759 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MMGA — Make Meditation Great Again</title>
-<meta name="description" content="Meditate. Get NFT's Lift the Field."/>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<title>MONKCOIN | Level Up Your Mind</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0f0a;--bg2:#0d120d;--green:#00ff41;--green-dim:#00cc33;--green-glow:rgba(0,255,65,0.3);--yellow:#ffdd00;--white:#e0ffe0;--border:#00ff4144;--term:'Space Mono',monospace;--pixel:'VT323',monospace}
+:root{
+  --bg:#0f0f14;
+  --surface:#1a1a24;
+  --card:#25253a;
+  --accent:#00ff9d;
+  --purple:#a78bfa;
+  --pink:#f472b6;
+  --blue:#60a5fa;
+  --yellow:#fbbf24;
+  --text:#e4e4e7;
+  --muted:#a1a1aa;
+}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#000;color:var(--green);font-family:var(--term);overflow-x:hidden;line-height:1.6}
-body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999}
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,15,10,0.95);backdrop-filter:blur(8px);border-bottom:2px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:var(--pixel);font-size:32px;color:var(--green);text-shadow:0 0 10px var(--green-glow);text-decoration:none}
-.logo b{color:var(--yellow)}
-.nav-links{display:flex;gap:24px;align-items:center}
-.nav-link{font-size:13px;color:var(--green);text-decoration:none;transition:all 0.2s}
-.nav-link:hover{color:var(--yellow)}
-.nav-cta{font-family:var(--pixel);font-size:16px;padding:12px 24px;background:var(--yellow);border:3px solid var(--yellow);color:#000;text-decoration:none;box-shadow:0 0 20px rgba(255,221,0,0.3)}
-.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 32px 60px;background:radial-gradient(circle,rgba(0,255,65,0.05),transparent)}
-.hero-content{max-width:900px;text-align:center}
-.hero-badge{font-family:var(--pixel);font-size:14px;color:var(--yellow);margin-bottom:24px;letter-spacing:0.2em}
-.hero-title{font-family:var(--pixel);font-size:72px;color:var(--green);text-shadow:0 0 20px var(--green-glow);margin-bottom:32px;line-height:1.2}
-.hero-title b{color:var(--yellow)}
-.hero-subtitle{font-size:24px;color:var(--white);margin-bottom:16px}
-.hero-desc{font-size:16px;color:var(--green-dim);margin-bottom:48px;line-height:1.8}
-.hero-ctas{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
-.btn{font-family:var(--pixel);font-size:20px;padding:20px 40px;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s;border:4px solid}
-.btn-primary{background:var(--yellow);border-color:var(--yellow);color:#000;box-shadow:0 0 20px rgba(255,221,0,0.4)}
-.btn-primary:hover{box-shadow:0 0 40px rgba(255,221,0,0.7);transform:translateY(-4px)}
-.btn-secondary{background:transparent;border-color:var(--green);color:var(--green)}
-.btn-secondary:hover{background:var(--green);color:#000}
-.stats{padding:48px 32px;background:var(--bg);border-top:2px solid var(--border);border-bottom:2px solid var(--border)}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:32px;max-width:1200px;margin:0 auto}
-.stat{text-align:center;padding:24px;background:var(--bg2);border:2px solid var(--border)}
-.stat-icon{font-size:56px;margin-bottom:16px}
-.stat-num{font-family:var(--pixel);font-size:48px;color:var(--green);display:block;margin-bottom:8px}
-.stat-label{font-size:13px;color:var(--green-dim)}
-.mission{padding:100px 32px;background:var(--bg2)}
-.mission-inner{max-width:900px;margin:0 auto;text-align:center}
-.section-title{font-family:var(--pixel);font-size:48px;color:var(--yellow);margin-bottom:32px}
-.mission-text{font-size:18px;color:var(--white);line-height:2;margin-bottom:24px}
-.mission-text strong{color:var(--green)}
-.how{padding:100px 32px;background:var(--bg)}
-.how-title{font-family:var(--pixel);font-size:48px;color:var(--green);text-align:center;margin-bottom:64px}
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;max-width:1200px;margin:0 auto}
-.step{padding:32px;background:var(--bg2);border:2px solid var(--border);text-align:center;transition:all 0.3s}
-.step:hover{border-color:var(--green);box-shadow:0 0 20px var(--green-glow);transform:translateY(-8px)}
-.step-num{font-family:var(--pixel);font-size:72px;color:rgba(0,255,65,0.2);margin-bottom:16px}
-.step-title{font-family:var(--pixel);font-size:18px;color:var(--yellow);margin-bottom:16px}
-.step-desc{font-size:14px;color:var(--green-dim);line-height:1.8}
-.cta{padding:100px 32px;background:linear-gradient(135deg,rgba(0,255,65,0.08),rgba(255,221,0,0.08));border-top:2px solid var(--border);text-align:center}
-.cta-title{font-family:var(--pixel);font-size:56px;color:var(--green);margin-bottom:24px}
-.cta-desc{font-size:18px;color:var(--white);margin-bottom:48px;max-width:700px;margin-left:auto;margin-right:auto}
-footer{padding:48px 32px;background:var(--bg);border-top:2px solid var(--border);text-align:center}
-.footer-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:16px}
-.footer-copyright{font-size:11px;color:var(--green);margin-top:32px}
-@media(max-width:768px){.hero-title{font-size:42px}nav{padding:16px 20px}.logo{font-size:24px}}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'IBM Plex Mono',monospace;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+.grain{
+  position:fixed;
+  inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity:0.03;
+  pointer-events:none;
+  z-index:100;
+}
+.scanline{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(0,255,157,0.02) 50%
+  );
+  background-size:100% 4px;
+  pointer-events:none;
+  z-index:101;
+  animation:scan 8s linear infinite;
+}
+@keyframes scan{
+  0%{transform:translateY(0)}
+  100%{transform:translateY(100vh)}
+}
+.glow-orb{
+  position:fixed;
+  width:600px;
+  height:600px;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:0.3;
+  pointer-events:none;
+  z-index:0;
+}
+.orb-1{
+  background:var(--accent);
+  top:-200px;
+  right:-200px;
+  animation:float 20s ease-in-out infinite;
+}
+.orb-2{
+  background:var(--purple);
+  bottom:-200px;
+  left:-200px;
+  animation:float 25s ease-in-out infinite reverse;
+}
+@keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,50px)}}
+.container{
+  position:relative;
+  z-index:10;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
+}
+nav{
+  padding:24px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.logo{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  letter-spacing:0.05em;
+}
+.logo-icon{
+  width:32px;
+  height:32px;
+  color:var(--accent);
+  transition:all 0.3s;
+  filter:drop-shadow(0 0 10px var(--accent));
+}
+.logo:hover .logo-icon{
+  color:var(--purple);
+  filter:drop-shadow(0 0 20px var(--purple));
+  transform:rotate(360deg);
+}
+.nav-cta{
+  padding:12px 24px;
+  background:var(--accent);
+  color:var(--bg);
+  border:none;
+  border-radius:100px;
+  font-weight:600;
+  font-size:14px;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-decoration:none;
+  display:inline-block;
+}
+.nav-cta:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 30px rgba(0,255,157,0.5);
+}
+.hero{
+  padding:80px 0 120px;
+  text-align:center;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 16px;
+  background:rgba(0,255,157,0.1);
+  border:1px solid var(--accent);
+  border-radius:4px;
+  font-size:12px;
+  margin-bottom:24px;
+  animation:fadeUp 0.8s ease-out;
+  font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.pulse-dot{
+  width:8px;
+  height:8px;
+  background:var(--accent);
+  border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.2)}}
+h1{
+  font-family:'Cinzel',serif;
+  font-size:72px;
+  font-weight:900;
+  line-height:1.1;
+  margin-bottom:24px;
+  letter-spacing:-0.01em;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--purple) 50%,var(--pink) 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:fadeUp 0.8s ease-out 0.2s both;
+  text-shadow:0 0 30px rgba(0,255,157,0.3);
+  position:relative;
+}
+h1::before{
+  content:attr(data-text);
+  position:absolute;
+  left:2px;
+  text-shadow:-2px 0 var(--accent);
+  top:0;
+  color:var(--accent);
+  background:transparent;
+  overflow:hidden;
+  opacity:0;
+  animation:glitch 3s infinite;
+}
+@keyframes glitch{
+  2%,64%{transform:translate(2px,0) skew(0deg);opacity:0.75}
+  4%,60%{transform:translate(-2px,0) skew(0deg);opacity:0.75}
+  62%{transform:translate(0,0) skew(5deg);opacity:0.75}
+}
+.subtitle{
+  font-size:20px;
+  color:var(--muted);
+  max-width:600px;
+  margin:0 auto 40px;
+  animation:fadeUp 0.8s ease-out 0.4s both;
+}
+.cta-group{
+  display:flex;
+  gap:16px;
+  justify-content:center;
+  animation:fadeUp 0.8s ease-out 0.6s both;
+}
+.btn{
+  padding:16px 32px;
+  border-radius:4px;
+  font-weight:600;
+  font-size:14px;
+  border:none;
+  cursor:pointer;
+  transition:all 0.3s;
+  text-decoration:none;
+  display:inline-block;
+  font-family:'IBM Plex Mono',monospace;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.btn-primary{
+  background:var(--accent);
+  color:var(--bg);
+  box-shadow:0 0 20px rgba(0,255,157,0.4);
+  border:2px solid var(--accent);
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 30px rgba(0,255,157,0.6);
+  background:transparent;
+  color:var(--accent);
+}
+.btn-secondary{
+  background:transparent;
+  color:var(--text);
+  border:2px solid var(--purple);
+}
+.btn-secondary:hover{
+  background:var(--purple);
+  color:var(--bg);
+  box-shadow:0 0 30px rgba(167,139,250,0.4);
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px;
+  margin-top:80px;
+}
+.stat{
+  text-align:center;
+  padding:24px;
+  background:var(--surface);
+  border-radius:8px;
+  border:2px solid var(--accent);
+  box-shadow:0 0 20px rgba(0,255,157,0.1);
+  position:relative;
+}
+.stat::before{
+  content:'>';
+  position:absolute;
+  top:8px;
+  left:12px;
+  color:var(--accent);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+}
+.stat-value{
+  font-family:'Cinzel',serif;
+  font-size:48px;
+  font-weight:900;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:8px;
+}
+.stat-label{
+  font-size:14px;
+  color:var(--muted);
+}
+.how-it-works{
+  padding:120px 0;
+}
+.section-header{
+  text-align:center;
+  margin-bottom:64px;
+}
+.section-title{
+  font-family:'Cinzel',serif;
+  font-size:48px;
+  font-weight:900;
+  margin-bottom:16px;
+}
+.section-desc{
+  font-size:18px;
+  color:var(--muted);
+}
+.steps{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px;
+}
+.step{
+  padding:32px;
+  background:var(--surface);
+  border-radius:8px;
+  border:2px solid rgba(0,255,157,0.2);
+  transition:all 0.3s;
+  position:relative;
+}
+.step::before{
+  content:'$ ./meditate';
+  position:absolute;
+  top:12px;
+  right:16px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--muted);
+  opacity:0.5;
+}
+.step:hover{
+  transform:translateY(-8px);
+  border-color:var(--accent);
+  box-shadow:0 20px 40px rgba(0,255,157,0.2);
+}
+.step-number{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  font-weight:900;
+  margin-bottom:24px;
+  color:var(--bg);
+}
+.step h3{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  margin-bottom:12px;
+  font-weight:700;
+}
+.step p{
+  color:var(--muted);
+  line-height:1.7;
+}
+.features{
+  padding:120px 0;
+  background:linear-gradient(180deg,transparent,var(--surface),transparent);
+}
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:32px;
+}
+.feature-card{
+  padding:40px;
+  background:var(--card);
+  border-radius:8px;
+  border:2px solid rgba(0,255,157,0.15);
+  transition:all 0.3s;
+  position:relative;
+}
+.feature-card::after{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),transparent);
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.feature-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-4px);
+  box-shadow:0 8px 32px rgba(0,255,157,0.2);
+}
+.feature-card:hover::after{
+  opacity:1;
+}
+.feature-icon{
+  width:64px;
+  height:64px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  margin-bottom:24px;
+}
+.feature-card h3{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  margin-bottom:12px;
+  font-weight:700;
+}
+.feature-card p{
+  color:var(--muted);
+  line-height:1.7;
+}
+.leaderboard{
+  padding:120px 0;
+}
+.leaderboard-preview{
+  max-width:800px;
+  margin:0 auto;
+  background:var(--surface);
+  border-radius:8px;
+  padding:40px;
+  border:2px solid var(--accent);
+  box-shadow:0 0 40px rgba(0,255,157,0.15);
+  position:relative;
+}
+.leaderboard-preview::before{
+  content:'● ● ●';
+  position:absolute;
+  top:16px;
+  left:24px;
+  font-size:12px;
+  color:var(--muted);
+  letter-spacing:4px;
+}
+.leaderboard-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:32px;
+  padding-bottom:24px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+.leaderboard-title{
+  font-family:'Cinzel',serif;
+  font-size:24px;
+  font-weight:700;
+}
+.rank-item{
+  display:flex;
+  align-items:center;
+  padding:20px;
+  background:var(--card);
+  border-radius:4px;
+  margin-bottom:12px;
+  transition:all 0.3s;
+  border:1px solid rgba(0,255,157,0.2);
+}
+.rank-item:hover{
+  transform:translateX(8px);
+  background:rgba(0,255,157,0.05);
+  border-color:var(--accent);
+  box-shadow:0 4px 20px rgba(0,255,157,0.2);
+}
+.rank-number{
+  width:40px;
+  height:40px;
+  border-radius:10px;
+  background:var(--surface);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  margin-right:16px;
+}
+.rank-number.top{
+  background:linear-gradient(135deg,var(--yellow),#f59e0b);
+  color:var(--bg);
+}
+.rank-avatar{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--purple),var(--pink));
+  margin-right:16px;
+}
+.rank-info{
+  flex:1;
+}
+.rank-name{
+  font-weight:600;
+  margin-bottom:4px;
+}
+.rank-level{
+  font-size:13px;
+  color:var(--muted);
+}
+.rank-hours{
+  font-family:'Cinzel',serif;
+  font-size:20px;
+  font-weight:700;
+  color:var(--accent);
+}
+.cta-final{
+  padding:120px 0;
+  text-align:center;
+}
+.cta-box{
+  max-width:700px;
+  margin:0 auto;
+  padding:64px;
+  background:var(--surface);
+  border-radius:8px;
+  border:2px solid var(--accent);
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 60px rgba(0,255,157,0.2);
+}
+.cta-box::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,var(--accent),var(--purple));
+  opacity:0.05;
+}
+.cta-box::after{
+  content:'[READY]';
+  position:absolute;
+  top:16px;
+  right:24px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  color:var(--accent);
+  letter-spacing:2px;
+}
+.cta-box h2{
+  font-family:'Cinzel',serif;
+  font-size:48px;
+  font-weight:900;
+  margin-bottom:16px;
+  position:relative;
+}
+.cta-box p{
+  font-size:18px;
+  color:var(--muted);
+  margin-bottom:32px;
+  position:relative;
+}
+footer{
+  padding:48px 0;
+  border-top:1px solid rgba(255,255,255,0.05);
+  text-align:center;
+  font-size:14px;
+  color:var(--muted);
+}
+footer a{
+  color:var(--accent);
+  text-decoration:none;
+  transition:all 0.3s;
+}
+footer a:hover{
+  color:var(--purple);
+}
+@media(max-width:1024px){
+  h1{font-size:56px}
+  .stats,.steps,.feature-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  h1{font-size:40px}
+  .subtitle{font-size:16px}
+  .cta-group{flex-direction:column}
+  .btn{width:100%}
+  .stats{gap:16px}
+}
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="index.html" class="logo">M<b>M</b>GA</a>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="info.html" class="nav-link">Info</a>
-    <a href="app.html" class="nav-cta">Start Meditating</a>
-  </div>
-</nav>
+<div class="grain"></div>
+<div class="scanline"></div>
+<div class="glow-orb orb-1"></div>
+<div class="glow-orb orb-2"></div>
 
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-badge">◉ THE PLANETARY MEDITATION INITIATIVE</div>
-    <h1 class="hero-title">MAKE MEDITATION<br/>GREAT <b>AGAIN</b></h1>
-    <h2 class="hero-subtitle">MEDITATE. GET NFT's. LIFT THE FIELD.</h2>
-    <p class="hero-desc">
-      Your meditation doesn't just change you — it ripples through Earth's morphogenetic field. 
-      Donate your meditation time. Get NFTs as proof. Earn $MONK tokens.
+<div class="container">
+  <nav>
+    <div class="logo">
+      <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M16 8 L16 4 M12 10 L9 7 M20 10 L23 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M10 14 Q16 18 22 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <ellipse cx="13.5" cy="13" rx="1" ry="1.5" fill="currentColor"/>
+        <ellipse cx="18.5" cy="13" rx="1" ry="1.5" fill="currentColor"/>
+        <path d="M10 20 Q12 24 16 26 Q20 24 22 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <path d="M8 22 L6 26 M24 22 L26 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span>MMGA</span>
+    </div>
+    <a href="app.html" class="nav-cta">Start Playing</a>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">
+      <div class="pulse-dot"></div>
+      <span>Live Now • Earn as You Meditate</span>
+    </div>
+    <h1>Meditation<br/>Meets Gaming</h1>
+    <p class="subtitle">
+      Close your eyes. Sit up straight. Earn +1 MONK per second. 
+      Compete with friends. Level up your mind. It's meditation, but actually fun.
     </p>
-    <div class="hero-ctas">
-      <a href="app.html" class="btn btn-primary">START MEDITATING</a>
-      <a href="info.html" class="btn btn-secondary">Learn More</a>
+    <div class="cta-group">
+      <a href="app.html" class="btn btn-primary">Play Now</a>
+      <a href="#how" class="btn btn-secondary">How It Works</a>
     </div>
-  </div>
-</section>
-
-<section class="stats">
-  <div class="stats-grid">
-    <div class="stat">
-      <div class="stat-icon">🧘</div>
-      <span class="stat-num">1,247</span>
-      <span class="stat-label">Contributors Worldwide</span>
-    </div>
-    <div class="stat">
-      <div class="stat-icon">⏱️</div>
-      <span class="stat-num">89,432</span>
-      <span class="stat-label">Minutes Donated</span>
-    </div>
-    <div class="stat">
-      <div class="stat-icon">📡</div>
-      <span class="stat-num">0.3%</span>
-      <span class="stat-label">Toward 1% Critical Mass</span>
-    </div>
-  </div>
-</section>
-
-<section class="mission">
-  <div class="mission-inner">
-    <h2 class="section-title">THE MORPHOGENETIC FIELD</h2>
-    <p class="mission-text">
-      <strong>Rupert Sheldrake's morphogenetic field theory</strong> proposes that consciousness 
-      is a shared field connecting all beings. When you meditate, you strengthen this planetary field.
-    </p>
-    <p class="mission-text">
-      The <strong>Maharishi Effect</strong> proved that 1% of a population meditating creates 
-      measurable societal change. MMGA is building toward this critical mass.
-    </p>
-  </div>
-</section>
-
-<section class="how">
-  <h2 class="how-title">HOW IT WORKS</h2>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <div class="step-title">CONNECT</div>
-      <div class="step-desc">
-        Start meditation session with AI camera verification. Posture and liveness tracked in real-time.
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value">+1/s</div>
+        <div class="stat-label">Tokens Earned</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">∞</div>
+        <div class="stat-label">Max Score</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">24/7</div>
+        <div class="stat-label">Active Players</div>
       </div>
     </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <div class="step-title">MEDITATE</div>
-      <div class="step-desc">
-        Earn 1 $MONK per minute when posture is correct and liveness verified. Anti-spoof protection active.
-      </div>
+  </section>
+</div>
+
+<section class="how-it-works" id="how">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">How to Play</h2>
+      <p class="section-desc">Three steps to earn MONK tokens and climb the leaderboard</p>
     </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <div class="step-title">ACCUMULATE 30 MIN</div>
-      <div class="step-desc">
-        Reach 30 minutes total to become eligible for NFT airdrops. Data logged in database.
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Connect Wallet</h3>
+        <p>
+          One-click MetaMask connection. We'll add you to the Polygon network automatically. 
+          Takes 30 seconds, costs nothing.
+        </p>
       </div>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <div class="step-title">REQUEST AIRDROP</div>
-      <div class="step-desc">
-        Submit application with wallet address. Receive custom NFT within 2-4 hours.
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Start Session</h3>
+        <p>
+          Allow camera access. Our AI detects closed eyes + erect spine in real-time. 
+          No cheating, just authentic meditation.
+        </p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Earn & Compete</h3>
+        <p>
+          +1 MONK per second. Hit milestones for NFT drops. Check leaderboards. 
+          Challenge friends. Make meditation a game.
+        </p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="cta">
-  <h2 class="cta-title">JOIN THE GRID</h2>
-  <p class="cta-desc">
-    Your meditation is needed. Be part of the critical mass.
-  </p>
-  <a href="app.html" class="btn btn-primary">START MEDITATING NOW</a>
+<section class="features">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Game Features</h2>
+      <p class="section-desc">Everything you need to level up your practice</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🎮</div>
+        <h3>AI Verification</h3>
+        <p>
+          Real-time detection of eyes closed + spine erect. No manual tracking. 
+          No honor system. Just AI watching your posture so you can focus on the breath.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏆</div>
+        <h3>Leaderboards</h3>
+        <p>
+          See who's meditating the most. Compete with friends, monasteries, or the whole planet. 
+          Monthly resets keep it fresh.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💎</div>
+        <h3>NFT Rewards</h3>
+        <p>
+          Hit 30 minutes total? Request your custom NFT airdrop. Exclusive proof-of-meditation 
+          collectibles minted on Polygon.
+        </p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Minting</h3>
+        <p>
+          Mint your tokens to blockchain anytime. Each mint costs ~$0.001 in gas. 
+          Your meditation, permanently verified on-chain.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="leaderboard">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Live Leaderboard</h2>
+      <p class="section-desc">Who's winning this month?</p>
+    </div>
+    <div class="leaderboard-preview">
+      <div class="leaderboard-header">
+        <div class="leaderboard-title">🏆 Top Meditators</div>
+        <div style="color:var(--muted);font-size:14px">May 2026</div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-number top">1</div>
+        <div class="rank-avatar"></div>
+        <div class="rank-info">
+          <div class="rank-name">ZenMaster_420</div>
+          <div class="rank-level">Level 47 • Isha Yoga Center</div>
+        </div>
+        <div class="rank-hours">87.2h</div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-number">2</div>
+        <div class="rank-avatar"></div>
+        <div class="rank-info">
+          <div class="rank-name">MindfulMonk</div>
+          <div class="rank-level">Level 42 • Solo Player</div>
+        </div>
+        <div class="rank-hours">71.5h</div>
+      </div>
+      <div class="rank-item">
+        <div class="rank-number">3</div>
+        <div class="rank-avatar"></div>
+        <div class="rank-info">
+          <div class="rank-name">InnerPeace_</div>
+          <div class="rank-level">Level 38 • Art of Living</div>
+        </div>
+        <div class="rank-hours">64.3h</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <div class="container">
+    <div class="cta-box">
+      <h2>Ready to Play?</h2>
+      <p>Join thousands of meditators earning MONK tokens right now. Free to start. No credit card needed.</p>
+      <a href="app.html" class="btn btn-primary" style="font-size:18px;padding:20px 48px">
+        Start Meditation Game
+      </a>
+    </div>
+  </div>
 </section>
 
 <footer>
-  <div class="footer-title">MMGA</div>
-  <div class="footer-copyright">
-    FOCUS IS POWER. TOGETHER, WE REWRITE THE FUTURE.<br/>
-    Powered by on-chain verification • info@mmga.yoga
+  <div class="container">
+    <p>
+      MONKCOIN © 2026 | Make Meditation Great Again<br/>
+      <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" target="_blank">Smart Contract</a> • 
+      <a href="mailto:info@mmga.yoga">Contact</a> • 
+      <a href="https://twitter.com/monkcoin" target="_blank">Twitter</a>
+    </p>
   </div>
 </footer>
 
