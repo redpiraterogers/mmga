@@ -196,7 +196,23 @@ body{
 <div class="container">
   <!-- LEFT: WALLET -->
   <div class="panel">
-    <h2>WALLET</h2>
+    <h2>
+      <svg style="width:60px;height:30px;vertical-align:middle;margin-right:8px" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2"/>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <linearGradient id="grad" x1="0%" x2="100%">
+            <stop offset="0%" style="stop-color:#00ff41"/>
+            <stop offset="50%" style="stop-color:#ff10f0"/>
+            <stop offset="100%" style="stop-color:#00d4ff"/>
+          </linearGradient>
+        </defs>
+        <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#grad)" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+      </svg>
+      WALLET
+    </h2>
     <button id="connectBtn" class="btn">CONNECT WALLET</button>
     <div id="walletInfo" style="display:none">
       <div class="address" id="address"></div>
@@ -222,7 +238,7 @@ body{
         <div class="badge" id="earnBadge">💰 EARNING: NO</div>
       </div>
     </div>
-    <button id="startBtn" class="btn" disabled>START SESSION</button>
+    <button id="startBtn" class="btn">START SESSION</button>
     <button id="stopBtn" class="btn btn-pink" disabled>STOP SESSION</button>
     <div class="stat">
       <div class="stat-label">Session: <span id="sessionTime">00:00</span> | Total: <span id="totalTime">00:00</span></div>
@@ -350,11 +366,11 @@ document.getElementById('connectBtn').onclick = async () => {
       state.address.slice(0,6) + '...' + state.address.slice(-4);
     document.getElementById('walletInfo').style.display = 'block';
     document.getElementById('connectBtn').style.display = 'none';
-    document.getElementById('startBtn').disabled = false;
     
     log('Fetching balance...');
     await fetchBalance();
     log('✅ Wallet connected successfully!');
+    log('You can now mint tokens after meditating!');
     
   } catch (e) {
     log('❌ ERROR: ' + e.message);
@@ -379,12 +395,30 @@ async function fetchBalance() {
 // START SESSION
 document.getElementById('startBtn').onclick = async () => {
   try {
-    log('🎥 Requesting camera...');
-    const stream = await navigator.mediaDevices.getUserMedia({ 
-      video: { width: 640, height: 480 }
-    });
-    document.getElementById('video').srcObject = stream;
-    log('✓ Camera active');
+    log('🎥 Requesting camera access...');
+    log('Please allow camera when browser asks!');
+    
+    const constraints = {
+      video: {
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+        facingMode: 'user'
+      },
+      audio: false
+    };
+    
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+    
+    // Wait for video to actually start playing
+    video.onloadedmetadata = () => {
+      video.play();
+      log('✓ Camera active - video playing');
+    };
+    
+    log('✓ Camera stream obtained');
     
     state.meditating = true;
     state.sessionSec = 0;
@@ -393,6 +427,7 @@ document.getElementById('startBtn').onclick = async () => {
     document.getElementById('stopBtn').disabled = false;
     
     log('🧘 Session started!');
+    log('Close your eyes and sit up straight to earn tokens!');
     
     // Timer
     intervals.push(setInterval(() => {
@@ -438,8 +473,27 @@ document.getElementById('startBtn').onclick = async () => {
     }, 1000));
     
   } catch (e) {
-    log('❌ Camera error: ' + e.message);
-    alert('Camera failed:\n\n' + e.message + '\n\nPlease allow camera access!');
+    log('❌ Camera error: ' + e.name + ' - ' + e.message);
+    
+    let errorMsg = 'Camera failed!\n\n';
+    
+    if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
+      errorMsg += 'You denied camera permission.\n\n';
+      errorMsg += 'To fix:\n';
+      errorMsg += '1. Click the camera icon in address bar\n';
+      errorMsg += '2. Allow camera access\n';
+      errorMsg += '3. Refresh page and try again';
+    } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
+      errorMsg += 'No camera found!\n\n';
+      errorMsg += 'Make sure your device has a camera connected.';
+    } else if (e.name === 'NotReadableError' || e.name === 'TrackStartError') {
+      errorMsg += 'Camera is being used by another app.\n\n';
+      errorMsg += 'Close other apps using camera and try again.';
+    } else {
+      errorMsg += e.message;
+    }
+    
+    alert(errorMsg);
   }
 };
 
@@ -466,10 +520,13 @@ document.getElementById('stopBtn').onclick = async () => {
   
   log('Session ended: ' + state.sessionSec + 's, ' + state.earned + ' tokens');
   
-  // Auto-mint if tokens earned
-  if (state.earned > 0) {
+  // Auto-mint if tokens earned AND wallet connected
+  if (state.earned > 0 && state.address) {
     log('Auto-minting tokens...');
     await mint();
+  } else if (state.earned > 0 && !state.address) {
+    log('⚠ Connect wallet to mint your ' + state.earned + ' tokens!');
+    alert('You earned ' + state.earned + ' tokens!\n\nConnect wallet to mint them to blockchain.');
   }
 };
 
@@ -479,28 +536,55 @@ document.getElementById('mintBtn').onclick = mint;
 async function mint() {
   if (state.earned === 0) {
     log('⚠ No tokens to mint');
+    alert('No tokens earned yet! Meditate first.');
+    return;
+  }
+  
+  if (!state.address) {
+    log('⚠ Wallet not connected');
+    alert('Please connect wallet first to mint tokens!');
     return;
   }
   
   try {
     log('🪙 Minting ' + state.earned + ' tokens...');
+    log('Wallet: ' + state.address);
+    log('Amount: ' + state.earned);
+    
     document.getElementById('mintBtn').textContent = 'MINTING...';
     document.getElementById('mintBtn').disabled = true;
     
+    const payload = {
+      wallet: state.address,
+      amount: state.earned
+    };
+    
+    log('Sending payload: ' + JSON.stringify(payload));
+    
     const res = await fetch(`${BACKEND}/api/mint-monk`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        wallet: state.address,
-        amount: state.earned
-      })
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
     });
     
-    if (!res.ok) {
-      throw new Error('HTTP ' + res.status);
+    log('Response status: ' + res.status);
+    
+    const responseText = await res.text();
+    log('Response body: ' + responseText);
+    
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      throw new Error('Invalid JSON response: ' + responseText);
     }
     
-    const data = await res.json();
+    if (!res.ok) {
+      throw new Error('HTTP ' + res.status + ': ' + (data.message || responseText));
+    }
     
     if (data.success) {
       const txHash = data.transactionHash;
@@ -529,7 +613,7 @@ async function mint() {
     
   } catch (e) {
     log('❌ Mint error: ' + e.message);
-    alert('Mint error:\n\n' + e.message);
+    alert('Mint error:\n\n' + e.message + '\n\nCheck debug log for details.');
   } finally {
     document.getElementById('mintBtn').textContent = 'MINT TOKENS';
     if (state.earned > 0) {
@@ -564,7 +648,8 @@ if (window.ethereum) {
   log('⚠ MetaMask not detected - install it first!');
 }
 
-log('✅ Ready to connect wallet!');
+log('✅ Ready! You can start meditating without wallet.');
+log('Connect wallet later to mint your tokens to blockchain.');
 </script>
 
 </body>
