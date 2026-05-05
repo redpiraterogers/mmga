@@ -3,356 +3,265 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>The No-Currency Currency</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+<title>MONKCOIN | The Anti-Currency</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
-:root{
-  --void:#000000;
-  --off-white:#f8f8f0;
-  --soft-black:#1a1a1a;
-  --gold:#d4a574;
-  --muted:#888;
-}
+:root{--pixel:'Press Start 2P',cursive;--retro:'VT323',monospace;--bg:#0a0a0f;--green:#00ff41;--pink:#ff10f0;--blue:#00d4ff;--yellow:#fff000;--orange:#ff6b35;--purple:#9d4edd}
 *{box-sizing:border-box;margin:0;padding:0}
-body{
-  background:var(--void);
-  color:var(--off-white);
-  font-family:'IBM Plex Mono',monospace;
-  line-height:2;
-  overflow-x:hidden;
-  font-weight:300;
-}
-.container{
-  max-width:800px;
-  margin:0 auto;
-  padding:0 32px;
-}
-.spacer{
-  height:120px;
-}
-.banner{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  z-index:1000;
-  padding:24px 40px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  background:rgba(0,0,0,0.8);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid rgba(212,165,116,0.2);
-}
-.logo-container{
-  display:flex;
-  align-items:center;
-  gap:16px;
-}
-.infinity-ring{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  border:3px solid var(--gold);
-  position:relative;
-  opacity:0.9;
-}
-.infinity-ring::before{
-  content:'∞';
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:28px;
-  color:var(--gold);
-  font-weight:bold;
-}
-.logo{
-  font-family:'Cinzel',serif;
-  font-size:18px;
-  letter-spacing:4px;
-  color:var(--gold);
-  opacity:0.9;
-}
-.section{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-.statement{
-  font-family:'Cinzel',serif;
-  font-size:64px;
-  font-weight:900;
-  line-height:1.2;
-  margin-bottom:80px;
-  color:var(--off-white);
-  animation:fadeIn 2s ease-out;
-}
-@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.sub{
-  font-size:16px;
-  line-height:2;
-  color:var(--muted);
-  max-width:600px;
-  margin:0 auto;
-  font-weight:300;
-}
-.equation{
-  font-family:'Cinzel',serif;
-  font-size:120px;
-  font-weight:900;
-  line-height:1;
-  color:var(--gold);
-  margin-bottom:40px;
-}
-.manifest{
-  font-size:18px;
-  line-height:2.2;
-  max-width:700px;
-  margin:0 auto 60px;
-  text-align:left;
-}
-.manifest p{
-  margin-bottom:40px;
-}
-.inverse{
-  color:var(--gold);
-  font-weight:400;
-}
-.strikethrough{
-  text-decoration:line-through;
-  opacity:0.4;
-}
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:1px;
-  background:var(--void);
-  max-width:900px;
-  margin:80px auto;
-  border:1px solid rgba(212,165,116,0.2);
-}
-.cell{
-  background:var(--soft-black);
-  padding:60px 40px;
-  text-align:center;
-}
-.cell-title{
-  font-family:'Cinzel',serif;
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:3px;
-  margin-bottom:24px;
-  color:var(--muted);
-}
-.cell-content{
-  font-family:'Cinzel',serif;
-  font-size:32px;
-  font-weight:700;
-  line-height:1.4;
-}
-.list{
-  max-width:700px;
-  margin:80px auto;
-  text-align:left;
-}
-.list-item{
-  padding:32px 0;
-  border-bottom:1px solid rgba(212,165,116,0.1);
-  font-size:16px;
-  line-height:2;
-}
-.list-item:last-child{
-  border-bottom:none;
-}
-.number{
-  color:var(--gold);
-  font-family:'Cinzel',serif;
-  margin-right:16px;
-}
-.ring{
-  width:200px;
-  height:200px;
-  border:2px solid var(--gold);
-  border-radius:50%;
-  margin:80px auto;
-  position:relative;
-}
-.ring::before{
-  content:'∞';
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-family:'Cinzel',serif;
-  font-size:80px;
-  color:var(--gold);
-}
-.cta{
-  display:inline-block;
-  padding:20px 48px;
-  border:2px solid var(--gold);
-  color:var(--gold);
-  text-decoration:none;
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:2px;
-  transition:all 0.4s;
-  margin-top:60px;
-}
-.cta:hover{
-  background:var(--gold);
-  color:var(--void);
-}
-.divider{
-  width:60px;
-  height:1px;
-  background:var(--gold);
-  margin:80px auto;
-}
-footer{
-  text-align:center;
-  padding:80px 32px;
-  font-size:12px;
-  color:var(--muted);
-  border-top:1px solid rgba(212,165,116,0.1);
-}
-@media(max-width:768px){
-  .statement{font-size:40px}
-  .equation{font-size:72px}
-  .grid{grid-template-columns:1fr;gap:0}
-  .cell-content{font-size:24px}
-}
+body{background:var(--bg);color:var(--green);font-family:var(--retro);line-height:1.6;overflow-x:hidden}
+.scanline{position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);pointer-events:none;z-index:9999;animation:flicker 0.15s infinite}
+@keyframes flicker{0%{opacity:0.97}50%{opacity:1}100%{opacity:0.98}}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(10,10,15,0.95);border-bottom:4px solid var(--green);padding:16px 24px;box-shadow:0 0 20px var(--green);backdrop-filter:blur(10px)}
+.nav-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+.logo{display:flex;align-items:center;gap:16px;text-decoration:none}
+.infinity-logo{width:80px;height:40px}
+.logo-text{font-family:var(--pixel);font-size:18px;color:var(--green);text-shadow:0 0 10px var(--green);animation:glow 2s ease-in-out infinite alternate}
+@keyframes glow{from{text-shadow:0 0 10px var(--green)}to{text-shadow:0 0 20px var(--green),0 0 30px var(--green)}}
+.nav-btn{padding:12px 24px;background:var(--pink);color:var(--bg);border:3px solid var(--pink);font-family:var(--pixel);font-size:10px;cursor:pointer;box-shadow:0 0 20px var(--pink);transition:all 0.3s;text-decoration:none;display:inline-block}
+.nav-btn:hover{background:transparent;color:var(--pink);transform:scale(1.05)}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 24px 60px}
+.hero-infinity{width:300px;height:150px;margin:0 auto 40px}
+h1{font-family:var(--pixel);font-size:56px;line-height:1.3;margin-bottom:32px;background:linear-gradient(90deg,var(--green),var(--pink),var(--blue),var(--yellow),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rainbow 4s linear infinite;background-size:200% 100%}
+@keyframes rainbow{to{background-position:200% center}}
+.subtitle{font-size:22px;color:var(--blue);max-width:700px;margin:0 auto 48px;text-shadow:0 0 10px var(--blue);line-height:1.8}
+.cta-group{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-bottom:80px}
+.btn{padding:20px 40px;font-family:var(--pixel);font-size:13px;border:4px solid;cursor:pointer;transition:all 0.3s;text-decoration:none;display:inline-block;text-transform:uppercase;letter-spacing:2px}
+.btn-pink{background:var(--pink);border-color:var(--pink);color:var(--bg);box-shadow:0 0 30px var(--pink)}
+.btn-pink:hover{background:transparent;color:var(--pink);transform:translateY(-4px)}
+.btn-outline{background:transparent;border-color:var(--green);color:var(--green);box-shadow:0 0 20px rgba(0,255,65,0.5)}
+.btn-outline:hover{background:var(--green);color:var(--bg)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.stat{padding:32px;background:rgba(0,255,65,0.05);border:4px solid var(--green);box-shadow:0 0 30px rgba(0,255,65,0.3);position:relative}
+.stat::before{content:'▲';position:absolute;top:10px;left:12px;color:var(--yellow);font-size:16px}
+.stat-value{font-family:var(--pixel);font-size:48px;color:var(--pink);text-shadow:0 0 20px var(--pink);margin-bottom:12px}
+.stat-label{font-size:18px;color:var(--blue)}
+.section{padding:120px 0}
+.section-title{font-family:var(--pixel);font-size:40px;text-align:center;margin-bottom:24px;color:var(--yellow);text-shadow:0 0 20px var(--yellow)}
+.section-desc{text-align:center;font-size:22px;color:var(--blue);margin-bottom:80px}
+.features{display:grid;grid-template-columns:repeat(2,1fr);gap:32px}
+.feature{padding:48px;background:rgba(157,78,221,0.1);border:4px solid var(--purple);transition:all 0.3s;box-shadow:0 0 20px rgba(157,78,221,0.3)}
+.feature:hover{transform:translateY(-8px);box-shadow:0 0 40px var(--purple);border-color:var(--pink)}
+.feature-icon{font-size:56px;margin-bottom:24px}
+.feature h3{font-family:var(--pixel);font-size:18px;color:var(--pink);margin-bottom:20px;text-shadow:0 0 10px var(--pink)}
+.feature p{font-size:20px;color:var(--green);line-height:1.8}
+.firefox-box{margin:80px auto;max-width:900px;padding:48px;background:rgba(255,107,53,0.15);border:6px solid var(--orange);text-align:center;animation:pulse-box 2s ease-in-out infinite;position:relative}
+@keyframes pulse-box{0%,100%{box-shadow:0 0 20px var(--orange)}50%{box-shadow:0 0 60px var(--orange)}}
+.firefox-box::before{content:'⚠';position:absolute;top:20px;left:30px;font-size:48px;color:var(--yellow);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.firefox-box h3{font-family:var(--pixel);font-size:28px;color:var(--yellow);margin-bottom:20px;text-shadow:0 0 15px var(--yellow)}
+.firefox-box p{font-size:22px;color:var(--pink);line-height:1.8;margin-bottom:28px}
+.firefox-btn{display:inline-block;padding:20px 40px;background:var(--orange);color:var(--bg);font-family:var(--pixel);font-size:14px;border:4px solid var(--orange);text-decoration:none;box-shadow:0 0 30px var(--orange);transition:all 0.3s}
+.firefox-btn:hover{background:transparent;color:var(--orange);transform:scale(1.05)}
+.philosophy{background:linear-gradient(180deg,transparent,rgba(10,10,15,0.9),transparent);padding:120px 0}
+.equation{font-family:var(--pixel);font-size:96px;text-align:center;margin-bottom:40px;background:linear-gradient(90deg,var(--green),var(--pink),var(--blue),var(--yellow),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rainbow 4s linear infinite;background-size:200% 100%}
+.equation-sub{font-family:var(--pixel);font-size:28px;text-align:center;color:var(--blue);margin-bottom:80px;text-shadow:0 0 15px var(--blue)}
+.manifesto{max-width:900px;margin:0 auto 100px;font-size:22px;line-height:2;text-align:center}
+.manifesto p{margin-bottom:40px;color:var(--green)}
+.highlight{color:var(--pink);font-weight:bold;text-shadow:0 0 15px var(--pink)}
+.gold{color:var(--yellow);font-family:var(--pixel);font-size:24px;text-shadow:0 0 15px var(--yellow)}
+.inversion-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:32px;margin:80px 0}
+.inv-card{padding:48px;background:rgba(10,10,15,0.7);border:4px solid;position:relative;transition:transform 0.3s}
+.inv-card:hover{transform:translateY(-8px)}
+.inv-card.old{border-color:var(--orange);box-shadow:0 0 30px rgba(255,107,53,0.3)}
+.inv-card.new{border-color:var(--green);box-shadow:0 0 30px rgba(0,255,65,0.3)}
+.card-label{font-family:var(--pixel);font-size:14px;margin-bottom:20px;letter-spacing:2px}
+.inv-card.old .card-label{color:var(--orange);text-shadow:0 0 10px var(--orange)}
+.inv-card.new .card-label{color:var(--green);text-shadow:0 0 10px var(--green)}
+.card-title{font-family:var(--pixel);font-size:22px;color:var(--pink);margin-bottom:24px;text-shadow:0 0 12px var(--pink)}
+.card-text{font-size:18px;line-height:1.9;color:var(--blue)}
+.ring-section{text-align:center;padding:100px 0}
+.big-infinity{width:400px;height:200px;margin:0 auto 40px}
+.ring-title{font-family:var(--pixel);font-size:32px;color:var(--yellow);margin-bottom:32px;text-shadow:0 0 20px var(--yellow)}
+.ring-text{font-size:22px;line-height:2;color:var(--green);max-width:700px;margin:0 auto}
+.cta-final{padding:120px 0;text-align:center}
+.cta-box{max-width:900px;margin:0 auto;padding:80px 48px;background:rgba(0,255,65,0.05);border:6px solid var(--green);box-shadow:0 0 60px var(--green);position:relative}
+.cta-box h2{font-family:var(--pixel);font-size:40px;color:var(--pink);margin-bottom:28px;text-shadow:0 0 25px var(--pink)}
+.cta-box p{font-size:22px;color:var(--blue);margin-bottom:48px;line-height:1.8}
+footer{padding:60px 24px;border-top:4px solid var(--green);text-align:center;background:rgba(10,10,15,0.9)}
+footer p{font-size:18px;color:var(--green);line-height:2.2}
+footer a{color:var(--pink);text-decoration:none;text-shadow:0 0 10px var(--pink);transition:color 0.3s}
+footer a:hover{color:var(--yellow);text-shadow:0 0 15px var(--yellow)}
+@media(max-width:768px){h1{font-size:36px}.section-title{font-size:28px}.equation{font-size:56px}.features,.stats,.inversion-grid{grid-template-columns:1fr}.big-infinity{width:280px;height:140px}}
 </style>
 </head>
 <body>
 
-<div class="banner">
-  <div class="logo-container">
-    <div class="infinity-ring"></div>
-    <div class="logo">MMGA</div>
+<div class="scanline"></div>
+
+<nav>
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <svg class="infinity-logo" viewBox="0 0 120 60"><defs><filter id="navGlow"><feGaussianBlur stdDeviation="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="navGrad" x1="0%" x2="100%"><stop offset="0%" style="stop-color:#00ff41"/><stop offset="50%" style="stop-color:#ff10f0"/><stop offset="100%" style="stop-color:#00d4ff"/></linearGradient></defs><path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#navGrad)" stroke-width="4" stroke-linecap="round" filter="url(#navGlow)"/></svg>
+      <span class="logo-text">MMGA</span>
+    </a>
+    <a href="app.html" class="nav-btn">PLAY NOW</a>
   </div>
-  <a href="app.html" style="color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.8;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">Enter</a>
+</nav>
+
+<div class="container">
+  <section class="hero">
+    <div>
+      <svg class="hero-infinity" viewBox="0 0 120 60"><defs><filter id="heroGlow"><feGaussianBlur stdDeviation="4"/><feMerge><feMergeNode/><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="heroGrad"><stop offset="0%" style="stop-color:#00ff41"><animate attributeName="stop-color" values="#00ff41;#ff10f0;#00d4ff;#fff000;#00ff41" dur="4s" repeatCount="indefinite"/></stop><stop offset="50%" style="stop-color:#ff10f0"><animate attributeName="stop-color" values="#ff10f0;#00d4ff;#fff000;#00ff41;#ff10f0" dur="4s" repeatCount="indefinite"/></stop><stop offset="100%" style="stop-color:#00d4ff"><animate attributeName="stop-color" values="#00d4ff;#fff000;#00ff41;#ff10f0;#00d4ff" dur="4s" repeatCount="indefinite"/></stop></linearGradient></defs><path d="M 10,30 C 10,15 18,8 28,8 C 38,8 48,15 60,30 C 72,45 82,52 92,52 C 102,52 110,45 110,33 C 110,21 102,14 92,14 C 82,14 72,21 60,30 C 48,39 38,46 28,46 C 18,46 10,39 10,27 Z" fill="none" stroke="url(#heroGrad)" stroke-width="8" stroke-linecap="round" filter="url(#heroGlow)"><animate attributeName="stroke-width" values="8;10;8" dur="2s" repeatCount="indefinite"/></path></svg>
+      
+      <h1>THE NO-CURRENCY<br/>CURRENCY</h1>
+      
+      <p class="subtitle">
+        Close your eyes. Earn $MONK. Mint to blockchain.<br/>
+        The anti-utility token. The paradox. The counter-ring.
+      </p>
+      
+      <div class="cta-group">
+        <a href="app.html" class="btn btn-pink">Start Meditating</a>
+        <a href="#philosophy" class="btn btn-outline">The Philosophy</a>
+      </div>
+      
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">+1/s</div>
+          <div class="stat-label">Earn Rate</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">∞</div>
+          <div class="stat-label">Max Supply</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">$0</div>
+          <div class="stat-label">Token Value</div>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<div class="spacer"></div>
-
-<section class="section">
+<section class="section" id="features">
   <div class="container">
-    <h1 class="statement">
-      The No-Currency<br/>Currency
-    </h1>
-    <p class="sub">
-      A token with no value. A brand with no logo. A utility with no function.<br/>
-      The inverse of everything that exists.
-    </p>
+    <h2 class="section-title">HOW IT WORKS</h2>
+    <p class="section-desc">◆ Proof of presence meditation gaming ◆</p>
+    
+    <div class="firefox-box">
+      <h3>⚠ BROWSER NOTICE ⚠</h3>
+      <p>
+        Chrome MetaMask has a display glitch with $MONK tokens!<br/>
+        Your tokens ARE minted to blockchain, Chrome just can't show them.
+      </p>
+      <p style="font-size:26px;color:var(--green)">
+        👉 USE FIREFOX FOR BEST EXPERIENCE 👈
+      </p>
+      <a href="https://www.mozilla.org/firefox/" target="_blank" class="firefox-btn">
+        DOWNLOAD FIREFOX
+      </a>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <h3>AI VERIFICATION</h3>
+        <p>
+          Real-time camera detection. Eyes closed + spine erect = tokens flowing. No cheating. Just presence.
+        </p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <h3>INSTANT MINTING</h3>
+        <p>
+          Earn locally, mint when ready. ~$0.001 gas. Your meditation, permanently on Polygon blockchain.
+        </p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">🏆</div>
+        <h3>LEADERBOARDS</h3>
+        <p>
+          Compete globally. Monthly resets. Prove your meditation power level. Make zen a game.
+        </p>
+      </div>
+      
+      <div class="feature">
+        <div class="feature-icon">💎</div>
+        <h3>NFT REWARDS</h3>
+        <p>
+          Hit 30 minutes total? Request exclusive proof-of-meditation NFTs. Flex your consciousness.
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
-<section class="section">
+<section class="philosophy" id="philosophy">
   <div class="container">
     <div class="equation">0 = 1</div>
-    <div class="manifest">
+    <p class="equation-sub">THE INVERSION</p>
+    
+    <div class="manifesto">
       <p>
-        In a world where <span class="strikethrough">time = money</span>,<br/>
-        we propose: <span class="inverse">time = life</span>.
+        There is <span class="highlight">one thing</span> that neither time nor money can buy.
       </p>
       <p>
-        In a world where <span class="strikethrough">currency = utility</span>,<br/>
-        we propose: <span class="inverse">currency = presence</span>.
+        It is <span class="gold">the moment</span> when time stops being currency—<br/>
+        when survival becomes celebration—<br/>
+        when zero equals one.
       </p>
       <p>
-        In a world where <span class="strikethrough">brands = identity</span>,<br/>
-        we propose: <span class="inverse">no brand = true identity</span>.
-      </p>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <h2 class="statement" style="font-size:48px">The Paradox</h2>
-    <div class="grid">
-      <div class="cell">
-        <div class="cell-title">What It Is</div>
-        <div class="cell-content">Nothing</div>
-      </div>
-      <div class="cell">
-        <div class="cell-title">What It Does</div>
-        <div class="cell-content">Nothing</div>
-      </div>
-      <div class="cell">
-        <div class="cell-title">What It's Worth</div>
-        <div class="cell-content">Nothing</div>
-      </div>
-      <div class="cell">
-        <div class="cell-title">Why It Matters</div>
-        <div class="cell-content">Everything</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="manifest">
-      <p>
-        This is not a cryptocurrency.<br/>
-        This is not a meditation app.<br/>
-        This is not a movement.
-      </p>
-      <p>
-        This is the <span class="inverse">anti-currency</span>.<br/>
-        The <span class="inverse">anti-app</span>.<br/>
-        The <span class="inverse">anti-movement</span>.
-      </p>
-      <p>
-        It does not exist to be used.<br/>
-        It exists to <span class="inverse">prove you were present</span>.
+        <span class="highlight">MONKCOIN</span> is not a cryptocurrency.<br/>
+        It is the <span class="gold">anti-currency</span>.<br/>
+        The utility token with <span class="highlight">no utility</span>.
       </p>
     </div>
-  </div>
-</section>
 
-<section class="section">
-  <div class="container">
-    <h2 class="statement" style="font-size:48px">The Principles</h2>
-    <div class="list">
-      <div class="list-item">
-        <span class="number">01</span>
-        The token cannot be bought. It can only be <span class="inverse">earned through presence</span>.
+    <h2 class="section-title" style="margin-top:80px">THE GREAT INVERSION</h2>
+    <p class="section-desc">◆ Old paradigm → New paradigm ◆</p>
+
+    <div class="inversion-grid">
+      <div class="inv-card old">
+        <div class="card-label">⚠ OLD WORLD</div>
+        <h3 class="card-title">Time = Currency</h3>
+        <p class="card-text">
+          Every second measured by productivity. Every breath calculated by output. 
+          You trade hours for dollars. Days for survival. Years for retirement.
+          Monday through Friday, you rent yourself.
+        </p>
       </div>
-      <div class="list-item">
-        <span class="number">02</span>
-        The token cannot be sold. It can only be <span class="inverse">held as proof</span>.
+
+      <div class="inv-card new">
+        <div class="card-label">✓ NEW WORLD</div>
+        <h3 class="card-title">Time = Celebration</h3>
+        <p class="card-text">
+          Every second is an act of rebellion. Every breath refuses the transaction. 
+          You earn by being present. By closing your eyes. By sitting up straight.
+          There is no Monday. There is only now.
+        </p>
       </div>
-      <div class="list-item">
-        <span class="number">03</span>
-        The token has no utility. Its only function is <span class="inverse">to have no function</span>.
+
+      <div class="inv-card old">
+        <div class="card-label">⚠ UTILITY TOKENS</div>
+        <h3 class="card-title">Value = Utility</h3>
+        <p class="card-text">
+          Every token must do something. Governance. Staking. Yield farming. 
+          The crypto world recreates the same trap: productivity worship. 
+          Your tokens must work. Must earn. Must justify themselves.
+        </p>
       </div>
-      <div class="list-item">
-        <span class="number">04</span>
-        The brand has no identity. It is <span class="inverse">the absence of branding</span>.
-      </div>
-      <div class="list-item">
-        <span class="number">05</span>
-        The value increases when <span class="inverse">the world stops measuring value</span>.
+
+      <div class="inv-card new">
+        <div class="card-label">✓ MONKCOIN</div>
+        <h3 class="card-title">Value = Presence</h3>
+        <p class="card-text">
+          This token does nothing. It cannot be traded. It serves no purpose. 
+          Its only utility is proof of meditation. Proof that you were present. 
+          The anti-utility token. The paradox. The loop that breaks the loop.
+        </p>
       </div>
     </div>
-  </div>
-</section>
 
-<section class="section">
-  <div class="container">
-    <div class="ring"></div>
-    <div class="manifest" style="text-align:center">
-      <p>
+    <div class="ring-section">
+      <svg class="big-infinity" viewBox="0 0 120 60"><defs><filter id="bigGlow"><feGaussianBlur stdDeviation="5"/><feMerge><feMergeNode/><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter><linearGradient id="bigGrad"><stop offset="0%" style="stop-color:#fff000"/><stop offset="50%" style="stop-color:#ff10f0"/><stop offset="100%" style="stop-color:#fff000"/></linearGradient></defs><path d="M 10,30 C 10,15 18,8 28,8 C 38,8 48,15 60,30 C 72,45 82,52 92,52 C 102,52 110,45 110,33 C 110,21 102,14 92,14 C 82,14 72,21 60,30 C 48,39 38,46 28,46 C 18,46 10,39 10,27 Z" fill="none" stroke="url(#bigGrad)" stroke-width="10" stroke-linecap="round" filter="url(#bigGlow)"><animate attributeName="stroke-width" values="10;12;10" dur="3s" repeatCount="indefinite"/></path></svg>
+      
+      <h3 class="ring-title">∞ THE COUNTER-RING</h3>
+      <p class="ring-text">
         One ring to rule them all.<br/>
-        But this is the <span class="inverse">counter-ring</span>.
-      </p>
-      <p>
+        But this is the <span class="highlight">counter-ring</span>.<br/>
         It rules by refusing to rule.<br/>
         It binds by setting free.
       </p>
@@ -360,77 +269,30 @@ footer{
   </div>
 </section>
 
-<section class="section">
+<section class="cta-final">
   <div class="container">
-    <h2 class="statement" style="font-size:48px">The Soundscape</h2>
-    <div class="manifest" style="text-align:center;margin-bottom:60px">
+    <div class="cta-box">
+      <h2>READY PLAYER ZEN?</h2>
       <p>
-        Meditation requires <span class="inverse">silence</span>.<br/>
-        But silence can be <span class="inverse">sound</span>.
+        Join the cyber monks. Earn while you meditate.<br/>
+        Free to play. Blockchain verified. Zero utility.
       </p>
-    </div>
-    
-    <div style="max-width:600px;margin:0 auto;background:var(--soft-black);padding:40px;border:1px solid rgba(212,165,116,0.2)">
-      <div style="margin-bottom:32px">
-        <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;text-align:center">Curated Meditation Music</div>
-        <div style="font-size:13px;color:var(--muted);text-align:center;line-height:1.8;margin-bottom:24px">
-          Select a soundscape for your practice
-        </div>
-      </div>
-
-      <!-- Spotify Playlist Embed -->
-      <div style="margin-bottom:24px">
-        <iframe style="border-radius:12px;width:100%" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWZqd5JICZI0u?utm_source=generator&theme=0" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-      </div>
-
-      <!-- YouTube Playlist Embed -->
-      <div style="margin-bottom:24px">
-        <iframe style="border-radius:12px;width:100%;height:200px" src="https://www.youtube.com/embed/videoseries?list=PLNDXnRTr_vBKV4sIcBnqwPk0PIhzVdL_W&theme=dark" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-
-      <div style="text-align:center;margin-top:32px">
-        <a href="https://open.spotify.com/search/meditation%20music" target="_blank" style="color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:1px;opacity:0.8;transition:opacity 0.3s" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
-          Explore More Playlists →
-        </a>
-      </div>
+      <a href="app.html" class="btn btn-pink" style="font-size:16px;padding:24px 56px">
+        ENTER THE TEMPLE
+      </a>
     </div>
   </div>
 </section>
-
-<section class="section">
-  <div class="container">
-    <h2 class="statement" style="font-size:48px">The Inversion</h2>
-    <div class="manifest">
-      <p>
-        When enough people stop treating time as currency,<br/>
-        time stops being currency.
-      </p>
-      <p>
-        When enough people stop seeking utility,<br/>
-        utility stops being the measure of worth.
-      </p>
-      <p>
-        When enough people reject branding,<br/>
-        the no-brand becomes the only brand.
-      </p>
-      <p style="margin-top:60px">
-        This is not marketing.<br/>
-        This is <span class="inverse">the end of marketing</span>.
-      </p>
-    </div>
-    <div class="divider"></div>
-    <a href="app.html" class="cta">Enter</a>
-  </div>
-</section>
-
-<div class="spacer"></div>
 
 <footer>
   <div class="container">
-    MONKCOIN © 2026<br/>
-    The No-Currency Currency<br/>
-    <br/>
-    <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" style="color:var(--gold);text-decoration:none" target="_blank">Smart Contract</a>
+    <p>
+      MONKCOIN © 2026 | MAKE MEDITATION GREAT AGAIN<br/>
+      <a href="https://polygonscan.com/address/0x98823C52037aF043c2628185C74D7E98b16e3444" target="_blank">SMART CONTRACT</a> • 
+      <a href="mailto:info@mmga.yoga">CONTACT</a><br/>
+      <br/>
+      ◆ USE FIREFOX • TOKENS ARE PROOF OF PRESENCE ◆
+    </p>
   </div>
 </footer>
 
