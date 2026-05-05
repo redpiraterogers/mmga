@@ -116,6 +116,13 @@ body{
   color:var(--neon-pink);
   margin-bottom:16px;
   text-shadow:0 0 10px var(--neon-pink);
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.neon-smiley{
+  width:32px;
+  height:32px;
 }
 .main-panel{
   display:flex;
@@ -131,6 +138,7 @@ body{
   align-items:center;
   justify-content:center;
   box-shadow:0 0 30px rgba(0,212,255,0.5);
+  overflow:hidden;
 }
 #video{
   width:100%;
@@ -374,7 +382,28 @@ body{
 
 <div class="container">
   <div class="panel">
-    <div class="panel-title">◆ WALLET ◆</div>
+    <div class="panel-title">
+      <svg class="neon-smiley" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="neonGlow">
+            <feGaussianBlur stdDeviation="4"/>
+            <feMerge>
+              <feMergeNode/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <circle cx="60" cy="60" r="50" fill="#0a0a0f" stroke="#00ff41" stroke-width="4" filter="url(#neonGlow)"/>
+        <circle cx="45" cy="50" r="8" fill="#00d4ff" filter="url(#neonGlow)">
+          <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <circle cx="75" cy="50" r="8" fill="#00d4ff" filter="url(#neonGlow)">
+          <animate attributeName="r" values="7;9;7" dur="2s" repeatCount="indefinite"/>
+        </circle>
+        <path d="M 40 70 Q 60 85 80 70" fill="none" stroke="#ff10f0" stroke-width="4" stroke-linecap="round" filter="url(#neonGlow)"/>
+      </svg>
+      WALLET
+    </div>
     <button id="connectBtn" class="btn btn-start" style="width:100%;margin-bottom:16px">CONNECT WALLET</button>
     <div id="walletInfo" style="display:none">
       <div class="wallet-display" id="walletAddress"></div>
@@ -472,9 +501,6 @@ body{
     <p><strong>Minting:</strong></p>
     <p>Click "MINT TO CHAIN" anytime to save tokens to blockchain (~$0.001 gas). Or wait - we auto-mint when you stop your session.</p>
     
-    <p><strong>NFT Airdrop:</strong></p>
-    <p>Reach 30 minutes total meditation time to request exclusive proof-of-meditation NFTs!</p>
-    
     <p><strong>Troubleshooting:</strong></p>
     <p>• Tokens not showing in Chrome? Switch to Firefox!<br/>
     • Camera not working? Check browser permissions<br/>
@@ -486,9 +512,6 @@ body{
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js"></script>
 <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
 
 <script>
@@ -506,17 +529,22 @@ let state = {
   spineErect: false,
   earnedTokens: 0,
   sessionStart: null,
-  totalSeconds: 0,
+  sessionSeconds: 0,
+  totalSeconds: parseInt(localStorage.getItem('totalSeconds') || '0'),
   provider: null,
   signer: null,
   address: null
 };
+
+let earningInterval = null;
+let timerInterval = null;
 
 // MetaMask Connection
 document.getElementById('connectBtn').addEventListener('click', async () => {
   try {
     if (!window.ethereum) {
       alert('Please install MetaMask!');
+      window.open('https://metamask.io/download/', '_blank');
       return;
     }
 
@@ -559,7 +587,7 @@ document.getElementById('connectBtn').addEventListener('click', async () => {
     await updateBalance();
   } catch (error) {
     console.error('Connection error:', error);
-    alert('Failed to connect wallet');
+    alert('Failed to connect wallet: ' + error.message);
   }
 });
 
@@ -573,9 +601,7 @@ async function updateBalance() {
   }
 }
 
-// Meditation Session
-let earningInterval;
-
+// Start Meditation Session
 document.getElementById('startBtn').addEventListener('click', async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -583,35 +609,52 @@ document.getElementById('startBtn').addEventListener('click', async () => {
     
     state.meditating = true;
     state.sessionStart = Date.now();
+    state.sessionSeconds = 0;
     document.getElementById('startBtn').disabled = true;
     document.getElementById('stopBtn').disabled = false;
     
-    startAI();
+    startSimulatedAI();
     startTimer();
   } catch (error) {
-    alert('Camera access denied!');
+    alert('Camera access denied! Please allow camera to meditate.');
+    console.error('Camera error:', error);
   }
 });
 
+// Stop Meditation Session
 document.getElementById('stopBtn').addEventListener('click', async () => {
   state.meditating = false;
-  document.getElementById('video').srcObject.getTracks().forEach(t => t.stop());
+  
+  const videoStream = document.getElementById('video').srcObject;
+  if (videoStream) {
+    videoStream.getTracks().forEach(t => t.stop());
+  }
+  
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled = true;
-  clearInterval(earningInterval);
   
+  if (earningInterval) clearInterval(earningInterval);
+  if (timerInterval) clearInterval(timerInterval);
+  
+  // Auto-mint if tokens earned
   if (state.earnedTokens > 0) {
     await mintTokens();
   }
 });
 
 function startTimer() {
-  let sessionSeconds = 0;
-  setInterval(() => {
+  // Update total time display
+  document.getElementById('totalTime').textContent = formatTime(state.totalSeconds);
+  
+  timerInterval = setInterval(() => {
     if (state.meditating) {
-      sessionSeconds++;
+      state.sessionSeconds++;
       state.totalSeconds++;
-      document.getElementById('sessionTime').textContent = formatTime(sessionSeconds);
+      
+      // Save to localStorage
+      localStorage.setItem('totalSeconds', state.totalSeconds.toString());
+      
+      document.getElementById('sessionTime').textContent = formatTime(state.sessionSeconds);
       document.getElementById('totalTime').textContent = formatTime(state.totalSeconds);
     }
   }, 1000);
@@ -623,16 +666,17 @@ function formatTime(seconds) {
   return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
 }
 
-function startAI() {
-  // Simplified AI detection simulation
+function startSimulatedAI() {
+  // Simplified AI simulation - randomly toggle states
   earningInterval = setInterval(() => {
     if (state.meditating) {
-      // Randomly simulate eyes closed and spine erect for demo
-      state.eyesClosed = Math.random() > 0.3;
-      state.spineErect = Math.random() > 0.3;
+      // Simulate AI detection (80% chance of each being true when meditating)
+      state.eyesClosed = Math.random() > 0.2;
+      state.spineErect = Math.random() > 0.2;
       
       const earning = state.eyesClosed && state.spineErect;
       
+      // Update UI
       document.getElementById('eyesStatus').className = 
         `status-badge ${state.eyesClosed ? 'active' : 'inactive'}`;
       document.getElementById('eyesStatus').textContent = 
@@ -648,6 +692,7 @@ function startAI() {
       document.getElementById('earningStatus').textContent = 
         earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
       
+      // Earn tokens
       if (earning) {
         state.earnedTokens++;
         document.getElementById('earnedTokens').textContent = state.earnedTokens;
@@ -657,14 +702,14 @@ function startAI() {
   }, 1000);
 }
 
+// Mint Tokens
 document.getElementById('mintBtn').addEventListener('click', mintTokens);
 
 async function mintTokens() {
   if (state.earnedTokens === 0) return;
   
   try {
-    document.getElementById('mintBtn').innerHTML = 
-      '<span class="loading">MINTING...</span>';
+    document.getElementById('mintBtn').innerHTML = '<span class="loading">MINTING...</span>';
     document.getElementById('mintBtn').disabled = true;
     
     const response = await fetch(`${CONFIG.BACKEND_URL}/api/mint-monk`, {
@@ -679,15 +724,16 @@ async function mintTokens() {
     const data = await response.json();
     
     if (data.success) {
-      alert(`✅ Minted ${state.earnedTokens} $MONK!\n\nIf using Chrome, switch to Firefox to see tokens in MetaMask.`);
+      alert(`✅ Minted ${state.earnedTokens} $MONK!\n\nTransaction: ${data.transactionHash.slice(0,20)}...\n\n⚠️ Using Chrome? Tokens are on blockchain but Chrome can't display them. Use Firefox to see them in MetaMask!`);
       state.earnedTokens = 0;
       document.getElementById('earnedTokens').textContent = 0;
       await updateBalance();
     } else {
-      alert('Mint failed: ' + data.message);
+      alert('❌ Mint failed: ' + data.message);
     }
   } catch (error) {
-    alert('Mint error: ' + error.message);
+    alert('❌ Mint error: ' + error.message);
+    console.error('Mint error:', error);
   } finally {
     document.getElementById('mintBtn').textContent = 'MINT TO CHAIN';
   }
@@ -707,6 +753,21 @@ document.getElementById('helpModal').addEventListener('click', (e) => {
     document.getElementById('helpModal').classList.remove('show');
   }
 });
+
+// Handle account changes
+if (window.ethereum) {
+  window.ethereum.on('accountsChanged', (accounts) => {
+    if (accounts.length === 0) {
+      location.reload();
+    } else {
+      location.reload();
+    }
+  });
+  
+  window.ethereum.on('chainChanged', () => {
+    location.reload();
+  });
+}
 </script>
 
 </body>
