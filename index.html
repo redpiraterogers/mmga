@@ -3,75 +3,73 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MONKCOIN | Level Up Your Mind</title>
+<title>MONKCOIN | The Meditation Revolution</title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0f0f14;
-  --surface:#1a1a24;
-  --card:#25253a;
-  --accent:#00ff9d;
-  --purple:#a78bfa;
-  --pink:#f472b6;
-  --blue:#60a5fa;
-  --yellow:#fbbf24;
-  --text:#e4e4e7;
-  --muted:#a1a1aa;
+  --bg:#1a1510;
+  --void:#0d0a08;
+  --surface:#2a2218;
+  --card:#3a3028;
+  --accent:#d4a574;
+  --cream:#f5e6d3;
+  --sage:#8b9a7e;
+  --rust:#c17854;
+  --gold:#d4a574;
+  --yellow:#e8b86d;
+  --text:#e8dcc8;
+  --muted:#b8a890;
+  --bark:#2a2218;
+  --wood:#4a3c2a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   background:var(--bg);
   color:var(--text);
   font-family:'IBM Plex Mono',monospace;
-  line-height:1.7;
+  line-height:1.6;
   overflow-x:hidden;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(212,165,116,0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(139,154,126,0.03) 0%, transparent 50%);
 }
 .grain{
   position:fixed;
   inset:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity:0.03;
+  opacity:0.06;
   pointer-events:none;
   z-index:100;
+  mix-blend-mode:overlay;
 }
 .scanline{
   position:fixed;
   inset:0;
-  background:linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(0,255,157,0.02) 50%
-  );
-  background-size:100% 4px;
+  background:radial-gradient(ellipse at center, transparent 0%, rgba(212,165,116,0.02) 100%);
   pointer-events:none;
   z-index:101;
-  animation:scan 8s linear infinite;
-}
-@keyframes scan{
-  0%{transform:translateY(0)}
-  100%{transform:translateY(100vh)}
 }
 .glow-orb{
   position:fixed;
   width:600px;
   height:600px;
   border-radius:50%;
-  filter:blur(100px);
-  opacity:0.3;
+  filter:blur(120px);
+  opacity:0.15;
   pointer-events:none;
   z-index:0;
 }
 .orb-1{
-  background:var(--accent);
+  background:var(--sage);
   top:-200px;
   right:-200px;
-  animation:float 20s ease-in-out infinite;
+  animation:float 25s ease-in-out infinite;
 }
 .orb-2{
-  background:var(--purple);
+  background:var(--rust);
   bottom:-200px;
   left:-200px;
-  animation:float 25s ease-in-out infinite reverse;
+  animation:float 30s ease-in-out infinite reverse;
 }
 @keyframes float{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,50px)}}
 .container{
@@ -82,54 +80,96 @@ body{
   padding:0 24px;
 }
 nav{
-  padding:24px 0;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:1000;
+  background:rgba(26,21,16,0.95);
+  border-bottom:2px solid rgba(212,165,116,0.3);
+  padding:20px 0;
+  backdrop-filter:blur(10px);
+  box-shadow:0 2px 20px rgba(212,165,116,0.1);
+}
+.nav-container{
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 24px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
 .logo{
-  font-family:'Cinzel',serif;
-  font-size:24px;
-  font-weight:700;
   display:flex;
   align-items:center;
-  gap:8px;
-  letter-spacing:0.05em;
-}
-.logo-icon{
-  width:32px;
-  height:32px;
+  gap:12px;
+  font-family:'Cinzel',serif;
+  font-size:24px;
   color:var(--accent);
-  transition:all 0.3s;
-  filter:drop-shadow(0 0 10px var(--accent));
+  text-decoration:none;
+  letter-spacing:2px;
 }
-.logo:hover .logo-icon{
-  color:var(--purple);
-  filter:drop-shadow(0 0 20px var(--purple));
-  transform:rotate(360deg);
+.infinity-ring{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:3px solid var(--accent);
+  position:relative;
+  box-shadow:0 0 15px rgba(212,165,116,0.4);
+  animation:ringGlow 4s ease-in-out infinite;
+}
+@keyframes ringGlow{0%,100%{box-shadow:0 0 15px rgba(212,165,116,0.4)}50%{box-shadow:0 0 25px rgba(212,165,116,0.7)}}
+.infinity-ring::before{
+  content:'∞';
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:20px;
+  color:var(--gold);
+  font-weight:bold;
+}
+.nav-links{
+  display:flex;
+  gap:32px;
+  align-items:center;
+}
+.nav-link{
+  color:var(--muted);
+  text-decoration:none;
+  font-size:13px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  transition:all 0.3s;
+}
+.nav-link:hover{
+  color:var(--accent);
 }
 .nav-cta{
-  padding:12px 24px;
+  padding:10px 24px;
   background:var(--accent);
   color:var(--bg);
-  border:none;
-  border-radius:100px;
-  font-weight:600;
-  font-size:14px;
+  border:2px solid var(--accent);
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
   cursor:pointer;
   transition:all 0.3s;
   text-decoration:none;
   display:inline-block;
 }
 .nav-cta:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 30px rgba(0,255,157,0.5);
+  background:transparent;
+  color:var(--accent);
+  box-shadow:0 0 20px rgba(0,255,157,0.4);
 }
 .hero{
-  padding:80px 0 120px;
+  padding:120px 0 80px;
   text-align:center;
+  animation:fadeIn 1.5s ease-out;
 }
-.badge{
+@keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hero-badge{
   display:inline-flex;
   align-items:center;
   gap:8px;
@@ -139,12 +179,9 @@ nav{
   border-radius:4px;
   font-size:12px;
   margin-bottom:24px;
-  animation:fadeUp 0.8s ease-out;
-  font-family:'IBM Plex Mono',monospace;
   text-transform:uppercase;
   letter-spacing:1px;
 }
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .pulse-dot{
   width:8px;
   height:8px;
@@ -160,109 +197,87 @@ h1{
   line-height:1.1;
   margin-bottom:24px;
   letter-spacing:-0.01em;
-  background:linear-gradient(135deg,var(--accent) 0%,var(--purple) 50%,var(--pink) 100%);
+  background:linear-gradient(135deg,var(--accent) 0%,var(--rust) 50%,var(--sage) 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
-  animation:fadeUp 0.8s ease-out 0.2s both;
-  text-shadow:0 0 30px rgba(0,255,157,0.3);
-  position:relative;
-}
-h1::before{
-  content:attr(data-text);
-  position:absolute;
-  left:2px;
-  text-shadow:-2px 0 var(--accent);
-  top:0;
-  color:var(--accent);
-  background:transparent;
-  overflow:hidden;
-  opacity:0;
-  animation:glitch 3s infinite;
-}
-@keyframes glitch{
-  2%,64%{transform:translate(2px,0) skew(0deg);opacity:0.75}
-  4%,60%{transform:translate(-2px,0) skew(0deg);opacity:0.75}
-  62%{transform:translate(0,0) skew(5deg);opacity:0.75}
+  text-shadow:0 0 20px rgba(212,165,116,0.2);
 }
 .subtitle{
   font-size:20px;
   color:var(--muted);
   max-width:600px;
   margin:0 auto 40px;
-  animation:fadeUp 0.8s ease-out 0.4s both;
+  line-height:1.8;
 }
 .cta-group{
   display:flex;
   gap:16px;
   justify-content:center;
-  animation:fadeUp 0.8s ease-out 0.6s both;
+  margin-bottom:80px;
 }
 .btn{
   padding:16px 32px;
-  border-radius:4px;
+  border-radius:12px;
   font-weight:600;
   font-size:14px;
   border:none;
   cursor:pointer;
-  transition:all 0.3s;
+  transition:all 0.4s;
   text-decoration:none;
   display:inline-block;
-  font-family:'IBM Plex Mono',monospace;
   text-transform:uppercase;
   letter-spacing:1px;
 }
 .btn-primary{
   background:var(--accent);
-  color:var(--bg);
-  box-shadow:0 0 20px rgba(0,255,157,0.4);
+  color:var(--void);
+  box-shadow:0 4px 20px rgba(212,165,116,0.3);
   border:2px solid var(--accent);
 }
 .btn-primary:hover{
   transform:translateY(-2px);
-  box-shadow:0 8px 30px rgba(0,255,157,0.6);
-  background:transparent;
-  color:var(--accent);
+  box-shadow:0 8px 30px rgba(212,165,116,0.5);
+  background:var(--rust);
+  border-color:var(--rust);
 }
 .btn-secondary{
   background:transparent;
-  color:var(--text);
-  border:2px solid var(--purple);
+  color:var(--cream);
+  border:2px solid var(--sage);
 }
 .btn-secondary:hover{
-  background:var(--purple);
-  color:var(--bg);
-  box-shadow:0 0 30px rgba(167,139,250,0.4);
+  background:var(--sage);
+  color:var(--void);
+  box-shadow:0 4px 20px rgba(139,154,126,0.3);
 }
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:32px;
-  margin-top:80px;
 }
 .stat{
   text-align:center;
   padding:24px;
-  background:var(--surface);
-  border-radius:8px;
-  border:2px solid var(--accent);
-  box-shadow:0 0 20px rgba(0,255,157,0.1);
+  background:linear-gradient(135deg, var(--surface), var(--bark));
+  border-radius:16px;
+  border:2px solid rgba(212,165,116,0.3);
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
   position:relative;
 }
 .stat::before{
-  content:'>';
+  content:'◈';
   position:absolute;
-  top:8px;
-  left:12px;
+  top:12px;
+  left:16px;
   color:var(--accent);
-  font-family:'IBM Plex Mono',monospace;
   font-size:12px;
 }
 .stat-value{
   font-family:'Cinzel',serif;
   font-size:48px;
   font-weight:900;
-  background:linear-gradient(135deg,var(--accent),var(--purple));
+  background:linear-gradient(135deg,var(--accent),var(--rust));
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   background-clip:text;
@@ -272,18 +287,19 @@ h1::before{
   font-size:14px;
   color:var(--muted);
 }
-.how-it-works{
+.section{
   padding:120px 0;
 }
 .section-header{
   text-align:center;
-  margin-bottom:64px;
+  margin-bottom:80px;
 }
 .section-title{
   font-family:'Cinzel',serif;
   font-size:48px;
   font-weight:900;
   margin-bottom:16px;
+  color:var(--gold);
 }
 .section-desc{
   font-size:18px;
@@ -296,32 +312,32 @@ h1::before{
 }
 .step{
   padding:32px;
-  background:var(--surface);
-  border-radius:8px;
-  border:2px solid rgba(0,255,157,0.2);
-  transition:all 0.3s;
+  background:linear-gradient(135deg, var(--surface), var(--wood));
+  border-radius:20px;
+  border:2px solid rgba(212,165,116,0.25);
+  transition:all 0.4s;
   position:relative;
+  box-shadow:0 4px 15px rgba(0,0,0,0.2);
 }
 .step::before{
-  content:'$ ./meditate';
+  content:'✦';
   position:absolute;
-  top:12px;
-  right:16px;
-  font-family:'IBM Plex Mono',monospace;
-  font-size:10px;
-  color:var(--muted);
-  opacity:0.5;
+  top:16px;
+  right:20px;
+  font-size:14px;
+  color:var(--accent);
+  opacity:0.4;
 }
 .step:hover{
   transform:translateY(-8px);
   border-color:var(--accent);
-  box-shadow:0 20px 40px rgba(0,255,157,0.2);
+  box-shadow:0 12px 30px rgba(212,165,116,0.25);
 }
 .step-number{
   width:48px;
   height:48px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--accent),var(--purple));
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--accent),var(--rust));
   display:flex;
   align-items:center;
   justify-content:center;
@@ -329,7 +345,8 @@ h1::before{
   font-size:24px;
   font-weight:900;
   margin-bottom:24px;
-  color:var(--bg);
+  color:var(--void);
+  box-shadow:0 4px 12px rgba(212,165,116,0.3);
 }
 .step h3{
   font-family:'Cinzel',serif;
@@ -341,10 +358,6 @@ h1::before{
   color:var(--muted);
   line-height:1.7;
 }
-.features{
-  padding:120px 0;
-  background:linear-gradient(180deg,transparent,var(--surface),transparent);
-}
 .feature-grid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -352,11 +365,12 @@ h1::before{
 }
 .feature-card{
   padding:40px;
-  background:var(--card);
-  border-radius:8px;
-  border:2px solid rgba(0,255,157,0.15);
-  transition:all 0.3s;
+  background:linear-gradient(135deg, var(--card), var(--bark));
+  border-radius:20px;
+  border:2px solid rgba(212,165,116,0.2);
+  transition:all 0.4s;
   position:relative;
+  box-shadow:0 4px 20px rgba(0,0,0,0.3);
 }
 .feature-card::after{
   content:'';
@@ -364,28 +378,22 @@ h1::before{
   top:0;
   left:0;
   right:0;
-  height:2px;
+  height:3px;
   background:linear-gradient(90deg,var(--accent),transparent);
   opacity:0;
-  transition:opacity 0.3s;
+  transition:opacity 0.4s;
+  border-radius:20px 20px 0 0;
 }
 .feature-card:hover{
   border-color:var(--accent);
   transform:translateY(-4px);
-  box-shadow:0 8px 32px rgba(0,255,157,0.2);
+  box-shadow:0 12px 35px rgba(212,165,116,0.3);
 }
 .feature-card:hover::after{
   opacity:1;
 }
 .feature-icon{
-  width:64px;
-  height:64px;
-  border-radius:16px;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:32px;
+  font-size:48px;
   margin-bottom:24px;
 }
 .feature-card h3{
@@ -398,95 +406,127 @@ h1::before{
   color:var(--muted);
   line-height:1.7;
 }
-.leaderboard{
+.philosophy-section{
+  background:linear-gradient(180deg,transparent,var(--void),transparent);
   padding:120px 0;
 }
-.leaderboard-preview{
-  max-width:800px;
-  margin:0 auto;
-  background:var(--surface);
-  border-radius:8px;
-  padding:40px;
-  border:2px solid var(--accent);
-  box-shadow:0 0 40px rgba(0,255,157,0.15);
+.equation{
+  font-family:'Cinzel',serif;
+  font-size:120px;
+  font-weight:900;
+  line-height:1;
+  margin-bottom:48px;
+  color:var(--accent);
+  text-shadow:0 0 40px var(--accent);
+  text-align:center;
+}
+.equation-sub{
+  font-size:32px;
+  color:var(--purple);
+  margin-bottom:80px;
+  font-family:'Cinzel',serif;
+  text-align:center;
+}
+.manifesto{
+  max-width:900px;
+  margin:0 auto 120px;
+  font-size:18px;
+  line-height:2;
+  color:var(--text);
+  text-align:center;
+}
+.manifesto p{
+  margin-bottom:32px;
+}
+.highlight{
+  color:var(--accent);
+  font-weight:600;
+  text-shadow:0 0 10px rgba(0,255,157,0.3);
+}
+.gold-text{
+  color:var(--gold);
+  font-weight:600;
+  font-family:'Cinzel',serif;
+}
+.inversion-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:32px;
+  max-width:1200px;
+  margin:0 auto 80px;
+}
+.inversion-card{
+  background:var(--card);
+  border:2px solid rgba(0,255,157,0.2);
+  padding:48px;
   position:relative;
 }
-.leaderboard-preview::before{
-  content:'● ● ●';
+.inversion-card::before{
+  content:'';
   position:absolute;
-  top:16px;
-  left:24px;
-  font-size:12px;
-  color:var(--muted);
-  letter-spacing:4px;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(90deg,#ff0033,transparent);
 }
-.leaderboard-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:32px;
-  padding-bottom:24px;
-  border-bottom:1px solid rgba(255,255,255,0.1);
+.inversion-card.new::before{
+  background:linear-gradient(90deg,var(--accent),transparent);
 }
-.leaderboard-title{
+.card-label{
+  font-family:'Cinzel',serif;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  margin-bottom:16px;
+}
+.card-label.old{
+  color:#ff0033;
+}
+.card-label.new{
+  color:var(--accent);
+}
+.card-title{
+  font-family:'Cinzel',serif;
+  font-size:36px;
+  margin-bottom:24px;
+  line-height:1.2;
+}
+.card-desc{
+  font-size:16px;
+  line-height:1.8;
+  color:rgba(255,255,255,0.8);
+}
+.ring-visual{
+  text-align:center;
+  padding:80px 0;
+}
+.ring{
+  display:inline-block;
+  width:300px;
+  height:300px;
+  border:4px solid var(--gold);
+  border-radius:50%;
+  position:relative;
+  animation:ringPulse 4s ease-in-out infinite;
+}
+@keyframes ringPulse{0%,100%{transform:scale(1);box-shadow:0 0 40px var(--gold)}50%{transform:scale(1.05);box-shadow:0 0 80px var(--gold)}}
+.ring::before{
+  content:'∞';
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Cinzel',serif;
+  font-size:120px;
+  color:var(--gold);
+  text-shadow:0 0 40px var(--gold);
+}
+.ring-label{
   font-family:'Cinzel',serif;
   font-size:24px;
-  font-weight:700;
-}
-.rank-item{
-  display:flex;
-  align-items:center;
-  padding:20px;
-  background:var(--card);
-  border-radius:4px;
-  margin-bottom:12px;
-  transition:all 0.3s;
-  border:1px solid rgba(0,255,157,0.2);
-}
-.rank-item:hover{
-  transform:translateX(8px);
-  background:rgba(0,255,157,0.05);
-  border-color:var(--accent);
-  box-shadow:0 4px 20px rgba(0,255,157,0.2);
-}
-.rank-number{
-  width:40px;
-  height:40px;
-  border-radius:10px;
-  background:var(--surface);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  margin-right:16px;
-}
-.rank-number.top{
-  background:linear-gradient(135deg,var(--yellow),#f59e0b);
-  color:var(--bg);
-}
-.rank-avatar{
-  width:48px;
-  height:48px;
-  border-radius:12px;
-  background:linear-gradient(135deg,var(--purple),var(--pink));
-  margin-right:16px;
-}
-.rank-info{
-  flex:1;
-}
-.rank-name{
-  font-weight:600;
-  margin-bottom:4px;
-}
-.rank-level{
-  font-size:13px;
-  color:var(--muted);
-}
-.rank-hours{
-  font-family:'Cinzel',serif;
-  font-size:20px;
-  font-weight:700;
-  color:var(--accent);
+  color:var(--gold);
+  margin-top:32px;
 }
 .cta-final{
   padding:120px 0;
@@ -515,7 +555,6 @@ h1::before{
   position:absolute;
   top:16px;
   right:24px;
-  font-family:'IBM Plex Mono',monospace;
   font-size:10px;
   color:var(--accent);
   letter-spacing:2px;
@@ -532,10 +571,11 @@ h1::before{
   color:var(--muted);
   margin-bottom:32px;
   position:relative;
+  line-height:1.8;
 }
 footer{
   padding:48px 0;
-  border-top:1px solid rgba(255,255,255,0.05);
+  border-top:1px solid rgba(0,255,157,0.2);
   text-align:center;
   font-size:14px;
   color:var(--muted);
@@ -550,14 +590,17 @@ footer a:hover{
 }
 @media(max-width:1024px){
   h1{font-size:56px}
-  .stats,.steps,.feature-grid{grid-template-columns:1fr}
+  .equation{font-size:80px}
+  .steps,.feature-grid,.inversion-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:1fr}
 }
 @media(max-width:640px){
   h1{font-size:40px}
+  .equation{font-size:56px}
   .subtitle{font-size:16px}
   .cta-group{flex-direction:column}
   .btn{width:100%}
-  .stats{gap:16px}
+  .nav-links{display:none}
 }
 </style>
 </head>
@@ -568,25 +611,24 @@ footer a:hover{
 <div class="glow-orb orb-1"></div>
 <div class="glow-orb orb-2"></div>
 
-<div class="container">
-  <nav>
-    <div class="logo">
-      <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="16" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
-        <path d="M16 8 L16 4 M12 10 L9 7 M20 10 L23 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        <path d="M10 14 Q16 18 22 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <ellipse cx="13.5" cy="13" rx="1" ry="1.5" fill="currentColor"/>
-        <ellipse cx="18.5" cy="13" rx="1" ry="1.5" fill="currentColor"/>
-        <path d="M10 20 Q12 24 16 26 Q20 24 22 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>
-        <path d="M8 22 L6 26 M24 22 L26 26" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
+<nav>
+  <div class="nav-container">
+    <a href="#" class="logo">
+      <div class="infinity-ring"></div>
       <span>MMGA</span>
+    </a>
+    <div class="nav-links">
+      <a href="#play" class="nav-link">Play</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#philosophy" class="nav-link">Philosophy</a>
+      <a href="app.html" class="nav-cta">Start Now</a>
     </div>
-    <a href="app.html" class="nav-cta">Start Playing</a>
-  </nav>
+  </div>
+</nav>
 
+<div class="container">
   <section class="hero">
-    <div class="badge">
+    <div class="hero-badge">
       <div class="pulse-dot"></div>
       <span>Live Now • Earn as You Meditate</span>
     </div>
@@ -597,7 +639,7 @@ footer a:hover{
     </p>
     <div class="cta-group">
       <a href="app.html" class="btn btn-primary">Play Now</a>
-      <a href="#how" class="btn btn-secondary">How It Works</a>
+      <a href="#philosophy" class="btn btn-secondary">Learn More</a>
     </div>
     <div class="stats">
       <div class="stat">
@@ -616,7 +658,7 @@ footer a:hover{
   </section>
 </div>
 
-<section class="how-it-works" id="how">
+<section class="section" id="play">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">How to Play</h2>
@@ -651,7 +693,7 @@ footer a:hover{
   </div>
 </section>
 
-<section class="features">
+<section class="section" id="features" style="background:var(--void)">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">Game Features</h2>
@@ -691,58 +733,111 @@ footer a:hover{
         </p>
       </div>
     </div>
+    <div style="text-align:center;margin-top:64px">
+      <a href="app.html" class="btn btn-primary" style="font-size:18px;padding:20px 48px">
+        Start Playing Now
+      </a>
+    </div>
   </div>
 </section>
 
-<section class="leaderboard">
+<section class="philosophy-section" id="philosophy">
   <div class="container">
+    <div class="equation">0 = 1</div>
+    <div class="equation-sub">The Inversion</div>
+    <div class="manifesto">
+      <p>
+        There is <span class="highlight">one thing</span> that neither time nor money can buy.
+      </p>
+      <p>
+        It is <span class="gold-text">the moment</span> when time stops being currency—<br/>
+        when survival becomes celebration—<br/>
+        when zero equals one.
+      </p>
+      <p>
+        <span class="highlight">MONKCOIN</span> is not a cryptocurrency.<br/>
+        It is the <span class="gold-text">anti-currency</span>.<br/>
+        The utility token with <span class="highlight">no utility</span>.<br/>
+        The ring to rule them all.
+      </p>
+    </div>
+
     <div class="section-header">
-      <h2 class="section-title">Live Leaderboard</h2>
-      <p class="section-desc">Who's winning this month?</p>
+      <h2 class="section-title">The Great Inversion</h2>
+      <p class="section-desc">Old World → New World</p>
     </div>
-    <div class="leaderboard-preview">
-      <div class="leaderboard-header">
-        <div class="leaderboard-title">🏆 Top Meditators</div>
-        <div style="color:var(--muted);font-size:14px">May 2026</div>
+
+    <div class="inversion-grid">
+      <div class="inversion-card">
+        <div class="card-label old">⚠ OLD WORLD</div>
+        <h3 class="card-title">Time = Currency</h3>
+        <p class="card-desc">
+          Every second measured by productivity. Every breath calculated by output. 
+          You trade hours for dollars. Days for survival. Years for retirement.
+          <br/><br/>
+          Monday through Friday, you rent yourself. Saturday and Sunday, you recover from the rental.
+          <br/><br/>
+          Time is money. Money is time. The equation enslaves you.
+        </p>
       </div>
-      <div class="rank-item">
-        <div class="rank-number top">1</div>
-        <div class="rank-avatar"></div>
-        <div class="rank-info">
-          <div class="rank-name">ZenMaster_420</div>
-          <div class="rank-level">Level 47 • Isha Yoga Center</div>
-        </div>
-        <div class="rank-hours">87.2h</div>
-      </div>
-      <div class="rank-item">
-        <div class="rank-number">2</div>
-        <div class="rank-avatar"></div>
-        <div class="rank-info">
-          <div class="rank-name">MindfulMonk</div>
-          <div class="rank-level">Level 42 • Solo Player</div>
-        </div>
-        <div class="rank-hours">71.5h</div>
-      </div>
-      <div class="rank-item">
-        <div class="rank-number">3</div>
-        <div class="rank-avatar"></div>
-        <div class="rank-info">
-          <div class="rank-name">InnerPeace_</div>
-          <div class="rank-level">Level 38 • Art of Living</div>
-        </div>
-        <div class="rank-hours">64.3h</div>
+
+      <div class="inversion-card new">
+        <div class="card-label new">✓ NEW WORLD</div>
+        <h3 class="card-title">Time = Celebration</h3>
+        <p class="card-desc">
+          Every second is an act of rebellion. Every breath refuses the transaction. 
+          You earn tokens by being present. By closing your eyes. By sitting up straight.
+          <br/><br/>
+          Every day is sacred. There is no Monday. There is no grind. There is only now.
+          <br/><br/>
+          Time is life. Life is infinite. The equation liberates you.
+        </p>
       </div>
     </div>
+
+    <div class="inversion-grid">
+      <div class="inversion-card">
+        <div class="card-label old">⚠ UTILITY TOKENS</div>
+        <h3 class="card-title">Value = Utility</h3>
+        <p class="card-desc">
+          Every token must do something. Governance. Staking. Yield farming. Access passes.
+          <br/><br/>
+          The crypto world recreates the same trap: <span class="highlight">productivity worship</span>.
+          <br/><br/>
+          Your tokens must work. Must earn. Must justify themselves. The machine keeps spinning.
+        </p>
+      </div>
+
+      <div class="inversion-card new">
+        <div class="card-label new">✓ MONKCOIN</div>
+        <h3 class="card-title">Value = Presence</h3>
+        <p class="card-desc">
+          This token does nothing. It cannot be traded. It cannot be sold. It serves no purpose.
+          <br/><br/>
+          Its only utility is <span class="gold-text">proof of meditation</span>. Proof that you were present. Proof that you chose life over currency.
+          <br/><br/>
+          The anti-utility token. The paradox. The loop that breaks the loop.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ring-visual">
+    <div class="ring"></div>
+    <div class="ring-label">∞ The Ring of Presence</div>
   </div>
 </section>
 
 <section class="cta-final">
   <div class="container">
     <div class="cta-box">
-      <h2>Ready to Play?</h2>
-      <p>Join thousands of meditators earning MONK tokens right now. Free to start. No credit card needed.</p>
+      <h2>Join The Inversion</h2>
+      <p>
+        When critical mass is reached, all currencies invert. Time becomes celebration. 
+        Zero equals one. The ring is broken.
+      </p>
       <a href="app.html" class="btn btn-primary" style="font-size:18px;padding:20px 48px">
-        Start Meditation Game
+        Start Meditating Now
       </a>
     </div>
   </div>
