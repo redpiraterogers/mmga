@@ -872,23 +872,12 @@ async function fetchBalance() {
 // ─── START SESSION ────────────────────────────────────────
 document.getElementById('startBtn').onclick = async () => {
   try {
-    log('🎥 Requesting camera...');
+    log('🎥 Starting camera + AI...');
 
     const videoEl = document.getElementById('video');
 
-    // 1. Get raw camera stream via getUserMedia first
-    stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
-    videoEl.srcObject = stream;
-    // Wait for metadata with 8s timeout — fixes 'Timeout starting video source'
-    await new Promise(function(res, rej) {
-      var t = setTimeout(function() { rej(new Error('Camera metadata timeout — try reloading and allowing camera')); }, 8000);
-      videoEl.onloadedmetadata = function() { clearTimeout(t); res(); };
-      videoEl.onerror = function(e) { clearTimeout(t); rej(new Error('Video element error')); };
-    });
-    try { await videoEl.play(); } catch(e) { log('Play warning: ' + e.message); }
-    log('✓ Camera stream live');
-
-    // 2. Feed frames into FaceMesh using MediaPipe Camera utility
+    // MediaPipe Camera utility handles getUserMedia internally — do NOT
+    // also call getUserMedia manually, as two streams conflict and break FaceMesh
     mpCamera = new Camera(videoEl, {
       onFrame: async () => {
         if (faceMesh) await faceMesh.send({ image: videoEl });
@@ -896,8 +885,20 @@ document.getElementById('startBtn').onclick = async () => {
       width: 640,
       height: 480
     });
-    await mpCamera.start();
-    log('✓ AI tracking active');
+
+    // Wrap mpCamera.start() with a 12s timeout
+    await Promise.race([
+      mpCamera.start(),
+      new Promise(function(_, rej) {
+        setTimeout(function() {
+          rej(new Error('Camera timed out — please allow camera access and reload'));
+        }, 12000);
+      })
+    ]);
+
+    // Keep a reference to the stream for cleanup on stop
+    stream = videoEl.srcObject;
+    log('✓ Camera + AI tracking active');
 
     state.meditating = true;
     state.sessionSec = 0;
