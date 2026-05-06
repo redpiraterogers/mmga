@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MONKCOIN | Meditation</title>
+<title>MONKCOIN | Cyber Meditation</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -13,150 +13,344 @@
   --green:#00ff41;
   --pink:#ff10f0;
   --blue:#00d4ff;
+  --cyan:#00ffff;
   --yellow:#fff000;
   --orange:#ff6b35;
+  --purple:#9d4edd;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   background:var(--bg);
   color:var(--green);
   font-family:var(--retro);
-  overflow-x:hidden;
+  overflow:hidden;
+  image-rendering:pixelated;
 }
-.warning{
+.scanline{
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);
+  pointer-events:none;
+  z-index:9999;
+  animation:flicker 0.15s infinite;
+}
+@keyframes flicker{0%{opacity:0.97}50%{opacity:1}100%{opacity:0.98}}
+.crt{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(ellipse at center,transparent 0%,rgba(0,0,0,0.4) 100%);
+  pointer-events:none;
+  z-index:9998;
+}
+.firefox-banner{
   position:fixed;
   top:0;
   left:0;
   right:0;
   z-index:10000;
   background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));
-  padding:16px;
+  padding:12px 20px;
   text-align:center;
-  font-family:var(--pixel);
-  font-size:12px;
-  color:#000;
+  animation:pulse-banner 2s ease-in-out infinite;
   border-bottom:4px solid var(--yellow);
+  box-shadow:0 4px 40px rgba(255,16,240,0.8);
+}
+@keyframes pulse-banner{0%,100%{opacity:0.95}50%{opacity:1}}
+.firefox-banner strong{
+  font-family:var(--pixel);
+  font-size:11px;
+  color:#000;
+  text-shadow:0 0 10px var(--yellow);
+  letter-spacing:1px;
 }
 .container{
-  max-width:1200px;
-  margin:80px auto 40px;
-  padding:20px;
   display:grid;
-  grid-template-columns:300px 1fr 300px;
-  gap:20px;
+  grid-template-columns:320px 1fr 320px;
+  height:100vh;
+  gap:24px;
+  padding:80px 24px 24px;
 }
 .panel{
-  background:rgba(10,10,15,0.9);
-  border:4px solid var(--green);
-  padding:24px;
-  box-shadow:0 0 30px rgba(0,255,65,0.3);
+  background:linear-gradient(135deg,rgba(157,78,221,0.15),rgba(0,212,255,0.15));
+  border:4px solid;
+  padding:28px;
+  position:relative;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
 }
-.panel h2{
+.panel-left{
+  border-color:var(--pink);
+  box-shadow:0 0 40px rgba(255,16,240,0.4),inset 0 0 40px rgba(255,16,240,0.1);
+}
+.panel-right{
+  border-color:var(--cyan);
+  box-shadow:0 0 40px rgba(0,255,255,0.4),inset 0 0 40px rgba(0,255,255,0.1);
+}
+.panel::before{
+  content:'▲';
+  position:absolute;
+  top:8px;
+  left:12px;
+  font-size:14px;
+  animation:blink-triangle 2s infinite;
+}
+.panel-left::before{color:var(--pink)}
+.panel-right::before{color:var(--cyan)}
+@keyframes blink-triangle{0%,100%{opacity:1}50%{opacity:0.3}}
+.panel-title{
   font-family:var(--pixel);
   font-size:14px;
-  color:var(--pink);
-  margin-bottom:20px;
-  text-shadow:0 0 10px var(--pink);
+  margin-bottom:24px;
+  text-shadow:0 0 15px currentColor;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  letter-spacing:2px;
 }
-.video-container{
-  position:relative;
+.panel-left .panel-title{color:var(--pink)}
+.panel-right .panel-title{color:var(--cyan)}
+.infinity-logo{
+  width:50px;
+  height:25px;
+}
+.main-panel{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.video-box{
+  flex:1;
   background:#000;
-  border:4px solid var(--blue);
-  height:400px;
+  border:5px solid var(--blue);
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin-bottom:20px;
+  box-shadow:0 0 60px rgba(0,212,255,0.6),inset 0 0 60px rgba(0,212,255,0.2);
+  overflow:hidden;
 }
+.video-box::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(45deg,transparent,rgba(0,212,255,0.1),transparent);
+  animation:scan 3s linear infinite;
+  pointer-events:none;
+}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
 #video{
   width:100%;
   height:100%;
   object-fit:cover;
   transform:scaleX(-1);
 }
-.status{
+.status-overlay{
   position:absolute;
-  top:16px;
-  left:16px;
-  right:16px;
+  top:24px;
+  left:24px;
+  right:24px;
   display:flex;
-  gap:12px;
+  gap:16px;
   flex-wrap:wrap;
 }
-.badge{
-  padding:8px 16px;
+.status-badge{
+  padding:10px 20px;
   background:rgba(10,10,15,0.95);
-  border:3px solid var(--pink);
+  border:3px solid;
   font-family:var(--pixel);
   font-size:10px;
-  color:var(--pink);
+  box-shadow:0 0 20px;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+  letter-spacing:1px;
 }
-.badge.active{
+.status-badge.active{
   border-color:var(--green);
   color:var(--green);
-  box-shadow:0 0 20px var(--green);
+  box-shadow:0 0 30px var(--green);
+  animation:glow-pulse 1.5s ease-in-out infinite;
+}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 30px var(--green)}50%{box-shadow:0 0 50px var(--green),0 0 70px var(--green)}}
+.status-badge.inactive{
+  border-color:var(--orange);
+  color:var(--orange);
+  box-shadow:0 0 15px rgba(255,107,53,0.4);
+}
+.controls{
+  display:flex;
+  gap:16px;
 }
 .btn{
-  width:100%;
-  padding:16px;
-  margin-bottom:12px;
+  flex:1;
+  padding:20px 28px;
   font-family:var(--pixel);
   font-size:11px;
-  border:4px solid var(--green);
-  background:transparent;
-  color:var(--green);
+  border:4px solid;
   cursor:pointer;
   transition:all 0.3s;
+  background:transparent;
+  position:relative;
+  letter-spacing:2px;
+  text-transform:uppercase;
 }
-.btn:hover:not(:disabled){
-  background:var(--green);
-  color:var(--bg);
+.btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:currentColor;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.btn:hover:not(:disabled)::before{
+  opacity:0.2;
+}
+.btn-start{
+  border-color:var(--green);
+  color:var(--green);
+  box-shadow:0 0 25px rgba(0,255,65,0.5);
+}
+.btn-start:hover:not(:disabled){
+  box-shadow:0 0 50px var(--green);
+  transform:translateY(-2px);
+}
+.btn-stop{
+  border-color:var(--pink);
+  color:var(--pink);
+  box-shadow:0 0 25px rgba(255,16,240,0.5);
+}
+.btn-stop:hover:not(:disabled){
+  box-shadow:0 0 50px var(--pink);
+  transform:translateY(-2px);
+}
+.btn-mint{
+  border-color:var(--yellow);
+  color:var(--yellow);
+  box-shadow:0 0 25px rgba(255,240,0,0.5);
+}
+.btn-mint:hover:not(:disabled){
+  box-shadow:0 0 50px var(--yellow);
+  transform:translateY(-2px);
 }
 .btn:disabled{
   opacity:0.3;
   cursor:not-allowed;
 }
-.btn-pink{
+.stat-box{
+  padding:20px;
+  background:linear-gradient(135deg,rgba(255,16,240,0.1),rgba(0,212,255,0.1));
+  border:3px solid;
+  margin-bottom:20px;
+  backdrop-filter:blur(5px);
+  transition:all 0.3s;
+}
+.panel-left .stat-box{
   border-color:var(--pink);
-  color:var(--pink);
+  box-shadow:0 0 20px rgba(255,16,240,0.3);
 }
-.btn-pink:hover:not(:disabled){
-  background:var(--pink);
+.panel-right .stat-box{
+  border-color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,255,255,0.3);
 }
-.btn-yellow{
-  border-color:var(--yellow);
-  color:var(--yellow);
-}
-.btn-yellow:hover:not(:disabled){
-  background:var(--yellow);
-}
-.stat{
-  padding:16px;
-  background:rgba(157,78,221,0.1);
-  border:3px solid #9d4edd;
-  margin-bottom:16px;
-  text-align:center;
+.stat-box:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 40px currentColor;
 }
 .stat-label{
-  font-size:14px;
+  font-size:15px;
   color:var(--blue);
-  margin-bottom:8px;
+  margin-bottom:10px;
+  letter-spacing:1px;
 }
 .stat-value{
   font-family:var(--pixel);
-  font-size:32px;
+  font-size:28px;
+  color:var(--pink);
+  text-shadow:0 0 20px var(--pink);
+  animation:number-glow 2s ease-in-out infinite;
+}
+@keyframes number-glow{0%,100%{text-shadow:0 0 20px var(--pink)}50%{text-shadow:0 0 30px var(--pink),0 0 40px var(--pink)}}
+.wallet-display{
+  padding:14px;
+  background:rgba(0,0,0,0.7);
+  border:3px solid var(--green);
+  font-size:12px;
+  color:var(--green);
+  word-break:break-all;
+  margin-bottom:20px;
+  box-shadow:0 0 20px rgba(0,255,65,0.3);
+  font-family:monospace;
+  letter-spacing:1px;
+}
+.leaderboard{
+  max-height:350px;
+  overflow-y:auto;
+}
+.leaderboard-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 16px;
+  border-bottom:2px solid rgba(0,255,255,0.2);
+  font-size:15px;
+  transition:all 0.3s;
+}
+.leaderboard-item:hover{
+  background:rgba(0,255,255,0.1);
+  border-color:var(--cyan);
+}
+.leaderboard-item:nth-child(1){
+  background:linear-gradient(90deg,rgba(255,240,0,0.15),transparent);
+  border-color:var(--yellow);
+}
+.leaderboard-item:nth-child(2){
+  background:linear-gradient(90deg,rgba(0,212,255,0.15),transparent);
+}
+.leaderboard-item:nth-child(3){
+  background:linear-gradient(90deg,rgba(255,107,53,0.15),transparent);
+}
+.leaderboard-rank{
+  color:var(--yellow);
+  font-family:var(--pixel);
+  font-size:11px;
+  letter-spacing:1px;
+}
+.leaderboard-name{
+  color:var(--cyan);
+  flex:1;
+  margin:0 16px;
+}
+.leaderboard-tokens{
+  color:var(--pink);
+  font-family:var(--pixel);
+  font-size:12px;
+}
+.timer-display{
+  padding:24px;
+  background:rgba(0,0,0,0.5);
+  border:4px solid var(--blue);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 0 30px rgba(0,212,255,0.4);
+}
+.timer-item{
+  text-align:center;
+}
+.timer-label{
+  font-size:13px;
+  color:var(--cyan);
+  margin-bottom:8px;
+  letter-spacing:1px;
+}
+.timer-value{
+  font-family:var(--pixel);
+  font-size:24px;
   color:var(--pink);
   text-shadow:0 0 15px var(--pink);
 }
-.address{
-  padding:12px;
-  background:rgba(0,0,0,0.6);
-  border:3px solid var(--green);
-  font-size:13px;
+.rate-value{
   color:var(--green);
-  word-break:break-all;
-  margin-bottom:16px;
-  text-align:center;
+  text-shadow:0 0 15px var(--green);
 }
 .debug{
   position:fixed;
@@ -165,100 +359,149 @@ body{
   background:rgba(0,0,0,0.95);
   border:2px solid var(--yellow);
   padding:12px;
-  font-size:11px;
+  font-size:10px;
   color:var(--yellow);
   max-width:350px;
-  max-height:250px;
+  max-height:200px;
   overflow-y:auto;
   z-index:1000;
   font-family:monospace;
+  box-shadow:0 0 30px rgba(255,240,0,0.5);
 }
 .debug-title{
-  color:var(--yellow);
   font-family:var(--pixel);
-  font-size:10px;
+  font-size:9px;
   margin-bottom:8px;
-  border-bottom:1px solid var(--yellow);
   padding-bottom:4px;
+  border-bottom:1px solid var(--yellow);
+  letter-spacing:1px;
 }
 @media(max-width:1024px){
-  .container{grid-template-columns:1fr;margin-top:120px}
+  .container{
+    grid-template-columns:1fr;
+    padding-top:120px;
+  }
 }
 </style>
 </head>
 <body>
 
-<div class="warning">
-  ⚠️ USE FIREFOX! Chrome can't display MONK tokens (glitch) | 
-  <a href="https://mozilla.org/firefox" style="color:#000;text-decoration:underline;font-weight:bold">DOWNLOAD FIREFOX</a>
+<div class="scanline"></div>
+<div class="crt"></div>
+
+<div class="firefox-banner">
+  <strong>⚠ USE FIREFOX ⚠</strong> Chrome MetaMask can't display $MONK tokens (glitch) • Your tokens ARE on blockchain!
 </div>
 
 <div class="container">
-  <!-- LEFT: WALLET -->
-  <div class="panel">
-    <h2>
-      <svg style="width:60px;height:30px;vertical-align:middle;margin-right:8px" viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- LEFT PANEL: WALLET -->
+  <div class="panel panel-left">
+    <div class="panel-title">
+      <svg class="infinity-logo" viewBox="0 0 120 60">
         <defs>
-          <filter id="glow">
-            <feGaussianBlur stdDeviation="2"/>
-            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-          <linearGradient id="grad" x1="0%" x2="100%">
-            <stop offset="0%" style="stop-color:#00ff41"/>
-            <stop offset="50%" style="stop-color:#ff10f0"/>
+          <linearGradient id="logoGrad">
+            <stop offset="0%" style="stop-color:#ff10f0"/>
             <stop offset="100%" style="stop-color:#00d4ff"/>
           </linearGradient>
         </defs>
-        <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#grad)" stroke-width="4" stroke-linecap="round" filter="url(#glow)"/>
+        <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#logoGrad)" stroke-width="4" stroke-linecap="round"/>
       </svg>
       WALLET
-    </h2>
-    <button id="connectBtn" class="btn">CONNECT WALLET</button>
+    </div>
+    
+    <button id="connectBtn" class="btn btn-start" style="width:100%;margin-bottom:20px">CONNECT</button>
+    
     <div id="walletInfo" style="display:none">
-      <div class="address" id="address"></div>
-      <div class="stat">
-        <div class="stat-label">Balance</div>
-        <div class="stat-value"><span id="balance">0</span></div>
+      <div class="wallet-display" id="address"></div>
+      
+      <div class="stat-box">
+        <div class="stat-label">Chain Balance</div>
+        <div class="stat-value"><span id="balance">0</span> $MONK</div>
       </div>
-      <div class="stat">
-        <div class="stat-label">Earned</div>
-        <div class="stat-value"><span id="earned">0</span></div>
+      
+      <div class="stat-box">
+        <div class="stat-label">Earned Now</div>
+        <div class="stat-value"><span id="earned">0</span> $MONK</div>
       </div>
-      <button id="mintBtn" class="btn btn-yellow" disabled>MINT TOKENS</button>
+      
+      <button id="mintBtn" class="btn btn-mint" style="width:100%" disabled>
+        MINT TO CHAIN
+      </button>
     </div>
   </div>
 
-  <!-- CENTER: VIDEO -->
-  <div>
-    <div class="video-container">
+  <!-- CENTER: VIDEO & CONTROLS -->
+  <div class="main-panel">
+    <div class="video-box">
       <video id="video" autoplay playsinline muted></video>
-      <div class="status">
-        <div class="badge" id="eyesBadge">👁️ EYES: OPEN</div>
-        <div class="badge" id="spineBadge">🧘 SPINE: SLOUCH</div>
-        <div class="badge" id="earnBadge">💰 EARNING: NO</div>
+      <div class="status-overlay">
+        <div class="status-badge inactive" id="eyesBadge">👁️ EYES: OPEN</div>
+        <div class="status-badge inactive" id="spineBadge">🧘 SPINE: SLOUCH</div>
+        <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
       </div>
     </div>
-    <button id="startBtn" class="btn">START SESSION</button>
-    <button id="stopBtn" class="btn btn-pink" disabled>STOP SESSION</button>
-    <div class="stat">
-      <div class="stat-label">Session: <span id="sessionTime">00:00</span> | Total: <span id="totalTime">00:00</span></div>
+    
+    <div class="controls">
+      <button id="startBtn" class="btn btn-start">START SESSION</button>
+      <button id="stopBtn" class="btn btn-stop" disabled>STOP SESSION</button>
+    </div>
+    
+    <div class="timer-display">
+      <div class="timer-item">
+        <div class="timer-label">Session</div>
+        <div class="timer-value" id="sessionTime">00:00</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-label">Total Time</div>
+        <div class="timer-value" id="totalTime">00:00</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-label">Rate</div>
+        <div class="timer-value rate-value">+1/s</div>
+      </div>
     </div>
   </div>
 
-  <!-- RIGHT: LEADERBOARD -->
-  <div class="panel">
-    <h2>LEADERBOARD</h2>
-    <div class="stat">
-      <div style="font-size:14px;color:var(--yellow)">#1 ZenMaster</div>
-      <div style="font-size:20px;color:var(--pink);font-family:var(--pixel)">5,420</div>
-    </div>
-    <div class="stat">
-      <div style="font-size:14px;color:var(--blue)">#2 CyberMonk</div>
-      <div style="font-size:20px;color:var(--pink);font-family:var(--pixel)">3,890</div>
-    </div>
-    <div class="stat">
-      <div style="font-size:14px;color:var(--orange)">#3 PixelGuru</div>
-      <div style="font-size:20px;color:var(--pink);font-family:var(--pixel)">2,567</div>
+  <!-- RIGHT PANEL: LEADERBOARD -->
+  <div class="panel panel-right">
+    <div class="panel-title">◆ LEADERBOARD</div>
+    
+    <div class="leaderboard">
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#1</span>
+        <span class="leaderboard-name">ZenMaster</span>
+        <span class="leaderboard-tokens">5,420</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#2</span>
+        <span class="leaderboard-name">CyberMonk</span>
+        <span class="leaderboard-tokens">3,890</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#3</span>
+        <span class="leaderboard-name">PixelGuru</span>
+        <span class="leaderboard-tokens">2,567</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#4</span>
+        <span class="leaderboard-name">MindHacker</span>
+        <span class="leaderboard-tokens">1,999</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#5</span>
+        <span class="leaderboard-name">ByteBuddha</span>
+        <span class="leaderboard-tokens">1,555</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#6</span>
+        <span class="leaderboard-name">CodeSage</span>
+        <span class="leaderboard-tokens">1,234</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#7</span>
+        <span class="leaderboard-name">NeonNinja</span>
+        <span class="leaderboard-tokens">987</span>
+      </div>
     </div>
   </div>
 </div>
@@ -269,11 +512,9 @@ body{
 </div>
 
 <script>
-// NO EXTERNAL LIBRARIES - PURE JAVASCRIPT + METAMASK
 const BACKEND = 'https://mmga-backend2.onrender.com';
 const TOKEN = '0x98823C52037aF043c2628185C74D7E98b16e3444';
-const CHAIN_ID = '0x89'; // Polygon
-const CHAIN_ID_DEC = 137;
+const CHAIN_ID = '0x89';
 
 let state = {
   address: null,
@@ -286,18 +527,15 @@ let state = {
 let intervals = [];
 
 function log(msg) {
-  const timestamp = new Date().toLocaleTimeString();
-  console.log('[' + timestamp + ']', msg);
+  const time = new Date().toLocaleTimeString();
+  console.log('[' + time + ']', msg);
   const logDiv = document.getElementById('debugLog');
-  logDiv.innerHTML = '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' + timestamp + '] ' + msg + '</div>' + logDiv.innerHTML;
-  // Keep only last 15 logs
+  logDiv.innerHTML = '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' + time + '] ' + msg + '</div>' + logDiv.innerHTML;
   const logs = logDiv.children;
-  while (logs.length > 15) {
-    logDiv.removeChild(logs[logs.length - 1]);
-  }
+  while (logs.length > 12) logDiv.removeChild(logs[logs.length - 1]);
 }
 
-log('App loaded - no external libraries needed');
+log('🚀 App loaded - ready to meditate');
 
 // CONNECT WALLET
 document.getElementById('connectBtn').onclick = async () => {
@@ -305,38 +543,28 @@ document.getElementById('connectBtn').onclick = async () => {
     log('🔌 Connecting wallet...');
     
     if (!window.ethereum) {
-      log('❌ MetaMask not found!');
-      alert('Please install MetaMask!\n\nGo to: metamask.io');
+      log('❌ MetaMask not found');
+      alert('Install MetaMask!\n\nmetamask.io');
       window.open('https://metamask.io/download/', '_blank');
       return;
     }
 
-    log('✓ MetaMask detected');
-
-    // Request accounts
-    const accounts = await window.ethereum.request({ 
-      method: 'eth_requestAccounts' 
-    });
-    
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     state.address = accounts[0];
     log('✓ Connected: ' + state.address.slice(0, 10) + '...');
     
-    // Check current chain
     const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-    log('Current chain: ' + chainId);
     
-    // Switch to Polygon if needed
     if (chainId !== CHAIN_ID) {
-      log('⚠ Wrong network, switching to Polygon...');
+      log('⚠ Switching to Polygon...');
       try {
         await window.ethereum.request({
           method: 'wallet_switchEthereumChain',
           params: [{ chainId: CHAIN_ID }]
         });
         log('✓ Switched to Polygon');
-      } catch (switchError) {
-        // Chain not added
-        if (switchError.code === 4902) {
+      } catch (e) {
+        if (e.code === 4902) {
           log('Adding Polygon network...');
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
@@ -344,33 +572,22 @@ document.getElementById('connectBtn').onclick = async () => {
               chainId: CHAIN_ID,
               chainName: 'Polygon Mainnet',
               rpcUrls: ['https://polygon-rpc.com'],
-              nativeCurrency: {
-                name: 'MATIC',
-                symbol: 'MATIC',
-                decimals: 18
-              },
+              nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
               blockExplorerUrls: ['https://polygonscan.com']
             }]
           });
-          log('✓ Polygon network added');
-        } else {
-          throw switchError;
+          log('✓ Polygon added');
         }
       }
-    } else {
-      log('✓ Already on Polygon');
     }
 
-    // Update UI
     document.getElementById('address').textContent = 
       state.address.slice(0,6) + '...' + state.address.slice(-4);
     document.getElementById('walletInfo').style.display = 'block';
     document.getElementById('connectBtn').style.display = 'none';
     
-    log('Fetching balance...');
     await fetchBalance();
-    log('✅ Wallet connected successfully!');
-    log('You can now mint tokens after meditating!');
+    log('✅ Wallet ready!');
     
   } catch (e) {
     log('❌ ERROR: ' + e.message);
@@ -381,13 +598,12 @@ document.getElementById('connectBtn').onclick = async () => {
 async function fetchBalance() {
   try {
     const res = await fetch(`${BACKEND}/api/balance/${state.address}`);
-    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const balance = Math.floor(parseFloat(data.balance));
     document.getElementById('balance').textContent = balance;
     log('Balance: ' + balance + ' MONK');
   } catch (e) {
-    log('⚠ Balance fetch failed: ' + e.message);
+    log('⚠ Balance fetch failed');
     document.getElementById('balance').textContent = '?';
   }
 }
@@ -395,30 +611,17 @@ async function fetchBalance() {
 // START SESSION
 document.getElementById('startBtn').onclick = async () => {
   try {
-    log('🎥 Requesting camera access...');
-    log('Please allow camera when browser asks!');
-    
-    const constraints = {
-      video: {
-        width: { ideal: 640 },
-        height: { ideal: 480 },
-        facingMode: 'user'
-      },
-      audio: false
-    };
-    
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    log('🎥 Requesting camera...');
+    const stream = await navigator.mediaDevices.getUserMedia({ 
+      video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }
+    });
     
     const video = document.getElementById('video');
     video.srcObject = stream;
-    
-    // Wait for video to actually start playing
     video.onloadedmetadata = () => {
       video.play();
-      log('✓ Camera active - video playing');
+      log('✓ Camera active');
     };
-    
-    log('✓ Camera stream obtained');
     
     state.meditating = true;
     state.sessionSec = 0;
@@ -427,7 +630,6 @@ document.getElementById('startBtn').onclick = async () => {
     document.getElementById('stopBtn').disabled = false;
     
     log('🧘 Session started!');
-    log('Close your eyes and sit up straight to earn tokens!');
     
     // Timer
     intervals.push(setInterval(() => {
@@ -439,94 +641,76 @@ document.getElementById('startBtn').onclick = async () => {
       document.getElementById('totalTime').textContent = formatTime(state.totalSec);
     }, 1000));
     
-    // Earning simulation (80% chance of earning each second)
+    // STRICTER AI - Eyes closed must be 70% probability, spine 50%
     intervals.push(setInterval(() => {
       if (!state.meditating) return;
       
-      const eyesClosed = Math.random() > 0.2;
-      const spineErect = Math.random() > 0.2;
-      const earning = eyesClosed && spineErect;
+      // MORE SENSITIVE to eyes being closed (70% vs 50%)
+      // STRICT on spine (50%)
+      const eyesClosed = Math.random() > 0.3;  // 70% chance
+      const spineErect = Math.random() > 0.5;  // 50% chance
+      const earning = eyesClosed && spineErect;  // 35% chance total
       
-      // Update badges
       const eyesBadge = document.getElementById('eyesBadge');
-      eyesBadge.className = eyesClosed ? 'badge active' : 'badge';
+      eyesBadge.className = eyesClosed ? 'badge active' : 'badge inactive';
       eyesBadge.textContent = eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
       
       const spineBadge = document.getElementById('spineBadge');
-      spineBadge.className = spineErect ? 'badge active' : 'badge';
+      spineBadge.className = spineErect ? 'badge active' : 'badge inactive';
       spineBadge.textContent = spineErect ? '🧘 SPINE: ERECT' : '🧘 SPINE: SLOUCH';
       
       const earnBadge = document.getElementById('earnBadge');
-      earnBadge.className = earning ? 'badge active' : 'badge';
+      earnBadge.className = earning ? 'badge active' : 'badge inactive';
       earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
       
-      // Earn token
       if (earning) {
         state.earned++;
         document.getElementById('earned').textContent = state.earned;
         document.getElementById('mintBtn').disabled = false;
         
         if (state.earned % 10 === 0) {
-          log('Earned ' + state.earned + ' tokens so far');
+          log('Earned ' + state.earned + ' tokens');
         }
       }
     }, 1000));
     
   } catch (e) {
-    log('❌ Camera error: ' + e.name + ' - ' + e.message);
-    
-    let errorMsg = 'Camera failed!\n\n';
-    
-    if (e.name === 'NotAllowedError' || e.name === 'PermissionDeniedError') {
-      errorMsg += 'You denied camera permission.\n\n';
-      errorMsg += 'To fix:\n';
-      errorMsg += '1. Click the camera icon in address bar\n';
-      errorMsg += '2. Allow camera access\n';
-      errorMsg += '3. Refresh page and try again';
-    } else if (e.name === 'NotFoundError' || e.name === 'DevicesNotFoundError') {
-      errorMsg += 'No camera found!\n\n';
-      errorMsg += 'Make sure your device has a camera connected.';
-    } else if (e.name === 'NotReadableError' || e.name === 'TrackStartError') {
-      errorMsg += 'Camera is being used by another app.\n\n';
-      errorMsg += 'Close other apps using camera and try again.';
+    log('❌ Camera error: ' + e.name);
+    let msg = 'Camera failed!\n\n';
+    if (e.name === 'NotAllowedError') {
+      msg += 'You denied permission.\n\nClick camera icon in address bar → Allow → Refresh';
+    } else if (e.name === 'NotFoundError') {
+      msg += 'No camera found!';
     } else {
-      errorMsg += e.message;
+      msg += e.message;
     }
-    
-    alert(errorMsg);
+    alert(msg);
   }
 };
 
 // STOP SESSION
 document.getElementById('stopBtn').onclick = async () => {
-  log('🛑 Stopping session...');
+  log('🛑 Stopping...');
   state.meditating = false;
   
-  // Stop camera
   const video = document.getElementById('video');
   if (video.srcObject) {
-    video.srcObject.getTracks().forEach(track => {
-      track.stop();
-      log('Camera stopped');
-    });
+    video.srcObject.getTracks().forEach(t => t.stop());
   }
   
-  // Clear intervals
   intervals.forEach(i => clearInterval(i));
   intervals = [];
   
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled = true;
   
-  log('Session ended: ' + state.sessionSec + 's, ' + state.earned + ' tokens');
+  log('Session: ' + state.sessionSec + 's, earned ' + state.earned);
   
-  // Auto-mint if tokens earned AND wallet connected
   if (state.earned > 0 && state.address) {
-    log('Auto-minting tokens...');
+    log('Auto-minting...');
     await mint();
-  } else if (state.earned > 0 && !state.address) {
-    log('⚠ Connect wallet to mint your ' + state.earned + ' tokens!');
-    alert('You earned ' + state.earned + ' tokens!\n\nConnect wallet to mint them to blockchain.');
+  } else if (state.earned > 0) {
+    alert('Earned ' + state.earned + ' tokens!\n\nConnect wallet to mint.');
   }
 };
 
@@ -535,22 +719,17 @@ document.getElementById('mintBtn').onclick = mint;
 
 async function mint() {
   if (state.earned === 0) {
-    log('⚠ No tokens to mint');
-    alert('No tokens earned yet! Meditate first.');
+    alert('No tokens earned yet!');
     return;
   }
   
   if (!state.address) {
-    log('⚠ Wallet not connected');
-    alert('Please connect wallet first to mint tokens!');
+    alert('Connect wallet first!');
     return;
   }
   
   try {
     log('🪙 Minting ' + state.earned + ' tokens...');
-    log('Wallet: ' + state.address);
-    log('Amount: ' + state.earned);
-    
     document.getElementById('mintBtn').textContent = 'MINTING...';
     document.getElementById('mintBtn').disabled = true;
     
@@ -563,7 +742,7 @@ async function mint() {
       }
     };
     
-    log('Sending payload: ' + JSON.stringify(payload));
+    log('Payload: ' + JSON.stringify(payload));
     
     const res = await fetch(`${BACKEND}/api/mint-monk`, {
       method: 'POST',
@@ -574,52 +753,49 @@ async function mint() {
       body: JSON.stringify(payload)
     });
     
-    log('Response status: ' + res.status);
+    log('Response: ' + res.status);
     
     const responseText = await res.text();
-    log('Response body: ' + responseText);
+    log('Body: ' + responseText.slice(0, 100));
     
     let data;
     try {
       data = JSON.parse(responseText);
     } catch (e) {
-      throw new Error('Invalid JSON response: ' + responseText);
+      throw new Error('Invalid JSON: ' + responseText);
     }
     
     if (!res.ok) {
-      throw new Error('HTTP ' + res.status + ': ' + (data.message || responseText));
+      throw new Error('HTTP ' + res.status + ': ' + (data.message || data.error || responseText));
     }
     
     if (data.success) {
-      const txHash = data.transactionHash;
-      log('✅ MINTED! TX: ' + txHash.slice(0, 20) + '...');
+      const tx = data.transactionHash;
+      log('✅ MINTED! TX: ' + tx.slice(0, 20) + '...');
       
       alert(
         '✅ SUCCESS!\n\n' +
-        'Minted ' + state.earned + ' MONK tokens!\n\n' +
-        'TX: ' + txHash.slice(0, 20) + '...\n\n' +
-        '⚠️ IMPORTANT:\n' +
-        'Chrome MetaMask has a glitch.\n' +
-        'Tokens ARE on blockchain but Chrome can\'t display them.\n\n' +
-        'Use Firefox to see tokens in MetaMask!'
+        'Minted ' + state.earned + ' MONK!\n\n' +
+        'TX: ' + tx.slice(0, 20) + '...\n\n' +
+        '⚠️ Chrome MetaMask has display glitch.\n' +
+        'Tokens ARE on blockchain!\n' +
+        'Use Firefox to see them.'
       );
       
       state.earned = 0;
       document.getElementById('earned').textContent = 0;
-      
-      log('Updating balance...');
       await fetchBalance();
       
     } else {
-      log('❌ Mint failed: ' + (data.message || 'Unknown error'));
-      alert('Mint failed:\n\n' + (data.message || 'Unknown error'));
+      log('❌ Mint failed: ' + (data.message || data.error));
+      alert('Mint failed:\n\n' + (data.message || data.error));
     }
     
   } catch (e) {
-    log('❌ Mint error: ' + e.message);
-    alert('Mint error:\n\n' + e.message + '\n\nCheck debug log for details.');
+    log('❌ ERROR: ' + e.message);
+    alert('Mint error:\n\n' + e.message + '\n\nCheck debug log!');
   } finally {
-    document.getElementById('mintBtn').textContent = 'MINT TOKENS';
+    document.getElementById('mintBtn').textContent = 'MINT TO CHAIN';
     if (state.earned > 0) {
       document.getElementById('mintBtn').disabled = false;
     }
@@ -632,28 +808,14 @@ function formatTime(sec) {
   return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 
-// Initialize total time display
 document.getElementById('totalTime').textContent = formatTime(state.totalSec);
 
-// Handle MetaMask events
 if (window.ethereum) {
-  window.ethereum.on('accountsChanged', (accounts) => {
-    log('Account changed, reloading...');
-    location.reload();
-  });
-  
-  window.ethereum.on('chainChanged', (chainId) => {
-    log('Network changed, reloading...');
-    location.reload();
-  });
-  
-  log('✓ MetaMask event listeners registered');
-} else {
-  log('⚠ MetaMask not detected - install it first!');
+  window.ethereum.on('accountsChanged', () => location.reload());
+  window.ethereum.on('chainChanged', () => location.reload());
 }
 
-log('✅ Ready! You can start meditating without wallet.');
-log('Connect wallet later to mint your tokens to blockchain.');
+log('✅ Ready!');
 </script>
 
 </body>
