@@ -27,259 +27,1201 @@ body{
   image-rendering:pixelated;
 }
 
+
+
 .firefox-banner{
   position:fixed;top:0;left:0;right:0;z-index:10000;
   background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));
   padding:10px 20px;text-align:center;
   border-bottom:3px solid var(--yellow);
+  
 }
 .firefox-banner strong{
   font-family:var(--pixel);font-size:10px;color:#000;
   font-weight:900;letter-spacing:1px;
 }
-
+.firefox-banner a{
+  color:#000!important;font-weight:900;
+  text-decoration:underline;text-underline-offset:2px;
+}
 .nav-header{
   position:fixed;top:48px;left:0;right:0;z-index:9997;
   display:flex;align-items:center;justify-content:space-between;
   padding:10px 28px;
   background:rgba(10,10,15,0.92);
   border-bottom:2px solid var(--purple);
+  
 }
 
+.nav-home{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--pixel);font-size:10px;
+  color:var(--cyan);text-decoration:none;
+  letter-spacing:2px;
+  transition:all 0.3s;
+  padding:8px 16px;
+  border:2px solid var(--cyan);
+  
+}
+.nav-home:hover{
+  color:#fff;background:rgba(0,255,255,0.12);
+  
+  transform:translateX(-2px);
+}
+.nav-arrow{
+  font-size:14px;
+  
+}
+
+.nav-brand{
+  display:flex;align-items:center;gap:10px;
+}
 .nav-title{
   font-family:var(--pixel);font-size:13px;
   background:linear-gradient(90deg,var(--pink),var(--cyan));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
+  
   letter-spacing:3px;
 }
-
+.nav-status{
+  font-family:var(--pixel);font-size:9px;
+  color:var(--orange);letter-spacing:2px;
+  padding:8px 16px;border:2px solid var(--orange);
+  
+  transition:all 0.3s;
+}
+.nav-status.online{
+  color:var(--green);border-color:var(--green);
+  
+  
+}
 .container{
   display:grid;grid-template-columns:320px 1fr 320px;
   height:100vh;gap:24px;padding:108px 24px 24px;
 }
-
 .panel{
   background:rgba(14,14,22,0.95);
   border:4px solid;padding:28px;position:relative;
   overflow-y:auto;
+  contain:layout style;
+  transform:translateZ(0);
 }
 .panel-left{border-color:var(--pink);}
 .panel-right{border-color:var(--cyan);}
 
+
+
+
+.panel-title{
+  font-family:var(--pixel);font-size:14px;margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;letter-spacing:2px;
+}
+.panel-left .panel-title{color:var(--pink);}
+.panel-right .panel-title{color:var(--cyan);}
+.infinity-logo{width:50px;height:25px;}
 .main-panel{display:flex;flex-direction:column;gap:20px;}
 .video-box{
   flex:1;background:#000;border:5px solid var(--blue);position:relative;
   display:flex;align-items:center;justify-content:center;
+  
   overflow:hidden;min-height:320px;
+  contain:strict;
+  will-change:contents;
 }
 
+
+
+  50%{transform:scale(1.02)}
+  100%{transform:scale(1)}
+}
 #video{
   width:100%;height:100%;object-fit:cover;
   transform:scaleX(-1);
 }
-.canvas-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;}
-
+.canvas-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;will-change:contents;contain:strict;}
+.face-overlay{position:absolute;inset:0;pointer-events:none;z-index:10;}
+.eye-vertex{
+  position:absolute;width:80px;height:80px;border-radius:50%;border:4px solid currentColor;
+  background:radial-gradient(circle at center,currentColor 0%,transparent 70%);
+  transition:all 0.2s ease;transform:translate(-50%,-50%);
+  opacity:0.7;
+}
+.eye-vertex.closed{
+  color:#00ff88;border-color:#00ff88;opacity:0.8;
+  
+}
+.eye-vertex.open{
+  color:#ff4444;border-color:#ff4444;opacity:0.6;
+  
+}
 .status-overlay{
   position:absolute;top:24px;left:24px;right:24px;
-  display:flex;gap:16px;flex-wrap:wrap;z-index:20;
+  display:flex;gap:16px;flex-wrap:wrap;
 }
+/* ---- STATUS BADGES - fixed class structure ---- */
 .status-badge{
   padding:10px 18px;background:rgba(10,10,15,0.97);border:3px solid;
   font-family:var(--pixel);font-size:10px;
+  transition:all 0.3s;letter-spacing:1px;
+  
 }
-.status-badge.inactive{border-color:#ff4444;color:#ff4444;}
-.status-badge.active{border-color:var(--green);color:var(--green);}
-
-.controls{display:flex;gap:15px;}
-.btn{
-  flex:1;padding:15px;font-family:var(--pixel);font-size:10px;
-  cursor:pointer;border:4px solid;background:transparent;color:#fff;
-}
-.btn:disabled{opacity:0.3;cursor:not-allowed;}
-.btn-start{border-color:var(--green);color:var(--green);}
-
-.loading-overlay {
-  position:absolute;inset:0;background:var(--bg);z-index:100;
-  display:flex;align-items:center;justify-content:center;
+.status-badge.active{
+  border-color:var(--green);color:var(--green);
+  
+  
 }
 
-.debug{
-  position:fixed;bottom:10px;left:10px;width:300px;height:120px;
-  background:rgba(0,0,0,0.8);border:1px solid var(--green);
-  font-family:monospace;font-size:10px;padding:10px;overflow-y:auto;z-index:9999;
+.setup-step{
+  display:flex;gap:12px;padding:10px 0;
+  border-bottom:1px solid rgba(0,255,65,0.1);
 }
+.ss-num{
+  font-family:var(--pixel);font-size:9px;
+  color:var(--pink);min-width:22px;padding-top:2px;flex-shrink:0;
+}
+.ss-body{display:flex;flex-direction:column;gap:4px;}
+.ss-body strong{
+  font-family:var(--pixel);font-size:8px;letter-spacing:1px;
+  color:var(--green);
+}
+.ss-body span{font-family:var(--retro);font-size:19px;color:rgba(0,255,65,0.85);line-height:1.6;}
+
+/* ═══ MOBILE ═══════════════════════════════════════════ */
+@media(max-width:1024px){
+  body{overflow-y:auto;overflow-x:hidden;}
+  .firefox-banner strong{font-size:8px;letter-spacing:0.5px;}
+  .nav-header{padding:8px 14px;top:38px;}
+  .nav-home{font-size:7px;padding:6px 10px;}
+  .nav-title{font-size:9px;}
+  .nav-status{font-size:7px;padding:5px 10px;}
+  .container{
+    grid-template-columns:1fr;
+    height:auto;
+    padding:96px 12px 24px;
+    gap:14px;
+    overflow-y:auto;
+  }
+  /* reorder: video first, wallet second, leaderboard third */
+  .main-panel{order:1;}
+  .panel-left{order:2;}
+  .panel-right{order:3;}
+
+  .video-box{min-height:260px;max-height:55vw;}
+  .controls{gap:10px;}
+  .btn{padding:14px 10px;font-size:8px;letter-spacing:1px;}
+  .timer-display{padding:14px 10px;}
+  .timer-value{font-size:16px;}
+  .timer-label{font-size:11px;}
+  .panel{padding:18px 14px;}
+  .panel-title{font-size:11px;margin-bottom:16px;}
+  .stat-box{padding:14px;}
+  .stat-value{font-size:20px;}
+  .stat-label{font-size:13px;}
+  .status-badge{font-size:8px;padding:7px 12px;}
+  .status-overlay{top:10px;left:10px;right:10px;gap:8px;}
+  .leaderboard-item{padding:10px 10px;}
+  .leaderboard-rank{font-size:9px;}
+  .leaderboard-tokens{font-size:10px;}
+  .debug{display:none;}
+  .privacy-toggle{display:flex!important;}
+}
+@media(max-width:480px){
+  .firefox-banner{padding:8px 10px;}
+  .firefox-banner strong{font-size:7px;}
+  .nav-home span.nav-arrow{display:none;}
+  .nav-home{font-size:7px;}
+  .btn{font-size:7px;}
+  .timer-value{font-size:14px;}
+  .video-box{min-height:220px;}
+}
+
 </style>
 </head>
-<body>
+<body style="background:#0a0a0f;min-height:100vh;">
+
+<div id="commissionFlash" style="position:fixed;top:110px;right:20px;z-index:9000;background:rgba(10,10,15,0.97);border:3px solid #fff000;padding:12px 20px;font-family:var(--pixel);font-size:9px;color:#fff000;letter-spacing:1px;opacity:0;transition:opacity 0.3s;pointer-events:none;"></div>
+
 
 <div class="firefox-banner">
-  <strong>⚠ SYSTEM: WEBGL STABILIZED ⚠</strong>
+  <strong>⚠ DESKTOP: USE FIREFOX ⚠</strong> Chrome hides $MONK balance • <strong>⚠ MOBILE: CHECK BALANCE ON <a href="https://polygonscan.com/token/0x98823C52037aF043c2628185C74D7E98b16e3444#balances" target="_blank" style="color:#000;text-decoration:underline;">POLYGONSCAN ↗</a></strong> • Tokens ARE on-chain!
 </div>
 
 <nav class="nav-header">
-  <span class="nav-title">MONKCOIN AI</span>
-  <div id="navStatus">● OFFLINE</div>
+  <a href="index.html" class="nav-home">
+    <span class="nav-arrow">◄</span> BACK TO HOME
+  </a>
+  <div class="nav-brand">
+    <svg viewBox="0 0 120 60" width="36" height="18">
+      <defs>
+        <linearGradient id="navGrad">
+          <stop offset="0%" style="stop-color:#ff10f0"/>
+          <stop offset="100%" style="stop-color:#00d4ff"/>
+        </linearGradient>
+      </defs>
+      <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#navGrad)" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-title">MONKCOIN</span>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="ambassador.html" style="font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:var(--yellow);text-decoration:none;border:2px solid rgba(255,240,0,0.4);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255,240,0,0.5)'" onmouseout="this.style.boxShadow='none'">★ AMBASSADOR</a>
+    <div class="nav-status" id="navStatus">● OFFLINE</div>
+  </div>
 </nav>
 
 <div class="container">
+  <!-- LEFT PANEL: WALLET -->
   <div class="panel panel-left">
-    <button id="connectBtn" class="btn btn-start" style="width:100%">CONNECT WALLET</button>
+    <div class="panel-title">
+      <svg class="infinity-logo" viewBox="0 0 120 60">
+        <defs>
+          <linearGradient id="logoGrad">
+            <stop offset="0%" style="stop-color:#ff10f0"/>
+            <stop offset="100%" style="stop-color:#00d4ff"/>
+          </linearGradient>
+        </defs>
+        <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#logoGrad)" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      WALLET
+    </div>
+
+    <button id="connectBtn" class="btn btn-start" style="width:100%;margin-bottom:12px">CONNECT WALLET</button>
+    <div id="mobileTip" style="display:none;font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.4);letter-spacing:1px;line-height:2;margin-bottom:12px;padding:8px;border:1px solid rgba(0,255,65,0.15);text-align:center;">
+      📱 MOBILE: TAP CONNECT TO OPEN<br/>INSIDE METAMASK BROWSER
+    </div>
+
+    <!-- SETUP INSTRUCTIONS — visible before wallet connect -->
+    <div id="setupGuide">
+      <div style="font-family:var(--pixel);font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid rgba(0,255,255,0.2);">// SETUP GUIDE</div>
+
+      <div class="setup-step">
+        <span class="ss-num">01</span>
+        <div class="ss-body">
+          <strong>GET METAMASK</strong>
+          <span>Install MetaMask at <a href="https://metamask.io" target="_blank" style="color:var(--cyan);">metamask.io</a><br/>Mobile: open this page inside the MetaMask browser</span>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <span class="ss-num">02</span>
+        <div class="ss-body">
+          <strong>ADD &amp; SWITCH TO POLYGON</strong>
+          <span>MetaMask → tap network at top → Add Network:<br/>
+          RPC: <span style="color:var(--green);">polygon-rpc.com</span><br/>
+          Chain ID: <span style="color:var(--green);">137</span> · Symbol: <span style="color:var(--green);">MATIC</span></span>
+          <div style="margin-top:6px;padding:6px 10px;background:rgba(255,16,240,0.1);border:2px solid rgba(255,16,240,0.4);font-family:var(--pixel);font-size:7px;color:var(--pink);letter-spacing:1px;line-height:1.9;">
+            ⚠ MUST BE ON POLYGON<br/>NOT ETHEREUM — BEFORE IMPORTING TOKEN
+          </div>
+        </div>
+      </div>
+
+      <div class="setup-step">
+        <span class="ss-num">03</span>
+        <div class="ss-body">
+          <strong>IMPORT $MONK TOKEN</strong>
+          <span>MetaMask → Import Token → paste this contract address:</span>
+          <div onclick="copyContract()" style="cursor:pointer;margin-top:6px;padding:8px 10px;background:rgba(255,240,0,0.08);border:2px solid rgba(255,240,0,0.4);font-family:monospace;font-size:11px;color:var(--yellow);word-break:break-all;line-height:1.6;">
+            0x98823C52037aF043c2628185C74D7E98b16e3444
+          </div>
+          <button onclick="copyContract()" id="copyContractBtn" style="margin-top:6px;width:100%;font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:var(--yellow);background:transparent;border:2px solid rgba(255,240,0,0.4);padding:7px;cursor:pointer;transition:all 0.2s;">
+            ⧉ TAP TO COPY CONTRACT ADDRESS
+          </button>
+          <span style="font-family:var(--pixel);font-size:7px;color:var(--pink);letter-spacing:1px;line-height:1.9;">
+            ⚠ SWITCH TO POLYGON FIRST<br/>⚠ PASTE THIS — NOT YOUR WALLET
+          </span>
+        </div>
+      </div>
+
+      <div class="setup-step" style="border:none;">
+        <span class="ss-num">04</span>
+        <div class="ss-body">
+          <strong>CONNECT & MEDITATE</strong>
+          <span>Tap Connect above → Start Session → close your eyes → earn $MONK every second</span>
+        </div>
+      </div>
+
+      <div style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.3);letter-spacing:1px;margin-top:12px;line-height:2;padding:8px;border:1px solid rgba(0,255,65,0.1);">
+        ⚠ USE FIREFOX ON DESKTOP<br/>Chrome MetaMask has a display glitch — tokens still mint correctly
+      </div>
+    </div>
+
+    <!-- WALLET INFO — visible after connect -->
+    <div id="walletInfo" style="display:none">
+      <div class="wallet-display" id="address"></div>
+
+      <div class="stat-box">
+        <div class="stat-label">Chain Balance</div>
+        <div class="stat-value"><span id="balance">0</span> $MONK</div>
+      </div>
+
+      <div class="stat-box">
+        <div class="stat-label">Earned Now</div>
+        <div class="stat-value"><span id="earned">0</span> $MONK</div>
+      </div>
+
+      <button id="mintBtn" class="btn btn-mint" style="width:100%" disabled>
+        MINT TO CHAIN
+      </button>
+
+      <div style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.3);letter-spacing:1px;margin-top:14px;line-height:2;">
+        ✓ POLYGON MAINNET<br/>
+        ✓ $MONK MINTS ON-CHAIN<br/>
+        ✓ NO DATA LEAVES DEVICE
+      </div>
+    </div>
   </div>
 
+  <!-- CENTER: VIDEO & CONTROLS -->
   <div class="main-panel">
     <div class="video-box">
       <div class="loading-overlay" id="loadingAI">
-        <div style="font-family:var(--pixel); color:var(--cyan)">BOOTING AI...</div>
+        <div class="loading-text" id="loadingText">LOADING AI MODEL...</div>
       </div>
       <video id="video" autoplay playsinline muted></video>
       <canvas id="canvas" class="canvas-overlay"></canvas>
+<!-- rainbow heatmap removed for performance -->
+      <!-- eye-vertex divs removed: canvas draws the dot constellation directly -->
       <div class="status-overlay">
-        <div class="status-badge inactive" id="eyesBadge">EYES: ???</div>
+        <div class="status-badge inactive" id="eyesBadge">👁️ EYES: DETECTING...</div>
+        <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
       </div>
     </div>
+
     <div class="controls">
       <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
+      <button id="stopBtn" class="btn btn-stop" disabled>STOP SESSION</button>
+      <button id="calibBtn" class="btn btn-calibrate" disabled title="Keep eyes open for 3 seconds to calibrate detection for your face">CALIBRATE EYES</button>
+    </div>
+
+    <div class="timer-display">
+      <div class="timer-item">
+        <div class="timer-label">Session</div>
+        <div class="timer-value" id="sessionTime">00:00</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-label">Total Time</div>
+        <div class="timer-value" id="totalTime">00:00</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-label">Rate</div>
+        <div class="timer-value rate-value">+1/s</div>
+      </div>
     </div>
   </div>
 
+  <!-- RIGHT PANEL: LEADERBOARD + PRIVACY -->
   <div class="panel panel-right">
-    <div style="font-family:var(--pixel); font-size:12px">LOGS</div>
-    <div id="debugLog" class="debug"></div>
+    <div class="lb-header">
+      <div class="panel-title" style="margin-bottom:0;">◆ LEADERBOARD</div>
+      <button class="lb-refresh" id="lbRefreshBtn" onclick="loadLeaderboard()">↻ REFRESH</button>
+    </div>
+    <div class="leaderboard" id="leaderboardList">
+      <div class="leaderboard-item" style="justify-content:center;">
+        <span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);letter-spacing:1px;">LOADING CHAIN DATA...</span>
+      </div>
+    </div>
+    <div class="lb-status" id="lbStatus">FETCHING FROM POLYGONSCAN...</div>
+
+    <!-- PRIVACY VERIFY SECTION -->
+    <div class="privacy-section">
+      <button class="privacy-toggle" onclick="togglePrivacy()">
+        <span>🔒 VERIFY: NOTHING LEAVES YOUR DEVICE</span>
+        <span id="privacyArrow">▼</span>
+      </button>
+      <div class="privacy-body" id="privacyBody">
+        <div class="privacy-step">
+          <span class="ps-num">01</span>
+          <span class="ps-text">Open browser menu → <span class="hl">More Tools → Developer Tools</span> (or press F12)</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">02</span>
+          <span class="ps-text">Click the <span class="hl">Network</span> tab at the top of DevTools</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">03</span>
+          <span class="ps-text">Press <span class="hl">Start Session</span> and allow camera access</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">04</span>
+          <span class="ps-text">Watch the Network tab during meditation — <span class="hl">zero camera data is sent.</span> No image, no video, no stream leaves your browser.</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">05</span>
+          <span class="ps-text">When you click <span class="hl">Mint</span> you will see exactly ONE outbound request: your wallet address + token count. Nothing else. Ever.</span>
+        </div>
+        <div class="privacy-step" style="border:none;">
+          <span class="ps-num">✓</span>
+          <span class="ps-text" style="color:var(--green);">All AI processing runs locally via WebAssembly. Your face never leaves your device.</span>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+<div class="debug" id="debugPanel">
+  <div class="debug-title">DEBUG LOG</div>
+  <div id="debugLog"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js" crossorigin="anonymous"></script>
 
 <script>
-const video = document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const debugLog = document.getElementById('debugLog');
+const BACKEND = 'https://mmga-backend2.onrender.com';
+const COMMISSION_RATE = 0.30; // Ambassador earns 30% of every MONK minted by recruits
 
-let faceMesh;
+// ─── AMBASSADOR / REFERRAL SYSTEM ─────────────────────────
+// Read ?ref= param on page load — store ambassador wallet if present
+const urlParams = new URLSearchParams(window.location.search);
+const REF_WALLET = (urlParams.get('ref') || '').toLowerCase().trim();
+if (REF_WALLET && REF_WALLET.startsWith('0x')) {
+  localStorage.setItem('monkcoin_referrer', REF_WALLET);
+}
+const storedReferrer = localStorage.getItem('monkcoin_referrer') || null;
+
+// Track commissions paid this session
+let sessionCommissionPaid = 0;
+
+
+
+
+// Register this wallet as a recruit under the referrer
+function registerRecruit(referrerAddr, recruitAddr) {
+  const key = 'amb_recruits_' + referrerAddr.toLowerCase();
+  const recruits = JSON.parse(localStorage.getItem(key) || '[]');
+  const rLower = recruitAddr.toLowerCase();
+  if (!recruits.includes(rLower)) {
+    recruits.push(rLower);
+    localStorage.setItem(key, JSON.stringify(recruits));
+    document.getElementById('recruitCount').textContent = recruits.length;
+    log('✓ Recruit registered under ' + referrerAddr.slice(0,8) + '...');
+  }
+}
+
+// Pay ambassador commission — fires a separate mint to their wallet
+async function payAmbassadorCommission(minerEarned) {
+  if (!storedReferrer) return;
+  if (storedReferrer === state.address.toLowerCase()) return; // can't self-refer
+  const commission = Math.floor(minerEarned * COMMISSION_RATE);
+  if (commission < 1) return;
+  try {
+    log('★ Paying ' + commission + '  commission to ambassador...');
+    const payload = {
+      walletAddress: storedReferrer,
+      amount: commission,
+      sessionData: { eyesClosed: true, spineCorrect: true, type: 'ambassador_commission' }
+    };
+    const res = await fetch(BACKEND + '/api/mint-monk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const txt = await res.text();
+    const data = JSON.parse(txt);
+    if (data.success) {
+      sessionCommissionPaid += commission;
+      // Track in localStorage for ambassador's own dashboard
+      const key = 'amb_commission_' + storedReferrer;
+      const prev = parseFloat(localStorage.getItem(key) || '0');
+      localStorage.setItem(key, prev + commission);
+      log('★ Commission paid! TX: ' + data.transactionHash.slice(0,16) + '...');
+      showCommissionFlash(commission);
+    } else {
+      log('⚠ Commission mint failed: ' + (data.message || data.error));
+    }
+  } catch(e) {
+    log('⚠ Commission error: ' + e.message);
+  }
+}
+
+function showCommissionFlash(amount) {
+  const el = document.getElementById('commissionFlash');
+  el.textContent = '★ +' + amount + '  → AMBASSADOR';
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
+const TOKEN   = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+const CHAIN_ID = '0x89';
+
 let state = {
+  address: null,
+  meditating: false,
+  earned: 0,
+  sessionSec: 0,
+  totalSec: parseInt(localStorage.getItem('totalSec') || '0'),
   eyesClosed: false,
+  leftEyePos: null,
+  rightEyePos: null,
   faceDetected: false,
-  earCloseThresh: 0.012
+  calibrating: false,
+  calibStart: 0,
+  earCloseThresh: 0.012,  // NER-scale default (overridden by calibration)
+  earOpenThresh:  0.018,
+  connecting: false
 };
 
+let intervals = [];
+let faceMesh  = null;
+let mpCamera  = null;    // renamed to avoid clash with window.camera
+let stream    = null;    // raw getUserMedia stream
+
+// ─── DEBUG ────────────────────────────────────────────────
 function log(msg) {
-  const div = document.createElement('div');
-  div.textContent = `> ${msg}`;
-  debugLog.prepend(div);
+  const time = new Date().toLocaleTimeString();
+  console.log('[' + time + ']', msg);
+  const logDiv = document.getElementById('debugLog');
+  logDiv.innerHTML =
+    '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' +
+    time + '] ' + msg + '</div>' + logDiv.innerHTML;
+  while (logDiv.children.length > 12) logDiv.removeChild(logDiv.lastChild);
 }
 
-// 1. INITIALIZE FACE MESH
-async function initAI() {
-  faceMesh = new FaceMesh({
-    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
-  });
+log('🚀 Loading AI model...');
 
-  faceMesh.setOptions({
-    maxNumFaces: 1,
-    refineLandmarks: true,
-    minDetectionConfidence: 0.6,
-    minTrackingConfidence: 0.6
-  });
+// ─── FACE-API.JS INIT ────────────────────────────────────
+// face-api.js uses TensorFlow.js with automatic CPU/WASM fallback
+// No WebGL requirement — works on all devices and browsers
 
-  faceMesh.onResults(onResults);
-  log("AI Configured.");
-  startCamera();
-}
+const MODEL_URL = 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights';
 
-// 2. START CAMERA WITH ERROR HANDLING
-async function startCamera() {
+async function initMediaPipe() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ 
-        video: { width: 640, height: 480, frameRate: 30 } 
-    });
-    video.srcObject = stream;
-    
-    // CRITICAL: Wait for the video to be actually playing before processing
-    video.onloadedmetadata = () => {
-      video.play();
-      document.getElementById('loadingAI').style.display = 'none';
-      document.getElementById('startBtn').disabled = false;
-      log("Video stream active.");
-      processLoop();
-    };
-  } catch (err) {
-    log("Camera Access Denied: " + err.message);
+    document.getElementById('loadingText').textContent = 'LOADING AI MODEL...';
+    log('Loading face-api models...');
+
+    // Load only what we need — tiny face detector + 68-point landmarks
+    await Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+      faceapi.nets.faceLandmark68TinyNet.loadFromUri(MODEL_URL)
+    ]);
+
+    log('✓ AI model loaded (face-api.js)');
+    document.getElementById('loadingAI').style.display = 'none';
+    document.getElementById('startBtn').disabled = false;
+  } catch(e) {
+    log('❌ Model load failed: ' + e.message);
+    document.getElementById('loadingText').textContent = 'AI LOAD FAILED — CHECK CONNECTION';
   }
 }
 
-// 3. THE SAFE LOOP
-async function processLoop() {
-  // Only send to AI if the video frame is ready (readyState 2+)
-  if (video.readyState >= 2) {
-    try {
-        await faceMesh.send({ image: video });
-    } catch (e) {
-        // Silently catch WebGL frame drops to prevent crash
-    }
-  }
-  // requestAnimationFrame is better for performance than a setInterval
-  requestAnimationFrame(processLoop);
+// ─── EYE DETECTION with face-api.js ─────────────────────
+// Uses 68 facial landmarks — eye points are indices 36-41 (left) 42-47 (right)
+// These map to the same anatomical points as MediaPipe
+
+// EAR landmark indices (face-api 68-point model)
+// Left eye:  36(outer) 37 38 39(inner) 40 41
+// Right eye: 42(outer) 43 44 45(inner) 46 47
+const L_EAR_IDX = [36,37,38,39,40,41];
+const R_EAR_IDX = [42,43,44,45,46,47];
+
+function calcEAR(pts) {
+  // Vertical distances
+  const v1 = dist(pts[1], pts[5]);
+  const v2 = dist(pts[2], pts[4]);
+  // Horizontal distance
+  const h  = dist(pts[0], pts[3]);
+  return (v1 + v2) / (2.0 * h);
 }
 
-// 4. PROCESS RESULTS
-function onResults(results) {
-  // Sync canvas size to video display size
-  if (canvas.width !== video.clientWidth || canvas.height !== video.clientHeight) {
-      canvas.width = video.clientWidth;
-      canvas.height = video.clientHeight;
-  }
+function dist(a, b) {
+  return Math.sqrt((a.x-b.x)**2 + (a.y-b.y)**2);
+}
 
-  const W = canvas.width;
-  const H = canvas.height;
-  ctx.clearRect(0, 0, W, H);
+function drawEyeDots(ctx, pts, W, H, color) {
+  pts.forEach(function(p) {
+    ctx.beginPath();
+    ctx.arc(p.x * W / W, p.y, 4, 0, Math.PI*2); // coords already in px
+    ctx.fillStyle = color;
+    ctx.fill();
+  });
+  // Connect outline
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  for(var i=1; i<pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+  ctx.closePath();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
 
-  if (!results.multiFaceLandmarks || results.multiFaceLandmarks.length === 0) {
+async function detectEyes(videoEl) {
+  const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 224, scoreThreshold: 0.4 });
+  const result  = await faceapi.detectSingleFace(videoEl, options).withFaceLandmarks(true);
+
+  const canvas  = document.getElementById('canvas');
+  const ctx     = canvas.getContext('2d');
+  const rect    = videoEl.getBoundingClientRect();
+  canvas.width  = rect.width;
+  canvas.height = rect.height;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  if (!result) {
     state.faceDetected = false;
-    updateUI();
+    state.eyesClosed   = false;
     return;
   }
 
   state.faceDetected = true;
-  const lm = results.multiFaceLandmarks[0];
 
-  // EAR Calculation (Eye Aspect Ratio)
-  const faceH = Math.abs(lm[10].y - lm[152].y);
-  const leftOpen = Math.abs(lm[159].y - lm[145].y);
-  const rightOpen = Math.abs(lm[386].y - lm[374].y);
-  const avgEAR = ((leftOpen + rightOpen) / 2) / faceH;
+  // Scale landmarks from detection size to display size
+  const scaleX = rect.width  / (videoEl.videoWidth  || 640);
+  const scaleY = rect.height / (videoEl.videoHeight || 480);
 
-  state.eyesClosed = avgEAR < state.earCloseThresh;
+  const positions = result.landmarks.positions;
+  const lPts = L_EAR_IDX.map(i => ({ x: positions[i].x * scaleX, y: positions[i].y * scaleY }));
+  const rPts = R_EAR_IDX.map(i => ({ x: positions[i].x * scaleX, y: positions[i].y * scaleY }));
 
-  // Draw HUD
-  drawHUD(lm, W, H);
-  updateUI();
+  // Face height for NER normalization
+  const topY    = positions[24].y * scaleY;  // brow top
+  const bottomY = positions[8].y  * scaleY;  // chin
+  const faceH   = Math.abs(bottomY - topY);
+  if (faceH < 20) return; // bad detection
+
+  // Raw EAR values
+  const leftEAR  = calcEAR(lPts);
+  const rightEAR = calcEAR(rPts);
+  const avgEAR   = (leftEAR + rightEAR) / 2;
+
+  // Normalize by face height — distance-invariant
+  const NER = avgEAR * (rect.width * 0.1) / faceH;
+
+  // Calibration
+  if (state.calibrating) {
+    if (!window._calBuf) window._calBuf = [];
+    window._calBuf.push(NER);
+    const elapsed = (Date.now() - state.calibStart) / 1000;
+    const remaining = Math.ceil(3 - elapsed);
+    const badge = document.getElementById('eyesBadge');
+    if (badge) { badge.className = 'status-badge inactive'; badge.textContent = '👁️ KEEP OPEN... ' + remaining + 's'; }
+    if (elapsed >= 3) {
+      const sorted = window._calBuf.slice().sort((a,b) => a-b);
+      const median = sorted[Math.floor(sorted.length * 0.5)];
+      state.earCloseThresh = median * 0.30;
+      state.earOpenThresh  = median * 0.45;
+      state.calibrating    = false;
+      window._calBuf = [];
+      log('Calibrated NER open=' + median.toFixed(4) + ' close<' + state.earCloseThresh.toFixed(4));
+      if (badge) badge.textContent = '👁️ CALIBRATED ✓';
+    }
+    state.eyesClosed = false;
+  } else {
+    const CLOSE_THRESH = state.earCloseThresh || 0.012;
+    const OPEN_THRESH  = state.earOpenThresh  || 0.020;
+
+    if (!window._earConsecutive) window._earConsecutive = 0;
+    if (!state.eyesClosed) {
+      if (NER < CLOSE_THRESH) { window._earConsecutive++; if (window._earConsecutive >= 3) { state.eyesClosed = true; window._earConsecutive = 0; } }
+      else window._earConsecutive = 0;
+    } else {
+      if (NER > OPEN_THRESH) { window._earConsecutive++; if (window._earConsecutive >= 2) { state.eyesClosed = false; window._earConsecutive = 0; } }
+      else window._earConsecutive = 0;
+    }
+  }
+
+  // Draw dots
+  const dotColor = state.eyesClosed ? '#00ff88' : '#ff3333';
+  ctx.save();
+  ctx.scale(-1, 1); ctx.translate(-canvas.width, 0); // mirror to match flipped video
+  drawEyeDots(ctx, lPts, canvas.width, canvas.height, dotColor);
+  drawEyeDots(ctx, rPts, canvas.width, canvas.height, dotColor);
+  // Nose dot
+  const nose = positions[30];
+  ctx.beginPath();
+  ctx.arc(nose.x * scaleX, nose.y * scaleY, 5, 0, Math.PI*2);
+  ctx.fillStyle = dotColor; ctx.fill();
+  ctx.restore();
+
+  if (!window._earFrame) window._earFrame = 0;
+  if (++window._earFrame % 20 === 0) {
+    log('NER:' + NER.toFixed(4) + ' | ' + (state.eyesClosed ? 'CLOSED ✓' : 'open'));
+  }
 }
 
-function drawHUD(lm, W, H) {
-  ctx.fillStyle = state.eyesClosed ? "#00ff41" : "#ff10f0";
-  // Draw simplified eye markers
-  [159, 145, 386, 374].forEach(i => {
-    const p = lm[i];
-    ctx.beginPath();
-    ctx.arc((1 - p.x) * W, p.y * H, 3, 0, Math.PI * 2);
-    ctx.fill();
+// ─── LOAD ON READY ────────────────────────────────────────
+window.addEventListener('load', initMediaPipe);
+
+// ─── CONNECT WALLET ───────────────────────────────────────
+document.getElementById('connectBtn').onclick = async () => {
+  state.connecting = true;  // flag: suppress reload during connect
+  try {
+    log('🔌 Connecting wallet...');
+
+    // ── Mobile MetaMask deep-link ──────────────────────────────
+    // On mobile, window.ethereum only exists inside MetaMask's
+    // in-app browser. If not present, deep-link into it.
+    if (!window.ethereum) {
+      const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile) {
+        // Deep-link opens current page inside MetaMask's browser
+        const currentUrl = encodeURIComponent(window.location.href);
+        const deepLink = 'https://metamask.app.link/dapp/' +
+          window.location.host + window.location.pathname + window.location.search;
+        log('📱 Mobile: redirecting into MetaMask browser...');
+        window.location.href = deepLink;
+        state.connecting = false;
+        return;
+      }
+      log('❌ MetaMask not found');
+      alert('Install MetaMask!\n\nmetamask.io');
+      window.open('https://metamask.io/download/', '_blank');
+      state.connecting = false;
+      return;
+    }
+
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    state.address = accounts[0];
+    log('✓ Connected: ' + state.address.slice(0, 10) + '...');
+
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    if (chainId !== CHAIN_ID) {
+      log('⚠ Switching to Polygon...');
+      try {
+        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: CHAIN_ID }] });
+        log('✓ Switched to Polygon');
+      } catch (e) {
+        if (e.code === 4902) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: CHAIN_ID,
+              chainName: 'Polygon Mainnet',
+              rpcUrls: ['https://polygon-rpc.com'],
+              nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+              blockExplorerUrls: ['https://polygonscan.com']
+            }]
+          });
+          log('✓ Polygon added');
+        }
+      }
+    }
+
+    document.getElementById('address').textContent =
+      state.address.slice(0,6) + '...' + state.address.slice(-4);
+    document.getElementById('walletInfo').style.display = 'block';
+    document.getElementById('connectBtn').style.display = 'none';
+    const sg = document.getElementById('setupGuide'); if(sg) sg.style.display='none';
+
+    await fetchBalance();
+
+    log('✅ Wallet ready!');
+    state.connecting = false;
+  } catch (e) {
+    state.connecting = false;
+    log('❌ ' + e.message);
+    alert('Connection failed:\n\n' + e.message);
+  }
+};
+
+async function fetchBalance() {
+  try {
+    const res  = await fetch(`${BACKEND}/api/balance/${state.address}`);
+    const data = await res.json();
+    const bal  = Math.floor(parseFloat(data.balance));
+    document.getElementById('balance').textContent = bal;
+    log('Balance: ' + bal + ' MONK');
+  } catch (e) {
+    log('⚠ Balance fetch failed');
+    document.getElementById('balance').textContent = '?';
+  }
+}
+
+// ─── START SESSION ────────────────────────────────────────
+document.getElementById('startBtn').onclick = async () => {
+  try {
+    log('🎥 Starting camera + AI...');
+
+    const videoEl = document.getElementById('video');
+
+    // Get camera stream via getUserMedia — no Camera utility dependency
+    stream = await Promise.race([
+      navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' }, audio: false }),
+      new Promise(function(_, rej) {
+        setTimeout(function() { rej(new Error('Camera access timed out — please allow camera and reload')); }, 12000);
+      })
+    ]);
+
+    videoEl.srcObject = stream;
+    await new Promise(function(res, rej) {
+      const t = setTimeout(function() { res(); }, 3000); // resolve after 3s even if no metadata
+      videoEl.onloadedmetadata = function() { clearTimeout(t); res(); };
+    });
+    try { await videoEl.play(); } catch(e) { log('Play: ' + e.message); }
+    log('✓ Camera live');
+
+    // face-api.js detection loop — uses setInterval for simplicity
+    // No WebGL video context issues — face-api handles CPU/GPU internally
+    let rafActive = true;
+    let framePending = false;
+    mpCamera = { stop: function() { rafActive = false; clearInterval(window._faceInterval); } };
+
+    window._faceInterval = setInterval(async function() {
+      if (!rafActive || framePending) return;
+      if (videoEl.readyState < 2 || !videoEl.videoWidth) return;
+      framePending = true;
+      try {
+        await detectEyes(videoEl);
+      } catch(e) {
+        if (!window._faceWarn) { log('Detection error: ' + e.message); window._faceWarn = true; }
+      }
+      framePending = false;
+    }, 100); // 10fps
+
+    log('✓ AI tracking active (face-api.js)');
+
+
+    state.meditating = true;
+    state.sessionSec = 0;
+    state.eyesClosed = false;
+
+    document.getElementById('startBtn').disabled = true;
+    document.getElementById('stopBtn').disabled  = false;
+    document.getElementById('calibBtn').disabled = false;
+    document.getElementById('navStatus').className = 'nav-status online';
+    document.getElementById('navStatus').textContent = '● LIVE';
+    log('🧘 Session started! Close eyes to earn.');
+
+    // ── Timer interval ──
+    intervals.push(setInterval(() => {
+      if (!state.meditating) return;
+      state.sessionSec++;
+      state.totalSec++;
+      localStorage.setItem('totalSec', state.totalSec);
+      document.getElementById('sessionTime').textContent = formatTime(state.sessionSec);
+      document.getElementById('totalTime').textContent   = formatTime(state.totalSec);
+    }, 1000));
+
+    // ── Earn + badge update interval ──
+    // FIX: use correct CSS class 'status-badge active' / 'status-badge inactive'
+    intervals.push(setInterval(() => {
+      if (!state.meditating) return;
+
+      const earning = state.eyesClosed && state.faceDetected;
+
+      const eyesBadge = document.getElementById('eyesBadge');
+      eyesBadge.className = 'status-badge ' + (state.eyesClosed ? 'active' : 'inactive');
+      eyesBadge.textContent = state.faceDetected
+        ? (state.eyesClosed ? '👁️ EYES: CLOSED ✓' : '👁️ EYES: OPEN')
+        : '👁️ NO FACE DETECTED';
+
+      const earnBadge = document.getElementById('earnBadge');
+      earnBadge.className = 'status-badge ' + (earning ? 'active' : 'inactive');
+      earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
+
+      if (earning) {
+        state.earned++;
+        document.getElementById('earned').textContent = state.earned;
+        document.getElementById('mintBtn').disabled = false;
+        if (state.earned % 10 === 0) log('Earned ' + state.earned + ' tokens');
+      }
+    }, 1000));
+
+  } catch (e) {
+    log('❌ ' + e.message);
+    alert('Failed to start:\n\n' + e.message);
+  }
+};
+
+// ─── CALIBRATE ───────────────────────────────────────────
+document.getElementById('calibBtn').onclick = function() {
+  if (!state.meditating) return;
+  if (state.calibrating) return;
+  window._calBuf = [];
+  window._earConsecutive = 0;
+  state.calibrating = true;
+  state.calibStart = Date.now();
+  log('Calibration started — keep eyes open for 3 seconds');
+  document.getElementById('eyesBadge').textContent = '👁️ KEEP EYES OPEN... 3s';
+};
+
+// ─── STOP SESSION ─────────────────────────────────────────
+document.getElementById('stopBtn').onclick = async () => {
+  log('🛑 Stopping...');
+  state.meditating = false;
+
+  if (mpCamera) { try { mpCamera.stop(); } catch(e){} mpCamera = null; }
+  if (stream)   { stream.getTracks().forEach(t => t.stop()); stream = null; }
+
+  intervals.forEach(i => clearInterval(i));
+  intervals = [];
+
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled  = true;
+  document.getElementById('calibBtn').disabled = true;
+  state.calibrating = false;
+  window._earConsecutive = 0;
+  document.getElementById('navStatus').className = 'nav-status';
+  document.getElementById('navStatus').textContent = '● OFFLINE';
+  // Reset badges
+  document.getElementById('eyesBadge').className = 'status-badge inactive';
+  document.getElementById('eyesBadge').textContent = '👁️ EYES: DETECTING...';
+  document.getElementById('earnBadge').className = 'status-badge inactive';
+  document.getElementById('earnBadge').textContent = '💰 EARNING: NO';
+
+  log('Session: ' + state.sessionSec + 's, earned ' + state.earned);
+
+  if (state.earned > 0 && state.address) {
+    log('Auto-minting...');
+    await mint();
+  } else if (state.earned > 0) {
+    alert('Earned ' + state.earned + ' tokens!\n\nConnect wallet to mint.');
+  }
+};
+
+// ─── MINT ─────────────────────────────────────────────────
+document.getElementById('mintBtn').onclick = mint;
+
+async function mint() {
+  if (!state.earned) { alert('No tokens earned yet!'); return; }
+  if (!state.address) { alert('Connect wallet first!'); return; }
+
+  try {
+    log('🪙 Minting ' + state.earned + ' tokens...');
+    document.getElementById('mintBtn').textContent = 'MINTING...';
+    document.getElementById('mintBtn').disabled = true;
+
+    const payload = {
+      walletAddress: state.address,
+      amount: state.earned,
+      sessionData: { eyesClosed: true, spineCorrect: true }
+    };
+
+    const res = await fetch(`${BACKEND}/api/mint-monk`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    log('Response: ' + res.status);
+    const txt = await res.text();
+    let data;
+    try { data = JSON.parse(txt); } catch (e) { throw new Error('Invalid JSON: ' + txt); }
+
+    if (!res.ok) throw new Error('HTTP ' + res.status + ': ' + (data.message || data.error || txt));
+
+    if (data.success) {
+      const tx = data.transactionHash;
+      log('✅ MINTED! TX: ' + tx.slice(0, 20) + '...');
+      alert(
+        '✅ SUCCESS!\n\n' +
+        'Minted ' + state.earned + ' MONK!\n\n' +
+        'TX: ' + tx.slice(0, 20) + '...\n\n' +
+        '⚠️ Chrome MetaMask glitch.\nUse Firefox to see tokens!'
+      );
+      const mintedAmount = state.earned;
+      state.earned = 0;
+      document.getElementById('earned').textContent = 0;
+      await fetchBalance();
+      // Pay 30% commission to ambassador if this user was referred
+      await payAmbassadorCommission(mintedAmount);
+    } else {
+      log('❌ Mint failed: ' + (data.message || data.error));
+      alert('Mint failed:\n\n' + (data.message || data.error));
+    }
+
+  } catch (e) {
+    log('❌ ' + e.message);
+    alert('Mint error:\n\n' + e.message);
+  } finally {
+    document.getElementById('mintBtn').textContent = 'MINT TO CHAIN';
+    if (state.earned > 0) document.getElementById('mintBtn').disabled = false;
+  }
+}
+
+// ─── UTILS ────────────────────────────────────────────────
+function copyContract() {
+  const addr = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+  navigator.clipboard.writeText(addr).then(function() {
+    const btn = document.getElementById('copyContractBtn');
+    if (btn) {
+      btn.textContent = '✓ COPIED!';
+      btn.style.borderColor = 'var(--green)';
+      btn.style.color = 'var(--green)';
+      setTimeout(function() {
+        btn.textContent = '⧉ TAP TO COPY CONTRACT ADDRESS';
+        btn.style.borderColor = 'rgba(255,240,0,0.4)';
+        btn.style.color = 'var(--yellow)';
+      }, 2500);
+    }
+    log('Contract address copied');
+  }).catch(function() {
+    prompt('Copy the $MONK contract address:', addr);
   });
 }
 
-function updateUI() {
-    const badge = document.getElementById('eyesBadge');
-    if (!state.faceDetected) {
-        badge.textContent = "EYES: NO FACE";
-        badge.className = "status-badge inactive";
-    } else {
-        badge.textContent = state.eyesClosed ? "EYES: CLOSED" : "EYES: OPEN";
-        badge.className = state.eyesClosed ? "status-badge active" : "status-badge inactive";
-    }
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
 }
 
-window.onload = initAI;
+document.getElementById('totalTime').textContent = formatTime(state.totalSec);
+
+if (window.ethereum) {
+  // Only reload on accountsChanged if user was already connected
+  // (prevents MetaMask popup firing accountsChanged with [] and killing itself)
+  window.ethereum.on('accountsChanged', (accounts) => {
+    if (state.address && !state.connecting) location.reload();
+  });
+  window.ethereum.on('chainChanged', () => {
+    if (state.address && !state.connecting) location.reload();
+  });
+}
+
+
+
+// ─── LEADERBOARD — fetch from MMGA backend (no CORS issues) ──
+// Falls back to Polygonscan direct link if backend has no endpoint yet
+const CONTRACT = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+
+function buildLeaderboard(txs) {
+  const balances = {};
+  txs.forEach(function(tx) {
+    const to   = (tx.to   || '').toLowerCase();
+    const from = (tx.from || '').toLowerCase();
+    const dec  = parseInt(tx.tokenDecimal) || 18;
+    const val  = parseInt(tx.value) / Math.pow(10, dec);
+    if (!balances[to])   balances[to]   = 0;
+    if (!balances[from]) balances[from] = 0;
+    balances[to]   += val;
+    balances[from] -= val;
+  });
+  return Object.entries(balances)
+    .filter(function(e) { return e[1] > 0.5; })
+    .sort(function(a, b) { return b[1] - a[1]; })
+    .slice(0, 10);
+}
+
+function renderLeaderboard(sorted) {
+  const list = document.getElementById('leaderboardList');
+  if (!list) return;
+  if (!sorted || sorted.length === 0) {
+    list.innerHTML = '<div class="leaderboard-item" style="justify-content:center">' +
+      '<span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);">NO HOLDERS YET — MINE FIRST!</span></div>';
+    return;
+  }
+  list.innerHTML = sorted.map(function(entry, i) {
+    const addr  = entry[0];
+    const bal   = Math.floor(entry[1]);
+    const short = addr.slice(0, 6) + '...' + addr.slice(-4);
+    const isMe  = state.address && addr === state.address.toLowerCase();
+    const style = isMe ? 'color:var(--yellow);' : 'color:var(--cyan);';
+    const label = isMe ? short + ' ★ YOU' : short;
+    return '<div class="leaderboard-item">' +
+      '<span class="leaderboard-rank">#' + (i + 1) + '</span>' +
+      '<span class="leaderboard-name" style="' + style + 'font-size:13px;">' + label + '</span>' +
+      '<span class="leaderboard-tokens">' + bal.toLocaleString() + '</span>' +
+      '</div>';
+  }).join('');
+}
+
+function showLeaderboardFallback(msg) {
+  const list = document.getElementById('leaderboardList');
+  if (!list) return;
+  list.innerHTML =
+    '<div class="leaderboard-item" style="flex-direction:column;gap:10px;padding:16px;">' +
+    '<span style="font-family:var(--pixel);font-size:8px;color:var(--orange);">' + (msg || 'UNAVAILABLE') + '</span>' +
+    '<a href="https://polygonscan.com/token/' + CONTRACT + '#balances" target="_blank" ' +
+    'style="font-family:var(--pixel);font-size:8px;color:var(--cyan);letter-spacing:1px;text-decoration:none;' +
+    'border:2px solid var(--cyan);padding:8px 14px;text-align:center;display:block;">VIEW LIVE ON POLYGONSCAN ↗</a>' +
+    '</div>';
+}
+
+async function loadLeaderboard() {
+  const btn    = document.getElementById('lbRefreshBtn');
+  const status = document.getElementById('lbStatus');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+  if (status) status.textContent = 'FETCHING...';
+
+  // ── Strategy 1: Ask our own backend to proxy Polygonscan (no CORS) ──
+  try {
+    log('Leaderboard: fetching via backend...');
+    const res = await fetch(BACKEND + '/api/leaderboard?contract=' + CONTRACT,
+      { signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      const data = await res.json();
+      // Backend may return pre-sorted { holders: [{address, balance}] }
+      // or raw Polygonscan txs { result: [...] }
+      let sorted;
+      if (data.holders) {
+        sorted = data.holders.map(function(h) { return [h.address, h.balance]; });
+      } else if (data.result && Array.isArray(data.result)) {
+        sorted = buildLeaderboard(data.result);
+      }
+      if (sorted && sorted.length > 0) {
+        renderLeaderboard(sorted);
+        const ts = new Date().toLocaleTimeString();
+        if (status) status.textContent = 'LIVE · ' + ts + ' · ' + sorted.length + ' HOLDERS';
+        log('Leaderboard OK: ' + sorted.length + ' holders');
+        if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
+        return;
+      }
+    }
+  } catch(e) {
+    log('Backend leaderboard failed: ' + e.message);
+  }
+
+  // ── Strategy 2: Try Polygonscan directly (works in Firefox, some Chrome) ──
+  try {
+    log('Leaderboard: trying direct Polygonscan...');
+    const apiUrl = 'https://api.polygonscan.com/api?module=account&action=tokentx' +
+      '&contractaddress=' + CONTRACT + '&page=1&offset=200&sort=desc';
+    const res = await fetch(apiUrl, { signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.result && Array.isArray(data.result)) {
+        const sorted = buildLeaderboard(data.result);
+        if (sorted.length > 0) {
+          renderLeaderboard(sorted);
+          const ts = new Date().toLocaleTimeString();
+          if (status) status.textContent = 'LIVE · ' + ts + ' · ' + sorted.length + ' HOLDERS';
+          log('Leaderboard OK via direct API: ' + sorted.length + ' holders');
+          if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
+          return;
+        }
+      }
+    }
+  } catch(e) {
+    log('Direct API failed: ' + e.message);
+  }
+
+  // ── Strategy 3: Show Polygonscan link ──
+  log('Leaderboard: showing Polygonscan link fallback');
+  showLeaderboardFallback('VIEW ON POLYGONSCAN');
+  if (status) status.textContent = 'CLICK LINK BELOW FOR LIVE DATA';
+  if (btn) { btn.disabled = false; btn.textContent = '↻ RETRY'; }
+}
+
+// Privacy toggle
+function togglePrivacy() {
+  const body  = document.getElementById('privacyBody');
+  const arrow = document.getElementById('privacyArrow');
+  if (!body) return;
+  const open = body.classList.toggle('open');
+  if (arrow) arrow.textContent = open ? '▲' : '▼';
+}
+
+// Load on startup + auto-refresh every 2 min
+window.addEventListener('load', function() {
+  setTimeout(loadLeaderboard, 2500);
+  setInterval(loadLeaderboard, 120000);
+});
+
+
+log('✅ Ready! Waiting for AI model...');
+
+// Show mobile MetaMask tip if on mobile without ethereum
+if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.ethereum) {
+  const tip = document.getElementById('mobileTip');
+  if (tip) tip.style.display = 'block';
+}
+
+// Show referred-by notice if user arrived via referral link
+if (storedReferrer) {
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9000;background:rgba(10,10,15,0.97);border:2px solid rgba(0,255,65,0.4);padding:10px 24px;font-family:var(--pixel);font-size:8px;color:var(--green);letter-spacing:1px;white-space:nowrap;';
+  toast.textContent = '★ INVITED BY: ' + storedReferrer.slice(0,8) + '...' + storedReferrer.slice(-6);
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 5000);
+}
 </script>
 </body>
 </html>
