@@ -41,15 +41,17 @@ body{
 .firefox-banner{
   position:fixed;top:0;left:0;right:0;z-index:10000;
   background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));
-  padding:12px 20px;text-align:center;
-  animation:pulse-banner 2s ease-in-out infinite;
-  border-bottom:4px solid var(--yellow);
+  padding:10px 20px;text-align:center;
+  border-bottom:3px solid var(--yellow);
   box-shadow:0 4px 40px rgba(255,16,240,0.8);
 }
-@keyframes pulse-banner{0%,100%{opacity:0.95}50%{opacity:1}}
 .firefox-banner strong{
-  font-family:var(--pixel);font-size:11px;color:#000;
-  text-shadow:0 0 10px var(--yellow);letter-spacing:1px;
+  font-family:var(--pixel);font-size:10px;color:#000;
+  font-weight:900;letter-spacing:1px;
+}
+.firefox-banner a{
+  color:#000!important;font-weight:900;
+  text-decoration:underline;text-underline-offset:2px;
 }
 .nav-header{
   position:fixed;top:48px;left:0;right:0;z-index:9997;
@@ -183,9 +185,10 @@ body{
 }
 /* ---- STATUS BADGES - fixed class structure ---- */
 .status-badge{
-  padding:10px 20px;background:rgba(10,10,15,0.95);border:3px solid;
+  padding:10px 18px;background:rgba(10,10,15,0.97);border:3px solid;
   font-family:var(--pixel);font-size:10px;box-shadow:0 0 20px;
   backdrop-filter:blur(10px);transition:all 0.3s;letter-spacing:1px;
+  text-shadow:0 0 8px currentColor;
 }
 .status-badge.active{
   border-color:var(--green);color:var(--green);
@@ -240,14 +243,14 @@ body{
 .leaderboard-item:nth-child(3){background:linear-gradient(90deg,rgba(255,107,53,0.15),transparent);}
 .leaderboard-rank{color:var(--yellow);font-family:var(--pixel);font-size:11px;letter-spacing:1px;}
 .leaderboard-name{color:var(--cyan);flex:1;margin:0 16px;}
-.leaderboard-tokens{color:var(--pink);font-family:var(--pixel);font-size:12px;}
+.leaderboard-tokens{color:var(--pink);font-family:var(--pixel);font-size:11px;text-shadow:0 0 8px var(--pink);}
 .timer-display{
   padding:24px;background:rgba(0,0,0,0.5);border:4px solid var(--blue);
   display:flex;justify-content:space-around;align-items:center;
   box-shadow:0 0 30px rgba(0,212,255,0.4);
 }
 .timer-item{text-align:center;}
-.timer-label{font-size:13px;color:var(--cyan);margin-bottom:8px;letter-spacing:1px;}
+.timer-label{font-size:16px;color:var(--cyan);margin-bottom:8px;letter-spacing:1px;font-family:var(--retro);}
 .timer-value{font-family:var(--pixel);font-size:24px;color:var(--pink);text-shadow:0 0 15px var(--pink);}
 .rate-value{color:var(--green);text-shadow:0 0 15px var(--green);}
 .debug{
@@ -273,10 +276,11 @@ body{
 .privacy-body.open{display:block;}
 .privacy-step{
   display:flex;gap:10px;padding:8px 0;
-  border-bottom:1px solid rgba(0,255,65,0.08);
-  font-family:var(--pixel);font-size:7px;letter-spacing:1px;
-  color:rgba(0,255,65,0.6);line-height:1.8;
+  border-bottom:1px solid rgba(0,255,65,0.1);
+  font-family:var(--retro);font-size:17px;letter-spacing:0.5px;
+  color:rgba(0,255,65,0.8);line-height:1.6;
 }
+.ps-num{font-family:var(--pixel);font-size:9px;}
 .privacy-step:last-child{border:none;}
 .ps-num{color:var(--cyan);min-width:18px;flex-shrink:0;}
 .ps-text{}
@@ -289,7 +293,7 @@ body{
 }
 .lb-refresh:hover{background:rgba(0,255,255,0.1);}
 .lb-refresh:disabled{opacity:0.3;cursor:not-allowed;}
-.lb-status{font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.4);letter-spacing:1px;margin-top:8px;}
+.lb-status{font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.55);letter-spacing:1px;margin-top:8px;}
 .loading-overlay{
   position:absolute;inset:0;background:rgba(0,0,0,0.9);
   display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);
@@ -312,7 +316,7 @@ body{
   font-family:var(--pixel);font-size:8px;letter-spacing:1px;
   color:var(--green);
 }
-.ss-body span{font-family:var(--retro);font-size:16px;color:rgba(0,255,65,0.55);line-height:1.5;}
+.ss-body span{font-family:var(--retro);font-size:19px;color:rgba(0,255,65,0.85);line-height:1.6;}
 
 /* ═══ MOBILE ═══════════════════════════════════════════ */
 @media(max-width:1024px){
@@ -518,6 +522,7 @@ body{
     <div class="controls">
       <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
       <button id="stopBtn" class="btn btn-stop" disabled>STOP SESSION</button>
+      <button id="calibBtn" class="btn btn-calibrate" disabled title="Keep eyes open for 3 seconds to calibrate detection for your face">CALIBRATE EYES</button>
     </div>
 
     <div class="timer-display">
@@ -690,7 +695,12 @@ let state = {
   eyesClosed: false,
   leftEyePos: null,
   rightEyePos: null,
-  faceDetected: false
+  faceDetected: false,
+  calibrating: false,
+  calibStart: 0,
+  earCloseThresh: 0.007,  // default strict threshold (overridden by calibration)
+  earOpenThresh:  0.011,
+  connecting: false
 };
 
 let intervals = [];
@@ -778,21 +788,80 @@ function onResults(results) {
   const avgEAR   = (leftEAR + rightEAR) / 2;
 
   // ── Stricter threshold: 0.013 to close, must drop to 0.010 to stay closed ──
-  // Strict threshold — eyes must be clearly and fully closed to register
-  // Lower = stricter (eyes need to be more closed to trigger)
-  // CLOSE: 0.008 = eyes must be ~95% shut. OPEN: re-opens at 0.012
-  const CLOSE_THRESH = 0.008;   // must drop below this to register as CLOSED
-  const OPEN_THRESH  = 0.012;   // must rise above this to register as OPEN again
-  if (!state.eyesClosed) {
-    state.eyesClosed = avgEAR < CLOSE_THRESH;
-  } else {
-    state.eyesClosed = avgEAR < OPEN_THRESH;
+  // ── ADAPTIVE THRESHOLD ─────────────────────────────────────
+  // Track rolling EAR history to adapt to each person's eye shape
+  if (!window._earBuf) window._earBuf = [];
+  window._earBuf.push(avgEAR);
+  if (window._earBuf.length > 90) window._earBuf.shift(); // keep last 90 frames (~6s at 15fps)
+
+  // Calibration mode: collect open-eye baseline for 3 seconds
+  if (state.calibrating) {
+    if (!window._calBuf) window._calBuf = [];
+    window._calBuf.push(avgEAR);
+    const elapsed = (Date.now() - state.calibStart) / 1000;
+    const remaining = Math.ceil(3 - elapsed);
+    const badge = document.getElementById('eyesBadge');
+    if (badge) {
+      badge.className = 'status-badge inactive';
+      badge.textContent = '👁️ KEEP EYES OPEN... ' + remaining + 's';
+    }
+    if (elapsed >= 3) {
+      // Calculate open-eye baseline from median of collected frames
+      const sorted = window._calBuf.slice().sort((a,b) => a - b);
+      const median = sorted[Math.floor(sorted.length * 0.5)];
+      // Closed threshold = 45% of open baseline (very strict)
+      // Open threshold = 60% of open baseline (hysteresis gap)
+      state.earCloseThresh = median * 0.45;
+      state.earOpenThresh  = median * 0.60;
+      state.calibrating = false;
+      window._calBuf = [];
+      log('Calibrated: open EAR=' + median.toFixed(4) +
+          ' | close<' + state.earCloseThresh.toFixed(4) +
+          ' | open>' + state.earOpenThresh.toFixed(4));
+      if (badge) badge.textContent = '👁️ CALIBRATED ✓';
+    }
+    state.eyesClosed = false;
+    return; // don't earn during calibration
   }
 
-  // Log EAR every ~30 frames so you can tune threshold if needed
+  // Use calibrated thresholds if available, else strict defaults
+  const CLOSE_THRESH = state.earCloseThresh || 0.007;
+  const OPEN_THRESH  = state.earOpenThresh  || 0.011;
+
+  // Require N consecutive frames before switching state (debounce)
+  if (!window._earConsecutive) window._earConsecutive = 0;
+  const wantClosed = avgEAR < CLOSE_THRESH;
+  const wantOpen   = avgEAR > OPEN_THRESH;
+  if (!state.eyesClosed) {
+    if (wantClosed) {
+      window._earConsecutive++;
+      // Must see closed for 3 consecutive frames before triggering
+      if (window._earConsecutive >= 3) {
+        state.eyesClosed = true;
+        window._earConsecutive = 0;
+      }
+    } else {
+      window._earConsecutive = 0;
+    }
+  } else {
+    if (wantOpen) {
+      window._earConsecutive++;
+      // Must see open for 2 consecutive frames before re-opening
+      if (window._earConsecutive >= 2) {
+        state.eyesClosed = false;
+        window._earConsecutive = 0;
+      }
+    } else {
+      window._earConsecutive = 0;
+    }
+  }
+
+  // Log EAR every 30 frames for debug
   if (!window._earFrame) window._earFrame = 0;
   if (++window._earFrame % 30 === 0) {
-    log('EAR: ' + avgEAR.toFixed(4) + ' | ' + (state.eyesClosed ? 'CLOSED' : 'open'));
+    log('EAR: ' + avgEAR.toFixed(4) +
+        ' | thresh:' + CLOSE_THRESH.toFixed(4) +
+        ' | ' + (state.eyesClosed ? 'CLOSED' : 'open'));
   }
 
   // ── Colours: GREEN = closed (earning) | RED = open ──
@@ -1017,6 +1086,7 @@ document.getElementById('startBtn').onclick = async () => {
 
     document.getElementById('startBtn').disabled = true;
     document.getElementById('stopBtn').disabled  = false;
+    document.getElementById('calibBtn').disabled = false;
     document.getElementById('navStatus').className = 'nav-status online';
     document.getElementById('navStatus').textContent = '● LIVE';
     log('🧘 Session started! Close eyes to earn.');
@@ -1062,6 +1132,18 @@ document.getElementById('startBtn').onclick = async () => {
   }
 };
 
+// ─── CALIBRATE ───────────────────────────────────────────
+document.getElementById('calibBtn').onclick = function() {
+  if (!state.meditating) return;
+  if (state.calibrating) return;
+  window._calBuf = [];
+  window._earConsecutive = 0;
+  state.calibrating = true;
+  state.calibStart = Date.now();
+  log('Calibration started — keep eyes open for 3 seconds');
+  document.getElementById('eyesBadge').textContent = '👁️ KEEP EYES OPEN... 3s';
+};
+
 // ─── STOP SESSION ─────────────────────────────────────────
 document.getElementById('stopBtn').onclick = async () => {
   log('🛑 Stopping...');
@@ -1075,6 +1157,9 @@ document.getElementById('stopBtn').onclick = async () => {
 
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled  = true;
+  document.getElementById('calibBtn').disabled = true;
+  state.calibrating = false;
+  window._earConsecutive = 0;
   document.getElementById('navStatus').className = 'nav-status';
   document.getElementById('navStatus').textContent = '● OFFLINE';
   // Reset badges
