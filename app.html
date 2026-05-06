@@ -351,7 +351,7 @@ body{
 
 </style>
 </head>
-<body>
+<body style="background:#0a0a0f;min-height:100vh;">
 
 <div id="commissionFlash" style="position:fixed;top:110px;right:20px;z-index:9000;background:rgba(10,10,15,0.97);border:3px solid #fff000;padding:12px 20px;font-family:var(--pixel);font-size:9px;color:#fff000;letter-spacing:1px;box-shadow:0 0 30px rgba(255,240,0,0.6);opacity:0;transition:opacity 0.3s;pointer-events:none;"></div>
 <div class="scanline"></div>
@@ -424,7 +424,7 @@ body{
   <div class="main-panel">
     <div class="video-box">
       <div class="loading-overlay" id="loadingAI">
-        <div class="loading-text">LOADING AI MODEL...</div>
+        <div class="loading-text" id="loadingText">LOADING AI MODEL...</div>
       </div>
       <video id="video" autoplay playsinline muted></video>
       <canvas id="canvas" class="canvas-overlay"></canvas>
@@ -511,8 +511,23 @@ body{
   <div id="debugLog"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+<script>
+// Show page immediately — don't wait for MediaPipe
+document.addEventListener('DOMContentLoaded', function() {
+  var el = document.getElementById('loadingText');
+  if (el) el.textContent = 'LOADING AI MODEL...';
+});
+</script>
+<script
+  src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js"
+  crossorigin="anonymous"
+  onerror="document.getElementById('loadingText').textContent='AI LOAD FAILED — RELOAD PAGE'; console.error('FaceMesh CDN failed');">
+</script>
+<script
+  src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1632090399/camera_utils.js"
+  crossorigin="anonymous"
+  onerror="document.getElementById('loadingText').textContent='AI LOAD FAILED — RELOAD PAGE'; console.error('Camera utils CDN failed');">
+</script>
 
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
@@ -864,8 +879,13 @@ document.getElementById('startBtn').onclick = async () => {
     // 1. Get raw camera stream via getUserMedia first
     stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
     videoEl.srcObject = stream;
-    await new Promise(res => { videoEl.onloadedmetadata = res; });
-    await videoEl.play();
+    // Wait for metadata with 8s timeout — fixes 'Timeout starting video source'
+    await new Promise(function(res, rej) {
+      var t = setTimeout(function() { rej(new Error('Camera metadata timeout — try reloading and allowing camera')); }, 8000);
+      videoEl.onloadedmetadata = function() { clearTimeout(t); res(); };
+      videoEl.onerror = function(e) { clearTimeout(t); rej(new Error('Video element error')); };
+    });
+    try { await videoEl.play(); } catch(e) { log('Play warning: ' + e.message); }
     log('✓ Camera stream live');
 
     // 2. Feed frames into FaceMesh using MediaPipe Camera utility
@@ -1042,29 +1062,10 @@ if (window.ethereum) {
 }
 
 
-// ─── LEADERBOARD FROM POLYGONSCAN ─────────────────────────
+
+// ─── LEADERBOARD — fetch from MMGA backend (no CORS issues) ──
+// Falls back to Polygonscan direct link if backend has no endpoint yet
 const CONTRACT = '0x98823C52037aF043c2628185C74D7E98b16e3444';
-
-const CORS_PROXIES = [
-  'https://corsproxy.io/?',
-  'https://api.allorigins.win/raw?url=',
-  'https://api.codetabs.com/v1/proxy?quest='
-];
-
-const PSCAN_API = 'https://api.polygonscan.com/api?module=account&action=tokentx' +
-  '&contractaddress=' + CONTRACT + '&page=1&offset=200&sort=desc';
-
-async function tryFetch(proxy, url) {
-  const full = proxy + encodeURIComponent(url);
-  const res = await fetch(full, { signal: AbortSignal.timeout(8000) });
-  if (!res.ok) throw new Error('HTTP ' + res.status);
-  const text = await res.text();
-  const data = JSON.parse(text);
-  if (!data.result || !Array.isArray(data.result)) {
-    throw new Error(data.message || 'Bad response: ' + text.slice(0, 80));
-  }
-  return data.result;
-}
 
 function buildLeaderboard(txs) {
   const balances = {};
@@ -1087,9 +1088,9 @@ function buildLeaderboard(txs) {
 function renderLeaderboard(sorted) {
   const list = document.getElementById('leaderboardList');
   if (!list) return;
-  if (sorted.length === 0) {
+  if (!sorted || sorted.length === 0) {
     list.innerHTML = '<div class="leaderboard-item" style="justify-content:center">' +
-      '<span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);">NO HOLDERS YET</span></div>';
+      '<span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);">NO HOLDERS YET — MINE FIRST!</span></div>';
     return;
   }
   list.innerHTML = sorted.map(function(entry, i) {
@@ -1107,44 +1108,80 @@ function renderLeaderboard(sorted) {
   }).join('');
 }
 
+function showLeaderboardFallback(msg) {
+  const list = document.getElementById('leaderboardList');
+  if (!list) return;
+  list.innerHTML =
+    '<div class="leaderboard-item" style="flex-direction:column;gap:10px;padding:16px;">' +
+    '<span style="font-family:var(--pixel);font-size:8px;color:var(--orange);">' + (msg || 'UNAVAILABLE') + '</span>' +
+    '<a href="https://polygonscan.com/token/' + CONTRACT + '#balances" target="_blank" ' +
+    'style="font-family:var(--pixel);font-size:8px;color:var(--cyan);letter-spacing:1px;text-decoration:none;' +
+    'border:2px solid var(--cyan);padding:8px 14px;text-align:center;display:block;">VIEW LIVE ON POLYGONSCAN ↗</a>' +
+    '</div>';
+}
+
 async function loadLeaderboard() {
   const btn    = document.getElementById('lbRefreshBtn');
   const status = document.getElementById('lbStatus');
-  const list   = document.getElementById('leaderboardList');
   if (btn) { btn.disabled = true; btn.textContent = '...'; }
   if (status) status.textContent = 'FETCHING...';
 
-  let lastError = '';
-  for (let i = 0; i < CORS_PROXIES.length; i++) {
-    const proxy = CORS_PROXIES[i];
-    try {
-      log('Leaderboard: trying proxy ' + (i + 1) + '/' + CORS_PROXIES.length);
-      const txs    = await tryFetch(proxy, PSCAN_API);
-      const sorted = buildLeaderboard(txs);
-      renderLeaderboard(sorted);
-      const ts = new Date().toLocaleTimeString();
-      if (status) status.textContent = 'LIVE · ' + ts + ' · ' + sorted.length + ' HOLDERS';
-      log('Leaderboard OK: ' + sorted.length + ' holders via proxy ' + (i + 1));
-      if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
-      return; // success — stop trying
-    } catch (e) {
-      lastError = e.message;
-      log('Proxy ' + (i + 1) + ' failed: ' + e.message);
+  // ── Strategy 1: Ask our own backend to proxy Polygonscan (no CORS) ──
+  try {
+    log('Leaderboard: fetching via backend...');
+    const res = await fetch(BACKEND + '/api/leaderboard?contract=' + CONTRACT,
+      { signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      const data = await res.json();
+      // Backend may return pre-sorted { holders: [{address, balance}] }
+      // or raw Polygonscan txs { result: [...] }
+      let sorted;
+      if (data.holders) {
+        sorted = data.holders.map(function(h) { return [h.address, h.balance]; });
+      } else if (data.result && Array.isArray(data.result)) {
+        sorted = buildLeaderboard(data.result);
+      }
+      if (sorted && sorted.length > 0) {
+        renderLeaderboard(sorted);
+        const ts = new Date().toLocaleTimeString();
+        if (status) status.textContent = 'LIVE · ' + ts + ' · ' + sorted.length + ' HOLDERS';
+        log('Leaderboard OK: ' + sorted.length + ' holders');
+        if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
+        return;
+      }
     }
+  } catch(e) {
+    log('Backend leaderboard failed: ' + e.message);
   }
 
-  // All proxies failed — show Polygonscan link fallback
-  log('All proxies failed. Last error: ' + lastError);
-  if (list) list.innerHTML =
-    '<div class="leaderboard-item" style="flex-direction:column;gap:10px;padding:16px;">' +
-    '<span style="font-family:var(--pixel);font-size:8px;color:var(--orange);">PROXY BLOCKED</span>' +
-    '<span style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.5);letter-spacing:1px;line-height:2;">' +
-    'CORS PROXIES UNAVAILABLE.<br/>VIEW LIVE DATA DIRECTLY:</span>' +
-    '<a href="https://polygonscan.com/token/' + CONTRACT + '#balances" target="_blank" ' +
-    'style="font-family:var(--pixel);font-size:8px;color:var(--cyan);letter-spacing:1px;text-decoration:none;' +
-    'border:2px solid var(--cyan);padding:8px 14px;text-align:center;">VIEW ON POLYGONSCAN ↗</a>' +
-    '</div>';
-  if (status) status.textContent = 'ERROR: ' + lastError.slice(0, 60);
+  // ── Strategy 2: Try Polygonscan directly (works in Firefox, some Chrome) ──
+  try {
+    log('Leaderboard: trying direct Polygonscan...');
+    const apiUrl = 'https://api.polygonscan.com/api?module=account&action=tokentx' +
+      '&contractaddress=' + CONTRACT + '&page=1&offset=200&sort=desc';
+    const res = await fetch(apiUrl, { signal: AbortSignal.timeout(6000) });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.result && Array.isArray(data.result)) {
+        const sorted = buildLeaderboard(data.result);
+        if (sorted.length > 0) {
+          renderLeaderboard(sorted);
+          const ts = new Date().toLocaleTimeString();
+          if (status) status.textContent = 'LIVE · ' + ts + ' · ' + sorted.length + ' HOLDERS';
+          log('Leaderboard OK via direct API: ' + sorted.length + ' holders');
+          if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
+          return;
+        }
+      }
+    }
+  } catch(e) {
+    log('Direct API failed: ' + e.message);
+  }
+
+  // ── Strategy 3: Show Polygonscan link ──
+  log('Leaderboard: showing Polygonscan link fallback');
+  showLeaderboardFallback('VIEW ON POLYGONSCAN');
+  if (status) status.textContent = 'CLICK LINK BELOW FOR LIVE DATA';
   if (btn) { btn.disabled = false; btn.textContent = '↻ RETRY'; }
 }
 
