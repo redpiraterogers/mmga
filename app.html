@@ -27,128 +27,78 @@ body{
   image-rendering:pixelated;
 }
 .scanline{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);
-  pointer-events:none;
-  z-index:9999;
+  pointer-events:none;z-index:9999;
   animation:flicker 0.15s infinite;
 }
 @keyframes flicker{0%{opacity:0.97}50%{opacity:1}100%{opacity:0.98}}
 .crt{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   background:radial-gradient(ellipse at center,transparent 0%,rgba(0,0,0,0.4) 100%);
-  pointer-events:none;
-  z-index:9998;
+  pointer-events:none;z-index:9998;
 }
 .firefox-banner{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  z-index:10000;
+  position:fixed;top:0;left:0;right:0;z-index:10000;
   background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));
-  padding:12px 20px;
-  text-align:center;
+  padding:12px 20px;text-align:center;
   animation:pulse-banner 2s ease-in-out infinite;
   border-bottom:4px solid var(--yellow);
   box-shadow:0 4px 40px rgba(255,16,240,0.8);
 }
 @keyframes pulse-banner{0%,100%{opacity:0.95}50%{opacity:1}}
 .firefox-banner strong{
-  font-family:var(--pixel);
-  font-size:11px;
-  color:#000;
-  text-shadow:0 0 10px var(--yellow);
-  letter-spacing:1px;
+  font-family:var(--pixel);font-size:11px;color:#000;
+  text-shadow:0 0 10px var(--yellow);letter-spacing:1px;
 }
 .container{
-  display:grid;
-  grid-template-columns:320px 1fr 320px;
-  height:100vh;
-  gap:24px;
-  padding:80px 24px 24px;
+  display:grid;grid-template-columns:320px 1fr 320px;
+  height:100vh;gap:24px;padding:80px 24px 24px;
 }
 .panel{
   background:linear-gradient(135deg,rgba(157,78,221,0.15),rgba(0,212,255,0.15));
-  border:4px solid;
-  padding:28px;
-  position:relative;
-  backdrop-filter:blur(10px);
-  transition:all 0.3s;
+  border:4px solid;padding:28px;position:relative;
+  backdrop-filter:blur(10px);transition:all 0.3s;
+  overflow-y:auto;
 }
-.panel-left{
-  border-color:var(--pink);
-  box-shadow:0 0 40px rgba(255,16,240,0.4),inset 0 0 40px rgba(255,16,240,0.1);
-}
-.panel-right{
-  border-color:var(--cyan);
-  box-shadow:0 0 40px rgba(0,255,255,0.4),inset 0 0 40px rgba(0,255,255,0.1);
-}
+.panel-left{border-color:var(--pink);box-shadow:0 0 40px rgba(255,16,240,0.4),inset 0 0 40px rgba(255,16,240,0.1);}
+.panel-right{border-color:var(--cyan);box-shadow:0 0 40px rgba(0,255,255,0.4),inset 0 0 40px rgba(0,255,255,0.1);}
 .panel::before{
-  content:'▲';
-  position:absolute;
-  top:8px;
-  left:12px;
-  font-size:14px;
+  content:'▲';position:absolute;top:8px;left:12px;font-size:14px;
   animation:blink-triangle 2s infinite;
 }
-.panel-left::before{color:var(--pink)}
-.panel-right::before{color:var(--cyan)}
+.panel-left::before{color:var(--pink);}
+.panel-right::before{color:var(--cyan);}
 @keyframes blink-triangle{0%,100%{opacity:1}50%{opacity:0.3}}
 .panel-title{
-  font-family:var(--pixel);
-  font-size:14px;
-  margin-bottom:24px;
-  text-shadow:0 0 15px currentColor;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  letter-spacing:2px;
+  font-family:var(--pixel);font-size:14px;margin-bottom:24px;
+  text-shadow:0 0 15px currentColor;display:flex;align-items:center;gap:12px;letter-spacing:2px;
 }
-.panel-left .panel-title{color:var(--pink)}
-.panel-right .panel-title{color:var(--cyan)}
-.infinity-logo{
-  width:50px;
-  height:25px;
-}
-.main-panel{
-  display:flex;
-  flex-direction:column;
-  gap:20px;
-}
+.panel-left .panel-title{color:var(--pink);}
+.panel-right .panel-title{color:var(--cyan);}
+.infinity-logo{width:50px;height:25px;}
+.main-panel{display:flex;flex-direction:column;gap:20px;}
 .video-box{
-  flex:1;
-  background:#000;
-  border:5px solid var(--blue);
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  flex:1;background:#000;border:5px solid var(--blue);position:relative;
+  display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 60px rgba(0,212,255,0.6),inset 0 0 60px rgba(0,212,255,0.2);
-  overflow:hidden;
+  overflow:hidden;min-height:320px;
 }
 .video-box::before{
-  content:'';
-  position:absolute;
-  inset:0;
+  content:'';position:absolute;inset:0;
   background:linear-gradient(45deg,transparent,rgba(0,212,255,0.1),transparent);
-  animation:scan 3s linear infinite;
-  pointer-events:none;
+  animation:scan 3s linear infinite;pointer-events:none;
 }
 @keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
 .rainbow-heatmap{
-  position:absolute;
-  inset:0;
+  position:absolute;inset:0;
   background:
-    radial-gradient(circle at 30% 40%, rgba(255,0,255,0.1), transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(0,255,255,0.1), transparent 40%),
-    radial-gradient(circle at 50% 50%, rgba(255,255,0,0.08), transparent 50%);
+    radial-gradient(circle at 30% 40%,rgba(255,0,255,0.1),transparent 40%),
+    radial-gradient(circle at 70% 60%,rgba(0,255,255,0.1),transparent 40%),
+    radial-gradient(circle at 50% 50%,rgba(255,255,0,0.08),transparent 50%);
   mix-blend-mode:screen;
   animation:heatmap-pulse 6s ease-in-out infinite;
-  pointer-events:none;
-  opacity:0.3;
+  pointer-events:none;opacity:0.3;
 }
 @keyframes heatmap-pulse{
   0%{filter:hue-rotate(0deg) brightness(0.8);transform:scale(1)}
@@ -156,305 +106,116 @@ body{
   100%{filter:hue-rotate(360deg) brightness(0.8);transform:scale(1)}
 }
 #video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  transform:scaleX(-1);
-  filter:saturate(1.2) contrast(1.1);
+  width:100%;height:100%;object-fit:cover;
+  transform:scaleX(-1);filter:saturate(1.2) contrast(1.1);
 }
-.canvas-overlay{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-}
-.face-overlay{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:10;
-}
+.canvas-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;}
+.face-overlay{position:absolute;inset:0;pointer-events:none;z-index:10;}
 .eye-vertex{
-  position:absolute;
-  width:80px;
-  height:80px;
-  border-radius:50%;
-  border:4px solid currentColor;
-  background:radial-gradient(circle at center, currentColor 0%, transparent 70%);
-  transition:all 0.2s ease;
-  transform:translate(-50%,-50%);
-  opacity:0.7;
-  box-shadow:0 0 20px currentColor, inset 0 0 20px currentColor;
+  position:absolute;width:80px;height:80px;border-radius:50%;border:4px solid currentColor;
+  background:radial-gradient(circle at center,currentColor 0%,transparent 70%);
+  transition:all 0.2s ease;transform:translate(-50%,-50%);
+  opacity:0.7;box-shadow:0 0 20px currentColor,inset 0 0 20px currentColor;
 }
 .eye-vertex.closed{
-  color:#00ff88;
-  border-color:#00ff88;
-  opacity:0.8;
-  box-shadow:0 0 30px #00ff88, 0 0 50px #00ff88, inset 0 0 30px rgba(0,255,136,0.3);
+  color:#00ff88;border-color:#00ff88;opacity:0.8;
+  box-shadow:0 0 30px #00ff88,0 0 50px #00ff88,inset 0 0 30px rgba(0,255,136,0.3);
 }
 .eye-vertex.open{
-  color:#ff4444;
-  border-color:#ff4444;
-  opacity:0.6;
-  box-shadow:0 0 15px #ff4444, 0 0 30px #ff4444, inset 0 0 20px rgba(255,68,68,0.2);
+  color:#ff4444;border-color:#ff4444;opacity:0.6;
+  box-shadow:0 0 15px #ff4444,0 0 30px #ff4444,inset 0 0 20px rgba(255,68,68,0.2);
 }
 .status-overlay{
-  position:absolute;
-  top:24px;
-  left:24px;
-  right:24px;
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
+  position:absolute;top:24px;left:24px;right:24px;
+  display:flex;gap:16px;flex-wrap:wrap;
 }
+/* ---- STATUS BADGES - fixed class structure ---- */
 .status-badge{
-  padding:10px 20px;
-  background:rgba(10,10,15,0.95);
-  border:3px solid;
-  font-family:var(--pixel);
-  font-size:10px;
-  box-shadow:0 0 20px;
-  backdrop-filter:blur(10px);
-  transition:all 0.3s;
-  letter-spacing:1px;
+  padding:10px 20px;background:rgba(10,10,15,0.95);border:3px solid;
+  font-family:var(--pixel);font-size:10px;box-shadow:0 0 20px;
+  backdrop-filter:blur(10px);transition:all 0.3s;letter-spacing:1px;
 }
 .status-badge.active{
-  border-color:var(--green);
-  color:var(--green);
+  border-color:var(--green);color:var(--green);
   box-shadow:0 0 30px var(--green);
   animation:glow-pulse 1.5s ease-in-out infinite;
 }
 @keyframes glow-pulse{0%,100%{box-shadow:0 0 30px var(--green)}50%{box-shadow:0 0 50px var(--green),0 0 70px var(--green)}}
 .status-badge.inactive{
-  border-color:var(--orange);
-  color:var(--orange);
+  border-color:var(--orange);color:var(--orange);
   box-shadow:0 0 15px rgba(255,107,53,0.4);
 }
-.controls{
-  display:flex;
-  gap:16px;
-}
+/* -------------------------------------------- */
+.controls{display:flex;gap:16px;}
 .btn{
-  flex:1;
-  padding:20px 28px;
-  font-family:var(--pixel);
-  font-size:11px;
-  border:4px solid;
-  cursor:pointer;
-  transition:all 0.3s;
-  background:transparent;
-  position:relative;
-  letter-spacing:2px;
-  text-transform:uppercase;
+  flex:1;padding:20px 28px;font-family:var(--pixel);font-size:11px;
+  border:4px solid;cursor:pointer;transition:all 0.3s;background:transparent;
+  position:relative;letter-spacing:2px;text-transform:uppercase;
 }
-.btn::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:currentColor;
-  opacity:0;
-  transition:opacity 0.3s;
-}
-.btn:hover:not(:disabled)::before{
-  opacity:0.2;
-}
-.btn-start{
-  border-color:var(--green);
-  color:var(--green);
-  box-shadow:0 0 25px rgba(0,255,65,0.5);
-}
-.btn-start:hover:not(:disabled){
-  box-shadow:0 0 50px var(--green);
-  transform:translateY(-2px);
-}
-.btn-stop{
-  border-color:var(--pink);
-  color:var(--pink);
-  box-shadow:0 0 25px rgba(255,16,240,0.5);
-}
-.btn-stop:hover:not(:disabled){
-  box-shadow:0 0 50px var(--pink);
-  transform:translateY(-2px);
-}
-.btn-mint{
-  border-color:var(--yellow);
-  color:var(--yellow);
-  box-shadow:0 0 25px rgba(255,240,0,0.5);
-}
-.btn-mint:hover:not(:disabled){
-  box-shadow:0 0 50px var(--yellow);
-  transform:translateY(-2px);
-}
-.btn:disabled{
-  opacity:0.3;
-  cursor:not-allowed;
-}
+.btn::before{content:'';position:absolute;inset:0;background:currentColor;opacity:0;transition:opacity 0.3s;}
+.btn:hover:not(:disabled)::before{opacity:0.2;}
+.btn-start{border-color:var(--green);color:var(--green);box-shadow:0 0 25px rgba(0,255,65,0.5);}
+.btn-start:hover:not(:disabled){box-shadow:0 0 50px var(--green);transform:translateY(-2px);}
+.btn-stop{border-color:var(--pink);color:var(--pink);box-shadow:0 0 25px rgba(255,16,240,0.5);}
+.btn-stop:hover:not(:disabled){box-shadow:0 0 50px var(--pink);transform:translateY(-2px);}
+.btn-mint{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 25px rgba(255,240,0,0.5);}
+.btn-mint:hover:not(:disabled){box-shadow:0 0 50px var(--yellow);transform:translateY(-2px);}
+.btn:disabled{opacity:0.3;cursor:not-allowed;}
 .stat-box{
-  padding:20px;
-  background:linear-gradient(135deg,rgba(255,16,240,0.1),rgba(0,212,255,0.1));
-  border:3px solid;
-  margin-bottom:20px;
-  backdrop-filter:blur(5px);
-  transition:all 0.3s;
+  padding:20px;background:linear-gradient(135deg,rgba(255,16,240,0.1),rgba(0,212,255,0.1));
+  border:3px solid;margin-bottom:20px;backdrop-filter:blur(5px);transition:all 0.3s;
 }
-.panel-left .stat-box{
-  border-color:var(--pink);
-  box-shadow:0 0 20px rgba(255,16,240,0.3);
-}
-.panel-right .stat-box{
-  border-color:var(--cyan);
-  box-shadow:0 0 20px rgba(0,255,255,0.3);
-}
-.stat-box:hover{
-  transform:translateY(-4px);
-  box-shadow:0 0 40px currentColor;
-}
-.stat-label{
-  font-size:15px;
-  color:var(--blue);
-  margin-bottom:10px;
-  letter-spacing:1px;
-}
-.stat-value{
-  font-family:var(--pixel);
-  font-size:28px;
-  color:var(--pink);
-  text-shadow:0 0 20px var(--pink);
-  animation:number-glow 2s ease-in-out infinite;
-}
+.panel-left .stat-box{border-color:var(--pink);box-shadow:0 0 20px rgba(255,16,240,0.3);}
+.panel-right .stat-box{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,255,255,0.3);}
+.stat-box:hover{transform:translateY(-4px);}
+.stat-label{font-size:15px;color:var(--blue);margin-bottom:10px;letter-spacing:1px;}
+.stat-value{font-family:var(--pixel);font-size:28px;color:var(--pink);text-shadow:0 0 20px var(--pink);animation:number-glow 2s ease-in-out infinite;}
 @keyframes number-glow{0%,100%{text-shadow:0 0 20px var(--pink)}50%{text-shadow:0 0 30px var(--pink),0 0 40px var(--pink)}}
 .wallet-display{
-  padding:14px;
-  background:rgba(0,0,0,0.7);
-  border:3px solid var(--green);
-  font-size:12px;
-  color:var(--green);
-  word-break:break-all;
-  margin-bottom:20px;
-  box-shadow:0 0 20px rgba(0,255,65,0.3);
-  font-family:monospace;
-  letter-spacing:1px;
+  padding:14px;background:rgba(0,0,0,0.7);border:3px solid var(--green);
+  font-size:12px;color:var(--green);word-break:break-all;margin-bottom:20px;
+  box-shadow:0 0 20px rgba(0,255,65,0.3);font-family:monospace;letter-spacing:1px;
 }
-.leaderboard{
-  max-height:350px;
-  overflow-y:auto;
-}
+.leaderboard{max-height:350px;overflow-y:auto;}
 .leaderboard-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:12px 16px;
-  border-bottom:2px solid rgba(0,255,255,0.2);
-  font-size:15px;
-  transition:all 0.3s;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 16px;border-bottom:2px solid rgba(0,255,255,0.2);
+  font-size:15px;transition:all 0.3s;
 }
-.leaderboard-item:hover{
-  background:rgba(0,255,255,0.1);
-  border-color:var(--cyan);
-}
-.leaderboard-item:nth-child(1){
-  background:linear-gradient(90deg,rgba(255,240,0,0.15),transparent);
-  border-color:var(--yellow);
-}
-.leaderboard-item:nth-child(2){
-  background:linear-gradient(90deg,rgba(0,212,255,0.15),transparent);
-}
-.leaderboard-item:nth-child(3){
-  background:linear-gradient(90deg,rgba(255,107,53,0.15),transparent);
-}
-.leaderboard-rank{
-  color:var(--yellow);
-  font-family:var(--pixel);
-  font-size:11px;
-  letter-spacing:1px;
-}
-.leaderboard-name{
-  color:var(--cyan);
-  flex:1;
-  margin:0 16px;
-}
-.leaderboard-tokens{
-  color:var(--pink);
-  font-family:var(--pixel);
-  font-size:12px;
-}
+.leaderboard-item:hover{background:rgba(0,255,255,0.1);border-color:var(--cyan);}
+.leaderboard-item:nth-child(1){background:linear-gradient(90deg,rgba(255,240,0,0.15),transparent);border-color:var(--yellow);}
+.leaderboard-item:nth-child(2){background:linear-gradient(90deg,rgba(0,212,255,0.15),transparent);}
+.leaderboard-item:nth-child(3){background:linear-gradient(90deg,rgba(255,107,53,0.15),transparent);}
+.leaderboard-rank{color:var(--yellow);font-family:var(--pixel);font-size:11px;letter-spacing:1px;}
+.leaderboard-name{color:var(--cyan);flex:1;margin:0 16px;}
+.leaderboard-tokens{color:var(--pink);font-family:var(--pixel);font-size:12px;}
 .timer-display{
-  padding:24px;
-  background:rgba(0,0,0,0.5);
-  border:4px solid var(--blue);
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
+  padding:24px;background:rgba(0,0,0,0.5);border:4px solid var(--blue);
+  display:flex;justify-content:space-around;align-items:center;
   box-shadow:0 0 30px rgba(0,212,255,0.4);
 }
-.timer-item{
-  text-align:center;
-}
-.timer-label{
-  font-size:13px;
-  color:var(--cyan);
-  margin-bottom:8px;
-  letter-spacing:1px;
-}
-.timer-value{
-  font-family:var(--pixel);
-  font-size:24px;
-  color:var(--pink);
-  text-shadow:0 0 15px var(--pink);
-}
-.rate-value{
-  color:var(--green);
-  text-shadow:0 0 15px var(--green);
-}
+.timer-item{text-align:center;}
+.timer-label{font-size:13px;color:var(--cyan);margin-bottom:8px;letter-spacing:1px;}
+.timer-value{font-family:var(--pixel);font-size:24px;color:var(--pink);text-shadow:0 0 15px var(--pink);}
+.rate-value{color:var(--green);text-shadow:0 0 15px var(--green);}
 .debug{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:rgba(0,0,0,0.95);
-  border:2px solid var(--yellow);
-  padding:12px;
-  font-size:10px;
-  color:var(--yellow);
-  max-width:350px;
-  max-height:200px;
-  overflow-y:auto;
-  z-index:1000;
-  font-family:monospace;
-  box-shadow:0 0 30px rgba(255,240,0,0.5);
+  position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.95);
+  border:2px solid var(--yellow);padding:12px;font-size:10px;color:var(--yellow);
+  max-width:350px;max-height:200px;overflow-y:auto;z-index:1000;
+  font-family:monospace;box-shadow:0 0 30px rgba(255,240,0,0.5);
 }
-.debug-title{
-  font-family:var(--pixel);
-  font-size:9px;
-  margin-bottom:8px;
-  padding-bottom:4px;
-  border-bottom:1px solid var(--yellow);
-  letter-spacing:1px;
-}
+.debug-title{font-family:var(--pixel);font-size:9px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--yellow);letter-spacing:1px;}
 .loading-overlay{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,0.9);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:100;
-  backdrop-filter:blur(10px);
+  position:absolute;inset:0;background:rgba(0,0,0,0.9);
+  display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);
 }
 .loading-text{
-  font-family:var(--pixel);
-  font-size:16px;
-  color:var(--cyan);
-  text-shadow:0 0 20px var(--cyan);
-  animation:loading-pulse 1.5s ease-in-out infinite;
+  font-family:var(--pixel);font-size:16px;color:var(--cyan);
+  text-shadow:0 0 20px var(--cyan);animation:loading-pulse 1.5s ease-in-out infinite;
 }
 @keyframes loading-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
 @media(max-width:1024px){
-  .container{
-    grid-template-columns:1fr;
-    padding-top:120px;
-  }
+  .container{grid-template-columns:1fr;padding-top:120px;overflow-y:auto;height:auto;}
 }
 </style>
 </head>
@@ -482,22 +243,22 @@ body{
       </svg>
       WALLET
     </div>
-    
+
     <button id="connectBtn" class="btn btn-start" style="width:100%;margin-bottom:20px">CONNECT</button>
-    
+
     <div id="walletInfo" style="display:none">
       <div class="wallet-display" id="address"></div>
-      
+
       <div class="stat-box">
         <div class="stat-label">Chain Balance</div>
         <div class="stat-value"><span id="balance">0</span> $MONK</div>
       </div>
-      
+
       <div class="stat-box">
         <div class="stat-label">Earned Now</div>
         <div class="stat-value"><span id="earned">0</span> $MONK</div>
       </div>
-      
+
       <button id="mintBtn" class="btn btn-mint" style="width:100%" disabled>
         MINT TO CHAIN
       </button>
@@ -522,12 +283,12 @@ body{
         <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
       </div>
     </div>
-    
+
     <div class="controls">
       <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
       <button id="stopBtn" class="btn btn-stop" disabled>STOP SESSION</button>
     </div>
-    
+
     <div class="timer-display">
       <div class="timer-item">
         <div class="timer-label">Session</div>
@@ -547,7 +308,6 @@ body{
   <!-- RIGHT PANEL: LEADERBOARD -->
   <div class="panel panel-right">
     <div class="panel-title">◆ LEADERBOARD</div>
-    
     <div class="leaderboard">
       <div class="leaderboard-item">
         <span class="leaderboard-rank">#1</span>
@@ -598,7 +358,7 @@ body{
 
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
-const TOKEN = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+const TOKEN   = '0x98823C52037aF043c2628185C74D7E98b16e3444';
 const CHAIN_ID = '0x89';
 
 let state = {
@@ -609,30 +369,32 @@ let state = {
   totalSec: parseInt(localStorage.getItem('totalSec') || '0'),
   eyesClosed: false,
   leftEyePos: null,
-  rightEyePos: null
+  rightEyePos: null,
+  faceDetected: false
 };
 
 let intervals = [];
-let faceMesh = null;
-let camera = null;
+let faceMesh  = null;
+let mpCamera  = null;    // renamed to avoid clash with window.camera
+let stream    = null;    // raw getUserMedia stream
 
+// ─── DEBUG ────────────────────────────────────────────────
 function log(msg) {
   const time = new Date().toLocaleTimeString();
   console.log('[' + time + ']', msg);
   const logDiv = document.getElementById('debugLog');
-  logDiv.innerHTML = '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' + time + '] ' + msg + '</div>' + logDiv.innerHTML;
-  const logs = logDiv.children;
-  while (logs.length > 12) logDiv.removeChild(logs[logs.length - 1]);
+  logDiv.innerHTML =
+    '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' +
+    time + '] ' + msg + '</div>' + logDiv.innerHTML;
+  while (logDiv.children.length > 12) logDiv.removeChild(logDiv.lastChild);
 }
 
 log('🚀 Loading AI model...');
 
-// MEDIAPIPE FACE MESH INITIALIZATION
+// ─── MEDIAPIPE INIT ───────────────────────────────────────
 function initMediaPipe() {
   faceMesh = new FaceMesh({
-    locateFile: (file) => {
-      return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
-    }
+    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
   });
 
   faceMesh.setOptions({
@@ -643,124 +405,87 @@ function initMediaPipe() {
   });
 
   faceMesh.onResults(onResults);
-  
+
   log('✓ AI model loaded');
   document.getElementById('loadingAI').style.display = 'none';
   document.getElementById('startBtn').disabled = false;
 }
 
-// PROCESS FACE MESH RESULTS
+// ─── FACE MESH RESULTS ───────────────────────────────────
 function onResults(results) {
   const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
-  const videoElement = document.getElementById('video');
-  
-  canvas.width = videoElement.videoWidth;
-  canvas.height = videoElement.videoHeight;
-  
+  const video  = document.getElementById('video');
+  const ctx    = canvas.getContext('2d');
+
+  canvas.width  = video.videoWidth  || video.clientWidth;
+  canvas.height = video.videoHeight || video.clientHeight;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
-    const landmarks = results.multiFaceLandmarks[0];
-    
-    // Eye landmarks (MediaPipe indices) - using more points for accuracy
-    // Left eye: 33 (outer), 133 (inner), 159 (top), 145 (bottom), 362, 263
-    // Right eye: 362 (outer), 263 (inner), 386 (top), 374 (bottom)
-    
-    // Left eye landmarks
-    const leftOuter = landmarks[33];
-    const leftInner = landmarks[133];
-    const leftTop = landmarks[159];
-    const leftBottom = landmarks[145];
-    const leftTop2 = landmarks[158];
-    const leftBottom2 = landmarks[153];
-    
-    // Right eye landmarks  
-    const rightOuter = landmarks[362];
-    const rightInner = landmarks[263];
-    const rightTop = landmarks[386];
-    const rightBottom = landmarks[374];
-    const rightTop2 = landmarks[385];
-    const rightBottom2 = landmarks[380];
-    
-    // Eye centers for positioning
-    const leftEyeCenter = landmarks[468]; // Left iris center
-    const rightEyeCenter = landmarks[473]; // Right iris center
-    
-    // Calculate Eye Aspect Ratio (EAR) - average of multiple vertical distances
-    const leftEAR = (
-      Math.abs(leftTop.y - leftBottom.y) + 
-      Math.abs(leftTop2.y - leftBottom2.y)
-    ) / 2;
-    
-    const rightEAR = (
-      Math.abs(rightTop.y - rightBottom.y) + 
-      Math.abs(rightTop2.y - rightBottom2.y)
-    ) / 2;
-    
-    const avgEAR = (leftEAR + rightEAR) / 2;
-    
-    // Adaptive threshold - more forgiving
-    const EAR_THRESHOLD = 0.020;
-    const wasOpen = !state.eyesClosed;
-    state.eyesClosed = avgEAR < EAR_THRESHOLD;
-    
-    // Add hysteresis to prevent flickering
-    if (wasOpen && avgEAR < (EAR_THRESHOLD + 0.003)) {
-      state.eyesClosed = true;
-    }
-    
-    // Update eye vertex positions
-    const videoRect = videoElement.getBoundingClientRect();
-    
-    state.leftEyePos = {
-      x: leftEyeCenter.x * videoRect.width,
-      y: leftEyeCenter.y * videoRect.height
-    };
-    
-    state.rightEyePos = {
-      x: rightEyeCenter.x * videoRect.width,
-      y: rightEyeCenter.y * videoRect.height
-    };
-    
-    updateEyeVertices();
+
+  if (!results.multiFaceLandmarks || !results.multiFaceLandmarks.length) {
+    state.faceDetected = false;
+    state.eyesClosed   = false;
+    document.getElementById('leftEye').style.display  = 'none';
+    document.getElementById('rightEye').style.display = 'none';
+    return;
   }
+
+  state.faceDetected = true;
+  const lm = results.multiFaceLandmarks[0];
+
+  // ── EAR calculation using two pairs of vertical points per eye ──
+  const lTop    = lm[159]; const lBot  = lm[145];
+  const lTop2   = lm[158]; const lBot2 = lm[153];
+  const rTop    = lm[386]; const rBot  = lm[374];
+  const rTop2   = lm[385]; const rBot2 = lm[380];
+
+  const leftEAR  = (Math.abs(lTop.y  - lBot.y)  + Math.abs(lTop2.y - lBot2.y)) / 2;
+  const rightEAR = (Math.abs(rTop.y  - rBot.y)  + Math.abs(rTop2.y - rBot2.y)) / 2;
+  const avgEAR   = (leftEAR + rightEAR) / 2;
+
+  // Slightly more forgiving threshold than original (0.018 → softer detection)
+  const THRESH = 0.022;
+  // Hysteresis: once closed, need to go above THRESH+0.004 to reopen
+  if (!state.eyesClosed) {
+    state.eyesClosed = avgEAR < THRESH;
+  } else {
+    state.eyesClosed = avgEAR < (THRESH + 0.004);
+  }
+
+  // ── Eye marker positions (iris centres when refineLandmarks=true) ──
+  const lIris = lm[468];
+  const rIris = lm[473];
+
+  const vRect = video.getBoundingClientRect();
+  state.leftEyePos  = { x: lIris.x * vRect.width,  y: lIris.y * vRect.height };
+  state.rightEyePos = { x: rIris.x * vRect.width,  y: rIris.y * vRect.height };
+
+  updateEyeVertices();
 }
 
 function updateEyeVertices() {
-  const leftEyeEl = document.getElementById('leftEye');
-  const rightEyeEl = document.getElementById('rightEye');
-  
-  if (state.leftEyePos && state.rightEyePos) {
-    leftEyeEl.style.display = 'block';
-    rightEyeEl.style.display = 'block';
-    
-    leftEyeEl.style.left = state.leftEyePos.x + 'px';
-    leftEyeEl.style.top = state.leftEyePos.y + 'px';
-    
-    rightEyeEl.style.left = state.rightEyePos.x + 'px';
-    rightEyeEl.style.top = state.rightEyePos.y + 'px';
-    
-    if (state.eyesClosed) {
-      leftEyeEl.className = 'eye-vertex closed';
-      rightEyeEl.className = 'eye-vertex closed';
-    } else {
-      leftEyeEl.className = 'eye-vertex open';
-      rightEyeEl.className = 'eye-vertex open';
-    }
-  }
+  const le = document.getElementById('leftEye');
+  const re = document.getElementById('rightEye');
+  if (!state.leftEyePos || !state.rightEyePos) return;
+
+  le.style.display = 'block';
+  re.style.display = 'block';
+  le.style.left = state.leftEyePos.x  + 'px';
+  le.style.top  = state.leftEyePos.y  + 'px';
+  re.style.left = state.rightEyePos.x + 'px';
+  re.style.top  = state.rightEyePos.y + 'px';
+
+  const cls = state.eyesClosed ? 'eye-vertex closed' : 'eye-vertex open';
+  le.className = cls;
+  re.className = cls;
 }
 
-// Initialize on page load
-window.addEventListener('load', () => {
-  initMediaPipe();
-});
+// ─── LOAD ON READY ────────────────────────────────────────
+window.addEventListener('load', initMediaPipe);
 
-// CONNECT WALLET
+// ─── CONNECT WALLET ───────────────────────────────────────
 document.getElementById('connectBtn').onclick = async () => {
   try {
     log('🔌 Connecting wallet...');
-    
     if (!window.ethereum) {
       log('❌ MetaMask not found');
       alert('Install MetaMask!\n\nmetamask.io');
@@ -771,20 +496,15 @@ document.getElementById('connectBtn').onclick = async () => {
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
     state.address = accounts[0];
     log('✓ Connected: ' + state.address.slice(0, 10) + '...');
-    
+
     const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-    
     if (chainId !== CHAIN_ID) {
       log('⚠ Switching to Polygon...');
       try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: CHAIN_ID }]
-        });
+        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: CHAIN_ID }] });
         log('✓ Switched to Polygon');
       } catch (e) {
         if (e.code === 4902) {
-          log('Adding Polygon network...');
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [{
@@ -800,123 +520,130 @@ document.getElementById('connectBtn').onclick = async () => {
       }
     }
 
-    document.getElementById('address').textContent = 
+    document.getElementById('address').textContent =
       state.address.slice(0,6) + '...' + state.address.slice(-4);
     document.getElementById('walletInfo').style.display = 'block';
     document.getElementById('connectBtn').style.display = 'none';
-    
+
     await fetchBalance();
     log('✅ Wallet ready!');
-    
   } catch (e) {
-    log('❌ ERROR: ' + e.message);
+    log('❌ ' + e.message);
     alert('Connection failed:\n\n' + e.message);
   }
 };
 
 async function fetchBalance() {
   try {
-    const res = await fetch(`${BACKEND}/api/balance/${state.address}`);
+    const res  = await fetch(`${BACKEND}/api/balance/${state.address}`);
     const data = await res.json();
-    const balance = Math.floor(parseFloat(data.balance));
-    document.getElementById('balance').textContent = balance;
-    log('Balance: ' + balance + ' MONK');
+    const bal  = Math.floor(parseFloat(data.balance));
+    document.getElementById('balance').textContent = bal;
+    log('Balance: ' + bal + ' MONK');
   } catch (e) {
     log('⚠ Balance fetch failed');
     document.getElementById('balance').textContent = '?';
   }
 }
 
-// START SESSION
+// ─── START SESSION ────────────────────────────────────────
 document.getElementById('startBtn').onclick = async () => {
   try {
-    log('🎥 Starting camera...');
-    
-    const videoElement = document.getElementById('video');
-    
-    camera = new Camera(videoElement, {
+    log('🎥 Requesting camera...');
+
+    const videoEl = document.getElementById('video');
+
+    // 1. Get raw camera stream via getUserMedia first
+    stream = await navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 }, audio: false });
+    videoEl.srcObject = stream;
+    await new Promise(res => { videoEl.onloadedmetadata = res; });
+    await videoEl.play();
+    log('✓ Camera stream live');
+
+    // 2. Feed frames into FaceMesh using MediaPipe Camera utility
+    mpCamera = new Camera(videoEl, {
       onFrame: async () => {
-        if (faceMesh) {
-          await faceMesh.send({ image: videoElement });
-        }
+        if (faceMesh) await faceMesh.send({ image: videoEl });
       },
       width: 640,
       height: 480
     });
-    
-    await camera.start();
-    log('✓ Camera active + AI tracking');
-    
+    await mpCamera.start();
+    log('✓ AI tracking active');
+
     state.meditating = true;
     state.sessionSec = 0;
-    
+    state.eyesClosed = false;
+
     document.getElementById('startBtn').disabled = true;
-    document.getElementById('stopBtn').disabled = false;
-    
+    document.getElementById('stopBtn').disabled  = false;
     log('🧘 Session started! Close eyes to earn.');
-    
-    // Timer
+
+    // ── Timer interval ──
     intervals.push(setInterval(() => {
       if (!state.meditating) return;
       state.sessionSec++;
       state.totalSec++;
       localStorage.setItem('totalSec', state.totalSec);
       document.getElementById('sessionTime').textContent = formatTime(state.sessionSec);
-      document.getElementById('totalTime').textContent = formatTime(state.totalSec);
+      document.getElementById('totalTime').textContent   = formatTime(state.totalSec);
     }, 1000));
-    
-    // REAL EYE TRACKING - ONLY EARN WHEN EYES ACTUALLY CLOSED
+
+    // ── Earn + badge update interval ──
+    // FIX: use correct CSS class 'status-badge active' / 'status-badge inactive'
     intervals.push(setInterval(() => {
       if (!state.meditating) return;
-      
-      const earning = state.eyesClosed;
-      
-      // Update badges
+
+      const earning = state.eyesClosed && state.faceDetected;
+
       const eyesBadge = document.getElementById('eyesBadge');
-      eyesBadge.className = state.eyesClosed ? 'badge active' : 'badge inactive';
-      eyesBadge.textContent = state.eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
-      
+      eyesBadge.className = 'status-badge ' + (state.eyesClosed ? 'active' : 'inactive');
+      eyesBadge.textContent = state.faceDetected
+        ? (state.eyesClosed ? '👁️ EYES: CLOSED ✓' : '👁️ EYES: OPEN')
+        : '👁️ NO FACE DETECTED';
+
       const earnBadge = document.getElementById('earnBadge');
-      earnBadge.className = earning ? 'badge active' : 'badge inactive';
+      earnBadge.className = 'status-badge ' + (earning ? 'active' : 'inactive');
       earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
-      
-      // ONLY earn when eyes ACTUALLY closed
+
       if (earning) {
         state.earned++;
         document.getElementById('earned').textContent = state.earned;
         document.getElementById('mintBtn').disabled = false;
-        
-        if (state.earned % 10 === 0) {
-          log('Earned ' + state.earned + ' tokens');
-        }
+        if (state.earned % 10 === 0) log('Earned ' + state.earned + ' tokens');
       }
     }, 1000));
-    
+
   } catch (e) {
-    log('❌ Error: ' + e.message);
+    log('❌ ' + e.message);
     alert('Failed to start:\n\n' + e.message);
   }
 };
 
-// STOP SESSION
+// ─── STOP SESSION ─────────────────────────────────────────
 document.getElementById('stopBtn').onclick = async () => {
   log('🛑 Stopping...');
   state.meditating = false;
-  
-  if (camera) {
-    camera.stop();
-  }
-  
+
+  if (mpCamera) { try { mpCamera.stop(); } catch(e){} mpCamera = null; }
+  if (stream)   { stream.getTracks().forEach(t => t.stop()); stream = null; }
+
   intervals.forEach(i => clearInterval(i));
   intervals = [];
-  
+
   document.getElementById('startBtn').disabled = false;
-  document.getElementById('stopBtn').disabled = true;
-  document.getElementById('leftEye').style.display = 'none';
+  document.getElementById('stopBtn').disabled  = true;
+  document.getElementById('leftEye').style.display  = 'none';
   document.getElementById('rightEye').style.display = 'none';
-  
+
+  // Reset badges
+  document.getElementById('eyesBadge').className = 'status-badge inactive';
+  document.getElementById('eyesBadge').textContent = '👁️ EYES: DETECTING...';
+  document.getElementById('earnBadge').className = 'status-badge inactive';
+  document.getElementById('earnBadge').textContent = '💰 EARNING: NO';
+
   log('Session: ' + state.sessionSec + 's, earned ' + state.earned);
-  
+
   if (state.earned > 0 && state.address) {
     log('Auto-minting...');
     await mint();
@@ -925,89 +652,64 @@ document.getElementById('stopBtn').onclick = async () => {
   }
 };
 
-// MINT
+// ─── MINT ─────────────────────────────────────────────────
 document.getElementById('mintBtn').onclick = mint;
 
 async function mint() {
-  if (state.earned === 0) {
-    alert('No tokens earned yet!');
-    return;
-  }
-  
-  if (!state.address) {
-    alert('Connect wallet first!');
-    return;
-  }
-  
+  if (!state.earned) { alert('No tokens earned yet!'); return; }
+  if (!state.address) { alert('Connect wallet first!'); return; }
+
   try {
     log('🪙 Minting ' + state.earned + ' tokens...');
     document.getElementById('mintBtn').textContent = 'MINTING...';
     document.getElementById('mintBtn').disabled = true;
-    
+
     const payload = {
       walletAddress: state.address,
       amount: state.earned,
-      sessionData: {
-        eyesClosed: true,
-        spineCorrect: true
-      }
+      sessionData: { eyesClosed: true, spineCorrect: true }
     };
-    
+
     const res = await fetch(`${BACKEND}/api/mint-monk`, {
       method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
     });
-    
+
     log('Response: ' + res.status);
-    
-    const responseText = await res.text();
+    const txt = await res.text();
     let data;
-    try {
-      data = JSON.parse(responseText);
-    } catch (e) {
-      throw new Error('Invalid JSON: ' + responseText);
-    }
-    
-    if (!res.ok) {
-      throw new Error('HTTP ' + res.status + ': ' + (data.message || data.error || responseText));
-    }
-    
+    try { data = JSON.parse(txt); } catch (e) { throw new Error('Invalid JSON: ' + txt); }
+
+    if (!res.ok) throw new Error('HTTP ' + res.status + ': ' + (data.message || data.error || txt));
+
     if (data.success) {
       const tx = data.transactionHash;
       log('✅ MINTED! TX: ' + tx.slice(0, 20) + '...');
-      
       alert(
         '✅ SUCCESS!\n\n' +
         'Minted ' + state.earned + ' MONK!\n\n' +
         'TX: ' + tx.slice(0, 20) + '...\n\n' +
-        '⚠️ Chrome MetaMask glitch.\n' +
-        'Use Firefox to see tokens!'
+        '⚠️ Chrome MetaMask glitch.\nUse Firefox to see tokens!'
       );
-      
       state.earned = 0;
       document.getElementById('earned').textContent = 0;
       await fetchBalance();
-      
     } else {
       log('❌ Mint failed: ' + (data.message || data.error));
       alert('Mint failed:\n\n' + (data.message || data.error));
     }
-    
+
   } catch (e) {
-    log('❌ ERROR: ' + e.message);
+    log('❌ ' + e.message);
     alert('Mint error:\n\n' + e.message);
   } finally {
     document.getElementById('mintBtn').textContent = 'MINT TO CHAIN';
-    if (state.earned > 0) {
-      document.getElementById('mintBtn').disabled = false;
-    }
+    if (state.earned > 0) document.getElementById('mintBtn').disabled = false;
   }
 }
 
+// ─── UTILS ────────────────────────────────────────────────
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = sec % 60;
@@ -1018,11 +720,10 @@ document.getElementById('totalTime').textContent = formatTime(state.totalSec);
 
 if (window.ethereum) {
   window.ethereum.on('accountsChanged', () => location.reload());
-  window.ethereum.on('chainChanged', () => location.reload());
+  window.ethereum.on('chainChanged',    () => location.reload());
 }
 
 log('✅ Ready! Waiting for AI model...');
 </script>
-
 </body>
 </html>
