@@ -4,11 +4,8 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>MONKCOIN | Real AI Eye Tracking</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-
 <style>
-/* (UNCHANGED STYLES — kept exactly as you wrote them) */
 :root{
   --pixel:'Press Start 2P',cursive;
   --retro:'VT323',monospace;
@@ -29,160 +26,227 @@ body{
   overflow-x:hidden;
   image-rendering:pixelated;
 }
-/* ... ALL YOUR CSS REMAINS THE SAME ... */
+.firefox-banner{
+  position:fixed;top:0;left:0;right:0;z-index:10000;
+  background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));
+  padding:10px 20px;text-align:center;
+  border-bottom:3px solid var(--yellow);
+}
+.firefox-banner strong{
+  font-family:var(--pixel);font-size:10px;color:#000;
+  font-weight:900;letter-spacing:1px;
+}
+.nav-header{
+  position:fixed;top:48px;left:0;right:0;z-index:9997;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 28px;
+  background:rgba(10,10,15,0.92);
+  border-bottom:2px solid var(--purple);
+}
+.nav-title{
+  font-family:var(--pixel);font-size:13px;
+  background:linear-gradient(90deg,var(--pink),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:3px;
+}
+.container{
+  display:grid;grid-template-columns:320px 1fr 320px;
+  height:100vh;gap:24px;padding:108px 24px 24px;
+}
+.panel{
+  background:rgba(14,14,22,0.95);
+  border:4px solid;padding:28px;position:relative;
+  overflow-y:auto;
+}
+.panel-left{border-color:var(--pink);}
+.panel-right{border-color:var(--cyan);}
+.main-panel{display:flex;flex-direction:column;gap:20px;}
+.video-box{
+  flex:1;background:#000;border:5px solid var(--blue);position:relative;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;min-height:320px;
+}
+#video{
+  width:100%;height:100%;object-fit:cover;
+  transform:scaleX(-1);
+}
+.canvas-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;}
+.status-overlay{
+  position:absolute;top:24px;left:24px;right:24px;
+  display:flex;gap:16px;flex-wrap:wrap;z-index:20;
+}
+.status-badge{
+  padding:10px 18px;background:rgba(10,10,15,0.97);border:3px solid;
+  font-family:var(--pixel);font-size:10px;
+}
+.status-badge.inactive{border-color:#ff4444;color:#ff4444;}
+.status-badge.active{border-color:var(--green);color:var(--green);}
+.controls{display:flex;gap:15px;}
+.btn{
+  flex:1;padding:15px;font-family:var(--pixel);font-size:10px;
+  cursor:pointer;border:4px solid;background:transparent;color:#fff;
+}
+.btn:disabled{opacity:0.3;cursor:not-allowed;}
+.btn-start{border-color:var(--green);color:var(--green);}
+.loading-overlay {
+  position:absolute;inset:0;background:var(--bg);z-index:100;
+  display:flex;align-items:center;justify-content:center;
+}
+.debug{
+  position:fixed;bottom:10px;left:10px;width:300px;height:120px;
+  background:rgba(0,0,0,0.8);border:1px solid var(--green);
+  font-family:monospace;font-size:10px;padding:10px;overflow-y:auto;z-index:9999;
+}
 </style>
 </head>
-
 <body>
-
-<!-- UI unchanged -->
 <div class="firefox-banner">
   <strong>⚠ SYSTEM: WEBGL STABILIZED ⚠</strong>
 </div>
-
 <nav class="nav-header">
   <span class="nav-title">MONKCOIN AI</span>
   <div id="navStatus">● OFFLINE</div>
 </nav>
-
 <div class="container">
   <div class="panel panel-left">
     <button id="connectBtn" class="btn btn-start" style="width:100%">CONNECT WALLET</button>
   </div>
-
   <div class="main-panel">
     <div class="video-box">
       <div class="loading-overlay" id="loadingAI">
         <div style="font-family:var(--pixel); color:var(--cyan)">BOOTING AI...</div>
       </div>
-
       <video id="video" autoplay playsinline muted></video>
       <canvas id="canvas" class="canvas-overlay"></canvas>
-
       <div class="status-overlay">
         <div class="status-badge inactive" id="eyesBadge">EYES: ???</div>
       </div>
     </div>
-
     <div class="controls">
       <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
     </div>
   </div>
-
   <div class="panel panel-right">
     <div style="font-family:var(--pixel); font-size:12px">LOGS</div>
     <div id="debugLog" class="debug"></div>
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 
 <script>
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d', { willReadFrequently: false });
+const ctx = canvas.getContext('2d', { alpha: true, willReadFrequently: false });
+
 const debugLog = document.getElementById('debugLog');
-
 let faceMesh;
-let processing = false;
+let frameCanvas, frameCtx; // Offscreen canvas for stable WebGL handoff
 
-let state = {
+const state = {
   eyesClosed: false,
   faceDetected: false,
-  earCloseThresh: 0.012
+  earCloseThresh: 0.012,
+  consecutiveErrors: 0
 };
 
 function log(msg) {
   const div = document.createElement('div');
-  div.textContent = "> " + msg;
+  div.textContent = `> ${msg}`;
   debugLog.prepend(div);
+  if (debugLog.children.length > 50) debugLog.removeChild(debugLog.lastChild);
 }
 
-// INIT AI
+// Create hidden canvas for MediaPipe input
+function createFrameCanvas() {
+  frameCanvas = document.createElement('canvas');
+  frameCtx = frameCanvas.getContext('2d', { alpha: false });
+}
+
+// 1. INITIALIZE FACE MESH
 async function initAI() {
-
-  // WebGL warmup (prevents crash)
-  const testCanvas = document.createElement('canvas');
-  const gl = testCanvas.getContext('webgl');
-  if (gl) log("WebGL ready");
-
-  faceMesh = new FaceMesh({
-    locateFile: (file) =>
-      `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
-  });
-
-  faceMesh.setOptions({
-    maxNumFaces: 1,
-    refineLandmarks: true,
-    minDetectionConfidence: 0.6,
-    minTrackingConfidence: 0.6,
-    selfieMode: true
-  });
-
-  faceMesh.onResults(onResults);
-
-  log("AI ready");
-  startCamera();
-}
-
-// CAMERA
-async function startCamera() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 640, height: 480 }
+    faceMesh = new FaceMesh({
+      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
     });
 
-    video.srcObject = stream;
+    faceMesh.setOptions({
+      maxNumFaces: 1,
+      refineLandmarks: true,
+      minDetectionConfidence: 0.5,
+      minTrackingConfidence: 0.5
+    });
 
-    video.onloadedmetadata = () => {
-      video.play();
-
-      // critical delay (fixes WebGL init race)
-      setTimeout(() => {
-        document.getElementById('loadingAI').style.display = 'none';
-        document.getElementById('startBtn').disabled = false;
-        log("Camera live");
-        processLoop();
-      }, 200);
-    };
-
-  } catch (err) {
-    log("Camera error: " + err.message);
+    faceMesh.onResults(onResults);
+    log("AI Configured.");
+    
+    createFrameCanvas();
+    startCamera();
+  } catch (e) {
+    log("AI Init Failed: " + e.message);
   }
 }
 
-// SAFE LOOP
+// 2. START CAMERA
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: 640, height: 480, frameRate: { ideal: 30 } }
+    });
+    video.srcObject = stream;
+
+    video.onloadedmetadata = () => {
+      video.play().then(() => {
+        document.getElementById('loadingAI').style.display = 'none';
+        document.getElementById('startBtn').disabled = false;
+        log("Video stream active.");
+        processLoop();
+      });
+    };
+  } catch (err) {
+    log("Camera Error: " + err.message);
+  }
+}
+
+// 3. STABLE PROCESSING LOOP
+let lastProcess = 0;
 async function processLoop() {
+  const now = Date.now();
+  if (now - lastProcess < 16) { // ~60fps cap
+    requestAnimationFrame(processLoop);
+    return;
+  }
+  lastProcess = now;
 
-  if (video.readyState >= 2 && !processing) {
-    processing = true;
-
+  if (video.readyState >= 2 && frameCtx) {
     try {
-      await faceMesh.send({ image: video });
-    } catch (e) {
-      // ignore dropped frames
-    }
+      // Draw current video frame to offscreen canvas (critical for WebGL stability)
+      frameCanvas.width = video.videoWidth || 640;
+      frameCanvas.height = video.videoHeight || 480;
+      frameCtx.drawImage(video, 0, 0);
 
-    processing = false;
+      await faceMesh.send({ image: frameCanvas });
+      state.consecutiveErrors = 0;
+    } catch (e) {
+      state.consecutiveErrors++;
+      if (state.consecutiveErrors % 20 === 0) {
+        log("WebGL warning: " + e.message);
+      }
+    }
   }
 
   requestAnimationFrame(processLoop);
 }
 
-// RESULTS
+// 4. RESULTS
 function onResults(results) {
-
-  if (!video.videoWidth || !video.videoHeight) return;
-
-  if (canvas.width !== video.clientWidth) {
+  if (canvas.width !== video.clientWidth || canvas.height !== video.clientHeight) {
     canvas.width = video.clientWidth;
     canvas.height = video.clientHeight;
   }
 
-  const W = canvas.width;
-  const H = canvas.height;
-
-  ctx.clearRect(0, 0, W, H);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (!results.multiFaceLandmarks?.length) {
     state.faceDetected = false;
@@ -193,44 +257,40 @@ function onResults(results) {
   state.faceDetected = true;
   const lm = results.multiFaceLandmarks[0];
 
+  // Eye Aspect Ratio
   const faceH = Math.abs(lm[10].y - lm[152].y);
-  const left = Math.abs(lm[159].y - lm[145].y);
-  const right = Math.abs(lm[386].y - lm[374].y);
+  const leftOpen = Math.abs(lm[159].y - lm[145].y);
+  const rightOpen = Math.abs(lm[386].y - lm[374].y);
+  const avgEAR = ((leftOpen + rightOpen) / 2) / faceH;
 
-  const ear = ((left + right) / 2) / faceH;
-  state.eyesClosed = ear < state.earCloseThresh;
+  state.eyesClosed = avgEAR < state.earCloseThresh;
 
-  drawHUD(lm, W, H);
+  drawHUD(lm, canvas.width, canvas.height);
   updateUI();
 }
 
 function drawHUD(lm, W, H) {
   ctx.fillStyle = state.eyesClosed ? "#00ff41" : "#ff10f0";
-
-  [159,145,386,374].forEach(i => {
+  [159, 145, 386, 374].forEach(i => {
     const p = lm[i];
     ctx.beginPath();
-    ctx.arc((1 - p.x) * W, p.y * H, 3, 0, Math.PI * 2);
+    ctx.arc((1 - p.x) * W, p.y * H, 4, 0, Math.PI * 2);
     ctx.fill();
   });
 }
 
 function updateUI() {
   const badge = document.getElementById('eyesBadge');
-
   if (!state.faceDetected) {
     badge.textContent = "EYES: NO FACE";
     badge.className = "status-badge inactive";
   } else {
     badge.textContent = state.eyesClosed ? "EYES: CLOSED" : "EYES: OPEN";
-    badge.className = state.eyesClosed
-      ? "status-badge active"
-      : "status-badge inactive";
+    badge.className = state.eyesClosed ? "status-badge active" : "status-badge inactive";
   }
 }
 
 window.onload = initAI;
 </script>
-
 </body>
 </html>
