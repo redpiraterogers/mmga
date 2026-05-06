@@ -23,7 +23,7 @@ body{
   background:var(--bg);
   color:var(--green);
   font-family:var(--retro);
-  overflow:hidden;
+  overflow-x:hidden;
   image-rendering:pixelated;
 }
 .scanline{
@@ -51,9 +51,61 @@ body{
   font-family:var(--pixel);font-size:11px;color:#000;
   text-shadow:0 0 10px var(--yellow);letter-spacing:1px;
 }
+.nav-header{
+  position:fixed;top:48px;left:0;right:0;z-index:9997;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 28px;
+  background:rgba(10,10,15,0.92);
+  border-bottom:2px solid var(--purple);
+  box-shadow:0 2px 30px rgba(157,78,221,0.4);
+  backdrop-filter:blur(12px);
+}
+.nav-home{
+  display:flex;align-items:center;gap:10px;
+  font-family:var(--pixel);font-size:10px;
+  color:var(--cyan);text-decoration:none;
+  letter-spacing:2px;
+  transition:all 0.3s;
+  padding:8px 16px;
+  border:2px solid var(--cyan);
+  box-shadow:0 0 12px rgba(0,255,255,0.3);
+}
+.nav-home:hover{
+  color:#fff;background:rgba(0,255,255,0.12);
+  box-shadow:0 0 25px var(--cyan);
+  transform:translateX(-2px);
+}
+.nav-arrow{
+  font-size:14px;
+  animation:arrow-pulse 2s ease-in-out infinite;
+}
+@keyframes arrow-pulse{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}}
+.nav-brand{
+  display:flex;align-items:center;gap:10px;
+}
+.nav-title{
+  font-family:var(--pixel);font-size:13px;
+  background:linear-gradient(90deg,var(--pink),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  text-shadow:none;
+  letter-spacing:3px;
+}
+.nav-status{
+  font-family:var(--pixel);font-size:9px;
+  color:var(--orange);letter-spacing:2px;
+  padding:8px 16px;border:2px solid var(--orange);
+  box-shadow:0 0 12px rgba(255,107,53,0.3);
+  transition:all 0.3s;
+}
+.nav-status.online{
+  color:var(--green);border-color:var(--green);
+  box-shadow:0 0 20px rgba(0,255,65,0.5);
+  animation:glow-pulse 1.5s ease-in-out infinite;
+}
 .container{
   display:grid;grid-template-columns:320px 1fr 320px;
-  height:100vh;gap:24px;padding:80px 24px 24px;
+  height:100vh;gap:24px;padding:108px 24px 24px;
 }
 .panel{
   background:linear-gradient(135deg,rgba(157,78,221,0.15),rgba(0,212,255,0.15));
@@ -205,6 +257,39 @@ body{
   font-family:monospace;box-shadow:0 0 30px rgba(255,240,0,0.5);
 }
 .debug-title{font-family:var(--pixel);font-size:9px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--yellow);letter-spacing:1px;}
+.privacy-section{margin-top:20px;padding-top:16px;border-top:2px solid rgba(0,255,65,0.15);}
+.privacy-toggle{
+  font-family:var(--pixel);font-size:8px;letter-spacing:2px;
+  color:var(--green);background:transparent;border:2px solid rgba(0,255,65,0.3);
+  padding:8px 14px;cursor:pointer;width:100%;text-align:left;
+  transition:all 0.2s;display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:0;
+}
+.privacy-toggle:hover{border-color:var(--green);background:rgba(0,255,65,0.05);}
+.privacy-body{
+  display:none;padding:14px;
+  background:rgba(0,255,65,0.04);border:2px solid rgba(0,255,65,0.15);border-top:none;
+}
+.privacy-body.open{display:block;}
+.privacy-step{
+  display:flex;gap:10px;padding:8px 0;
+  border-bottom:1px solid rgba(0,255,65,0.08);
+  font-family:var(--pixel);font-size:7px;letter-spacing:1px;
+  color:rgba(0,255,65,0.6);line-height:1.8;
+}
+.privacy-step:last-child{border:none;}
+.ps-num{color:var(--cyan);min-width:18px;flex-shrink:0;}
+.ps-text{}
+.ps-text .hl{color:var(--green);}
+.lb-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.lb-refresh{
+  font-family:var(--pixel);font-size:7px;letter-spacing:1px;
+  color:var(--cyan);background:transparent;border:1px solid rgba(0,255,255,0.3);
+  padding:4px 10px;cursor:pointer;transition:all 0.2s;
+}
+.lb-refresh:hover{background:rgba(0,255,255,0.1);}
+.lb-refresh:disabled{opacity:0.3;cursor:not-allowed;}
+.lb-status{font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.4);letter-spacing:1px;margin-top:8px;}
 .loading-overlay{
   position:absolute;inset:0;background:rgba(0,0,0,0.9);
   display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(10px);
@@ -214,19 +299,89 @@ body{
   text-shadow:0 0 20px var(--cyan);animation:loading-pulse 1.5s ease-in-out infinite;
 }
 @keyframes loading-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* ═══ MOBILE ═══════════════════════════════════════════ */
 @media(max-width:1024px){
-  .container{grid-template-columns:1fr;padding-top:120px;overflow-y:auto;height:auto;}
+  body{overflow-y:auto;overflow-x:hidden;}
+  .firefox-banner strong{font-size:8px;letter-spacing:0.5px;}
+  .nav-header{padding:8px 14px;top:38px;}
+  .nav-home{font-size:7px;padding:6px 10px;}
+  .nav-title{font-size:9px;}
+  .nav-status{font-size:7px;padding:5px 10px;}
+  .container{
+    grid-template-columns:1fr;
+    height:auto;
+    padding:96px 12px 24px;
+    gap:14px;
+    overflow-y:auto;
+  }
+  /* reorder: video first, wallet second, leaderboard third */
+  .main-panel{order:1;}
+  .panel-left{order:2;}
+  .panel-right{order:3;}
+
+  .video-box{min-height:260px;max-height:55vw;}
+  .controls{gap:10px;}
+  .btn{padding:14px 10px;font-size:8px;letter-spacing:1px;}
+  .timer-display{padding:14px 10px;}
+  .timer-value{font-size:16px;}
+  .timer-label{font-size:11px;}
+  .panel{padding:18px 14px;}
+  .panel-title{font-size:11px;margin-bottom:16px;}
+  .stat-box{padding:14px;}
+  .stat-value{font-size:20px;}
+  .stat-label{font-size:13px;}
+  .status-badge{font-size:8px;padding:7px 12px;}
+  .status-overlay{top:10px;left:10px;right:10px;gap:8px;}
+  .leaderboard-item{padding:10px 10px;}
+  .leaderboard-rank{font-size:9px;}
+  .leaderboard-tokens{font-size:10px;}
+  .debug{display:none;}
+  .privacy-toggle{display:flex!important;}
 }
+@media(max-width:480px){
+  .firefox-banner{padding:8px 10px;}
+  .firefox-banner strong{font-size:7px;}
+  .nav-home span.nav-arrow{display:none;}
+  .nav-home{font-size:7px;}
+  .btn{font-size:7px;}
+  .timer-value{font-size:14px;}
+  .video-box{min-height:220px;}
+}
+
 </style>
 </head>
 <body>
 
+<div id="commissionFlash" style="position:fixed;top:110px;right:20px;z-index:9000;background:rgba(10,10,15,0.97);border:3px solid #fff000;padding:12px 20px;font-family:var(--pixel);font-size:9px;color:#fff000;letter-spacing:1px;box-shadow:0 0 30px rgba(255,240,0,0.6);opacity:0;transition:opacity 0.3s;pointer-events:none;"></div>
 <div class="scanline"></div>
 <div class="crt"></div>
 
 <div class="firefox-banner">
   <strong>⚠ USE FIREFOX ⚠</strong> Chrome MetaMask can't display $MONK tokens (glitch) • Your tokens ARE on blockchain!
 </div>
+
+<nav class="nav-header">
+  <a href="index.html" class="nav-home">
+    <span class="nav-arrow">◄</span> BACK TO HOME
+  </a>
+  <div class="nav-brand">
+    <svg viewBox="0 0 120 60" width="36" height="18">
+      <defs>
+        <linearGradient id="navGrad">
+          <stop offset="0%" style="stop-color:#ff10f0"/>
+          <stop offset="100%" style="stop-color:#00d4ff"/>
+        </linearGradient>
+      </defs>
+      <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#navGrad)" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+    <span class="nav-title">MONKCOIN</span>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <a href="ambassador.html" style="font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:var(--yellow);text-decoration:none;border:2px solid rgba(255,240,0,0.4);padding:6px 14px;transition:all 0.3s;" onmouseover="this.style.boxShadow='0 0 20px rgba(255,240,0,0.5)'" onmouseout="this.style.boxShadow='none'">★ AMBASSADOR</a>
+    <div class="nav-status" id="navStatus">● OFFLINE</div>
+  </div>
+</nav>
 
 <div class="container">
   <!-- LEFT PANEL: WALLET -->
@@ -302,44 +457,50 @@ body{
     </div>
   </div>
 
-  <!-- RIGHT PANEL: LEADERBOARD -->
+  <!-- RIGHT PANEL: LEADERBOARD + PRIVACY -->
   <div class="panel panel-right">
-    <div class="panel-title">◆ LEADERBOARD</div>
-    <div class="leaderboard">
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#1</span>
-        <span class="leaderboard-name">ZenMaster</span>
-        <span class="leaderboard-tokens">5,420</span>
+    <div class="lb-header">
+      <div class="panel-title" style="margin-bottom:0;">◆ LEADERBOARD</div>
+      <button class="lb-refresh" id="lbRefreshBtn" onclick="loadLeaderboard()">↻ REFRESH</button>
+    </div>
+    <div class="leaderboard" id="leaderboardList">
+      <div class="leaderboard-item" style="justify-content:center;">
+        <span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);letter-spacing:1px;">LOADING CHAIN DATA...</span>
       </div>
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#2</span>
-        <span class="leaderboard-name">CyberMonk</span>
-        <span class="leaderboard-tokens">3,890</span>
-      </div>
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#3</span>
-        <span class="leaderboard-name">PixelGuru</span>
-        <span class="leaderboard-tokens">2,567</span>
-      </div>
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#4</span>
-        <span class="leaderboard-name">MindHacker</span>
-        <span class="leaderboard-tokens">1,999</span>
-      </div>
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#5</span>
-        <span class="leaderboard-name">ByteBuddha</span>
-        <span class="leaderboard-tokens">1,555</span>
-      </div>
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#6</span>
-        <span class="leaderboard-name">CodeSage</span>
-        <span class="leaderboard-tokens">1,234</span>
-      </div>
-      <div class="leaderboard-item">
-        <span class="leaderboard-rank">#7</span>
-        <span class="leaderboard-name">NeonNinja</span>
-        <span class="leaderboard-tokens">987</span>
+    </div>
+    <div class="lb-status" id="lbStatus">FETCHING FROM POLYGONSCAN...</div>
+
+    <!-- PRIVACY VERIFY SECTION -->
+    <div class="privacy-section">
+      <button class="privacy-toggle" onclick="togglePrivacy()">
+        <span>🔒 VERIFY: NOTHING LEAVES YOUR DEVICE</span>
+        <span id="privacyArrow">▼</span>
+      </button>
+      <div class="privacy-body" id="privacyBody">
+        <div class="privacy-step">
+          <span class="ps-num">01</span>
+          <span class="ps-text">Open browser menu → <span class="hl">More Tools → Developer Tools</span> (or press F12)</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">02</span>
+          <span class="ps-text">Click the <span class="hl">Network</span> tab at the top of DevTools</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">03</span>
+          <span class="ps-text">Press <span class="hl">Start Session</span> and allow camera access</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">04</span>
+          <span class="ps-text">Watch the Network tab during meditation — <span class="hl">zero camera data is sent.</span> No image, no video, no stream leaves your browser.</span>
+        </div>
+        <div class="privacy-step">
+          <span class="ps-num">05</span>
+          <span class="ps-text">When you click <span class="hl">Mint</span> you will see exactly ONE outbound request: your wallet address + token count. Nothing else. Ever.</span>
+        </div>
+        <div class="privacy-step" style="border:none;">
+          <span class="ps-num">✓</span>
+          <span class="ps-text" style="color:var(--green);">All AI processing runs locally via WebAssembly. Your face never leaves your device.</span>
+        </div>
       </div>
     </div>
   </div>
@@ -355,6 +516,78 @@ body{
 
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
+const COMMISSION_RATE = 0.30; // Ambassador earns 30% of every MONK minted by recruits
+
+// ─── AMBASSADOR / REFERRAL SYSTEM ─────────────────────────
+// Read ?ref= param on page load — store ambassador wallet if present
+const urlParams = new URLSearchParams(window.location.search);
+const REF_WALLET = (urlParams.get('ref') || '').toLowerCase().trim();
+if (REF_WALLET && REF_WALLET.startsWith('0x')) {
+  localStorage.setItem('monkcoin_referrer', REF_WALLET);
+}
+const storedReferrer = localStorage.getItem('monkcoin_referrer') || null;
+
+// Track commissions paid this session
+let sessionCommissionPaid = 0;
+
+
+
+
+// Register this wallet as a recruit under the referrer
+function registerRecruit(referrerAddr, recruitAddr) {
+  const key = 'amb_recruits_' + referrerAddr.toLowerCase();
+  const recruits = JSON.parse(localStorage.getItem(key) || '[]');
+  const rLower = recruitAddr.toLowerCase();
+  if (!recruits.includes(rLower)) {
+    recruits.push(rLower);
+    localStorage.setItem(key, JSON.stringify(recruits));
+    document.getElementById('recruitCount').textContent = recruits.length;
+    log('✓ Recruit registered under ' + referrerAddr.slice(0,8) + '...');
+  }
+}
+
+// Pay ambassador commission — fires a separate mint to their wallet
+async function payAmbassadorCommission(minerEarned) {
+  if (!storedReferrer) return;
+  if (storedReferrer === state.address.toLowerCase()) return; // can't self-refer
+  const commission = Math.floor(minerEarned * COMMISSION_RATE);
+  if (commission < 1) return;
+  try {
+    log('★ Paying ' + commission + '  commission to ambassador...');
+    const payload = {
+      walletAddress: storedReferrer,
+      amount: commission,
+      sessionData: { eyesClosed: true, spineCorrect: true, type: 'ambassador_commission' }
+    };
+    const res = await fetch(BACKEND + '/api/mint-monk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const txt = await res.text();
+    const data = JSON.parse(txt);
+    if (data.success) {
+      sessionCommissionPaid += commission;
+      // Track in localStorage for ambassador's own dashboard
+      const key = 'amb_commission_' + storedReferrer;
+      const prev = parseFloat(localStorage.getItem(key) || '0');
+      localStorage.setItem(key, prev + commission);
+      log('★ Commission paid! TX: ' + data.transactionHash.slice(0,16) + '...');
+      showCommissionFlash(commission);
+    } else {
+      log('⚠ Commission mint failed: ' + (data.message || data.error));
+    }
+  } catch(e) {
+    log('⚠ Commission error: ' + e.message);
+  }
+}
+
+function showCommissionFlash(amount) {
+  const el = document.getElementById('commissionFlash');
+  el.textContent = '★ +' + amount + '  → AMBASSADOR';
+  el.style.opacity = '1';
+  setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
 const TOKEN   = '0x98823C52037aF043c2628185C74D7E98b16e3444';
 const CHAIN_ID = '0x89';
 
@@ -454,18 +687,27 @@ function onResults(results) {
   const rightEAR = (Math.abs(rTop.y  - rBot.y)  + Math.abs(rTop2.y - rBot2.y)) / 2;
   const avgEAR   = (leftEAR + rightEAR) / 2;
 
-  const THRESH = 0.022;
+  // ── Stricter threshold: 0.013 to close, must drop to 0.010 to stay closed ──
+  // This prevents eyes-open being detected as closed. Raw EAR shown in debug.
+  const CLOSE_THRESH = 0.013;   // must drop below this to register as closed
+  const OPEN_THRESH  = 0.010;   // must stay above this to remain closed (hysteresis)
   if (!state.eyesClosed) {
-    state.eyesClosed = avgEAR < THRESH;
+    state.eyesClosed = avgEAR < CLOSE_THRESH;
   } else {
-    state.eyesClosed = avgEAR < (THRESH + 0.004);
+    state.eyesClosed = avgEAR < OPEN_THRESH;
   }
 
-  // ── Colours: bright green = closed (earning), dimmer green = open ──
-  const dotColor  = state.eyesClosed ? '#00ff88' : '#39ff14';
-  const lineColor = state.eyesClosed ? 'rgba(0,255,136,0.7)' : 'rgba(57,255,20,0.45)';
-  const glowColor = state.eyesClosed ? '#00ff88' : '#39ff14';
-  const glowBlur  = state.eyesClosed ? 16 : 8;
+  // Log EAR every ~30 frames so you can tune threshold if needed
+  if (!window._earFrame) window._earFrame = 0;
+  if (++window._earFrame % 30 === 0) {
+    log('EAR: ' + avgEAR.toFixed(4) + ' | ' + (state.eyesClosed ? 'CLOSED' : 'open'));
+  }
+
+  // ── Colours: GREEN = closed (earning) | RED = open ──
+  const dotColor  = state.eyesClosed ? '#00ff88' : '#ff3333';
+  const lineColor = state.eyesClosed ? 'rgba(0,255,136,0.7)' : 'rgba(255,51,51,0.55)';
+  const glowColor = state.eyesClosed ? '#00ff88' : '#ff3333';
+  const glowBlur  = state.eyesClosed ? 18 : 10;
 
   // ── Helper: landmark normalised → canvas px, mirror X (video is CSS-flipped) ──
   function px(pt) {
@@ -588,6 +830,7 @@ document.getElementById('connectBtn').onclick = async () => {
     document.getElementById('connectBtn').style.display = 'none';
 
     await fetchBalance();
+
     log('✅ Wallet ready!');
   } catch (e) {
     log('❌ ' + e.message);
@@ -639,6 +882,8 @@ document.getElementById('startBtn').onclick = async () => {
 
     document.getElementById('startBtn').disabled = true;
     document.getElementById('stopBtn').disabled  = false;
+    document.getElementById('navStatus').className = 'nav-status online';
+    document.getElementById('navStatus').textContent = '● LIVE';
     log('🧘 Session started! Close eyes to earn.');
 
     // ── Timer interval ──
@@ -695,6 +940,8 @@ document.getElementById('stopBtn').onclick = async () => {
 
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled  = true;
+  document.getElementById('navStatus').className = 'nav-status';
+  document.getElementById('navStatus').textContent = '● OFFLINE';
   // Reset badges
   document.getElementById('eyesBadge').className = 'status-badge inactive';
   document.getElementById('eyesBadge').textContent = '👁️ EYES: DETECTING...';
@@ -751,9 +998,12 @@ async function mint() {
         'TX: ' + tx.slice(0, 20) + '...\n\n' +
         '⚠️ Chrome MetaMask glitch.\nUse Firefox to see tokens!'
       );
+      const mintedAmount = state.earned;
       state.earned = 0;
       document.getElementById('earned').textContent = 0;
       await fetchBalance();
+      // Pay 30% commission to ambassador if this user was referred
+      await payAmbassadorCommission(mintedAmount);
     } else {
       log('❌ Mint failed: ' + (data.message || data.error));
       alert('Mint failed:\n\n' + (data.message || data.error));
@@ -782,7 +1032,114 @@ if (window.ethereum) {
   window.ethereum.on('chainChanged',    () => location.reload());
 }
 
+// ─── LEADERBOARD FROM POLYGONSCAN ─────────────────────────
+const CONTRACT = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+const PROXY    = 'https://api.allorigins.win/raw?url=';
+
+async function loadLeaderboard() {
+  const btn = document.getElementById('lbRefreshBtn');
+  const status = document.getElementById('lbStatus');
+  const list = document.getElementById('leaderboardList');
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+  if (status) status.textContent = 'FETCHING FROM POLYGONSCAN...';
+
+  try {
+    // Fetch last 200 token transfers — no API key needed
+    const apiUrl = 'https://api.polygonscan.com/api?module=account&action=tokentx' +
+      '&contractaddress=' + CONTRACT +
+      '&page=1&offset=200&sort=desc';
+    const url = PROXY + encodeURIComponent(apiUrl);
+
+    const res  = await fetch(url);
+    const data = await res.json();
+
+    if (!data.result || !Array.isArray(data.result)) {
+      throw new Error(data.message || 'No data returned');
+    }
+
+    // Build balance map from transfers
+    const balances = {};
+    data.result.forEach(function(tx) {
+      const to   = tx.to.toLowerCase();
+      const from = tx.from.toLowerCase();
+      const val  = parseInt(tx.value) / Math.pow(10, parseInt(tx.tokenDecimal) || 18);
+      if (!balances[to])   balances[to]   = 0;
+      if (!balances[from]) balances[from] = 0;
+      balances[to]   += val;
+      balances[from] -= val;
+    });
+
+    // Sort by balance descending, remove zero/negative
+    const sorted = Object.entries(balances)
+      .filter(function(e) { return e[1] > 0; })
+      .sort(function(a, b) { return b[1] - a[1]; })
+      .slice(0, 10);
+
+    if (sorted.length === 0) {
+      list.innerHTML = '<div class="leaderboard-item" style="justify-content:center"><span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);">NO HOLDERS YET — MINE FIRST!</span></div>';
+      if (status) status.textContent = 'NO DATA FROM CHAIN';
+      return;
+    }
+
+    // Render
+    list.innerHTML = sorted.map(function(entry, i) {
+      const addr = entry[0];
+      const bal  = Math.floor(entry[1]);
+      const short = addr.slice(0, 6) + '...' + addr.slice(-4);
+      // Highlight connected wallet
+      const isMe = state.address && addr === state.address.toLowerCase();
+      const nameStyle = isMe ? 'color:var(--yellow);text-shadow:0 0 10px var(--yellow);' : 'color:var(--cyan);';
+      const label = isMe ? short + ' ★' : short;
+      return '<div class="leaderboard-item">' +
+        '<span class="leaderboard-rank">#' + (i + 1) + '</span>' +
+        '<span class="leaderboard-name" style="' + nameStyle + 'font-size:13px;">' + label + '</span>' +
+        '<span class="leaderboard-tokens">' + bal.toLocaleString() + '</span>' +
+        '</div>';
+    }).join('');
+
+    const ts = new Date().toLocaleTimeString();
+    if (status) status.textContent = 'LIVE CHAIN DATA · UPDATED ' + ts + ' · ' + sorted.length + ' HOLDERS';
+    log('Leaderboard loaded: ' + sorted.length + ' holders');
+
+  } catch (e) {
+    log('Leaderboard error: ' + e.message);
+    // Fallback: show link to Polygonscan
+    list.innerHTML =
+      '<div class="leaderboard-item" style="flex-direction:column;gap:8px;">' +
+      '<span style="font-family:var(--pixel);font-size:8px;color:var(--orange);">API UNAVAILABLE</span>' +
+      '<a href="https://polygonscan.com/token/' + CONTRACT + '#balances" target="_blank" ' +
+      'style="font-family:var(--pixel);font-size:7px;color:var(--cyan);letter-spacing:1px;">VIEW ON POLYGONSCAN ↗</a>' +
+      '</div>';
+    if (status) status.textContent = 'CHECK POLYGONSCAN DIRECTLY';
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
+  }
+}
+
+// Privacy toggle
+function togglePrivacy() {
+  const body  = document.getElementById('privacyBody');
+  const arrow = document.getElementById('privacyArrow');
+  const open  = body.classList.toggle('open');
+  if (arrow) arrow.textContent = open ? '▲' : '▼';
+}
+
+// Auto-load leaderboard on page ready + refresh every 2 minutes
+window.addEventListener('load', function() {
+  setTimeout(loadLeaderboard, 2000);
+  setInterval(loadLeaderboard, 120000);
+});
+
 log('✅ Ready! Waiting for AI model...');
+
+// Show referred-by notice if user arrived via referral link
+if (storedReferrer) {
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:9000;background:rgba(10,10,15,0.97);border:2px solid rgba(0,255,65,0.4);padding:10px 24px;font-family:var(--pixel);font-size:8px;color:var(--green);letter-spacing:1px;white-space:nowrap;box-shadow:0 0 20px rgba(0,255,65,0.3);';
+  toast.textContent = '★ INVITED BY: ' + storedReferrer.slice(0,8) + '...' + storedReferrer.slice(-6);
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 5000);
+}
 </script>
 </body>
 </html>
