@@ -36,22 +36,24 @@ body{background:var(--bg);color:var(--green);font-family:var(--retro);overflow-x
 .status-badge.inactive{border-color:#ff4444;color:#ff4444;}
 .status-badge.active{border-color:var(--green);color:var(--green);}
 .controls{display:flex;gap:15px;}
-.btn{flex:1;padding:15px;font-family:var(--pixel);font-size:10px;cursor:pointer;border:4px solid;background:transparent;color:#fff;}
+.btn{flex:1;padding:15px;font-family:var(--pixel);font-size:10px;cursor:pointer;border:4px solid;background:transparent;color:#fff;transition:all 0.1s;}
 .btn:disabled{opacity:0.3;cursor:not-allowed;}
 .btn-start{border-color:var(--green);color:var(--green);}
+.btn-start:hover{background:var(--green);color:#000;}
 .loading-overlay{position:absolute;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;}
 .debug{position:fixed;bottom:10px;left:10px;width:300px;height:160px;background:rgba(0,0,0,0.8);border:1px solid var(--green);font-family:monospace;font-size:10px;padding:10px;overflow-y:auto;z-index:9999;}
 </style>
 </head>
 <body>
-<div class="firefox-banner"><strong>⚠ MONKCOIN AI EYE TRACKER v4 ⚠</strong></div>
+<div class="firefox-banner"><strong>⚠ MONKCOIN AI EYE TRACKER v5 ✅</strong></div>
 <nav class="nav-header">
   <span class="nav-title">MONKCOIN AI</span>
   <div id="navStatus">● OFFLINE</div>
 </nav>
 <div class="container">
   <div class="panel panel-left">
-    <button id="connectBtn" class="btn btn-start" style="width:100%">CONNECT WALLET</button>
+    <button id="connectBtn" class="btn btn-start" style="width:100%; margin-bottom:15px;">CONNECT WALLET</button>
+    <div id="walletAddress" style="font-size:10px; word-break:break-all; margin-top:10px; display:none;"></div>
   </div>
   <div class="main-panel">
     <div class="video-box">
@@ -82,9 +84,14 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const debugLog = document.getElementById('debugLog');
 const loadingAI = document.getElementById('loadingAI');
+const connectBtn = document.getElementById('connectBtn');
+const startBtn = document.getElementById('startBtn');
+const navStatus = document.getElementById('navStatus');
+const walletAddressDiv = document.getElementById('walletAddress');
 
 let faceLandmarker = null;
 let lastProcess = 0;
+let sessionActive = false;
 let isVideoReady = false;
 
 const state = {
@@ -100,16 +107,48 @@ function log(msg) {
   if (debugLog.children.length > 60) debugLog.lastChild.remove();
 }
 
-// Make video visible immediately
+// ====================== BUTTONS ======================
+connectBtn.addEventListener('click', async () => {
+  log("Connecting wallet...");
+  // Simulate wallet connection (replace with real web3 later)
+  setTimeout(() => {
+    const fakeAddress = "0x" + Array(40).fill(0).map(() => Math.floor(Math.random()*16).toString(16)).join('');
+    walletAddressDiv.textContent = fakeAddress;
+    walletAddressDiv.style.display = 'block';
+    connectBtn.textContent = "✅ WALLET CONNECTED";
+    connectBtn.disabled = true;
+    navStatus.textContent = "● ONLINE";
+    navStatus.style.color = "var(--green)";
+    log("Wallet connected successfully");
+    
+    // Enable start button after wallet connect
+    startBtn.disabled = false;
+  }, 800);
+});
+
+startBtn.addEventListener('click', () => {
+  sessionActive = !sessionActive;
+  if (sessionActive) {
+    startBtn.textContent = "⏹ STOP SESSION";
+    startBtn.style.borderColor = "#ff4444";
+    startBtn.style.color = "#ff4444";
+    log("Session Started - Eye tracking active");
+  } else {
+    startBtn.textContent = "▶ START SESSION";
+    startBtn.style.borderColor = "var(--green)";
+    startBtn.style.color = "var(--green)";
+    log("Session Stopped");
+  }
+});
+
+// ====================== AI + CAMERA ======================
 video.addEventListener('playing', () => {
   isVideoReady = true;
-  log("Video is now visible");
 });
 
 async function initAI() {
   try {
-    log("Loading MediaPipe Face Landmarker...");
-    
+    log("Loading AI Model...");
     const { FaceLandmarker, FilesetResolver } = vision;
     
     const filesetResolver = await FilesetResolver.forVisionTasks(
@@ -125,12 +164,11 @@ async function initAI() {
       numFaces: 1
     });
 
-    log("✅ AI Model Loaded Successfully");
+    log("✅ AI Model Ready");
     startCamera();
   } catch (e) {
-    log("❌ AI Load Failed: " + e.message);
-    log("Video should still work - AI disabled");
-    startCamera();
+    log("AI Load Error: " + e.message);
+    startCamera(); // Still start camera even if AI fails
   }
 }
 
@@ -144,9 +182,7 @@ async function startCamera() {
     video.onloadedmetadata = async () => {
       await video.play();
       loadingAI.style.display = 'none';
-      document.getElementById('startBtn').disabled = false;
-      log("✅ Camera Active - Video should be visible now");
-      processLoop();
+      log("✅ Camera Active - Video Visible");
     };
   } catch (err) {
     log("Camera Error: " + err.message);
@@ -161,13 +197,11 @@ async function processLoop() {
   }
   lastProcess = now;
 
-  if (isVideoReady && faceLandmarker) {
+  if (isVideoReady && faceLandmarker && sessionActive) {
     try {
       const results = faceLandmarker.detectForVideo(video, performance.now());
       onResults(results);
-    } catch (e) {
-      // Silent - don't spam logs
-    }
+    } catch (e) {}
   }
   requestAnimationFrame(processLoop);
 }
@@ -223,7 +257,10 @@ function updateUI() {
   }
 }
 
-window.onload = initAI;
+window.onload = () => {
+  initAI();
+  processLoop();
+};
 </script>
 </body>
 </html>
