@@ -274,10 +274,7 @@ body{
       <video id="video" autoplay playsinline muted></video>
       <canvas id="canvas" class="canvas-overlay"></canvas>
       <div class="rainbow-heatmap"></div>
-      <div class="face-overlay">
-        <div class="eye-vertex open" id="leftEye" style="display:none"></div>
-        <div class="eye-vertex open" id="rightEye" style="display:none"></div>
-      </div>
+      <!-- eye-vertex divs removed: canvas draws the dot constellation directly -->
       <div class="status-overlay">
         <div class="status-badge inactive" id="eyesBadge">👁️ EYES: DETECTING...</div>
         <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
@@ -411,72 +408,137 @@ function initMediaPipe() {
   document.getElementById('startBtn').disabled = false;
 }
 
+// ─── ALL LANDMARK INDICES ─────────────────────────────────
+// Full eye contour rings (16 pts each)
+const L_EYE = [33,7,163,144,145,153,154,155,133,173,157,158,159,160,161,246];
+const R_EYE = [362,382,381,380,374,373,390,249,263,466,388,387,386,385,384,398];
+// Iris rings (5 pts each, only with refineLandmarks)
+const L_IRIS = [468,469,470,471,472];
+const R_IRIS = [473,474,475,476,477];
+// Extra upper/lower lid detail points
+const L_UPPER = [159,160,161,246,33,7];
+const L_LOWER = [145,144,163,7,33,153];
+const R_UPPER = [386,385,384,398,362,382];
+const R_LOWER = [374,373,390,249,263,380];
+
 // ─── FACE MESH RESULTS ───────────────────────────────────
 function onResults(results) {
   const canvas = document.getElementById('canvas');
   const video  = document.getElementById('video');
   const ctx    = canvas.getContext('2d');
 
-  canvas.width  = video.videoWidth  || video.clientWidth;
-  canvas.height = video.videoHeight || video.clientHeight;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // *** KEY FIX: use the DISPLAYED size so dots land on the face ***
+  const rect = video.getBoundingClientRect();
+  const W = rect.width  || video.clientWidth;
+  const H = rect.height || video.clientHeight;
+  canvas.width  = W;
+  canvas.height = H;
+  ctx.clearRect(0, 0, W, H);
 
   if (!results.multiFaceLandmarks || !results.multiFaceLandmarks.length) {
     state.faceDetected = false;
     state.eyesClosed   = false;
-    document.getElementById('leftEye').style.display  = 'none';
-    document.getElementById('rightEye').style.display = 'none';
     return;
   }
 
   state.faceDetected = true;
   const lm = results.multiFaceLandmarks[0];
 
-  // ── EAR calculation using two pairs of vertical points per eye ──
-  const lTop    = lm[159]; const lBot  = lm[145];
-  const lTop2   = lm[158]; const lBot2 = lm[153];
-  const rTop    = lm[386]; const rBot  = lm[374];
-  const rTop2   = lm[385]; const rBot2 = lm[380];
+  // ── EAR (Eye Aspect Ratio) ──
+  const lTop  = lm[159]; const lBot  = lm[145];
+  const lTop2 = lm[158]; const lBot2 = lm[153];
+  const rTop  = lm[386]; const rBot  = lm[374];
+  const rTop2 = lm[385]; const rBot2 = lm[380];
 
   const leftEAR  = (Math.abs(lTop.y  - lBot.y)  + Math.abs(lTop2.y - lBot2.y)) / 2;
   const rightEAR = (Math.abs(rTop.y  - rBot.y)  + Math.abs(rTop2.y - rBot2.y)) / 2;
   const avgEAR   = (leftEAR + rightEAR) / 2;
 
-  // Slightly more forgiving threshold than original (0.018 → softer detection)
   const THRESH = 0.022;
-  // Hysteresis: once closed, need to go above THRESH+0.004 to reopen
   if (!state.eyesClosed) {
     state.eyesClosed = avgEAR < THRESH;
   } else {
     state.eyesClosed = avgEAR < (THRESH + 0.004);
   }
 
-  // ── Eye marker positions (iris centres when refineLandmarks=true) ──
-  const lIris = lm[468];
-  const rIris = lm[473];
+  // ── Colours: bright green = closed (earning), dimmer green = open ──
+  const dotColor  = state.eyesClosed ? '#00ff88' : '#39ff14';
+  const lineColor = state.eyesClosed ? 'rgba(0,255,136,0.7)' : 'rgba(57,255,20,0.45)';
+  const glowColor = state.eyesClosed ? '#00ff88' : '#39ff14';
+  const glowBlur  = state.eyesClosed ? 16 : 8;
 
-  const vRect = video.getBoundingClientRect();
-  state.leftEyePos  = { x: lIris.x * vRect.width,  y: lIris.y * vRect.height };
-  state.rightEyePos = { x: rIris.x * vRect.width,  y: rIris.y * vRect.height };
+  // ── Helper: landmark normalised → canvas px, mirror X (video is CSS-flipped) ──
+  function px(pt) {
+    return { x: (1 - pt.x) * W, y: pt.y * H };
+  }
 
-  updateEyeVertices();
-}
+  // ── Dot with glow ──
+  function dot(p, r) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    ctx.fillStyle = dotColor;
+    ctx.shadowColor = glowColor;
+    ctx.shadowBlur  = glowBlur;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  }
 
-function updateEyeVertices() {
-  const le = document.getElementById('leftEye');
-  const re = document.getElementById('rightEye');
-  if (!state.leftEyePos || !state.rightEyePos) return;
+  // ── Ring of landmark dots + optional connecting outline ──
+  function drawRing(indices, dotR, drawLines) {
+    const pts = indices.map(i => px(lm[i]));
+    if (drawLines && pts.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      for (let k = 1; k < pts.length; k++) ctx.lineTo(pts[k].x, pts[k].y);
+      ctx.closePath();
+      ctx.strokeStyle = lineColor;
+      ctx.lineWidth   = 1.4;
+      ctx.shadowColor = glowColor;
+      ctx.shadowBlur  = 5;
+      ctx.stroke();
+      ctx.shadowBlur  = 0;
+    }
+    pts.forEach(p => dot(p, dotR));
+  }
 
-  le.style.display = 'block';
-  re.style.display = 'block';
-  le.style.left = state.leftEyePos.x  + 'px';
-  le.style.top  = state.leftEyePos.y  + 'px';
-  re.style.left = state.rightEyePos.x + 'px';
-  re.style.top  = state.rightEyePos.y + 'px';
+  // ── Horizontal scan line between two landmarks, large endpoint dots ──
+  function drawBridgeLine(idxA, idxB) {
+    const a = px(lm[idxA]);
+    const b = px(lm[idxB]);
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = 'rgba(0,255,65,0.22)';
+    ctx.lineWidth   = 1;
+    ctx.stroke();
+    dot(a, 6);
+    dot(b, 6);
+  }
 
-  const cls = state.eyesClosed ? 'eye-vertex closed' : 'eye-vertex open';
-  le.className = cls;
-  re.className = cls;
+  // ─── Draw everything ────────────────────────────────────
+
+  // Full eye contour ring with connecting lines (16 pts each)
+  drawRing(L_EYE, 3.5, true);
+  drawRing(R_EYE, 3.5, true);
+
+  // Iris ring — refined landmarks (5 pts) — bigger dots, no lines
+  drawRing(L_IRIS, 5.5, false);
+  drawRing(R_IRIS, 5.5, false);
+
+  // Extra lid detail dots for density
+  drawRing(L_UPPER, 2.5, false);
+  drawRing(L_LOWER, 2.5, false);
+  drawRing(R_UPPER, 2.5, false);
+  drawRing(R_LOWER, 2.5, false);
+
+  // Nose bridge / inner eye corner to outer corner line with big endpoint dots
+  // (the distinctive horizontal scanner lines in the original screenshot)
+  drawBridgeLine(33, 133);    // left eye outer ↔ inner corner
+  drawBridgeLine(362, 263);   // right eye outer ↔ inner corner
+
+  // Nose tip dot (that round green blob between the eyes in the screenshot)
+  dot(px(lm[1]), 8);   // nose tip
+  dot(px(lm[4]), 6);   // nose bridge
 }
 
 // ─── LOAD ON READY ────────────────────────────────────────
@@ -633,9 +695,6 @@ document.getElementById('stopBtn').onclick = async () => {
 
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled  = true;
-  document.getElementById('leftEye').style.display  = 'none';
-  document.getElementById('rightEye').style.display = 'none';
-
   // Reset badges
   document.getElementById('eyesBadge').className = 'status-badge inactive';
   document.getElementById('eyesBadge').textContent = '👁️ EYES: DETECTING...';
