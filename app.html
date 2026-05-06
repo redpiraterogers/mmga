@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>MONKCOIN | Sacred AI Eye Tracking</title>
+    <title>MONKCOIN | CyberMonk AI Tracking</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
             --pixel: 'Press Start 2P', cursive;
             --retro: 'VT323', monospace;
-            --bg: #0a0a0f;
+            --bg: #050508;
             --green: #00ff41;
             --pink: #ff10f0;
             --blue: #00d4ff;
             --cyan: #00ffff;
             --yellow: #ffd700;
             --amethyst: #9d4edd;
-            --orange: #ff6b35;
+            --glitch-color: #f0f;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -29,21 +29,21 @@
             min-height: 100vh;
         }
 
-        /* CRT Effects */
+        /* CRT & Glitch Effects */
         .scanline {
             position: fixed; inset: 0;
             background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px);
             pointer-events: none; z-index: 9999; animation: flicker 0.15s infinite;
         }
         @keyframes flicker { 0% { opacity: 0.97 } 50% { opacity: 1 } 100% { opacity: 0.98 } }
-        .crt { position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 100%); pointer-events: none; z-index: 9998; }
+        .crt { position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.5) 100%); pointer-events: none; z-index: 9998; }
 
         .firefox-banner {
             position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
-            background: linear-gradient(90deg, var(--orange), var(--pink), var(--orange));
-            padding: 10px; text-align: center; border-bottom: 3px solid var(--yellow);
+            background: linear-gradient(90deg, #ff6b35, var(--pink), #ff6b35);
+            padding: 8px; text-align: center; border-bottom: 3px solid var(--yellow);
             font-family: var(--pixel); font-size: 8px; color: #000;
-            line-height: 1.4;
+            text-shadow: 1px 1px #fff;
         }
 
         .container {
@@ -51,114 +51,151 @@
             grid-template-columns: 320px 1fr 320px;
             min-height: 100vh; 
             gap: 20px; 
-            padding: 80px 20px 20px;
+            padding: 70px 20px 20px;
         }
 
         .panel {
-            background: rgba(15, 15, 25, 0.85);
-            border: 3px solid; padding: 20px; position: relative;
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 20, 0.9);
+            border: 2px solid; padding: 20px; position: relative;
+            backdrop-filter: blur(15px);
             height: fit-content;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
         }
-        .panel-left { border-color: var(--pink); box-shadow: 0 0 30px rgba(255, 16, 240, 0.2); }
-        .panel-right { border-color: var(--cyan); box-shadow: 0 0 30px rgba(0, 255, 255, 0.2); }
+        .panel-left { border-color: var(--pink); border-image: linear-gradient(to bottom, var(--pink), var(--amethyst)) 1; }
+        .panel-right { border-color: var(--cyan); border-image: linear-gradient(to bottom, var(--cyan), var(--blue)) 1; }
 
         .panel-title {
-            font-family: var(--pixel); font-size: 12px; margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px; color: inherit;
+            font-family: var(--pixel); font-size: 11px; margin-bottom: 20px;
+            display: flex; align-items: center; gap: 10px; text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* YONI EYE OVERLAYS */
+        /* CYBERMONK EYE VERTICES & MANDALAS */
         .face-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
+        
         .eye-vertex {
-            position: absolute; width: 140px; height: 140px;
+            position: absolute; width: 160px; height: 160px;
             display: flex; align-items: center; justify-content: center;
-            transition: transform 0.05s linear;
+            transition: transform 0.04s cubic-bezier(0.1, 0.7, 1.0, 0.1);
             pointer-events: none;
+            opacity: 0.4; /* Always visible but faint when not tracked */
         }
+        .eye-vertex.tracked { opacity: 1; }
 
-        .mandala {
-            width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+        /* The Funky "GIF" Mandala */
+        .mandala-container {
+            position: relative; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
-            position: relative;
         }
 
-        .mandala::before {
-            content: '☸'; 
-            font-size: 60px; color: var(--yellow);
-            filter: drop-shadow(0 0 10px var(--yellow));
-            animation: rotate-slow 15s linear infinite;
-            opacity: 0.8;
+        .mandala-layer {
+            position: absolute;
+            border: 1px solid transparent;
+            border-radius: 50%;
+            animation: rotate-layer 10s linear infinite;
         }
 
-        .eye-vertex.closed .mandala::before {
-            content: '❀'; 
-            color: var(--amethyst);
-            font-size: 80px;
-            filter: drop-shadow(0 0 25px var(--amethyst));
-            animation: pulse-bloom 2s ease-in-out infinite;
+        .layer-1 { 
+            width: 100%; height: 100%; 
+            border: 1px dashed var(--cyan);
+            box-shadow: 0 0 15px var(--cyan);
+            animation-duration: 15s;
         }
 
-        @keyframes rotate-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse-bloom { 0%, 100% { transform: scale(1) rotate(0deg); } 50% { transform: scale(1.15) rotate(10deg); } }
+        .layer-2 { 
+            width: 70%; height: 70%; 
+            border: 2px double var(--pink);
+            animation-direction: reverse;
+            animation-duration: 8s;
+            display: flex; align-items: center; justify-content: center;
+        }
 
-        /* Main UI Elements */
+        .layer-2::after {
+            content: '☸'; font-size: 40px; color: var(--yellow);
+            animation: pulse-icon 2s ease-in-out infinite;
+        }
+
+        .layer-3 {
+            width: 40%; height: 40%;
+            background: radial-gradient(circle, var(--amethyst) 0%, transparent 80%);
+            mix-blend-mode: screen;
+            animation: glitch-pulse 0.5s steps(2) infinite;
+        }
+
+        @keyframes rotate-layer { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes pulse-icon { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
+        @keyframes glitch-pulse {
+            0% { transform: translate(2px, -2px); filter: hue-rotate(0deg); opacity: 0.5; }
+            50% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); opacity: 0.8; }
+            100% { transform: translate(0,0); filter: hue-rotate(0deg); opacity: 0.5; }
+        }
+
+        .eye-vertex.closed .layer-2::after {
+            content: '❀'; color: #fff; font-size: 60px;
+            filter: drop-shadow(0 0 20px var(--pink));
+        }
+        
+        .eye-vertex.closed .layer-1 {
+            border-style: solid; border-color: var(--amethyst);
+            box-shadow: 0 0 40px var(--amethyst);
+        }
+
+        /* Main UI */
         .video-box {
             flex: 1; background: #000; border: 4px solid var(--blue);
             position: relative; overflow: hidden; display: flex;
             align-items: center; justify-content: center;
-            box-shadow: 0 0 40px rgba(0, 212, 255, 0.3);
-            min-height: 400px;
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.4);
+            min-height: 450px;
         }
-        #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+        #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); filter: contrast(1.1) brightness(1.1); }
 
         .status-badge {
-            position: absolute; top: 15px; padding: 8px 12px;
-            background: rgba(0,0,0,0.85); border: 2px solid;
-            font-family: var(--pixel); font-size: 8px;
-            z-index: 20;
+            position: absolute; top: 15px; padding: 10px 16px;
+            background: rgba(5,5,10,0.9); border: 2px solid;
+            font-family: var(--pixel); font-size: 8px; z-index: 20;
+            letter-spacing: 1px;
         }
         #eyesBadge { left: 15px; border-color: var(--yellow); color: var(--yellow); }
         #earnBadge { right: 15px; border-color: var(--pink); color: var(--pink); }
-        .active { box-shadow: 0 0 20px currentColor; animation: glow 1.5s infinite; }
-        @keyframes glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        .active { box-shadow: 0 0 30px currentColor; animation: glow 1s infinite; }
+        @keyframes glow { 0%, 100% { opacity: 1; filter: brightness(1.5); } 50% { opacity: 0.7; filter: brightness(1); } }
 
         .controls { display: flex; gap: 15px; margin-top: 20px; }
         .btn {
-            flex: 1; padding: 18px; font-family: var(--pixel); font-size: 10px;
+            flex: 1; padding: 20px; font-family: var(--pixel); font-size: 10px;
             background: transparent; border: 3px solid; cursor: pointer; color: inherit;
-            transition: all 0.2s;
+            transition: all 0.2s; text-transform: uppercase;
         }
-        .btn:hover:not(:disabled) { background: rgba(255,255,255,0.05); transform: translateY(-2px); }
-        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn:hover:not(:disabled) { background: rgba(0,255,255,0.1); box-shadow: 0 0 20px var(--cyan); }
+        .btn:disabled { opacity: 0.2; cursor: not-allowed; }
         .btn-start { border-color: var(--green); color: var(--green); }
         .btn-stop { border-color: var(--pink); color: var(--pink); }
 
-        .stat-box { padding: 15px; border: 2px solid var(--pink); margin-bottom: 15px; }
-        .stat-value { font-family: var(--pixel); font-size: 18px; color: var(--yellow); text-shadow: 0 0 10px var(--yellow); }
+        .stat-box { padding: 20px; border: 1px solid rgba(255,16,240,0.3); background: rgba(255,16,240,0.05); margin-bottom: 15px; }
+        .stat-value { font-family: var(--pixel); font-size: 22px; color: var(--yellow); text-shadow: 0 0 15px var(--yellow); }
 
         .timer-display {
-            background: rgba(0,0,0,0.5); border: 2px solid var(--blue);
-            display: flex; justify-content: space-around; padding: 15px; margin-top: 15px;
+            background: rgba(10,10,20,0.8); border: 2px solid var(--blue);
+            display: flex; justify-content: space-around; padding: 20px; margin-top: 15px;
         }
         
         .debug {
             position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.95);
-            border: 1px solid var(--yellow); padding: 10px; font-size: 10px; color: var(--yellow);
-            max-width: 280px; z-index: 1000; font-family: monospace;
-            max-height: 150px; overflow-y: auto;
+            border: 1px solid var(--cyan); padding: 12px; font-size: 10px; color: var(--cyan);
+            max-width: 300px; z-index: 1000; font-family: monospace;
+            max-height: 160px; overflow-y: auto; border-radius: 4px;
         }
 
         .loading-overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.95);
+            position: absolute; inset: 0; background: #000;
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; z-index: 100; gap: 20px;
         }
 
         @media (max-width: 1100px) {
-            .container { grid-template-columns: 1fr; padding-top: 100px; }
-            .panel { order: 2; }
+            .container { grid-template-columns: 1fr; padding-top: 110px; }
+            .panel { order: 2; width: 100%; }
             .main-content { order: 1; }
         }
     </style>
@@ -169,25 +206,25 @@
 <div class="crt"></div>
 
 <div class="firefox-banner">
-    ⚠ USE FIREFOX ⚠ CHROME METAMASK GLITCH PREVENTS TOKEN DISPLAY (BUT THEY ARE MINTED)
+    SYSTEM STATUS: STABLE • CONNECT WALLET TO COMMENCE RITUAL • USE FIREFOX FOR BEST RESULTS
 </div>
 
 <div class="container">
     <!-- LEFT -->
     <div class="panel panel-left">
-        <div class="panel-title">SACRED WALLET</div>
-        <button id="connectBtn" class="btn btn-start" style="width:100%; margin-bottom:15px">CONNECT WALLET</button>
+        <div class="panel-title">// SACRED_WALLET</div>
+        <button id="connectBtn" class="btn btn-start" style="width:100%; margin-bottom:15px">INITIALIZE AUTH</button>
         <div id="walletInfo" style="display:none">
-            <div id="address" style="font-size:11px; margin-bottom:15px; opacity:0.8; word-break: break-all; font-family: monospace;"></div>
+            <div id="address" style="font-size:10px; margin-bottom:15px; opacity:0.6; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.1); padding: 5px;"></div>
             <div class="stat-box">
-                <div style="font-size:12px; margin-bottom:5px; color: var(--cyan)">Chain Balance</div>
+                <div style="font-size:12px; margin-bottom:8px; color: var(--cyan); font-family: var(--pixel); font-size: 8px;">Network Balance</div>
                 <div class="stat-value"><span id="balance">0</span> $MONK</div>
             </div>
             <div class="stat-box">
-                <div style="font-size:12px; margin-bottom:5px; color: var(--cyan)">Current Ritual</div>
+                <div style="font-size:12px; margin-bottom:8px; color: var(--pink); font-family: var(--pixel); font-size: 8px;">Ritual Yield</div>
                 <div class="stat-value"><span id="earned">0</span> $MONK</div>
             </div>
-            <button id="mintBtn" class="btn btn-start" style="width:100%" disabled>MINT TO POLYGON</button>
+            <button id="mintBtn" class="btn btn-start" style="width:100%" disabled>MINT ASSETS</button>
         </div>
     </div>
 
@@ -195,29 +232,41 @@
     <div class="main-content" style="display:flex; flex-direction:column">
         <div class="video-box">
             <div class="loading-overlay" id="loadingAI">
-                <div style="font-family:var(--pixel); color:var(--cyan); text-align: center;">WAKING UP AI...<br><span style="font-size: 10px; opacity: 0.6;">(Requires Camera Access)</span></div>
+                <div style="font-family:var(--pixel); color:var(--cyan); text-align: center; animation: glow 1s infinite;">BOOTING NEURAL MESH...</div>
             </div>
             <video id="video" autoplay playsinline muted></video>
             <div class="face-overlay">
-                <div class="eye-vertex" id="leftEye" style="display:none"><div class="mandala"></div></div>
-                <div class="eye-vertex" id="rightEye" style="display:none"><div class="mandala"></div></div>
+                <div class="eye-vertex" id="leftEye">
+                    <div class="mandala-container">
+                        <div class="mandala-layer layer-1"></div>
+                        <div class="mandala-layer layer-2"></div>
+                        <div class="mandala-layer layer-3"></div>
+                    </div>
+                </div>
+                <div class="eye-vertex" id="rightEye">
+                    <div class="mandala-container">
+                        <div class="mandala-layer layer-1"></div>
+                        <div class="mandala-layer layer-2"></div>
+                        <div class="mandala-layer layer-3"></div>
+                    </div>
+                </div>
             </div>
             <div class="status-badge" id="eyesBadge">👁 SCANNING...</div>
-            <div class="status-badge" id="earnBadge">💰 IDLE</div>
+            <div class="status-badge" id="earnBadge">💰 NODE IDLE</div>
         </div>
         
         <div class="controls">
-            <button id="startBtn" class="btn btn-start" disabled>BEGIN RITUAL</button>
-            <button id="stopBtn" class="btn btn-stop" disabled>END SESSION</button>
+            <button id="startBtn" class="btn btn-start" disabled>ACTIVATE RITUAL</button>
+            <button id="stopBtn" class="btn btn-stop" disabled>TERMINATE</button>
         </div>
 
         <div class="timer-display">
             <div style="text-align:center">
-                <div style="font-size:10px; color:var(--cyan); margin-bottom: 5px;">SESSION</div>
+                <div style="font-size:9px; color:var(--cyan); margin-bottom: 8px; font-family: var(--pixel);">SESSION_TIME</div>
                 <div class="stat-value" id="sessionTime">00:00</div>
             </div>
             <div style="text-align:center">
-                <div style="font-size:10px; color:var(--cyan); margin-bottom: 5px;">TOTAL RITUAL</div>
+                <div style="font-size:9px; color:var(--cyan); margin-bottom: 8px; font-family: var(--pixel);">TOTAL_UPTIME</div>
                 <div class="stat-value" id="totalTime">00:00</div>
             </div>
         </div>
@@ -225,22 +274,22 @@
 
     <!-- RIGHT -->
     <div class="panel panel-right">
-        <div class="panel-title">◆ HIGH SAGES</div>
-        <div id="leaderboard" style="font-size:16px">
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 5px;">
-                <span style="color:var(--yellow)">1. ZenMaster</span><span style="color:var(--pink)">9.5k</span>
+        <div class="panel-title">// HIGH_SAGES</div>
+        <div id="leaderboard">
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 8px;">
+                <span style="color:var(--yellow); font-family:var(--pixel); font-size: 8px;">01. ZenMaster</span><span style="color:var(--pink)">9.5k</span>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 5px;">
-                <span style="color:var(--cyan)">2. CyberMonk</span><span style="color:var(--pink)">7.2k</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 8px;">
+                <span style="color:var(--cyan); font-family:var(--pixel); font-size: 8px;">02. CyberMonk</span><span style="color:var(--pink)">7.2k</span>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:12px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 5px;">
-                <span style="color:var(--green)">3. PixelGuru</span><span style="color:var(--pink)">4.1k</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 8px;">
+                <span style="color:var(--green); font-family:var(--pixel); font-size: 8px;">03. PixelGuru</span><span style="color:var(--pink)">4.1k</span>
             </div>
         </div>
     </div>
 </div>
 
-<div class="debug" id="debugLog">System Initializing...</div>
+<div class="debug" id="debugLog">Neural System Initializing...</div>
 
 <!-- MediaPipe Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
@@ -248,7 +297,7 @@
 
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
-const CHAIN_ID = '0x89'; // Polygon
+const CHAIN_ID = '0x89'; 
 
 let state = {
     address: null,
@@ -257,21 +306,17 @@ let state = {
     sessionSec: 0,
     totalSec: parseInt(localStorage.getItem('totalSec') || '0'),
     eyesClosed: false,
-    leftPos: { x: 0, y: 0 },
-    rightPos: { x: 0, y: 0 }
+    leftPos: { x: window.innerWidth * 0.4, y: window.innerHeight * 0.4 },
+    rightPos: { x: window.innerWidth * 0.6, y: window.innerHeight * 0.4 },
+    isTracked: false
 };
 
-const SMOOTH_FACTOR = 0.25;
+const SMOOTH_FACTOR = 0.35; // Sharper tracking
 
 function log(msg) {
     const logDiv = document.getElementById('debugLog');
     const time = new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit'});
-    logDiv.innerHTML = `[${time}] ${msg}<br>` + logDiv.innerHTML;
-}
-
-// Check HTTPS for GitHub Pages
-if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
-    alert("Camera requires HTTPS. Please reload via https://");
+    logDiv.innerHTML = `<span style="color:var(--pink)">[${time}]</span> ${msg}<br>` + logDiv.innerHTML;
 }
 
 // AI Initialization
@@ -282,8 +327,8 @@ const faceMesh = new FaceMesh({
 faceMesh.setOptions({
     maxNumFaces: 1,
     refineLandmarks: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
+    minDetectionConfidence: 0.7,
+    minTrackingConfidence: 0.7
 });
 
 faceMesh.onResults(onResults);
@@ -293,9 +338,10 @@ function onResults(results) {
     const rect = video.getBoundingClientRect();
     
     if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+        state.isTracked = true;
         const landmarks = results.multiFaceLandmarks[0];
         
-        // Iris centers
+        // Iris centers (High precision)
         const lIris = landmarks[468];
         const rIris = landmarks[473];
 
@@ -309,27 +355,38 @@ function onResults(results) {
             const rTop = landmarks[386], rBot = landmarks[374];
             const avgEAR = (Math.abs(lTop.y - lBot.y) + Math.abs(rTop.y - rBot.y)) / 2;
             
-            state.eyesClosed = avgEAR < 0.015; 
-            updateOverlays();
+            // Sensitive closure detection
+            state.eyesClosed = avgEAR < 0.0145; 
         }
+    } else {
+        state.isTracked = false;
     }
+    updateOverlays();
 }
 
 function updateOverlays() {
     const lEl = document.getElementById('leftEye');
     const rEl = document.getElementById('rightEye');
     
-    lEl.style.display = 'flex';
-    rEl.style.display = 'flex';
+    // Always visible logic
+    lEl.classList.toggle('tracked', state.isTracked);
+    rEl.classList.toggle('tracked', state.isTracked);
     
-    lEl.style.transform = `translate3d(${state.leftPos.x - 70}px, ${state.leftPos.y - 70}px, 0)`;
-    rEl.style.transform = `translate3d(${state.rightPos.x - 70}px, ${state.rightPos.y - 70}px, 0)`;
+    // Smooth transition for position
+    lEl.style.transform = `translate3d(${state.leftPos.x - 80}px, ${state.leftPos.y - 80}px, 0)`;
+    rEl.style.transform = `translate3d(${state.rightPos.x - 80}px, ${state.rightPos.y - 80}px, 0)`;
     
-    lEl.className = rEl.className = state.eyesClosed ? 'eye-vertex closed' : 'eye-vertex';
+    lEl.classList.toggle('closed', state.eyesClosed);
+    rEl.classList.toggle('closed', state.eyesClosed);
     
     const eBadge = document.getElementById('eyesBadge');
-    eBadge.innerText = state.eyesClosed ? '👁 EYES CLOSED' : '👁 EYES OPEN';
-    eBadge.className = state.eyesClosed ? 'status-badge active' : 'status-badge';
+    if (state.isTracked) {
+        eBadge.innerText = state.eyesClosed ? '👁 SYSTEM: MEDITATING' : '👁 SYSTEM: OBSERVING';
+        eBadge.className = state.eyesClosed ? 'status-badge active' : 'status-badge';
+    } else {
+        eBadge.innerText = '👁 SEARCHING...';
+        eBadge.classList.remove('active');
+    }
 }
 
 const camera = new Camera(document.getElementById('video'), {
@@ -341,25 +398,26 @@ const camera = new Camera(document.getElementById('video'), {
     width: 640, height: 480
 });
 
-// Start AI on load
+// Initialization
 window.addEventListener('load', () => {
-    log("System online.");
+    log("Neural Mesh Online.");
     setTimeout(() => {
         document.getElementById('loadingAI').style.display = 'none';
         document.getElementById('startBtn').disabled = false;
-        log("AI ready for Ritual.");
-    }, 2000);
+        log("Ready for Neural Link.");
+        updateOverlays(); // Initial render
+    }, 1500);
 });
 
 document.getElementById('startBtn').onclick = async () => {
     try {
-        log("Starting Camera...");
+        log("Linking Camera...");
         await camera.start();
         state.meditating = true;
         state.sessionSec = 0;
         document.getElementById('startBtn').disabled = true;
         document.getElementById('stopBtn').disabled = false;
-        log("Ritual Active.");
+        log("Ritual Operational.");
         
         const loop = setInterval(() => {
             if(!state.meditating) { clearInterval(loop); return; }
@@ -370,20 +428,19 @@ document.getElementById('startBtn').onclick = async () => {
             document.getElementById('sessionTime').innerText = formatTime(state.sessionSec);
             document.getElementById('totalTime').innerText = formatTime(state.totalSec);
 
-            if(state.eyesClosed) {
-                state.earned++;
+            if(state.isTracked && state.eyesClosed) {
+                state.earned += 1;
                 document.getElementById('earned').innerText = state.earned;
-                document.getElementById('earnBadge').innerText = "💰 MINTING...";
+                document.getElementById('earnBadge').innerText = "💰 COLLECTING...";
                 document.getElementById('earnBadge').classList.add('active');
                 document.getElementById('mintBtn').disabled = false;
             } else {
-                document.getElementById('earnBadge').innerText = "💰 IDLE";
+                document.getElementById('earnBadge').innerText = "💰 NODE IDLE";
                 document.getElementById('earnBadge').classList.remove('active');
             }
         }, 1000);
     } catch(e) {
-        log("Error: " + e.message);
-        alert("Camera error: Ensure you allowed permissions and are on HTTPS.");
+        log("Link Error: " + e.message);
     }
 };
 
@@ -392,7 +449,7 @@ document.getElementById('stopBtn').onclick = () => {
     camera.stop();
     document.getElementById('startBtn').disabled = false;
     document.getElementById('stopBtn').disabled = true;
-    log("Ritual paused.");
+    log("Ritual Severed.");
 };
 
 function formatTime(s) {
@@ -400,18 +457,18 @@ function formatTime(s) {
     return String(m).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
 }
 
-// Wallet
+// Simple Wallet Simulation/Connection
 document.getElementById('connectBtn').onclick = async () => {
-    if(!window.ethereum) return alert("MetaMask not found. Please install it.");
+    if(!window.ethereum) return log("MetaMask instance missing.");
     try {
         const accs = await window.ethereum.request({method:'eth_requestAccounts'});
         state.address = accs[0];
-        document.getElementById('address').innerText = state.address;
+        document.getElementById('address').innerText = "NODE_ID: " + state.address;
         document.getElementById('walletInfo').style.display = 'block';
         document.getElementById('connectBtn').style.display = 'none';
-        log("Wallet linked.");
+        log("Node synchronized.");
     } catch(e) {
-        log("Auth failed: " + e.message);
+        log("Sync failed.");
     }
 };
 
