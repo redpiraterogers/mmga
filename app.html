@@ -1032,103 +1032,128 @@ if (window.ethereum) {
   window.ethereum.on('chainChanged',    () => location.reload());
 }
 
+
 // ─── LEADERBOARD FROM POLYGONSCAN ─────────────────────────
 const CONTRACT = '0x98823C52037aF043c2628185C74D7E98b16e3444';
-const PROXY    = 'https://api.allorigins.win/raw?url=';
+
+const CORS_PROXIES = [
+  'https://corsproxy.io/?',
+  'https://api.allorigins.win/raw?url=',
+  'https://api.codetabs.com/v1/proxy?quest='
+];
+
+const PSCAN_API = 'https://api.polygonscan.com/api?module=account&action=tokentx' +
+  '&contractaddress=' + CONTRACT + '&page=1&offset=200&sort=desc';
+
+async function tryFetch(proxy, url) {
+  const full = proxy + encodeURIComponent(url);
+  const res = await fetch(full, { signal: AbortSignal.timeout(8000) });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const text = await res.text();
+  const data = JSON.parse(text);
+  if (!data.result || !Array.isArray(data.result)) {
+    throw new Error(data.message || 'Bad response: ' + text.slice(0, 80));
+  }
+  return data.result;
+}
+
+function buildLeaderboard(txs) {
+  const balances = {};
+  txs.forEach(function(tx) {
+    const to   = (tx.to   || '').toLowerCase();
+    const from = (tx.from || '').toLowerCase();
+    const dec  = parseInt(tx.tokenDecimal) || 18;
+    const val  = parseInt(tx.value) / Math.pow(10, dec);
+    if (!balances[to])   balances[to]   = 0;
+    if (!balances[from]) balances[from] = 0;
+    balances[to]   += val;
+    balances[from] -= val;
+  });
+  return Object.entries(balances)
+    .filter(function(e) { return e[1] > 0.5; })
+    .sort(function(a, b) { return b[1] - a[1]; })
+    .slice(0, 10);
+}
+
+function renderLeaderboard(sorted) {
+  const list = document.getElementById('leaderboardList');
+  if (!list) return;
+  if (sorted.length === 0) {
+    list.innerHTML = '<div class="leaderboard-item" style="justify-content:center">' +
+      '<span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);">NO HOLDERS YET</span></div>';
+    return;
+  }
+  list.innerHTML = sorted.map(function(entry, i) {
+    const addr  = entry[0];
+    const bal   = Math.floor(entry[1]);
+    const short = addr.slice(0, 6) + '...' + addr.slice(-4);
+    const isMe  = state.address && addr === state.address.toLowerCase();
+    const style = isMe ? 'color:var(--yellow);text-shadow:0 0 10px var(--yellow);' : 'color:var(--cyan);';
+    const label = isMe ? short + ' ★ YOU' : short;
+    return '<div class="leaderboard-item">' +
+      '<span class="leaderboard-rank">#' + (i + 1) + '</span>' +
+      '<span class="leaderboard-name" style="' + style + 'font-size:13px;">' + label + '</span>' +
+      '<span class="leaderboard-tokens">' + bal.toLocaleString() + '</span>' +
+      '</div>';
+  }).join('');
+}
 
 async function loadLeaderboard() {
-  const btn = document.getElementById('lbRefreshBtn');
+  const btn    = document.getElementById('lbRefreshBtn');
   const status = document.getElementById('lbStatus');
-  const list = document.getElementById('leaderboardList');
+  const list   = document.getElementById('leaderboardList');
   if (btn) { btn.disabled = true; btn.textContent = '...'; }
-  if (status) status.textContent = 'FETCHING FROM POLYGONSCAN...';
+  if (status) status.textContent = 'FETCHING...';
 
-  try {
-    // Fetch last 200 token transfers — no API key needed
-    const apiUrl = 'https://api.polygonscan.com/api?module=account&action=tokentx' +
-      '&contractaddress=' + CONTRACT +
-      '&page=1&offset=200&sort=desc';
-    const url = PROXY + encodeURIComponent(apiUrl);
-
-    const res  = await fetch(url);
-    const data = await res.json();
-
-    if (!data.result || !Array.isArray(data.result)) {
-      throw new Error(data.message || 'No data returned');
+  let lastError = '';
+  for (let i = 0; i < CORS_PROXIES.length; i++) {
+    const proxy = CORS_PROXIES[i];
+    try {
+      log('Leaderboard: trying proxy ' + (i + 1) + '/' + CORS_PROXIES.length);
+      const txs    = await tryFetch(proxy, PSCAN_API);
+      const sorted = buildLeaderboard(txs);
+      renderLeaderboard(sorted);
+      const ts = new Date().toLocaleTimeString();
+      if (status) status.textContent = 'LIVE · ' + ts + ' · ' + sorted.length + ' HOLDERS';
+      log('Leaderboard OK: ' + sorted.length + ' holders via proxy ' + (i + 1));
+      if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
+      return; // success — stop trying
+    } catch (e) {
+      lastError = e.message;
+      log('Proxy ' + (i + 1) + ' failed: ' + e.message);
     }
-
-    // Build balance map from transfers
-    const balances = {};
-    data.result.forEach(function(tx) {
-      const to   = tx.to.toLowerCase();
-      const from = tx.from.toLowerCase();
-      const val  = parseInt(tx.value) / Math.pow(10, parseInt(tx.tokenDecimal) || 18);
-      if (!balances[to])   balances[to]   = 0;
-      if (!balances[from]) balances[from] = 0;
-      balances[to]   += val;
-      balances[from] -= val;
-    });
-
-    // Sort by balance descending, remove zero/negative
-    const sorted = Object.entries(balances)
-      .filter(function(e) { return e[1] > 0; })
-      .sort(function(a, b) { return b[1] - a[1]; })
-      .slice(0, 10);
-
-    if (sorted.length === 0) {
-      list.innerHTML = '<div class="leaderboard-item" style="justify-content:center"><span style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);">NO HOLDERS YET — MINE FIRST!</span></div>';
-      if (status) status.textContent = 'NO DATA FROM CHAIN';
-      return;
-    }
-
-    // Render
-    list.innerHTML = sorted.map(function(entry, i) {
-      const addr = entry[0];
-      const bal  = Math.floor(entry[1]);
-      const short = addr.slice(0, 6) + '...' + addr.slice(-4);
-      // Highlight connected wallet
-      const isMe = state.address && addr === state.address.toLowerCase();
-      const nameStyle = isMe ? 'color:var(--yellow);text-shadow:0 0 10px var(--yellow);' : 'color:var(--cyan);';
-      const label = isMe ? short + ' ★' : short;
-      return '<div class="leaderboard-item">' +
-        '<span class="leaderboard-rank">#' + (i + 1) + '</span>' +
-        '<span class="leaderboard-name" style="' + nameStyle + 'font-size:13px;">' + label + '</span>' +
-        '<span class="leaderboard-tokens">' + bal.toLocaleString() + '</span>' +
-        '</div>';
-    }).join('');
-
-    const ts = new Date().toLocaleTimeString();
-    if (status) status.textContent = 'LIVE CHAIN DATA · UPDATED ' + ts + ' · ' + sorted.length + ' HOLDERS';
-    log('Leaderboard loaded: ' + sorted.length + ' holders');
-
-  } catch (e) {
-    log('Leaderboard error: ' + e.message);
-    // Fallback: show link to Polygonscan
-    list.innerHTML =
-      '<div class="leaderboard-item" style="flex-direction:column;gap:8px;">' +
-      '<span style="font-family:var(--pixel);font-size:8px;color:var(--orange);">API UNAVAILABLE</span>' +
-      '<a href="https://polygonscan.com/token/' + CONTRACT + '#balances" target="_blank" ' +
-      'style="font-family:var(--pixel);font-size:7px;color:var(--cyan);letter-spacing:1px;">VIEW ON POLYGONSCAN ↗</a>' +
-      '</div>';
-    if (status) status.textContent = 'CHECK POLYGONSCAN DIRECTLY';
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = '↻ REFRESH'; }
   }
+
+  // All proxies failed — show Polygonscan link fallback
+  log('All proxies failed. Last error: ' + lastError);
+  if (list) list.innerHTML =
+    '<div class="leaderboard-item" style="flex-direction:column;gap:10px;padding:16px;">' +
+    '<span style="font-family:var(--pixel);font-size:8px;color:var(--orange);">PROXY BLOCKED</span>' +
+    '<span style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.5);letter-spacing:1px;line-height:2;">' +
+    'CORS PROXIES UNAVAILABLE.<br/>VIEW LIVE DATA DIRECTLY:</span>' +
+    '<a href="https://polygonscan.com/token/' + CONTRACT + '#balances" target="_blank" ' +
+    'style="font-family:var(--pixel);font-size:8px;color:var(--cyan);letter-spacing:1px;text-decoration:none;' +
+    'border:2px solid var(--cyan);padding:8px 14px;text-align:center;">VIEW ON POLYGONSCAN ↗</a>' +
+    '</div>';
+  if (status) status.textContent = 'ERROR: ' + lastError.slice(0, 60);
+  if (btn) { btn.disabled = false; btn.textContent = '↻ RETRY'; }
 }
 
 // Privacy toggle
 function togglePrivacy() {
   const body  = document.getElementById('privacyBody');
   const arrow = document.getElementById('privacyArrow');
-  const open  = body.classList.toggle('open');
+  if (!body) return;
+  const open = body.classList.toggle('open');
   if (arrow) arrow.textContent = open ? '▲' : '▼';
 }
 
-// Auto-load leaderboard on page ready + refresh every 2 minutes
+// Load on startup + auto-refresh every 2 min
 window.addEventListener('load', function() {
-  setTimeout(loadLeaderboard, 2000);
+  setTimeout(loadLeaderboard, 2500);
   setInterval(loadLeaderboard, 120000);
 });
+
 
 log('✅ Ready! Waiting for AI model...');
 
