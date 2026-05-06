@@ -788,6 +788,7 @@ window.addEventListener('load', initMediaPipe);
 
 // ─── CONNECT WALLET ───────────────────────────────────────
 document.getElementById('connectBtn').onclick = async () => {
+  state.connecting = true;  // flag: suppress reload during connect
   try {
     log('🔌 Connecting wallet...');
     if (!window.ethereum) {
@@ -832,7 +833,9 @@ document.getElementById('connectBtn').onclick = async () => {
     await fetchBalance();
 
     log('✅ Wallet ready!');
+    state.connecting = false;
   } catch (e) {
+    state.connecting = false;
     log('❌ ' + e.message);
     alert('Connection failed:\n\n' + e.message);
   }
@@ -1028,8 +1031,14 @@ function formatTime(sec) {
 document.getElementById('totalTime').textContent = formatTime(state.totalSec);
 
 if (window.ethereum) {
-  window.ethereum.on('accountsChanged', () => location.reload());
-  window.ethereum.on('chainChanged',    () => location.reload());
+  // Only reload on accountsChanged if user was already connected
+  // (prevents MetaMask popup firing accountsChanged with [] and killing itself)
+  window.ethereum.on('accountsChanged', (accounts) => {
+    if (state.address && !state.connecting) location.reload();
+  });
+  window.ethereum.on('chainChanged', () => {
+    if (state.address && !state.connecting) location.reload();
+  });
 }
 
 
