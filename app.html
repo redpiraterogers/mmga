@@ -1,204 +1,497 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>MONKCOIN | CyberMonk AI Tracking</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --pixel: 'Press Start 2P', cursive;
-            --retro: 'VT323', monospace;
-            --bg: #050508;
-            --green: #00ff41;
-            --pink: #ff10f0;
-            --blue: #00d4ff;
-            --cyan: #00ffff;
-            --yellow: #ffd700;
-            --amethyst: #9d4edd;
-            --glitch-color: #f0f;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background: var(--bg);
-            color: var(--green);
-            font-family: var(--retro);
-            overflow-x: hidden;
-            image-rendering: pixelated;
-            min-height: 100vh;
-        }
-
-        /* CRT & Glitch Effects */
-        .scanline {
-            position: fixed; inset: 0;
-            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 65, 0.03) 2px, rgba(0, 255, 65, 0.03) 4px);
-            pointer-events: none; z-index: 9999; animation: flicker 0.15s infinite;
-        }
-        @keyframes flicker { 0% { opacity: 0.97 } 50% { opacity: 1 } 100% { opacity: 0.98 } }
-        .crt { position: fixed; inset: 0; background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.5) 100%); pointer-events: none; z-index: 9998; }
-
-        .firefox-banner {
-            position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
-            background: linear-gradient(90deg, #ff6b35, var(--pink), #ff6b35);
-            padding: 8px; text-align: center; border-bottom: 3px solid var(--yellow);
-            font-family: var(--pixel); font-size: 8px; color: #000;
-            text-shadow: 1px 1px #fff;
-        }
-
-        .container {
-            display: grid; 
-            grid-template-columns: 320px 1fr 320px;
-            min-height: 100vh; 
-            gap: 20px; 
-            padding: 70px 20px 20px;
-        }
-
-        .panel {
-            background: rgba(10, 10, 20, 0.9);
-            border: 2px solid; padding: 20px; position: relative;
-            backdrop-filter: blur(15px);
-            height: fit-content;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-        .panel-left { border-color: var(--pink); border-image: linear-gradient(to bottom, var(--pink), var(--amethyst)) 1; }
-        .panel-right { border-color: var(--cyan); border-image: linear-gradient(to bottom, var(--cyan), var(--blue)) 1; }
-
-        .panel-title {
-            font-family: var(--pixel); font-size: 11px; margin-bottom: 20px;
-            display: flex; align-items: center; gap: 10px; text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* CYBERMONK EYE VERTICES & MANDALAS */
-        .face-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 10; }
-        
-        .eye-vertex {
-            position: absolute; width: 160px; height: 160px;
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.04s cubic-bezier(0.1, 0.7, 1.0, 0.1);
-            pointer-events: none;
-            opacity: 0.4; /* Always visible but faint when not tracked */
-        }
-        .eye-vertex.tracked { opacity: 1; }
-
-        /* The Funky "GIF" Mandala */
-        .mandala-container {
-            position: relative; width: 100%; height: 100%;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .mandala-layer {
-            position: absolute;
-            border: 1px solid transparent;
-            border-radius: 50%;
-            animation: rotate-layer 10s linear infinite;
-        }
-
-        .layer-1 { 
-            width: 100%; height: 100%; 
-            border: 1px dashed var(--cyan);
-            box-shadow: 0 0 15px var(--cyan);
-            animation-duration: 15s;
-        }
-
-        .layer-2 { 
-            width: 70%; height: 70%; 
-            border: 2px double var(--pink);
-            animation-direction: reverse;
-            animation-duration: 8s;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .layer-2::after {
-            content: '☸'; font-size: 40px; color: var(--yellow);
-            animation: pulse-icon 2s ease-in-out infinite;
-        }
-
-        .layer-3 {
-            width: 40%; height: 40%;
-            background: radial-gradient(circle, var(--amethyst) 0%, transparent 80%);
-            mix-blend-mode: screen;
-            animation: glitch-pulse 0.5s steps(2) infinite;
-        }
-
-        @keyframes rotate-layer { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulse-icon { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
-        @keyframes glitch-pulse {
-            0% { transform: translate(2px, -2px); filter: hue-rotate(0deg); opacity: 0.5; }
-            50% { transform: translate(-2px, 2px); filter: hue-rotate(90deg); opacity: 0.8; }
-            100% { transform: translate(0,0); filter: hue-rotate(0deg); opacity: 0.5; }
-        }
-
-        .eye-vertex.closed .layer-2::after {
-            content: '❀'; color: #fff; font-size: 60px;
-            filter: drop-shadow(0 0 20px var(--pink));
-        }
-        
-        .eye-vertex.closed .layer-1 {
-            border-style: solid; border-color: var(--amethyst);
-            box-shadow: 0 0 40px var(--amethyst);
-        }
-
-        /* Main UI */
-        .video-box {
-            flex: 1; background: #000; border: 4px solid var(--blue);
-            position: relative; overflow: hidden; display: flex;
-            align-items: center; justify-content: center;
-            box-shadow: 0 0 50px rgba(0, 212, 255, 0.4);
-            min-height: 450px;
-        }
-        #video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); filter: contrast(1.1) brightness(1.1); }
-
-        .status-badge {
-            position: absolute; top: 15px; padding: 10px 16px;
-            background: rgba(5,5,10,0.9); border: 2px solid;
-            font-family: var(--pixel); font-size: 8px; z-index: 20;
-            letter-spacing: 1px;
-        }
-        #eyesBadge { left: 15px; border-color: var(--yellow); color: var(--yellow); }
-        #earnBadge { right: 15px; border-color: var(--pink); color: var(--pink); }
-        .active { box-shadow: 0 0 30px currentColor; animation: glow 1s infinite; }
-        @keyframes glow { 0%, 100% { opacity: 1; filter: brightness(1.5); } 50% { opacity: 0.7; filter: brightness(1); } }
-
-        .controls { display: flex; gap: 15px; margin-top: 20px; }
-        .btn {
-            flex: 1; padding: 20px; font-family: var(--pixel); font-size: 10px;
-            background: transparent; border: 3px solid; cursor: pointer; color: inherit;
-            transition: all 0.2s; text-transform: uppercase;
-        }
-        .btn:hover:not(:disabled) { background: rgba(0,255,255,0.1); box-shadow: 0 0 20px var(--cyan); }
-        .btn:disabled { opacity: 0.2; cursor: not-allowed; }
-        .btn-start { border-color: var(--green); color: var(--green); }
-        .btn-stop { border-color: var(--pink); color: var(--pink); }
-
-        .stat-box { padding: 20px; border: 1px solid rgba(255,16,240,0.3); background: rgba(255,16,240,0.05); margin-bottom: 15px; }
-        .stat-value { font-family: var(--pixel); font-size: 22px; color: var(--yellow); text-shadow: 0 0 15px var(--yellow); }
-
-        .timer-display {
-            background: rgba(10,10,20,0.8); border: 2px solid var(--blue);
-            display: flex; justify-content: space-around; padding: 20px; margin-top: 15px;
-        }
-        
-        .debug {
-            position: fixed; bottom: 10px; right: 10px; background: rgba(0,0,0,0.95);
-            border: 1px solid var(--cyan); padding: 12px; font-size: 10px; color: var(--cyan);
-            max-width: 300px; z-index: 1000; font-family: monospace;
-            max-height: 160px; overflow-y: auto; border-radius: 4px;
-        }
-
-        .loading-overlay {
-            position: absolute; inset: 0; background: #000;
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; z-index: 100; gap: 20px;
-        }
-
-        @media (max-width: 1100px) {
-            .container { grid-template-columns: 1fr; padding-top: 110px; }
-            .panel { order: 2; width: 100%; }
-            .main-content { order: 1; }
-        }
-    </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MONKCOIN | Real AI Eye Tracking</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pixel:'Press Start 2P',cursive;
+  --retro:'VT323',monospace;
+  --bg:#0a0a0f;
+  --green:#00ff41;
+  --pink:#ff10f0;
+  --blue:#00d4ff;
+  --cyan:#00ffff;
+  --yellow:#fff000;
+  --orange:#ff6b35;
+  --purple:#9d4edd;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--green);
+  font-family:var(--retro);
+  overflow:hidden;
+  image-rendering:pixelated;
+}
+.scanline{
+  position:fixed;
+  inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);
+  pointer-events:none;
+  z-index:9999;
+  animation:flicker 0.15s infinite;
+}
+@keyframes flicker{0%{opacity:0.97}50%{opacity:1}100%{opacity:0.98}}
+.crt{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(ellipse at center,transparent 0%,rgba(0,0,0,0.4) 100%);
+  pointer-events:none;
+  z-index:9998;
+}
+.firefox-banner{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:10000;
+  background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));
+  padding:12px 20px;
+  text-align:center;
+  animation:pulse-banner 2s ease-in-out infinite;
+  border-bottom:4px solid var(--yellow);
+  box-shadow:0 4px 40px rgba(255,16,240,0.8);
+}
+@keyframes pulse-banner{0%,100%{opacity:0.95}50%{opacity:1}}
+.firefox-banner strong{
+  font-family:var(--pixel);
+  font-size:11px;
+  color:#000;
+  text-shadow:0 0 10px var(--yellow);
+  letter-spacing:1px;
+}
+.container{
+  display:grid;
+  grid-template-columns:320px 1fr 320px;
+  height:100vh;
+  gap:24px;
+  padding:80px 24px 24px;
+}
+.panel{
+  background:linear-gradient(135deg,rgba(157,78,221,0.15),rgba(0,212,255,0.15));
+  border:4px solid;
+  padding:28px;
+  position:relative;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+}
+.panel-left{
+  border-color:var(--pink);
+  box-shadow:0 0 40px rgba(255,16,240,0.4),inset 0 0 40px rgba(255,16,240,0.1);
+}
+.panel-right{
+  border-color:var(--cyan);
+  box-shadow:0 0 40px rgba(0,255,255,0.4),inset 0 0 40px rgba(0,255,255,0.1);
+}
+.panel::before{
+  content:'▲';
+  position:absolute;
+  top:8px;
+  left:12px;
+  font-size:14px;
+  animation:blink-triangle 2s infinite;
+}
+.panel-left::before{color:var(--pink)}
+.panel-right::before{color:var(--cyan)}
+@keyframes blink-triangle{0%,100%{opacity:1}50%{opacity:0.3}}
+.panel-title{
+  font-family:var(--pixel);
+  font-size:14px;
+  margin-bottom:24px;
+  text-shadow:0 0 15px currentColor;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  letter-spacing:2px;
+}
+.panel-left .panel-title{color:var(--pink)}
+.panel-right .panel-title{color:var(--cyan)}
+.infinity-logo{
+  width:50px;
+  height:25px;
+}
+.main-panel{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+.video-box{
+  flex:1;
+  background:#000;
+  border:5px solid var(--blue);
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 60px rgba(0,212,255,0.6),inset 0 0 60px rgba(0,212,255,0.2);
+  overflow:hidden;
+}
+.video-box::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(45deg,transparent,rgba(0,212,255,0.1),transparent);
+  animation:scan 3s linear infinite;
+  pointer-events:none;
+}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
+.rainbow-heatmap{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(255,0,255,0.3), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(0,255,255,0.3), transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,0,0.2), transparent 50%);
+  mix-blend-mode:screen;
+  animation:heatmap-pulse 4s ease-in-out infinite;
+  pointer-events:none;
+  opacity:0.6;
+}
+@keyframes heatmap-pulse{
+  0%{filter:hue-rotate(0deg) brightness(1);transform:scale(1)}
+  50%{filter:hue-rotate(180deg) brightness(1.3);transform:scale(1.05)}
+  100%{filter:hue-rotate(360deg) brightness(1);transform:scale(1)}
+}
+#video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scaleX(-1);
+  filter:saturate(1.2) contrast(1.1);
+}
+.canvas-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+.face-overlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:10;
+}
+.eye-vertex{
+  position:absolute;
+  width:160px;
+  height:90px;
+  transition:all 0.15s ease-out;
+  transform:translate(-50%,-50%);
+  opacity:0.85;
+}
+.eye-vertex::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:50% 48% 52% 47% / 48% 52% 45% 50%;
+  background:radial-gradient(ellipse at 45% 40%, currentColor 0%, transparent 80%);
+  filter:blur(8px);
+  animation:organic-shift 8s ease-in-out infinite;
+}
+.eye-vertex::after{
+  content:'';
+  position:absolute;
+  inset:15%;
+  border-radius:47% 53% 48% 52% / 52% 48% 53% 47%;
+  background:radial-gradient(ellipse at center, currentColor 20%, transparent 70%);
+  filter:blur(4px);
+}
+@keyframes organic-shift{
+  0%,100%{border-radius:50% 48% 52% 47% / 48% 52% 45% 50%}
+  25%{border-radius:48% 52% 47% 53% / 52% 45% 50% 48%}
+  50%{border-radius:52% 47% 50% 48% / 47% 50% 48% 52%}
+  75%{border-radius:47% 50% 48% 52% / 50% 48% 52% 47%}
+}
+.eye-vertex.closed{
+  color:var(--green);
+  animation:vertex-glow-green 2s ease-in-out infinite;
+}
+.eye-vertex.open{
+  color:#ff3333;
+  animation:vertex-pulse-red 1.2s ease-in-out infinite;
+}
+@keyframes vertex-glow-green{
+  0%,100%{
+    filter:drop-shadow(0 0 20px var(--green)) drop-shadow(0 0 40px var(--green));
+    transform:translate(-50%,-50%) scale(1);
+  }
+  50%{
+    filter:drop-shadow(0 0 40px var(--green)) drop-shadow(0 0 70px var(--green)) drop-shadow(0 0 100px var(--green));
+    transform:translate(-50%,-50%) scale(1.08);
+  }
+}
+@keyframes vertex-pulse-red{
+  0%,100%{
+    filter:drop-shadow(0 0 15px #ff3333) drop-shadow(0 0 35px #ff3333);
+    transform:translate(-50%,-50%) scale(1);
+  }
+  50%{
+    filter:drop-shadow(0 0 30px #ff3333) drop-shadow(0 0 60px #ff3333);
+    transform:translate(-50%,-50%) scale(1.12);
+  }
+}
+.status-overlay{
+  position:absolute;
+  top:24px;
+  left:24px;
+  right:24px;
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+}
+.status-badge{
+  padding:10px 20px;
+  background:rgba(10,10,15,0.95);
+  border:3px solid;
+  font-family:var(--pixel);
+  font-size:10px;
+  box-shadow:0 0 20px;
+  backdrop-filter:blur(10px);
+  transition:all 0.3s;
+  letter-spacing:1px;
+}
+.status-badge.active{
+  border-color:var(--green);
+  color:var(--green);
+  box-shadow:0 0 30px var(--green);
+  animation:glow-pulse 1.5s ease-in-out infinite;
+}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 30px var(--green)}50%{box-shadow:0 0 50px var(--green),0 0 70px var(--green)}}
+.status-badge.inactive{
+  border-color:var(--orange);
+  color:var(--orange);
+  box-shadow:0 0 15px rgba(255,107,53,0.4);
+}
+.controls{
+  display:flex;
+  gap:16px;
+}
+.btn{
+  flex:1;
+  padding:20px 28px;
+  font-family:var(--pixel);
+  font-size:11px;
+  border:4px solid;
+  cursor:pointer;
+  transition:all 0.3s;
+  background:transparent;
+  position:relative;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:currentColor;
+  opacity:0;
+  transition:opacity 0.3s;
+}
+.btn:hover:not(:disabled)::before{
+  opacity:0.2;
+}
+.btn-start{
+  border-color:var(--green);
+  color:var(--green);
+  box-shadow:0 0 25px rgba(0,255,65,0.5);
+}
+.btn-start:hover:not(:disabled){
+  box-shadow:0 0 50px var(--green);
+  transform:translateY(-2px);
+}
+.btn-stop{
+  border-color:var(--pink);
+  color:var(--pink);
+  box-shadow:0 0 25px rgba(255,16,240,0.5);
+}
+.btn-stop:hover:not(:disabled){
+  box-shadow:0 0 50px var(--pink);
+  transform:translateY(-2px);
+}
+.btn-mint{
+  border-color:var(--yellow);
+  color:var(--yellow);
+  box-shadow:0 0 25px rgba(255,240,0,0.5);
+}
+.btn-mint:hover:not(:disabled){
+  box-shadow:0 0 50px var(--yellow);
+  transform:translateY(-2px);
+}
+.btn:disabled{
+  opacity:0.3;
+  cursor:not-allowed;
+}
+.stat-box{
+  padding:20px;
+  background:linear-gradient(135deg,rgba(255,16,240,0.1),rgba(0,212,255,0.1));
+  border:3px solid;
+  margin-bottom:20px;
+  backdrop-filter:blur(5px);
+  transition:all 0.3s;
+}
+.panel-left .stat-box{
+  border-color:var(--pink);
+  box-shadow:0 0 20px rgba(255,16,240,0.3);
+}
+.panel-right .stat-box{
+  border-color:var(--cyan);
+  box-shadow:0 0 20px rgba(0,255,255,0.3);
+}
+.stat-box:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 40px currentColor;
+}
+.stat-label{
+  font-size:15px;
+  color:var(--blue);
+  margin-bottom:10px;
+  letter-spacing:1px;
+}
+.stat-value{
+  font-family:var(--pixel);
+  font-size:28px;
+  color:var(--pink);
+  text-shadow:0 0 20px var(--pink);
+  animation:number-glow 2s ease-in-out infinite;
+}
+@keyframes number-glow{0%,100%{text-shadow:0 0 20px var(--pink)}50%{text-shadow:0 0 30px var(--pink),0 0 40px var(--pink)}}
+.wallet-display{
+  padding:14px;
+  background:rgba(0,0,0,0.7);
+  border:3px solid var(--green);
+  font-size:12px;
+  color:var(--green);
+  word-break:break-all;
+  margin-bottom:20px;
+  box-shadow:0 0 20px rgba(0,255,65,0.3);
+  font-family:monospace;
+  letter-spacing:1px;
+}
+.leaderboard{
+  max-height:350px;
+  overflow-y:auto;
+}
+.leaderboard-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 16px;
+  border-bottom:2px solid rgba(0,255,255,0.2);
+  font-size:15px;
+  transition:all 0.3s;
+}
+.leaderboard-item:hover{
+  background:rgba(0,255,255,0.1);
+  border-color:var(--cyan);
+}
+.leaderboard-item:nth-child(1){
+  background:linear-gradient(90deg,rgba(255,240,0,0.15),transparent);
+  border-color:var(--yellow);
+}
+.leaderboard-item:nth-child(2){
+  background:linear-gradient(90deg,rgba(0,212,255,0.15),transparent);
+}
+.leaderboard-item:nth-child(3){
+  background:linear-gradient(90deg,rgba(255,107,53,0.15),transparent);
+}
+.leaderboard-rank{
+  color:var(--yellow);
+  font-family:var(--pixel);
+  font-size:11px;
+  letter-spacing:1px;
+}
+.leaderboard-name{
+  color:var(--cyan);
+  flex:1;
+  margin:0 16px;
+}
+.leaderboard-tokens{
+  color:var(--pink);
+  font-family:var(--pixel);
+  font-size:12px;
+}
+.timer-display{
+  padding:24px;
+  background:rgba(0,0,0,0.5);
+  border:4px solid var(--blue);
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  box-shadow:0 0 30px rgba(0,212,255,0.4);
+}
+.timer-item{
+  text-align:center;
+}
+.timer-label{
+  font-size:13px;
+  color:var(--cyan);
+  margin-bottom:8px;
+  letter-spacing:1px;
+}
+.timer-value{
+  font-family:var(--pixel);
+  font-size:24px;
+  color:var(--pink);
+  text-shadow:0 0 15px var(--pink);
+}
+.rate-value{
+  color:var(--green);
+  text-shadow:0 0 15px var(--green);
+}
+.debug{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:rgba(0,0,0,0.95);
+  border:2px solid var(--yellow);
+  padding:12px;
+  font-size:10px;
+  color:var(--yellow);
+  max-width:350px;
+  max-height:200px;
+  overflow-y:auto;
+  z-index:1000;
+  font-family:monospace;
+  box-shadow:0 0 30px rgba(255,240,0,0.5);
+}
+.debug-title{
+  font-family:var(--pixel);
+  font-size:9px;
+  margin-bottom:8px;
+  padding-bottom:4px;
+  border-bottom:1px solid var(--yellow);
+  letter-spacing:1px;
+}
+.loading-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  backdrop-filter:blur(10px);
+}
+.loading-text{
+  font-family:var(--pixel);
+  font-size:16px;
+  color:var(--cyan);
+  text-shadow:0 0 20px var(--cyan);
+  animation:loading-pulse 1.5s ease-in-out infinite;
+}
+@keyframes loading-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+@media(max-width:1024px){
+  .container{
+    grid-template-columns:1fr;
+    padding-top:120px;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -206,329 +499,565 @@
 <div class="crt"></div>
 
 <div class="firefox-banner">
-    SYSTEM STATUS: STABLE • CONNECT WALLET TO COMMENCE RITUAL • USE FIREFOX FOR BEST RESULTS
+  <strong>⚠ USE FIREFOX ⚠</strong> Chrome MetaMask can't display $MONK tokens (glitch) • Your tokens ARE on blockchain!
 </div>
 
 <div class="container">
-    <!-- LEFT -->
-    <div class="panel panel-left">
-        <div class="panel-title">// SACRED_WALLET</div>
-        <button id="connectBtn" class="btn btn-start" style="width:100%; margin-bottom:15px">INITIALIZE AUTH</button>
-        <div id="walletInfo" style="display:none">
-            <div id="address" style="font-size:10px; margin-bottom:15px; opacity:0.6; word-break: break-all; font-family: monospace; border: 1px solid rgba(255,255,255,0.1); padding: 5px;"></div>
-            <div class="stat-box">
-                <div style="font-size:12px; margin-bottom:8px; color: var(--cyan); font-family: var(--pixel); font-size: 8px;">Network Balance</div>
-                <div class="stat-value"><span id="balance">0</span> $MONK</div>
-            </div>
-            <div class="stat-box">
-                <div style="font-size:12px; margin-bottom:8px; color: var(--pink); font-family: var(--pixel); font-size: 8px;">Ritual Yield</div>
-                <div class="stat-value"><span id="earned">0</span> $MONK</div>
-            </div>
-            <button id="mintBtn" class="btn btn-start" style="width:100%" disabled>MINT ASSETS</button>
-        </div>
+  <!-- LEFT PANEL: WALLET -->
+  <div class="panel panel-left">
+    <div class="panel-title">
+      <svg class="infinity-logo" viewBox="0 0 120 60">
+        <defs>
+          <linearGradient id="logoGrad">
+            <stop offset="0%" style="stop-color:#ff10f0"/>
+            <stop offset="100%" style="stop-color:#00d4ff"/>
+          </linearGradient>
+        </defs>
+        <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#logoGrad)" stroke-width="4" stroke-linecap="round"/>
+      </svg>
+      WALLET
     </div>
-
-    <!-- CENTER -->
-    <div class="main-content" style="display:flex; flex-direction:column">
-        <div class="video-box">
-            <div class="loading-overlay" id="loadingAI">
-                <div style="font-family:var(--pixel); color:var(--cyan); text-align: center; animation: glow 1s infinite;">BOOTING NEURAL MESH...</div>
-            </div>
-            <video id="video" autoplay playsinline muted></video>
-            <div class="face-overlay">
-                <div class="eye-vertex" id="leftEye">
-                    <div class="mandala-container">
-                        <div class="mandala-layer layer-1"></div>
-                        <div class="mandala-layer layer-2"></div>
-                        <div class="mandala-layer layer-3"></div>
-                    </div>
-                </div>
-                <div class="eye-vertex" id="rightEye">
-                    <div class="mandala-container">
-                        <div class="mandala-layer layer-1"></div>
-                        <div class="mandala-layer layer-2"></div>
-                        <div class="mandala-layer layer-3"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="status-badge" id="eyesBadge">👁 SCANNING...</div>
-            <div class="status-badge" id="earnBadge">💰 NODE IDLE</div>
-        </div>
-        
-        <div class="controls">
-            <button id="startBtn" class="btn btn-start" disabled>ACTIVATE RITUAL</button>
-            <button id="stopBtn" class="btn btn-stop" disabled>TERMINATE</button>
-        </div>
-
-        <div class="timer-display">
-            <div style="text-align:center">
-                <div style="font-size:9px; color:var(--cyan); margin-bottom: 8px; font-family: var(--pixel);">SESSION_TIME</div>
-                <div class="stat-value" id="sessionTime">00:00</div>
-            </div>
-            <div style="text-align:center">
-                <div style="font-size:9px; color:var(--cyan); margin-bottom: 8px; font-family: var(--pixel);">TOTAL_UPTIME</div>
-                <div class="stat-value" id="totalTime">00:00</div>
-            </div>
-        </div>
+    
+    <button id="connectBtn" class="btn btn-start" style="width:100%;margin-bottom:20px">CONNECT</button>
+    
+    <div id="walletInfo" style="display:none">
+      <div class="wallet-display" id="address"></div>
+      
+      <div class="stat-box">
+        <div class="stat-label">Chain Balance</div>
+        <div class="stat-value"><span id="balance">0</span> $MONK</div>
+      </div>
+      
+      <div class="stat-box">
+        <div class="stat-label">Earned Now</div>
+        <div class="stat-value"><span id="earned">0</span> $MONK</div>
+      </div>
+      
+      <button id="mintBtn" class="btn btn-mint" style="width:100%" disabled>
+        MINT TO CHAIN
+      </button>
     </div>
+  </div>
 
-    <!-- RIGHT -->
-    <div class="panel panel-right">
-        <div class="panel-title">// HIGH_SAGES</div>
-        <div id="leaderboard">
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 8px;">
-                <span style="color:var(--yellow); font-family:var(--pixel); font-size: 8px;">01. ZenMaster</span><span style="color:var(--pink)">9.5k</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 8px;">
-                <span style="color:var(--cyan); font-family:var(--pixel); font-size: 8px;">02. CyberMonk</span><span style="color:var(--pink)">7.2k</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:15px; border-bottom:1px solid rgba(0,255,255,0.1); padding-bottom: 8px;">
-                <span style="color:var(--green); font-family:var(--pixel); font-size: 8px;">03. PixelGuru</span><span style="color:var(--pink)">4.1k</span>
-            </div>
-        </div>
+  <!-- CENTER: VIDEO & CONTROLS -->
+  <div class="main-panel">
+    <div class="video-box">
+      <div class="loading-overlay" id="loadingAI">
+        <div class="loading-text">LOADING AI MODEL...</div>
+      </div>
+      <video id="video" autoplay playsinline muted></video>
+      <canvas id="canvas" class="canvas-overlay"></canvas>
+      <div class="rainbow-heatmap"></div>
+      <div class="face-overlay">
+        <div class="eye-vertex open" id="leftEye" style="display:none"></div>
+        <div class="eye-vertex open" id="rightEye" style="display:none"></div>
+      </div>
+      <div class="status-overlay">
+        <div class="status-badge inactive" id="eyesBadge">👁️ EYES: DETECTING...</div>
+        <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
+      </div>
     </div>
+    
+    <div class="controls">
+      <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
+      <button id="stopBtn" class="btn btn-stop" disabled>STOP SESSION</button>
+    </div>
+    
+    <div class="timer-display">
+      <div class="timer-item">
+        <div class="timer-label">Session</div>
+        <div class="timer-value" id="sessionTime">00:00</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-label">Total Time</div>
+        <div class="timer-value" id="totalTime">00:00</div>
+      </div>
+      <div class="timer-item">
+        <div class="timer-label">Rate</div>
+        <div class="timer-value rate-value">+1/s</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL: LEADERBOARD -->
+  <div class="panel panel-right">
+    <div class="panel-title">◆ LEADERBOARD</div>
+    
+    <div class="leaderboard">
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#1</span>
+        <span class="leaderboard-name">ZenMaster</span>
+        <span class="leaderboard-tokens">5,420</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#2</span>
+        <span class="leaderboard-name">CyberMonk</span>
+        <span class="leaderboard-tokens">3,890</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#3</span>
+        <span class="leaderboard-name">PixelGuru</span>
+        <span class="leaderboard-tokens">2,567</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#4</span>
+        <span class="leaderboard-name">MindHacker</span>
+        <span class="leaderboard-tokens">1,999</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#5</span>
+        <span class="leaderboard-name">ByteBuddha</span>
+        <span class="leaderboard-tokens">1,555</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#6</span>
+        <span class="leaderboard-name">CodeSage</span>
+        <span class="leaderboard-tokens">1,234</span>
+      </div>
+      <div class="leaderboard-item">
+        <span class="leaderboard-rank">#7</span>
+        <span class="leaderboard-name">NeonNinja</span>
+        <span class="leaderboard-tokens">987</span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="debug" id="debugLog">Neural System Initializing...</div>
+<div class="debug" id="debugPanel">
+  <div class="debug-title">DEBUG LOG</div>
+  <div id="debugLog"></div>
+</div>
 
-<!-- MediaPipe Dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
-const CHAIN_ID = '0x89'; 
+const TOKEN = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+const CHAIN_ID = '0x89';
 
 let state = {
-    address: null,
-    meditating: false,
-    earned: 0,
-    sessionSec: 0,
-    totalSec: parseInt(localStorage.getItem('totalSec') || '0'),
-    eyesClosed: false,
-    leftPos: { x: window.innerWidth * 0.4, y: window.innerHeight * 0.4 },
-    rightPos: { x: window.innerWidth * 0.6, y: window.innerHeight * 0.4 },
-    isTracked: false
+  address: null,
+  meditating: false,
+  earned: 0,
+  sessionSec: 0,
+  totalSec: parseInt(localStorage.getItem('totalSec') || '0'),
+  eyesClosed: false,
+  leftEyePos: null,
+  rightEyePos: null
 };
 
-const SMOOTH_FACTOR = 0.35; // Sharper tracking
+let intervals = [];
+let faceMesh = null;
+let camera = null;
 
 function log(msg) {
-    const logDiv = document.getElementById('debugLog');
-    const time = new Date().toLocaleTimeString([], {hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit'});
-    logDiv.innerHTML = `<span style="color:var(--pink)">[${time}]</span> ${msg}<br>` + logDiv.innerHTML;
+  const time = new Date().toLocaleTimeString();
+  console.log('[' + time + ']', msg);
+  const logDiv = document.getElementById('debugLog');
+  logDiv.innerHTML = '<div style="margin-bottom:4px;border-bottom:1px solid rgba(255,240,0,0.2);padding-bottom:4px">[' + time + '] ' + msg + '</div>' + logDiv.innerHTML;
+  const logs = logDiv.children;
+  while (logs.length > 12) logDiv.removeChild(logs[logs.length - 1]);
 }
 
-// AI Initialization
-const faceMesh = new FaceMesh({
-    locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`
-});
+log('🚀 Loading AI model...');
 
-faceMesh.setOptions({
+// MEDIAPIPE FACE MESH INITIALIZATION
+function initMediaPipe() {
+  faceMesh = new FaceMesh({
+    locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+    }
+  });
+
+  faceMesh.setOptions({
     maxNumFaces: 1,
     refineLandmarks: true,
-    minDetectionConfidence: 0.7,
-    minTrackingConfidence: 0.7
-});
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
 
-faceMesh.onResults(onResults);
+  faceMesh.onResults(onResults);
+  
+  log('✓ AI model loaded');
+  document.getElementById('loadingAI').style.display = 'none';
+  document.getElementById('startBtn').disabled = false;
+}
 
+// PROCESS FACE MESH RESULTS
 function onResults(results) {
-    const video = document.getElementById('video');
-    const rect = video.getBoundingClientRect();
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const videoElement = document.getElementById('video');
+  
+  canvas.width = videoElement.videoWidth;
+  canvas.height = videoElement.videoHeight;
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+    const landmarks = results.multiFaceLandmarks[0];
     
-    if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
-        state.isTracked = true;
-        const landmarks = results.multiFaceLandmarks[0];
-        
-        // Iris centers (High precision)
-        const lIris = landmarks[468];
-        const rIris = landmarks[473];
-
-        if (lIris && rIris) {
-            state.leftPos.x += (lIris.x * rect.width - state.leftPos.x) * SMOOTH_FACTOR;
-            state.leftPos.y += (lIris.y * rect.height - state.leftPos.y) * SMOOTH_FACTOR;
-            state.rightPos.x += (rIris.x * rect.width - state.rightPos.x) * SMOOTH_FACTOR;
-            state.rightPos.y += (rIris.y * rect.height - state.rightPos.y) * SMOOTH_FACTOR;
-
-            const lTop = landmarks[159], lBot = landmarks[145];
-            const rTop = landmarks[386], rBot = landmarks[374];
-            const avgEAR = (Math.abs(lTop.y - lBot.y) + Math.abs(rTop.y - rBot.y)) / 2;
-            
-            // Sensitive closure detection
-            state.eyesClosed = avgEAR < 0.0145; 
-        }
-    } else {
-        state.isTracked = false;
+    // Eye landmarks (MediaPipe indices) - using more points for accuracy
+    // Left eye: 33 (outer), 133 (inner), 159 (top), 145 (bottom), 362, 263
+    // Right eye: 362 (outer), 263 (inner), 386 (top), 374 (bottom)
+    
+    // Left eye landmarks
+    const leftOuter = landmarks[33];
+    const leftInner = landmarks[133];
+    const leftTop = landmarks[159];
+    const leftBottom = landmarks[145];
+    const leftTop2 = landmarks[158];
+    const leftBottom2 = landmarks[153];
+    
+    // Right eye landmarks  
+    const rightOuter = landmarks[362];
+    const rightInner = landmarks[263];
+    const rightTop = landmarks[386];
+    const rightBottom = landmarks[374];
+    const rightTop2 = landmarks[385];
+    const rightBottom2 = landmarks[380];
+    
+    // Eye centers for positioning
+    const leftEyeCenter = landmarks[468]; // Left iris center
+    const rightEyeCenter = landmarks[473]; // Right iris center
+    
+    // Calculate Eye Aspect Ratio (EAR) - average of multiple vertical distances
+    const leftEAR = (
+      Math.abs(leftTop.y - leftBottom.y) + 
+      Math.abs(leftTop2.y - leftBottom2.y)
+    ) / 2;
+    
+    const rightEAR = (
+      Math.abs(rightTop.y - rightBottom.y) + 
+      Math.abs(rightTop2.y - rightBottom2.y)
+    ) / 2;
+    
+    const avgEAR = (leftEAR + rightEAR) / 2;
+    
+    // Adaptive threshold - more forgiving
+    const EAR_THRESHOLD = 0.020;
+    const wasOpen = !state.eyesClosed;
+    state.eyesClosed = avgEAR < EAR_THRESHOLD;
+    
+    // Add hysteresis to prevent flickering
+    if (wasOpen && avgEAR < (EAR_THRESHOLD + 0.003)) {
+      state.eyesClosed = true;
     }
-    updateOverlays();
+    
+    // Update eye vertex positions
+    const videoRect = videoElement.getBoundingClientRect();
+    
+    state.leftEyePos = {
+      x: leftEyeCenter.x * videoRect.width,
+      y: leftEyeCenter.y * videoRect.height
+    };
+    
+    state.rightEyePos = {
+      x: rightEyeCenter.x * videoRect.width,
+      y: rightEyeCenter.y * videoRect.height
+    };
+    
+    updateEyeVertices();
+  }
 }
 
-function updateOverlays() {
-    const lEl = document.getElementById('leftEye');
-    const rEl = document.getElementById('rightEye');
+function updateEyeVertices() {
+  const leftEyeEl = document.getElementById('leftEye');
+  const rightEyeEl = document.getElementById('rightEye');
+  
+  if (state.leftEyePos && state.rightEyePos) {
+    leftEyeEl.style.display = 'block';
+    rightEyeEl.style.display = 'block';
     
-    // Always visible logic
-    lEl.classList.toggle('tracked', state.isTracked);
-    rEl.classList.toggle('tracked', state.isTracked);
+    leftEyeEl.style.left = state.leftEyePos.x + 'px';
+    leftEyeEl.style.top = state.leftEyePos.y + 'px';
     
-    // Smooth transition for position
-    lEl.style.transform = `translate3d(${state.leftPos.x - 80}px, ${state.leftPos.y - 80}px, 0)`;
-    rEl.style.transform = `translate3d(${state.rightPos.x - 80}px, ${state.rightPos.y - 80}px, 0)`;
+    rightEyeEl.style.left = state.rightEyePos.x + 'px';
+    rightEyeEl.style.top = state.rightEyePos.y + 'px';
     
-    lEl.classList.toggle('closed', state.eyesClosed);
-    rEl.classList.toggle('closed', state.eyesClosed);
-    
-    const eBadge = document.getElementById('eyesBadge');
-    if (state.isTracked) {
-        eBadge.innerText = state.eyesClosed ? '👁 SYSTEM: MEDITATING' : '👁 SYSTEM: OBSERVING';
-        eBadge.className = state.eyesClosed ? 'status-badge active' : 'status-badge';
+    if (state.eyesClosed) {
+      leftEyeEl.className = 'eye-vertex closed';
+      rightEyeEl.className = 'eye-vertex closed';
     } else {
-        eBadge.innerText = '👁 SEARCHING...';
-        eBadge.classList.remove('active');
+      leftEyeEl.className = 'eye-vertex open';
+      rightEyeEl.className = 'eye-vertex open';
     }
+  }
 }
 
-const camera = new Camera(document.getElementById('video'), {
-    onFrame: async () => { 
-        try {
-            await faceMesh.send({image: document.getElementById('video')}); 
-        } catch(e) {}
-    },
-    width: 640, height: 480
-});
-
-// Initialization
+// Initialize on page load
 window.addEventListener('load', () => {
-    log("Neural Mesh Online.");
-    setTimeout(() => {
-        document.getElementById('loadingAI').style.display = 'none';
-        document.getElementById('startBtn').disabled = false;
-        log("Ready for Neural Link.");
-        updateOverlays(); // Initial render
-    }, 1500);
+  initMediaPipe();
 });
 
-document.getElementById('startBtn').onclick = async () => {
-    try {
-        log("Linking Camera...");
-        await camera.start();
-        state.meditating = true;
-        state.sessionSec = 0;
-        document.getElementById('startBtn').disabled = true;
-        document.getElementById('stopBtn').disabled = false;
-        log("Ritual Operational.");
-        
-        const loop = setInterval(() => {
-            if(!state.meditating) { clearInterval(loop); return; }
-            state.sessionSec++;
-            state.totalSec++;
-            localStorage.setItem('totalSec', state.totalSec);
-            
-            document.getElementById('sessionTime').innerText = formatTime(state.sessionSec);
-            document.getElementById('totalTime').innerText = formatTime(state.totalSec);
-
-            if(state.isTracked && state.eyesClosed) {
-                state.earned += 1;
-                document.getElementById('earned').innerText = state.earned;
-                document.getElementById('earnBadge').innerText = "💰 COLLECTING...";
-                document.getElementById('earnBadge').classList.add('active');
-                document.getElementById('mintBtn').disabled = false;
-            } else {
-                document.getElementById('earnBadge').innerText = "💰 NODE IDLE";
-                document.getElementById('earnBadge').classList.remove('active');
-            }
-        }, 1000);
-    } catch(e) {
-        log("Link Error: " + e.message);
-    }
-};
-
-document.getElementById('stopBtn').onclick = () => {
-    state.meditating = false;
-    camera.stop();
-    document.getElementById('startBtn').disabled = false;
-    document.getElementById('stopBtn').disabled = true;
-    log("Ritual Severed.");
-};
-
-function formatTime(s) {
-    const m = Math.floor(s/60);
-    return String(m).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
-}
-
-// Simple Wallet Simulation/Connection
+// CONNECT WALLET
 document.getElementById('connectBtn').onclick = async () => {
-    if(!window.ethereum) return log("MetaMask instance missing.");
-    try {
-        const accs = await window.ethereum.request({method:'eth_requestAccounts'});
-        state.address = accs[0];
-        document.getElementById('address').innerText = "NODE_ID: " + state.address;
-        document.getElementById('walletInfo').style.display = 'block';
-        document.getElementById('connectBtn').style.display = 'none';
-        log("Node synchronized.");
-        await fetchBalance();
-    } catch(e) {
-        log("Sync failed.");
+  try {
+    log('🔌 Connecting wallet...');
+    
+    if (!window.ethereum) {
+      log('❌ MetaMask not found');
+      alert('Install MetaMask!\n\nmetamask.io');
+      window.open('https://metamask.io/download/', '_blank');
+      return;
     }
-};
 
-// --- MINT FUNCTIONALITY ---
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    state.address = accounts[0];
+    log('✓ Connected: ' + state.address.slice(0, 10) + '...');
+    
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    
+    if (chainId !== CHAIN_ID) {
+      log('⚠ Switching to Polygon...');
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: CHAIN_ID }]
+        });
+        log('✓ Switched to Polygon');
+      } catch (e) {
+        if (e.code === 4902) {
+          log('Adding Polygon network...');
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: CHAIN_ID,
+              chainName: 'Polygon Mainnet',
+              rpcUrls: ['https://polygon-rpc.com'],
+              nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 },
+              blockExplorerUrls: ['https://polygonscan.com']
+            }]
+          });
+          log('✓ Polygon added');
+        }
+      }
+    }
+
+    document.getElementById('address').textContent = 
+      state.address.slice(0,6) + '...' + state.address.slice(-4);
+    document.getElementById('walletInfo').style.display = 'block';
+    document.getElementById('connectBtn').style.display = 'none';
+    
+    await fetchBalance();
+    log('✅ Wallet ready!');
+    
+  } catch (e) {
+    log('❌ ERROR: ' + e.message);
+    alert('Connection failed:\n\n' + e.message);
+  }
+};
 
 async function fetchBalance() {
-    if (!state.address) return;
-    try {
-        const res = await fetch(`${BACKEND}/api/balance/${state.address}`);
-        const data = await res.json();
-        document.getElementById('balance').textContent = Math.floor(parseFloat(data.balance || 0));
-    } catch (e) {
-        log("Balance check failed.");
-    }
+  try {
+    const res = await fetch(`${BACKEND}/api/balance/${state.address}`);
+    const data = await res.json();
+    const balance = Math.floor(parseFloat(data.balance));
+    document.getElementById('balance').textContent = balance;
+    log('Balance: ' + balance + ' MONK');
+  } catch (e) {
+    log('⚠ Balance fetch failed');
+    document.getElementById('balance').textContent = '?';
+  }
 }
 
-document.getElementById('mintBtn').onclick = async () => {
-    if (state.earned <= 0) return log("Zero yield to mint.");
-    if (!state.address) return log("Link wallet first.");
-
-    const mintBtn = document.getElementById('mintBtn');
-    const originalText = mintBtn.innerText;
+// START SESSION
+document.getElementById('startBtn').onclick = async () => {
+  try {
+    log('🎥 Starting camera...');
     
-    try {
-        log("Preparing assets...");
-        mintBtn.disabled = true;
-        mintBtn.innerText = "MINTING...";
-
-        const response = await fetch(`${BACKEND}/api/mint-monk`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                walletAddress: state.address,
-                amount: state.earned
-            })
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.success) {
-            log(`Successfully minted ${state.earned} $MONK!`);
-            log(`TX: ${result.transactionHash.slice(0, 12)}...`);
-            
-            // Reset session earned
-            state.earned = 0;
-            document.getElementById('earned').innerText = "0";
-            await fetchBalance();
-        } else {
-            throw new Error(result.error || "Chain rejection.");
+    const videoElement = document.getElementById('video');
+    
+    camera = new Camera(videoElement, {
+      onFrame: async () => {
+        if (faceMesh) {
+          await faceMesh.send({ image: videoElement });
         }
-    } catch (e) {
-        log("Mint error: " + e.message);
-    } finally {
-        mintBtn.innerText = originalText;
-        mintBtn.disabled = state.earned <= 0;
-    }
+      },
+      width: 640,
+      height: 480
+    });
+    
+    await camera.start();
+    log('✓ Camera active + AI tracking');
+    
+    state.meditating = true;
+    state.sessionSec = 0;
+    
+    document.getElementById('startBtn').disabled = true;
+    document.getElementById('stopBtn').disabled = false;
+    
+    log('🧘 Session started! Close eyes to earn.');
+    
+    // Timer
+    intervals.push(setInterval(() => {
+      if (!state.meditating) return;
+      state.sessionSec++;
+      state.totalSec++;
+      localStorage.setItem('totalSec', state.totalSec);
+      document.getElementById('sessionTime').textContent = formatTime(state.sessionSec);
+      document.getElementById('totalTime').textContent = formatTime(state.totalSec);
+    }, 1000));
+    
+    // REAL EYE TRACKING - ONLY EARN WHEN EYES ACTUALLY CLOSED
+    intervals.push(setInterval(() => {
+      if (!state.meditating) return;
+      
+      const earning = state.eyesClosed;
+      
+      // Update badges
+      const eyesBadge = document.getElementById('eyesBadge');
+      eyesBadge.className = state.eyesClosed ? 'badge active' : 'badge inactive';
+      eyesBadge.textContent = state.eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
+      
+      const earnBadge = document.getElementById('earnBadge');
+      earnBadge.className = earning ? 'badge active' : 'badge inactive';
+      earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
+      
+      // ONLY earn when eyes ACTUALLY closed
+      if (earning) {
+        state.earned++;
+        document.getElementById('earned').textContent = state.earned;
+        document.getElementById('mintBtn').disabled = false;
+        
+        if (state.earned % 10 === 0) {
+          log('Earned ' + state.earned + ' tokens');
+        }
+      }
+    }, 1000));
+    
+  } catch (e) {
+    log('❌ Error: ' + e.message);
+    alert('Failed to start:\n\n' + e.message);
+  }
 };
 
-document.getElementById('totalTime').innerText = formatTime(state.totalSec);
+// STOP SESSION
+document.getElementById('stopBtn').onclick = async () => {
+  log('🛑 Stopping...');
+  state.meditating = false;
+  
+  if (camera) {
+    camera.stop();
+  }
+  
+  intervals.forEach(i => clearInterval(i));
+  intervals = [];
+  
+  document.getElementById('startBtn').disabled = false;
+  document.getElementById('stopBtn').disabled = true;
+  document.getElementById('leftEye').style.display = 'none';
+  document.getElementById('rightEye').style.display = 'none';
+  
+  log('Session: ' + state.sessionSec + 's, earned ' + state.earned);
+  
+  if (state.earned > 0 && state.address) {
+    log('Auto-minting...');
+    await mint();
+  } else if (state.earned > 0) {
+    alert('Earned ' + state.earned + ' tokens!\n\nConnect wallet to mint.');
+  }
+};
+
+// MINT
+document.getElementById('mintBtn').onclick = mint;
+
+async function mint() {
+  if (state.earned === 0) {
+    alert('No tokens earned yet!');
+    return;
+  }
+  
+  if (!state.address) {
+    alert('Connect wallet first!');
+    return;
+  }
+  
+  try {
+    log('🪙 Minting ' + state.earned + ' tokens...');
+    document.getElementById('mintBtn').textContent = 'MINTING...';
+    document.getElementById('mintBtn').disabled = true;
+    
+    const payload = {
+      walletAddress: state.address,
+      amount: state.earned,
+      sessionData: {
+        eyesClosed: true,
+        spineCorrect: true
+      }
+    };
+    
+    const res = await fetch(`${BACKEND}/api/mint-monk`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+    
+    log('Response: ' + res.status);
+    
+    const responseText = await res.text();
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (e) {
+      throw new Error('Invalid JSON: ' + responseText);
+    }
+    
+    if (!res.ok) {
+      throw new Error('HTTP ' + res.status + ': ' + (data.message || data.error || responseText));
+    }
+    
+    if (data.success) {
+      const tx = data.transactionHash;
+      log('✅ MINTED! TX: ' + tx.slice(0, 20) + '...');
+      
+      alert(
+        '✅ SUCCESS!\n\n' +
+        'Minted ' + state.earned + ' MONK!\n\n' +
+        'TX: ' + tx.slice(0, 20) + '...\n\n' +
+        '⚠️ Chrome MetaMask glitch.\n' +
+        'Use Firefox to see tokens!'
+      );
+      
+      state.earned = 0;
+      document.getElementById('earned').textContent = 0;
+      await fetchBalance();
+      
+    } else {
+      log('❌ Mint failed: ' + (data.message || data.error));
+      alert('Mint failed:\n\n' + (data.message || data.error));
+    }
+    
+  } catch (e) {
+    log('❌ ERROR: ' + e.message);
+    alert('Mint error:\n\n' + e.message);
+  } finally {
+    document.getElementById('mintBtn').textContent = 'MINT TO CHAIN';
+    if (state.earned > 0) {
+      document.getElementById('mintBtn').disabled = false;
+    }
+  }
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+}
+
+document.getElementById('totalTime').textContent = formatTime(state.totalSec);
+
+if (window.ethereum) {
+  window.ethereum.on('accountsChanged', () => location.reload());
+  window.ethereum.on('chainChanged', () => location.reload());
+}
+
+log('✅ Ready! Waiting for AI model...');
 </script>
+
 </body>
 </html>
