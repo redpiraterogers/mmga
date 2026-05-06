@@ -555,8 +555,12 @@ async function mint() {
     document.getElementById('mintBtn').disabled = true;
     
     const payload = {
-      wallet: state.address,
-      amount: state.earned
+      walletAddress: state.address,
+      amount: state.earned,
+      sessionData: {
+        eyesClosed: true,
+        spineCorrect: true
+      }
     };
     
     log('Sending payload: ' + JSON.stringify(payload));
