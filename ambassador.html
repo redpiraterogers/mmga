@@ -9,248 +9,375 @@
 :root{
   --pixel:'Press Start 2P',cursive;
   --retro:'VT323',monospace;
-  --bg:#0a0a0f;
-  --card:#0e0e16;
-  --card2:#12121c;
-  --green:#00ff41;
-  --pink:#ff10f0;
-  --blue:#00d4ff;
-  --cyan:#00ffff;
-  --yellow:#fff000;
-  --orange:#ff6b35;
-  --purple:#9d4edd;
+  --bg:#fafaf6;
+  --white:#ffffff;
+  --black:#0a0a0f;
+  --text:#1a1a22;
+  --muted:#666672;
+  --card:#ffffff;
+  --card2:#f2f2ee;
+  --pink:#e000c8;
+  --pink-bg:rgba(224,0,200,0.07);
+  --cyan:#0099bb;
+  --cyan-bg:rgba(0,153,187,0.07);
+  --green:#00a832;
+  --green-bg:rgba(0,168,50,0.07);
+  --yellow:#c8a800;
+  --yellow-bg:rgba(200,168,0,0.08);
+  --orange:#e05000;
+  --purple:#6d28d9;
+  --purple-bg:rgba(109,40,217,0.07);
+  --border:#e0e0da;
+  --border-strong:#c8c8c0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--green);font-family:var(--retro);overflow-x:hidden;}
-
-.scanline{position:fixed;inset:0;pointer-events:none;z-index:9999;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.03) 2px,rgba(0,255,65,0.03) 4px);animation:flicker 0.15s infinite;}
-.crt{position:fixed;inset:0;pointer-events:none;z-index:9998;background:radial-gradient(ellipse at center,transparent 0%,rgba(0,0,0,0.4) 100%);}
-@keyframes flicker{0%{opacity:0.97}50%{opacity:1}100%{opacity:0.98}}
-
-/* NAV */
-.nav-header{
-  position:sticky;top:0;z-index:200;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:12px 40px;background:rgba(10,10,15,0.97);
-  border-bottom:2px solid var(--yellow);
-  box-shadow:0 2px 30px rgba(255,240,0,0.15);
-  backdrop-filter:blur(12px);
-}
-.nav-back{font-family:var(--pixel);font-size:9px;letter-spacing:2px;color:var(--cyan);text-decoration:none;border:2px solid var(--cyan);padding:8px 16px;transition:all 0.3s;}
-.nav-back:hover{background:rgba(0,255,255,0.1);box-shadow:0 0 20px var(--cyan);}
-.nav-brand{display:flex;align-items:center;gap:10px;}
-.nav-brand svg{width:40px;height:20px;}
-.nav-title{font-family:var(--pixel);font-size:12px;letter-spacing:3px;background:linear-gradient(90deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.nav-right{font-family:var(--pixel);font-size:9px;letter-spacing:2px;color:var(--yellow);border:2px solid rgba(255,240,0,0.4);padding:6px 14px;animation:blink-slow 3s step-end infinite;}
-@keyframes blink-slow{0%,100%{opacity:1}50%{opacity:0.4}}
-
-/* HERO */
-.hero{
-  padding:72px 60px 60px;position:relative;overflow:hidden;
-  border-bottom:2px solid rgba(255,240,0,0.2);
-}
-.hero-bg{
-  position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(ellipse 60% 70% at 80% 30%,rgba(255,240,0,0.06),transparent),
-    radial-gradient(ellipse 40% 50% at 20% 80%,rgba(255,16,240,0.05),transparent);
-}
-.hero-eyebrow{font-family:var(--pixel);font-size:9px;letter-spacing:4px;color:var(--yellow);text-shadow:0 0 15px var(--yellow);margin-bottom:28px;display:flex;align-items:center;gap:12px;}
-.hero-eyebrow::before{content:'★';font-size:14px;}
-.hero h1{font-family:var(--pixel);font-size:clamp(20px,3vw,40px);line-height:1.5;max-width:800px;margin-bottom:24px;letter-spacing:2px;}
-.hero h1 .ly{color:var(--yellow);text-shadow:0 0 20px var(--yellow),0 0 40px rgba(255,240,0,0.4);display:block;}
-.hero h1 .lp{color:var(--pink);text-shadow:0 0 20px var(--pink);display:block;}
-.hero-sub{font-family:var(--retro);font-size:24px;color:rgba(0,255,65,0.7);max-width:640px;line-height:1.6;margin-bottom:40px;}
-.hero-stat-row{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:40px;}
-.hero-stat{background:var(--card);border:2px solid;padding:20px 28px;min-width:160px;text-align:center;}
-.hero-stat.hs-y{border-color:rgba(255,240,0,0.4);}
-.hero-stat.hs-p{border-color:rgba(255,16,240,0.4);}
-.hero-stat.hs-c{border-color:rgba(0,255,255,0.4);}
-.hero-stat.hs-g{border-color:rgba(0,255,65,0.4);}
-.hs-val{font-family:var(--pixel);font-size:clamp(16px,2vw,28px);margin-bottom:6px;}
-.hs-y .hs-val{color:var(--yellow);text-shadow:0 0 15px var(--yellow);}
-.hs-p .hs-val{color:var(--pink);text-shadow:0 0 15px var(--pink);}
-.hs-c .hs-val{color:var(--cyan);text-shadow:0 0 15px var(--cyan);}
-.hs-g .hs-val{color:var(--green);text-shadow:0 0 15px var(--green);}
-.hs-label{font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:rgba(0,255,65,0.45);}
-
-/* BUTTONS */
-.btn{font-family:var(--pixel);font-size:9px;letter-spacing:2px;padding:16px 28px;border:3px solid;cursor:pointer;text-decoration:none;text-transform:uppercase;transition:all 0.3s;background:transparent;display:inline-block;}
-.btn-yellow{border-color:var(--yellow);color:var(--yellow);box-shadow:0 0 20px rgba(255,240,0,0.3);}
-.btn-yellow:hover{background:rgba(255,240,0,0.1);box-shadow:0 0 40px var(--yellow);transform:translateY(-2px);}
-.btn-pink{border-color:var(--pink);color:var(--pink);box-shadow:0 0 20px rgba(255,16,240,0.3);}
-.btn-pink:hover{background:rgba(255,16,240,0.1);box-shadow:0 0 40px var(--pink);transform:translateY(-2px);}
-.btn-cyan{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px rgba(0,255,255,0.3);}
-.btn-cyan:hover{background:rgba(0,255,255,0.1);box-shadow:0 0 40px var(--cyan);transform:translateY(-2px);}
-.btn-green{border-color:var(--green);color:var(--green);box-shadow:0 0 20px rgba(0,255,65,0.3);}
-.btn-green:hover{background:rgba(0,255,65,0.1);box-shadow:0 0 40px var(--green);transform:translateY(-2px);}
-.btn:disabled{opacity:0.3;cursor:not-allowed;transform:none!important;}
-
-/* HOW IT WORKS */
-.hiw-section{padding:72px 60px;background:var(--card);}
-.section-label{font-family:var(--pixel);font-size:9px;letter-spacing:4px;color:var(--pink);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
-.section-label::before{content:'';display:block;width:20px;height:2px;background:var(--pink);box-shadow:0 0 8px var(--pink);}
-h2.ph{font-family:var(--pixel);font-size:clamp(14px,2vw,24px);line-height:1.6;margin-bottom:32px;letter-spacing:2px;color:var(--green);}
-h2.ph .pk{color:var(--pink);text-shadow:0 0 15px var(--pink);}
-h2.ph .cy{color:var(--cyan);text-shadow:0 0 15px var(--cyan);}
-h2.ph .yw{color:var(--yellow);text-shadow:0 0 15px var(--yellow);}
-.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:40px;}
-.step{background:var(--card2);padding:32px 24px;border:2px solid rgba(0,255,65,0.15);position:relative;}
-.step-num{font-family:var(--pixel);font-size:28px;color:var(--pink);text-shadow:0 0 20px var(--pink);margin-bottom:16px;}
-.step h3{font-family:var(--pixel);font-size:11px;color:var(--cyan);letter-spacing:1px;line-height:1.6;margin-bottom:12px;}
-.step p{font-family:var(--retro);font-size:19px;color:rgba(0,255,65,0.6);line-height:1.6;}
-.step-arrow{position:absolute;right:-18px;top:50%;transform:translateY(-50%);font-family:var(--pixel);font-size:16px;color:var(--yellow);z-index:2;}
-.step:last-child .step-arrow{display:none;}
-
-/* COMMISSION EXPLAINER */
-.commission-section{padding:72px 60px;}
-.comm-box{
-  background:var(--card);border:3px solid var(--yellow);
-  padding:48px;max-width:800px;margin:0 auto;text-align:center;
-  box-shadow:0 0 60px rgba(255,240,0,0.15);
-}
-.comm-formula{
-  display:flex;align-items:center;justify-content:center;
-  gap:20px;flex-wrap:wrap;margin:32px 0;
-}
-.cf-term{font-family:var(--pixel);font-size:clamp(16px,2.5vw,32px);}
-.cf-op{font-family:var(--pixel);font-size:clamp(14px,2vw,24px);color:var(--yellow);}
-.comm-box p{font-family:var(--retro);font-size:21px;color:rgba(0,255,65,0.65);line-height:1.6;max-width:580px;margin:0 auto;}
-.comm-justification{
-  background:var(--card2);border:2px solid rgba(0,255,65,0.15);
-  padding:32px;margin-top:40px;max-width:800px;
-}
-.comm-justification h3{font-family:var(--pixel);font-size:11px;color:var(--cyan);letter-spacing:2px;margin-bottom:20px;}
-.justif-item{display:flex;gap:16px;padding:12px 0;border-bottom:1px solid rgba(0,255,65,0.08);}
-.ji-icon{font-size:20px;min-width:28px;}
-.ji-body strong{display:block;font-family:var(--pixel);font-size:9px;color:var(--yellow);letter-spacing:1px;margin-bottom:4px;}
-.ji-body span{font-family:var(--retro);font-size:18px;color:rgba(0,255,65,0.6);line-height:1.5;}
-
-/* SIGNUP / DASHBOARD */
-.signup-section{padding:72px 60px;background:var(--card);}
-.signup-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
-
-/* LEFT: CONNECT + FORM */
-.signup-left{}
-.connect-panel{
-  background:var(--card2);border:3px solid var(--yellow);
-  padding:40px;box-shadow:0 0 40px rgba(255,240,0,0.1);
-}
-.connect-panel h3{
-  font-family:var(--pixel);font-size:12px;color:var(--yellow);
-  text-shadow:0 0 15px var(--yellow);letter-spacing:2px;margin-bottom:8px;
-}
-.connect-panel p{font-family:var(--retro);font-size:19px;color:rgba(0,255,65,0.6);line-height:1.5;margin-bottom:24px;}
-.wallet-display{padding:12px;background:rgba(0,0,0,0.5);border:2px solid var(--green);font-size:13px;color:var(--green);word-break:break-all;margin-bottom:16px;font-family:monospace;letter-spacing:1px;}
-
-/* RIGHT: DASHBOARD */
-.dashboard-panel{
-  background:var(--card2);border:3px solid rgba(0,255,65,0.25);
-  padding:40px;display:none;
-}
-.dashboard-panel.active{display:block;}
-.dash-title{font-family:var(--pixel);font-size:11px;color:var(--green);text-shadow:0 0 15px var(--green);letter-spacing:2px;margin-bottom:24px;padding-bottom:12px;border-bottom:2px solid rgba(0,255,65,0.2);}
-.dash-stat{padding:16px;background:rgba(0,0,0,0.4);border:2px solid rgba(0,255,65,0.2);margin-bottom:12px;}
-.dash-stat-label{font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:rgba(0,255,65,0.5);margin-bottom:6px;}
-.dash-stat-val{font-family:var(--pixel);font-size:clamp(18px,2vw,26px);color:var(--green);text-shadow:0 0 15px var(--green);}
-.dash-stat-val.yellow{color:var(--yellow);text-shadow:0 0 15px var(--yellow);}
-.dash-stat-val.pink{color:var(--pink);text-shadow:0 0 15px var(--pink);}
-
-/* REFERRAL LINK BOX */
-.ref-link-section{margin-top:20px;}
-.ref-link-label{font-family:var(--pixel);font-size:8px;letter-spacing:3px;color:var(--yellow);margin-bottom:8px;}
-.ref-link-box{
-  background:rgba(0,0,0,0.6);border:3px solid var(--yellow);
-  padding:14px 16px;font-family:monospace;font-size:13px;
-  color:var(--yellow);word-break:break-all;margin-bottom:12px;
-  cursor:pointer;transition:all 0.2s;line-height:1.5;
-  box-shadow:0 0 20px rgba(255,240,0,0.15);
-}
-.ref-link-box:hover{box-shadow:0 0 35px rgba(255,240,0,0.4);border-color:var(--yellow);}
-.ref-btn-row{display:flex;gap:8px;flex-wrap:wrap;}
-
-/* RECRUIT TABLE */
-.recruit-table-section{margin-top:28px;padding-top:20px;border-top:2px solid rgba(0,255,65,0.15);}
-.recruit-table-title{font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:rgba(0,255,65,0.5);margin-bottom:14px;}
-.recruit-list{max-height:180px;overflow-y:auto;}
-.recruit-item{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 12px;border-bottom:1px solid rgba(0,255,65,0.08);
-  font-family:var(--pixel);font-size:8px;
-}
-.ri-addr{color:rgba(0,255,65,0.6);}
-.ri-date{color:rgba(0,255,65,0.35);font-size:7px;}
-.no-recruits{font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.25);letter-spacing:1px;padding:16px 0;text-align:center;}
-
-/* PREVIEW LINK */
-.preview-section{padding:72px 60px;background:var(--card2);}
-.preview-inner{max-width:900px;margin:0 auto;}
-.preview-box{
-  background:var(--bg);border:3px solid rgba(255,16,240,0.3);
-  padding:40px;margin-top:32px;
-}
-.preview-box h3{font-family:var(--pixel);font-size:10px;color:var(--pink);letter-spacing:2px;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid rgba(255,16,240,0.2);}
-.preview-post{
-  background:var(--card);border:2px solid rgba(0,255,65,0.2);
-  padding:24px;font-family:var(--retro);font-size:20px;
-  color:rgba(0,255,65,0.8);line-height:1.7;
-}
-.preview-post .ph{color:var(--cyan);}
-.preview-post .link-placeholder{color:var(--yellow);text-decoration:underline;}
-
-/* DEBUG */
-.debug{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.95);border:2px solid var(--yellow);padding:12px;font-size:10px;color:var(--yellow);max-width:320px;max-height:160px;overflow-y:auto;z-index:1000;font-family:monospace;box-shadow:0 0 20px rgba(255,240,0,0.4);}
-.debug-title{font-family:var(--pixel);font-size:8px;margin-bottom:8px;padding-bottom:4px;border-bottom:1px solid var(--yellow);}
-
-/* FOOTER */
-footer{padding:32px 60px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid rgba(255,240,0,0.2);background:var(--card);}
-.f-logo{font-family:var(--pixel);font-size:10px;letter-spacing:3px;color:var(--yellow);}
-.f-right{font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:rgba(0,255,65,0.3);text-align:right;line-height:2;}
-
-/* FADE */
-.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
-.fade-up.visible{opacity:1;transform:translateY(0);}
-
-/* TOAST */
-.toast{
-  position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
-  background:rgba(10,10,15,0.97);border:2px solid var(--green);
-  padding:12px 28px;font-family:var(--pixel);font-size:9px;
-  color:var(--green);letter-spacing:1px;z-index:9000;
-  box-shadow:0 0 25px rgba(0,255,65,0.4);white-space:nowrap;
-  animation:toast-in 0.3s ease;
-}
-@keyframes toast-in{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-
-@media(max-width:900px){
-  nav.nav-header{padding:12px 20px;}
-  .hero,.hiw-section,.commission-section,.signup-section,.preview-section{padding:48px 24px;}
-  .steps{grid-template-columns:1fr;}
-  .step-arrow{display:none;}
-  .signup-grid{grid-template-columns:1fr;}
-  footer{flex-direction:column;gap:12px;text-align:center;padding:24px;}
-}
+body{background:var(--bg);color:var(--text);font-family:var(--retro);overflow-x:hidden;}
 
 /* ── PASSWORD GATE ── */
-#gate{position:fixed;inset:0;z-index:99999;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;}
+#gate{
+  position:fixed;inset:0;z-index:99999;
+  background:var(--black);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
 .gate-logo{display:flex;align-items:center;gap:16px;}
 .gate-logo svg{width:56px;height:28px;}
-.gate-logo-title{font-family:var(--pixel);font-size:18px;letter-spacing:3px;background:linear-gradient(90deg,#ff10f0,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.gate-label{font-family:var(--pixel);font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.3);text-align:center;}
-#pwInput{font-family:var(--pixel);font-size:12px;letter-spacing:3px;background:#111;border:2px solid var(--yellow);color:#fff;padding:16px 28px;outline:none;text-align:center;width:320px;box-shadow:0 0 20px rgba(255,240,0,0.2);transition:box-shadow 0.3s;}
+.gate-logo-title{
+  font-family:var(--pixel);font-size:18px;letter-spacing:3px;
+  background:linear-gradient(90deg,#ff10f0,#00d4ff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.gate-sub{font-family:var(--pixel);font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.3);text-align:center;}
+#pwInput{
+  font-family:var(--pixel);font-size:12px;letter-spacing:3px;
+  background:#111;border:2px solid #fff000;color:#fff;
+  padding:16px 28px;outline:none;text-align:center;width:320px;
+  box-shadow:0 0 20px rgba(255,240,0,0.2);transition:box-shadow 0.3s;
+}
 #pwInput:focus{box-shadow:0 0 40px rgba(255,240,0,0.5);}
 #pwInput::placeholder{color:rgba(255,255,255,0.2);}
-#pwBtn{font-family:var(--pixel);font-size:10px;letter-spacing:3px;background:transparent;border:2px solid var(--yellow);color:var(--yellow);padding:14px 40px;cursor:pointer;transition:all 0.3s;width:320px;box-shadow:0 0 15px rgba(255,240,0,0.2);}
+#pwBtn{
+  font-family:var(--pixel);font-size:10px;letter-spacing:3px;
+  background:transparent;border:2px solid #fff000;color:#fff000;
+  padding:14px 40px;cursor:pointer;transition:all 0.3s;width:320px;
+}
 #pwBtn:hover{background:rgba(255,240,0,0.1);box-shadow:0 0 30px rgba(255,240,0,0.5);}
 #pwError{font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:#ff4444;display:none;text-align:center;animation:shake 0.4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .gate-hint{font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:rgba(255,255,255,0.15);}
 #content{display:none;}
+
+/* ── NAV ── */
+.nav-header{
+  position:sticky;top:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 40px;background:rgba(250,250,246,0.97);
+  border-bottom:2px solid var(--border);
+  box-shadow:0 2px 16px rgba(0,0,0,0.06);
+  backdrop-filter:blur(12px);
+}
+.nav-back{
+  font-family:var(--pixel);font-size:8px;letter-spacing:2px;
+  color:var(--cyan);text-decoration:none;border:2px solid var(--cyan);
+  padding:8px 16px;transition:all 0.3s;
+}
+.nav-back:hover{background:var(--cyan-bg);box-shadow:0 0 14px rgba(0,153,187,0.3);}
+.nav-brand{display:flex;align-items:center;gap:10px;}
+.nav-brand svg{width:40px;height:20px;}
+.nav-title{
+  font-family:var(--pixel);font-size:11px;letter-spacing:3px;
+  background:linear-gradient(90deg,var(--pink),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.nav-tag{
+  font-family:var(--pixel);font-size:8px;letter-spacing:2px;
+  color:var(--yellow);border:2px solid var(--yellow);padding:6px 14px;
+}
+
+/* ── SHARED ── */
+.section{padding:72px 60px;}
+.section-alt{background:var(--card2);}
+.section-dark{background:var(--black);}
+.inner{max-width:1100px;margin:0 auto;}
+.s-label{
+  font-family:var(--pixel);font-size:8px;letter-spacing:4px;
+  color:var(--pink);margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.s-label::before{content:'';display:block;width:18px;height:2px;background:var(--pink);}
+h2.ph{font-family:var(--pixel);font-size:clamp(13px,1.8vw,22px);line-height:1.7;margin-bottom:24px;letter-spacing:1px;color:var(--black);}
+h2.ph .pk{color:var(--pink);}
+h2.ph .cy{color:var(--cyan);}
+h2.ph .gn{color:var(--green);}
+h2.ph .yw{color:var(--yellow);}
+h2.ph .pu{color:var(--purple);}
+.body-txt{font-family:var(--retro);font-size:21px;color:var(--muted);line-height:1.7;max-width:680px;}
+.body-txt strong{color:var(--text);}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border-strong),transparent);margin:0 60px;}
+
+/* ── BUTTONS ── */
+.btn{
+  font-family:var(--pixel);font-size:8px;letter-spacing:2px;
+  padding:14px 24px;border:2px solid;cursor:pointer;
+  text-decoration:none;text-transform:uppercase;transition:all 0.25s;
+  background:transparent;display:inline-block;
+}
+.btn-pink{border-color:var(--pink);color:var(--pink);}
+.btn-pink:hover{background:var(--pink-bg);box-shadow:0 4px 20px rgba(224,0,200,0.2);transform:translateY(-1px);}
+.btn-cyan{border-color:var(--cyan);color:var(--cyan);}
+.btn-cyan:hover{background:var(--cyan-bg);box-shadow:0 4px 20px rgba(0,153,187,0.2);transform:translateY(-1px);}
+.btn-green{border-color:var(--green);color:var(--green);}
+.btn-green:hover{background:var(--green-bg);transform:translateY(-1px);}
+.btn-yellow{border-color:var(--yellow);color:var(--yellow);}
+.btn-yellow:hover{background:var(--yellow-bg);transform:translateY(-1px);}
+.btn-dark{border-color:var(--black);color:var(--black);}
+.btn-dark:hover{background:rgba(0,0,0,0.05);transform:translateY(-1px);}
+.btn:disabled{opacity:0.3;cursor:not-allowed;transform:none!important;}
+
+/* ── HERO ── */
+.hero{
+  background:var(--white);padding:72px 60px 60px;
+  position:relative;overflow:hidden;
+  border-bottom:2px solid var(--border);
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 50% 60% at 90% 20%,rgba(224,0,200,0.05),transparent),
+    radial-gradient(ellipse 40% 50% at 10% 80%,rgba(0,153,187,0.05),transparent);
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--pixel);font-size:8px;letter-spacing:3px;
+  color:var(--yellow);border:2px solid var(--yellow);
+  padding:8px 18px;margin-bottom:28px;background:var(--yellow-bg);
+}
+.hero-badge .dot{width:7px;height:7px;background:var(--yellow);border-radius:50%;animation:blink 1.5s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero h1{
+  font-family:var(--pixel);font-size:clamp(18px,3vw,40px);
+  line-height:1.5;max-width:820px;margin-bottom:20px;letter-spacing:2px;color:var(--black);
+}
+.hero h1 .hy{color:var(--yellow);display:block;}
+.hero h1 .hp{color:var(--pink);display:block;}
+.hero-sub{
+  font-family:var(--retro);font-size:23px;color:var(--muted);
+  max-width:600px;line-height:1.6;margin-bottom:36px;
+}
+
+/* ── STAT ROW ── */
+.stat-row{display:flex;gap:2px;flex-wrap:wrap;margin-bottom:36px;}
+.stat-card{background:var(--card);border:1px solid var(--border);padding:20px 28px;min-width:150px;text-align:center;border-top:3px solid;}
+.sc-pk{border-top-color:var(--pink);}
+.sc-cy{border-top-color:var(--cyan);}
+.sc-gn{border-top-color:var(--green);}
+.sc-yw{border-top-color:var(--yellow);}
+.stat-val{font-family:var(--pixel);font-size:clamp(16px,2vw,26px);margin-bottom:6px;}
+.sc-pk .stat-val{color:var(--pink);}
+.sc-cy .stat-val{color:var(--cyan);}
+.sc-gn .stat-val{color:var(--green);}
+.sc-yw .stat-val{color:var(--yellow);}
+.stat-lbl{font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:var(--muted);}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:36px;}
+.step{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--pink);padding:28px 22px;position:relative;}
+.step-num{font-family:var(--pixel);font-size:24px;color:var(--pink);margin-bottom:14px;}
+.step h3{font-family:var(--pixel);font-size:10px;color:var(--black);letter-spacing:1px;line-height:1.6;margin-bottom:10px;}
+.step p{font-family:var(--retro);font-size:18px;color:var(--muted);line-height:1.6;}
+.step-arr{position:absolute;right:-16px;top:50%;transform:translateY(-50%);font-family:var(--pixel);font-size:14px;color:var(--yellow);z-index:2;}
+.step:last-child .step-arr{display:none;}
+
+/* ── COMMISSION FORMULA ── */
+.formula-box{
+  background:var(--white);border:2px solid var(--yellow);
+  padding:40px;text-align:center;max-width:760px;margin:0 auto;
+  box-shadow:0 4px 30px rgba(200,168,0,0.1);
+}
+.cf-row{display:flex;align-items:center;justify-content:center;gap:18px;flex-wrap:wrap;margin:28px 0;}
+.cf-term{font-family:var(--pixel);font-size:clamp(13px,2vw,24px);line-height:1.3;}
+.cf-op{font-family:var(--pixel);font-size:clamp(13px,2vw,22px);color:var(--yellow);}
+
+/* ── WHY 30% JUSTIFICATIONS ── */
+.justif-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:32px;}
+.ji{background:var(--white);border:1px solid var(--border);border-left:3px solid;padding:24px 22px;}
+.ji:nth-child(1){border-left-color:var(--pink);}
+.ji:nth-child(2){border-left-color:var(--cyan);}
+.ji:nth-child(3){border-left-color:var(--green);}
+.ji:nth-child(4){border-left-color:var(--yellow);}
+.ji:nth-child(5){border-left-color:var(--purple);}
+.ji-icon{font-size:22px;margin-bottom:10px;}
+.ji strong{display:block;font-family:var(--pixel);font-size:8px;letter-spacing:1px;color:var(--black);margin-bottom:6px;line-height:1.6;}
+.ji span{font-family:var(--retro);font-size:17px;color:var(--muted);line-height:1.5;}
+
+/* ── 5-YEAR RETURNS TABLE ── */
+.returns-section{background:var(--black);}
+.returns-section .s-label{color:#ff10f0;}
+.returns-section .s-label::before{background:#ff10f0;}
+.returns-section h2.ph{color:#fff;}
+.returns-intro{font-family:var(--retro);font-size:21px;color:rgba(255,255,255,0.6);line-height:1.7;max-width:700px;margin-bottom:8px;}
+.returns-note{font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:rgba(255,255,255,0.25);margin-bottom:36px;line-height:2;}
+
+.scenario-tabs{display:flex;gap:2px;margin-bottom:24px;flex-wrap:wrap;}
+.stab{
+  font-family:var(--pixel);font-size:8px;letter-spacing:1px;
+  padding:10px 18px;border:2px solid;cursor:pointer;
+  background:transparent;transition:all 0.2s;
+}
+.stab.active,.stab:hover{color:#000;}
+.stab-a{border-color:#00c032;color:#00c032;}
+.stab-a.active,.stab-a:hover{background:#00c032;}
+.stab-b{border-color:#00d4ff;color:#00d4ff;}
+.stab-b.active,.stab-b:hover{background:#00d4ff;}
+.stab-c{border-color:#fff000;color:#fff000;}
+.stab-c.active,.stab-c:hover{background:#fff000;}
+.stab-d{border-color:#ff10f0;color:#ff10f0;}
+.stab-d.active,.stab-d:hover{background:#ff10f0;}
+.stab-e{border-color:#c084fc;color:#c084fc;}
+.stab-e.active,.stab-e:hover{background:#c084fc;color:#000;}
+#stab-f.active,#stab-f:hover{background:#ff10f0;color:#000;}
+
+.scenario-panel{display:none;}
+.scenario-panel.active{display:block;}
+
+/* dark table */
+.rt{width:100%;border-collapse:collapse;}
+.rt thead tr{border-bottom:2px solid;}
+.rt-a thead tr{border-color:#00c032;}
+.rt-b thead tr{border-color:#00d4ff;}
+.rt-c thead tr{border-color:#fff000;}
+.rt-d thead tr{border-color:#ff10f0;}
+.rt thead th{
+  font-family:var(--pixel);font-size:7px;letter-spacing:2px;
+  padding:12px 14px;text-align:left;white-space:nowrap;
+}
+.rt-a thead th{color:#00c032;}
+.rt-b thead th{color:#00d4ff;}
+.rt-c thead th{color:#fff000;}
+.rt-d thead th{color:#ff10f0;}
+.rt tbody tr{border-bottom:1px solid rgba(255,255,255,0.06);transition:background 0.2s;}
+.rt tbody tr:hover{background:rgba(255,255,255,0.03);}
+.rt tbody tr.highlight-row{background:rgba(255,255,255,0.05);}
+.rt tbody td{font-family:var(--retro);font-size:18px;padding:12px 14px;color:rgba(255,255,255,0.6);white-space:nowrap;}
+.rt tbody td:first-child{font-family:var(--pixel);font-size:9px;color:rgba(255,255,255,0.9);}
+.tc-a{color:#00c032!important;}
+.tc-b{color:#00d4ff!important;}
+.tc-c{color:#fff000!important;}
+.tc-d{color:#ff10f0!important;}
+.tc-w{color:#fff!important;}
+.scenario-summary{
+  margin-top:20px;background:#111118;border:1px solid rgba(255,255,255,0.08);
+  padding:20px 24px;font-family:var(--retro);font-size:19px;
+  color:rgba(255,255,255,0.5);line-height:1.6;
+}
+.scenario-summary strong{color:#fff;}
+.ret-disclaimer{
+  margin-top:24px;font-family:var(--pixel);font-size:6px;
+  letter-spacing:1px;color:rgba(255,255,255,0.18);line-height:2.2;
+}
+
+/* ── SIGNUP ── */
+.signup-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;margin-top:36px;}
+.connect-card{
+  background:var(--white);border:1px solid var(--border);border-top:3px solid var(--yellow);
+  padding:36px;
+}
+.connect-card h3{font-family:var(--pixel);font-size:11px;color:var(--yellow);letter-spacing:2px;margin-bottom:8px;}
+.connect-card p{font-family:var(--retro);font-size:19px;color:var(--muted);line-height:1.5;margin-bottom:22px;}
+.wallet-display{
+  padding:10px 14px;background:var(--card2);border:2px solid var(--green);
+  font-size:13px;color:var(--green);word-break:break-all;margin-bottom:14px;
+  font-family:monospace;letter-spacing:0.5px;
+}
+.ref-label{font-family:var(--pixel);font-size:7px;letter-spacing:3px;color:var(--yellow);margin-bottom:6px;}
+.ref-link-box{
+  background:var(--yellow-bg);border:2px solid var(--yellow);
+  padding:12px 14px;font-family:monospace;font-size:13px;
+  color:var(--yellow);word-break:break-all;margin-bottom:12px;
+  cursor:pointer;transition:all 0.2s;line-height:1.5;
+}
+.ref-link-box:hover{background:rgba(200,168,0,0.15);box-shadow:0 2px 12px rgba(200,168,0,0.3);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.connect-confirm{
+  font-family:var(--pixel);font-size:7px;letter-spacing:1px;
+  color:var(--green);line-height:2.2;margin-bottom:16px;
+}
+
+/* Dashboard card */
+.dash-card{
+  background:var(--white);border:1px solid var(--border);border-top:3px solid var(--green);
+  padding:36px;display:none;
+}
+.dash-card.active{display:block;}
+.dash-title{font-family:var(--pixel);font-size:10px;color:var(--green);letter-spacing:2px;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.ds{background:var(--card2);border:1px solid var(--border);padding:14px 16px;margin-bottom:10px;}
+.ds-lbl{font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:var(--muted);margin-bottom:5px;}
+.ds-val{font-family:var(--pixel);font-size:clamp(16px,1.8vw,22px);}
+.ds-val.pk{color:var(--pink);}
+.ds-val.cy{color:var(--cyan);}
+.ds-val.gn{color:var(--green);}
+.ds-val.yw{color:var(--yellow);}
+.recruit-list{max-height:160px;overflow-y:auto;margin-top:4px;}
+.ri{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-family:var(--pixel);font-size:7px;}
+.ri-addr{color:var(--muted);}
+.ri-date{color:var(--border-strong);}
+.no-recruits{font-family:var(--pixel);font-size:7px;color:var(--border-strong);letter-spacing:1px;padding:16px 0;text-align:center;}
+.dash-placeholder{background:var(--card2);border:1px solid var(--border);padding:48px;text-align:center;}
+.dash-placeholder .ph-icon{font-family:var(--pixel);font-size:28px;color:var(--border-strong);margin-bottom:16px;}
+.dash-placeholder p{font-family:var(--pixel);font-size:8px;color:var(--border-strong);letter-spacing:2px;line-height:2;}
+
+/* ── POST TEMPLATES ── */
+.post-cards{display:grid;grid-template-columns:1fr;gap:16px;margin-top:28px;}
+.post-card{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--cyan);padding:24px;}
+.post-card h3{font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px;}
+.post-body{font-family:var(--retro);font-size:19px;color:var(--text);line-height:1.7;}
+.post-body .ph{color:var(--cyan);}
+.post-link{color:var(--yellow);font-family:monospace;}
+
+/* ── TOAST & FLASH ── */
+.toast{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:var(--black);border:2px solid var(--green);
+  padding:10px 24px;font-family:var(--pixel);font-size:8px;
+  color:var(--green);letter-spacing:1px;z-index:9000;
+  white-space:nowrap;animation:toast-in 0.3s ease;
+}
+@keyframes toast-in{from{opacity:0;transform:translateX(-50%) translateY(16px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.commission-flash{
+  position:fixed;top:80px;right:20px;z-index:9000;
+  background:var(--black);border:2px solid var(--yellow);
+  padding:10px 18px;font-family:var(--pixel);font-size:9px;
+  color:var(--yellow);letter-spacing:1px;
+  opacity:0;transition:opacity 0.3s;pointer-events:none;
+}
+
+/* ── DEBUG ── */
+.debug{position:fixed;bottom:16px;right:16px;background:rgba(10,10,15,0.95);border:1px solid var(--yellow);padding:10px;font-size:10px;color:var(--yellow);max-width:300px;max-height:140px;overflow-y:auto;z-index:999;font-family:monospace;}
+.debug-title{font-family:var(--pixel);font-size:7px;margin-bottom:6px;border-bottom:1px solid var(--yellow);padding-bottom:4px;}
+
+/* ── FOOTER ── */
+footer{padding:28px 60px;display:flex;justify-content:space-between;align-items:center;border-top:2px solid var(--border);background:var(--black);}
+.f-logo{font-family:var(--pixel);font-size:10px;letter-spacing:3px;color:var(--pink);}
+.f-right{font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:rgba(255,255,255,0.25);text-align:right;line-height:2;}
+
+/* ── FADE ── */
+.fade-up{opacity:0;transform:translateY(22px);transition:opacity 0.6s ease,transform 0.6s ease;}
+.fade-up.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav.nav-header{padding:12px 20px;}
+  .section{padding:48px 24px;}
+  .hero{padding:56px 24px 48px;}
+  .steps,.justif-grid,.signup-grid{grid-template-columns:1fr;}
+  .step-arr{display:none;}
+  h2.ph{font-size:13px;}
+  footer{flex-direction:column;gap:12px;text-align:center;padding:24px;}
+  .divider{margin:0 24px;}
+}
 </style>
 </head>
 <body>
 
+<!-- PASSWORD GATE -->
 <div id="gate">
   <div class="gate-logo">
     <svg viewBox="0 0 120 60">
@@ -259,291 +386,279 @@ footer{padding:32px 60px;display:flex;justify-content:space-between;align-items:
     </svg>
     <div class="gate-logo-title">MONKCOIN</div>
   </div>
-  <div class="gate-label">AMBASSADOR PROGRAM · ACCESS REQUIRED</div>
+  <div class="gate-sub">AMBASSADOR PROGRAM · ACCESS REQUIRED</div>
   <input id="pwInput" type="password" placeholder="ENTER ACCESS CODE" autocomplete="off"/>
   <button id="pwBtn" onclick="checkPW()">★ ENTER</button>
   <div id="pwError">✗ INCORRECT ACCESS CODE</div>
   <div class="gate-hint">CONTACT THE FOUNDER FOR ACCESS</div>
 </div>
+
+<!-- MAIN CONTENT -->
 <div id="content">
 
-<div class="scanline"></div>
-<div class="crt"></div>
+<div class="commission-flash" id="commFlash"></div>
 
 <!-- NAV -->
 <nav class="nav-header">
   <a href="index.html" class="nav-back">◄ HOME</a>
   <div class="nav-brand">
     <svg viewBox="0 0 120 60">
-      <defs><linearGradient id="ng"><stop offset="0%" style="stop-color:#ff10f0"/><stop offset="100%" style="stop-color:#00d4ff"/></linearGradient></defs>
+      <defs><linearGradient id="ng"><stop offset="0%" style="stop-color:#e000c8"/><stop offset="100%" style="stop-color:#0099bb"/></linearGradient></defs>
       <path d="M 15,30 C 15,18 22,13 30,13 C 38,13 45,18 52.5,30 C 60,42 67,47 75,47 C 83,47 90,42 90,33 C 90,24 83,19 75,19 C 67,19 60,24 52.5,30 C 45,36 38,41 30,41 C 22,41 15,36 15,27 Z" fill="none" stroke="url(#ng)" stroke-width="4" stroke-linecap="round"/>
     </svg>
     <div class="nav-title">MONKCOIN</div>
   </div>
-  <div class="nav-right">★ AMBASSADOR PROGRAM</div>
+  <div class="nav-tag">★ AMBASSADOR</div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
-  <div class="hero-eyebrow">Ambassador Program — Open Enrollment</div>
+  <div class="hero-badge"><div class="dot"></div> AMBASSADOR PROGRAM — OPEN ENROLLMENT</div>
   <h1>
-    <span class="ly">RECRUIT MEDITATORS.</span>
-    <span class="lp">EARN FOREVER.</span>
+    <span class="hy">RECRUIT MEDITATORS.</span>
+    <span class="hp">EARN FOR 5 YEARS.</span>
   </h1>
   <p class="hero-sub">
-    Every monk you bring into the network mines $MONK through meditation.<br/>
-    <strong style="color:var(--yellow)">You earn 30% of every single token they mint. On-chain. Automatically. Forever.</strong>
+    Every monk you bring in earns you <strong style="color:var(--pink)">30% of their $MONK</strong> — automatically minted to your wallet every time they meditate. For the next 5 years, every session they sit, you earn.
   </p>
-  <div class="hero-stat-row">
-    <div class="hero-stat hs-y">
-      <div class="hs-val">30%</div>
-      <div class="hs-label">COMMISSION RATE</div>
-    </div>
-    <div class="hero-stat hs-p">
-      <div class="hs-val">+1/sec</div>
-      <div class="hs-label">RECRUIT MINES</div>
-    </div>
-    <div class="hero-stat hs-c">
-      <div class="hs-val">0.3/sec</div>
-      <div class="hs-label">YOU EARN</div>
-    </div>
-    <div class="hero-stat hs-g">
-      <div class="hs-val">∞</div>
-      <div class="hs-label">DURATION</div>
-    </div>
+  <div class="stat-row">
+    <div class="stat-card sc-pk"><div class="stat-val">30%</div><div class="stat-lbl">COMMISSION RATE</div></div>
+    <div class="stat-card sc-cy"><div class="stat-val">+1/sec</div><div class="stat-lbl">RECRUIT MINES</div></div>
+    <div class="stat-card sc-gn"><div class="stat-val">+0.3/sec</div><div class="stat-lbl">YOU EARN</div></div>
+    <div class="stat-card sc-yw"><div class="stat-val">5 YRS</div><div class="stat-lbl">COMMISSION WINDOW</div></div>
   </div>
-  <div style="display:flex;gap:14px;flex-wrap:wrap;">
-    <a href="#signup" class="btn btn-yellow">★ BECOME AN AMBASSADOR</a>
-    <a href="#how" class="btn btn-cyan">HOW IT WORKS</a>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;">
+    <a href="#signup" class="btn btn-pink">★ BECOME AN AMBASSADOR</a>
+    <a href="#returns" class="btn btn-cyan">SEE 5-YEAR RETURNS</a>
+    <a href="monkcoin.html" class="btn btn-dark">OPEN MINING APP</a>
   </div>
 </section>
+
+<div class="divider"></div>
 
 <!-- HOW IT WORKS -->
-<section class="hiw-section" id="how">
-  <div class="section-label fade-up">The Process</div>
-  <h2 class="ph fade-up">FOUR STEPS TO <span class="yw">PASSIVE $MONK</span> INCOME.</h2>
-  <div class="steps fade-up">
-    <div class="step">
-      <div class="step-num">01</div>
-      <h3>CONNECT YOUR WALLET</h3>
-      <p>Connect your MetaMask wallet on this page. Your wallet address becomes your unique ambassador ID on the Polygon blockchain.</p>
-      <div class="step-arrow">→</div>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <h3>GET YOUR REFERRAL LINK</h3>
-      <p>Your unique link is auto-generated: <span style="color:var(--yellow)">monkcoin.app?ref=0xYOUR_WALLET</span>. Share it anywhere — LinkedIn, email, DMs, retreats.</p>
-      <div class="step-arrow">→</div>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <h3>YOUR RECRUITS MEDITATE</h3>
-      <p>Anyone who joins via your link is permanently linked to your wallet. They mine $MONK through closed-eye meditation sessions tracked by AI.</p>
-      <div class="step-arrow">→</div>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <h3>30% ARRIVES IN YOUR WALLET</h3>
-      <p>Every time a recruit mints their earned $MONK to the blockchain, 30% is automatically minted to your wallet in the same transaction cycle. No claims. No waiting.</p>
+<section class="section section-alt" id="how">
+  <div class="inner">
+    <div class="s-label fade-up">The Process</div>
+    <h2 class="ph fade-up">FOUR STEPS TO <span class="pk">PASSIVE $MONK</span> INCOME.</h2>
+    <div class="steps fade-up">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>CONNECT YOUR WALLET</h3>
+        <p>Connect MetaMask on this page. Your wallet address becomes your permanent ambassador ID on the Polygon blockchain.</p>
+        <div class="step-arr">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>GET YOUR LINK</h3>
+        <p>Your unique referral link auto-generates: <span style="color:var(--yellow)">monkcoin.app?ref=0xYOUR_WALLET</span>. Share it on LinkedIn, email, retreats, anywhere.</p>
+        <div class="step-arr">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>RECRUITS MEDITATE</h3>
+        <p>Anyone joining via your link is permanently linked to your wallet. AI tracks their closed eyes. Every second earns $MONK.</p>
+        <div class="step-arr">→</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <h3>30% TO YOUR WALLET</h3>
+        <p>Every time a recruit mints $MONK on-chain, 30% is automatically minted to your wallet simultaneously. No claims, no waiting. For 5 years.</p>
+      </div>
     </div>
   </div>
 </section>
+
+<div class="divider"></div>
 
 <!-- COMMISSION EXPLAINER -->
-<section class="commission-section">
-  <div class="comm-box fade-up">
-    <div class="section-label" style="justify-content:center;">The Math</div>
-    <h2 class="ph" style="text-align:center;">EVERY 1 <span class="yw">$MONK</span> MINTED BY YOUR RECRUIT<br/>= 0.3 <span class="pk">$MONK</span> TO YOU.</h2>
-    <div class="comm-formula">
-      <div class="cf-term" style="color:var(--green);">1 $MONK<br/><span style="font-family:var(--retro);font-size:14px;color:rgba(0,255,65,0.5);">(recruit mints)</span></div>
-      <div class="cf-op">×</div>
-      <div class="cf-term" style="color:var(--yellow);">30%</div>
-      <div class="cf-op">=</div>
-      <div class="cf-term" style="color:var(--pink);">0.3 $MONK<br/><span style="font-family:var(--retro);font-size:14px;color:rgba(255,16,240,0.6);">(to your wallet)</span></div>
-    </div>
-    <p>If you recruit 10 people who each meditate 20 minutes a day, you passively earn <strong style="color:var(--yellow)">360 $MONK every single day</strong> — while doing nothing except sitting quietly.</p>
-  </div>
+<section class="section">
+  <div class="inner">
+    <div class="s-label fade-up">The Math</div>
+    <h2 class="ph fade-up">EVERY 1 <span class="yw">$MONK</span> YOUR RECRUIT MINTS<br/>= 0.3 <span class="pk">$MONK</span> TO YOU. AUTOMATICALLY.</h2>
 
-  <div class="comm-justification fade-up">
-    <h3>// WHY 30%? THE JUSTIFICATION.</h3>
-    <div class="justif-item">
-      <div class="ji-icon">🧘</div>
-      <div class="ji-body">
+    <div class="formula-box fade-up">
+      <div class="cf-row">
+        <div class="cf-term" style="color:var(--green);">1 $MONK<br/><span style="font-family:var(--retro);font-size:14px;color:var(--muted);">recruit mints</span></div>
+        <div class="cf-op">×</div>
+        <div class="cf-term" style="color:var(--yellow);">30%</div>
+        <div class="cf-op">=</div>
+        <div class="cf-term" style="color:var(--pink);">0.3 $MONK<br/><span style="font-family:var(--retro);font-size:14px;color:var(--muted);">to your wallet</span></div>
+      </div>
+      <p style="font-family:var(--retro);font-size:20px;color:var(--muted);line-height:1.6;">
+        Recruit 10 people meditating 20 min/day →
+        <strong style="color:var(--text)">you earn 360 $MONK every day</strong>
+        while doing absolutely nothing.
+      </p>
+    </div>
+
+    <div class="justif-grid fade-up" style="margin-top:40px;">
+      <div class="s-label" style="grid-column:1/-1">Why 30%? The Justification.</div>
+      <div class="ji">
+        <div class="ji-icon">🧘</div>
         <strong>AMBASSADORS DO THE HARDEST WORK</strong>
-        <span>Recruiting meditators is the single most critical growth mechanic in MONKCOIN's go-to-market. Without ambassadors seeding the network through their personal credibility and LinkedIn reach, cold user acquisition costs are prohibitive. 30% is fair compensation for driving the network's entire growth engine.</span>
+        <span>Recruiting meditators is MONKCOIN's single most critical growth mechanic. Without ambassadors seeding the network through personal credibility and LinkedIn reach, cold user acquisition costs are prohibitive. 30% fairly compensates the people driving the entire growth engine.</span>
       </div>
-    </div>
-    <div class="justif-item">
-      <div class="ji-icon">🔗</div>
-      <div class="ji-body">
-        <strong>SUPPLY IS ELASTIC — NEW MINT, NOT DILUTION</strong>
-        <span>Ambassador commissions are minted as new tokens, not taken from the recruit's balance. The recruit mines 1 $MONK, receives 1 $MONK. The protocol mints an additional 0.3 $MONK to the ambassador. Both parties benefit. Supply expands proportionally with proven network activity — a fundamentally healthy tokenomic signal.</span>
+      <div class="ji">
+        <div class="ji-icon">🔗</div>
+        <strong>NEW MINT — NOT TAKEN FROM RECRUIT</strong>
+        <span>The recruit mines 1 $MONK and receives 1 $MONK in full. The protocol mints an additional 0.3 $MONK to the ambassador. No dilution of the recruit's reward. Supply expands proportionally with real network activity — a healthy tokenomic signal.</span>
       </div>
-    </div>
-    <div class="justif-item">
-      <div class="ji-icon">📈</div>
-      <div class="ji-body">
-        <strong>ALIGNED INCENTIVES — AMBASSADOR WANTS RECRUITS TO MEDITATE MORE</strong>
-        <span>At 30%, an ambassador earns more when their recruits sit longer and more consistently. This directly aligns financial incentives with MONKCOIN's core mission: getting more humans to meditate more often. The commission structure is the growth hack and the product simultaneously.</span>
+      <div class="ji">
+        <div class="ji-icon">📈</div>
+        <strong>ALIGNED INCENTIVES</strong>
+        <span>At 30%, ambassadors earn more when recruits meditate longer and more consistently. This aligns financial incentives directly with MONKCOIN's mission: more humans meditating more often. The commission structure is the growth hack and the product simultaneously.</span>
       </div>
-    </div>
-    <div class="justif-item">
-      <div class="ji-icon">⚡</div>
-      <div class="ji-body">
-        <strong>BENCHMARKED AGAINST WEB3 REFERRAL STANDARDS</strong>
-        <span>Leading earn-to-X protocols typically offer 10–20% referral rates. MONKCOIN's 30% reflects the early-stage priority of network growth over supply conservation — consistent with how Axie Infinity, STEPN, and Helium incentivised their earliest community builders at above-market rates to seed viral distribution.</span>
+      <div class="ji">
+        <div class="ji-icon">⚡</div>
+        <strong>BENCHMARKED VS WEB3 REFERRALS</strong>
+        <span>Leading earn-to-X protocols offer 10–20% referral rates. MONKCOIN's 30% reflects the early-stage priority of network growth — consistent with how Axie Infinity, STEPN, and Helium incentivised their earliest community builders at above-market rates.</span>
       </div>
-    </div>
-    <div class="justif-item" style="border:none;">
-      <div class="ji-icon">🌍</div>
-      <div class="ji-body">
-        <strong>MONASTERY & INSTITUTION MULTIPLIER</strong>
-        <span>An ambassador who onboards a single monastery with 50 meditating monks earns 30% of 50 users' daily meditation. That is a meaningful passive income stream that rewards institutional outreach — the highest-leverage growth activity for MONKCOIN's B2B channel.</span>
+      <div class="ji" style="grid-column:1/-1;border-left-color:var(--purple);">
+        <div class="ji-icon">🌍</div>
+        <strong>5-YEAR WINDOW — NOT FOREVER — BECAUSE SUPPLY MUST BE MANAGED</strong>
+        <span>Commission is active for 5 years from the recruit's first mint. After Year 5, the recruit's mining continues but the ambassador commission sunsets. This protects long-term token supply integrity while still giving ambassadors a significant multi-year income window — long enough to be genuinely valuable, finite enough to be economically sustainable.</span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SIGNUP / DASHBOARD -->
-<section class="signup-section" id="signup">
-  <div class="section-label fade-up">Get Started</div>
-  <h2 class="ph fade-up">CONNECT WALLET.<br/>GET YOUR <span class="yw">REFERRAL LINK.</span><br/>START EARNING.</h2>
+<div class="divider"></div>
 
-  <div class="signup-grid fade-up">
-
-    <!-- LEFT: CONNECT -->
-    <div class="signup-left">
-      <div class="connect-panel">
-        <h3>★ STEP 1: CONNECT WALLET</h3>
-        <p>Connect your MetaMask wallet on Polygon network. This is your ambassador identity — all commissions are minted directly to this address.</p>
-
-        <button id="connectBtn" class="btn btn-yellow" style="width:100%;margin-bottom:16px;">CONNECT METAMASK</button>
-
-        <div id="walletInfo" style="display:none;">
-          <div class="wallet-display" id="walletAddr"></div>
-
-          <div style="font-family:var(--pixel);font-size:8px;color:rgba(0,255,65,0.4);letter-spacing:1px;margin-bottom:16px;line-height:1.8;">
-            ✓ WALLET CONNECTED<br/>
-            ✓ POLYGON NETWORK<br/>
-            ✓ AMBASSADOR ID GENERATED
-          </div>
-
-          <div style="font-family:var(--pixel);font-size:9px;color:var(--green);text-shadow:0 0 10px var(--green);margin-bottom:12px;letter-spacing:1px;">
-            YOUR REFERRAL LINK:
-          </div>
-          <div class="ref-link-box" id="refLinkBox" onclick="copyLink()">
-            Connecting...
-          </div>
-          <div class="ref-btn-row">
-            <button class="btn btn-yellow" onclick="copyLink()" style="font-size:8px;padding:12px 18px;">⧉ COPY LINK</button>
-            <button class="btn btn-cyan" onclick="shareLinkedIn()" style="font-size:8px;padding:12px 18px;">↗ LINKEDIN</button>
-            <button class="btn btn-pink" onclick="shareEmail()" style="font-size:8px;padding:12px 18px;">✉ EMAIL</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- LinkedIn post preview -->
-      <div id="postPreview" style="display:none;margin-top:24px;">
-        <div class="preview-box" style="background:var(--card2);border:2px solid rgba(0,255,255,0.2);padding:24px;">
-          <h3 style="font-family:var(--pixel);font-size:9px;color:var(--cyan);letter-spacing:2px;margin-bottom:16px;">// LINKEDIN POST PREVIEW</h3>
-          <div class="preview-post" id="postText"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RIGHT: DASHBOARD -->
-    <div>
-      <div class="dashboard-panel" id="dashPanel">
-        <div class="dash-title">★ AMBASSADOR DASHBOARD</div>
-
-        <div class="dash-stat">
-          <div class="dash-stat-label">TOTAL RECRUITS</div>
-          <div class="dash-stat-val" id="dashRecruits">0</div>
-        </div>
-        <div class="dash-stat">
-          <div class="dash-stat-label">COMMISSION EARNED (ALL TIME)</div>
-          <div class="dash-stat-val yellow" id="dashCommission">0 $MONK</div>
-        </div>
-        <div class="dash-stat">
-          <div class="dash-stat-label">ESTIMATED DAILY EARNING</div>
-          <div class="dash-stat-val pink" id="dashDaily">0 $MONK/day</div>
-        </div>
-
-        <div style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.3);letter-spacing:1px;line-height:2;margin-top:8px;margin-bottom:20px;">
-          BASED ON 20 MIN/DAY AVERAGE SESSION<br/>
-          30% COMMISSION ON ALL RECRUITS' MINTS
-        </div>
-
-        <div class="recruit-table-section">
-          <div class="recruit-table-title">// YOUR RECRUITS</div>
-          <div class="recruit-list" id="recruitList">
-            <div class="no-recruits">NO RECRUITS YET<br/>SHARE YOUR LINK TO BEGIN</div>
-          </div>
-        </div>
-
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(0,255,65,0.1);">
-          <a href="monkcoin.html" class="btn btn-green" style="width:100%;display:block;text-align:center;font-size:8px;">▶ OPEN MINING APP</a>
-        </div>
-      </div>
-
-      <!-- Pre-connect placeholder -->
-      <div id="dashPlaceholder" style="background:var(--card2);border:2px solid rgba(0,255,65,0.1);padding:40px;text-align:center;">
-        <div style="font-family:var(--pixel);font-size:32px;color:rgba(0,255,65,0.15);margin-bottom:20px;">★</div>
-        <div style="font-family:var(--pixel);font-size:9px;color:rgba(0,255,65,0.3);letter-spacing:2px;line-height:2;">
-          CONNECT WALLET<br/>TO SEE YOUR<br/>AMBASSADOR DASHBOARD
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- WHAT TO SAY SECTION -->
-<section class="preview-section">
-  <div class="preview-inner">
-    <div class="section-label fade-up">Messaging Guide</div>
-    <h2 class="ph fade-up">WHAT TO SAY ON <span class="cy">LINKEDIN.</span></h2>
-    <p style="font-family:var(--retro);font-size:21px;color:rgba(0,255,65,0.6);line-height:1.6;max-width:640px;margin-bottom:0;" class="fade-up">
-      You're not selling. You're sharing a practice you believe in, and the fact that it now pays.<br/>
-      Here are three angles. Use whichever fits your voice.
+<!-- 5-YEAR RETURNS TABLE -->
+<section class="section section-dark" id="returns">
+  <div class="inner">
+    <div class="s-label fade-up">5-Year Ambassador Returns</div>
+    <h2 class="ph fade-up" style="color:#fff;">FROM <span style="color:#00c032">CONSERVATIVE</span> TO<br/><span style="color:#ff10f0">WIDE ADOPTION.</span> YOUR 5-YEAR EARNINGS.</h2>
+    <p class="returns-intro fade-up">
+      Six adoption scenarios. Five ambassador profiles. Same 30% commission, same 5-year window. Pick your scenario, see what you earn. All figures are speculative — but the math is exact.
+    </p>
+    <p class="returns-note fade-up">
+      MONK EARNED = RECRUITS &times; SESSION (SEC/DAY) &times; 0.30 &times; 365 DAYS &times; 5 YEARS &middot; VALUE = $MONK &times; TOKEN PRICE
     </p>
 
-    <div style="display:grid;grid-template-columns:1fr;gap:20px;margin-top:32px;" class="fade-up">
-      <div class="preview-box">
-        <h3>// ANGLE 1: THE PRACTITIONER</h3>
-        <div class="preview-post">
-          I've been meditating for years. It changed how I lead, how I think, and how I make decisions under pressure.<br/><br/>
-          Now there's a protocol that rewards meditation on-chain — and I'm an early ambassador.<br/><br/>
-          MONKCOIN uses AI to verify your eyes are closed. Every minute you sit earns $MONK tokens. When mass adoption hits, these are pre-liquidity positions.<br/><br/>
-          If you're a founder, executive, or investor who meditates — or who should — this is the conversation to have now.<br/><br/>
-          <span class="ph" style="color:var(--cyan);">Join via my link → </span><span class="link-placeholder" id="preview-link-1">[YOUR LINK]</span><br/>
-          <span class="ph">#MONKCOIN #Meditation #Web3 #MMGA</span>
+    <div class="scenario-tabs fade-up" style="flex-wrap:wrap;">
+      <button class="stab stab-a active" onclick="showScenario('a')" title="Token: &euro;0.001">&#128374; CONSERVATIVE</button>
+      <button class="stab stab-b" onclick="showScenario('b')" title="Token: &euro;0.005">&#127793; EARLY ADOPTER</button>
+      <button class="stab stab-c" onclick="showScenario('c')" title="Token: &euro;0.015">&#128200; GROWING</button>
+      <button class="stab stab-d" onclick="showScenario('d')" title="Token: &euro;0.05">&#9889; TRACTION</button>
+      <button class="stab stab-e" onclick="showScenario('e')" title="Token: &euro;0.10">&#128293; MOMENTUM</button>
+      <button class="stab" style="border-color:#ff10f0;color:#ff10f0;" id="stab-f" onclick="showScenario('f')" title="Token: &euro;0.15">&#127775; WIDE ADOPTION</button>
+    </div>
+
+    <!-- shared table template rendered by JS -->
+    <div id="returns-table-wrap" class="fade-up"></div>
+
+    <p class="ret-disclaimer fade-up">
+      &#9888; SPECULATIVE PROJECTIONS FOR STRATEGIC CONVERSATION ONLY. NOT FINANCIAL ADVICE. $MONK HAS NO CURRENT MONETARY VALUE AND IS NON-TRANSFERABLE. TOKEN PRICE APPRECIATION IS NOT GUARANTEED. COMMISSION WINDOW IS 5 YEARS FROM EACH RECRUIT'S FIRST MINT. ALL PARTICIPATION INVOLVES SIGNIFICANT RISK INCLUDING TOTAL LOSS.
+    </p>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- SIGNUP / DASHBOARD -->
+<section class="section section-alt" id="signup">
+  <div class="inner">
+    <div class="s-label fade-up">Get Started</div>
+    <h2 class="ph fade-up">CONNECT WALLET. GET LINK. <span class="pk">START EARNING.</span></h2>
+
+    <div class="signup-grid fade-up">
+
+      <!-- LEFT: CONNECT -->
+      <div>
+        <div class="connect-card">
+          <h3>★ STEP 1: CONNECT WALLET</h3>
+          <p>Connect MetaMask on Polygon. All commissions are minted directly to this address — no intermediary, no claim process.</p>
+
+          <button id="connectBtn" class="btn btn-yellow" style="width:100%;margin-bottom:16px;">CONNECT METAMASK</button>
+
+          <div id="walletInfo" style="display:none;">
+            <div class="wallet-display" id="walletAddr"></div>
+            <div class="connect-confirm">
+              ✓ WALLET CONNECTED<br/>
+              ✓ POLYGON NETWORK<br/>
+              ✓ AMBASSADOR ID ACTIVE<br/>
+              ✓ 5-YEAR COMMISSION WINDOW STARTS ON FIRST RECRUIT MINT
+            </div>
+            <div class="ref-label">YOUR REFERRAL LINK — CLICK TO COPY</div>
+            <div class="ref-link-box" id="refLinkBox" onclick="copyLink()">Generating...</div>
+            <div class="btn-row">
+              <button class="btn btn-yellow" onclick="copyLink()" style="font-size:7px;padding:10px 14px;">⧉ COPY</button>
+              <button class="btn btn-cyan" onclick="shareLinkedIn()" style="font-size:7px;padding:10px 14px;">↗ LINKEDIN</button>
+              <button class="btn btn-pink" onclick="shareEmail()" style="font-size:7px;padding:10px 14px;">✉ EMAIL</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post preview (shown after connect) -->
+        <div id="postPreview" style="display:none;margin-top:20px;">
+          <div style="background:var(--white);border:1px solid var(--border);border-left:3px solid var(--cyan);padding:20px;">
+            <div style="font-family:var(--pixel);font-size:8px;letter-spacing:2px;color:var(--cyan);margin-bottom:14px;">// SUGGESTED LINKEDIN POST</div>
+            <div id="previewPostBody" class="post-body"></div>
+          </div>
         </div>
       </div>
 
-      <div class="preview-box">
-        <h3>// ANGLE 2: THE INVESTOR FRAME</h3>
-        <div class="preview-post">
-          The attention economy is broken. Everyone knows it. Nobody has built the inversion — until now.<br/><br/>
-          MONKCOIN: you mine cryptocurrency through meditation. AI verifies your eyes are closed. Each second of stillness mints a token. Supply is capped by human attention — the scarcest resource on earth.<br/><br/>
-          I'm an early ambassador. Pre-liquidity. No purchase required — you earn $MONK through practice.<br/><br/>
-          If you want a position in the world's first Proof of Presence protocol, the link is below.<br/><br/>
-          <span class="ph" style="color:var(--cyan);">→ </span><span class="link-placeholder" id="preview-link-2">[YOUR LINK]</span><br/>
-          <span class="ph">#Crypto #Wellness #BlockChain #MONKCOIN</span>
+      <!-- RIGHT: DASHBOARD -->
+      <div>
+        <div class="dash-card" id="dashCard">
+          <div class="dash-title">★ YOUR AMBASSADOR DASHBOARD</div>
+          <div class="ds"><div class="ds-lbl">TOTAL RECRUITS</div><div class="ds-val gn" id="dRecruits">0</div></div>
+          <div class="ds"><div class="ds-lbl">COMMISSION EARNED (ALL TIME)</div><div class="ds-val pk" id="dCommission">0 $MONK</div></div>
+          <div class="ds"><div class="ds-lbl">EST. DAILY EARNING</div><div class="ds-val cy" id="dDaily">0 $MONK/day</div></div>
+          <div class="ds"><div class="ds-lbl">COMMISSION WINDOW</div><div class="ds-val yw">5 YEARS PER RECRUIT</div></div>
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+            <div style="font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;">// YOUR RECRUITS</div>
+            <div class="recruit-list" id="recruitList">
+              <div class="no-recruits">NO RECRUITS YET — SHARE YOUR LINK</div>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <a href="monkcoin.html" class="btn btn-green" style="width:100%;display:block;text-align:center;font-size:7px;">▶ OPEN MINING APP</a>
+          </div>
+        </div>
+
+        <div class="dash-placeholder" id="dashPlaceholder">
+          <div class="ph-icon">★</div>
+          <p>CONNECT YOUR WALLET<br/>TO SEE YOUR<br/>AMBASSADOR DASHBOARD</p>
         </div>
       </div>
+    </div>
+  </div>
+</section>
 
-      <div class="preview-box">
-        <h3>// ANGLE 3: THE DIRECT ASK</h3>
-        <div class="preview-post">
-          Quick question: do you meditate?<br/><br/>
-          I'm building a network of meditators who earn crypto — $MONK — every time they sit. AI tracks that your eyes are closed. Eyes closed = mining. Stillness = currency.<br/><br/>
-          I get 30% of everything my recruits mine. You get 100% of what you mine, plus your own 30% on anyone you bring in.<br/><br/>
-          Takes 30 seconds to set up. No money required. Just close your eyes.<br/><br/>
-          <span class="ph" style="color:var(--cyan);">Link: </span><span class="link-placeholder" id="preview-link-3">[YOUR LINK]</span><br/>
-          <span class="ph">#MONKCOIN #Meditation #PassiveIncome</span>
-        </div>
+<div class="divider"></div>
+
+<!-- LINKEDIN TEMPLATES -->
+<section class="section">
+  <div class="inner">
+    <div class="s-label fade-up">Messaging Guide</div>
+    <h2 class="ph fade-up">THREE POSTS. PICK YOUR <span class="cy">VOICE.</span></h2>
+    <div class="post-cards fade-up">
+      <div class="post-card">
+        <h3>// ANGLE 1 — THE PRACTITIONER</h3>
+        <div class="post-body">I've been meditating for years. It changed how I lead, think, and make decisions under pressure.<br/><br/>
+        Now there's a protocol that rewards meditation on-chain. MONKCOIN uses AI to verify your eyes are closed — every minute of stillness earns $MONK tokens. Pre-liquidity. No purchase required.<br/><br/>
+        If you're a founder or executive who meditates — or who should — this is the conversation to have now.<br/><br/>
+        <span class="ph">Join via my link → </span><span class="post-link" id="pl1">[connect wallet to generate]</span><br/>
+        <span class="ph">#MONKCOIN #Meditation #Web3 #MMGA</span></div>
+      </div>
+      <div class="post-card" style="border-left-color:var(--pink);">
+        <h3 style="color:var(--pink);">// ANGLE 2 — THE INVESTOR FRAME</h3>
+        <div class="post-body">The attention economy is broken. Everyone knows it.<br/><br/>
+        MONKCOIN inverts it: you mine cryptocurrency through meditation. AI verifies your eyes are closed. Each second of stillness mints a token. Supply is capped by human attention — the scarcest resource alive.<br/><br/>
+        I'm an early ambassador. Pre-liquidity. No ICO, no presale — you earn $MONK through practice or you don't hold it.<br/><br/>
+        <span class="ph">→ </span><span class="post-link" id="pl2">[connect wallet to generate]</span><br/>
+        <span class="ph">#Crypto #Wellness #BlockChain #MONKCOIN</span></div>
+      </div>
+      <div class="post-card" style="border-left-color:var(--green);">
+        <h3 style="color:var(--green);">// ANGLE 3 — THE DIRECT ASK</h3>
+        <div class="post-body">Do you meditate?<br/><br/>
+        I'm building a network of meditators who earn $MONK crypto every time they sit. AI tracks closed eyes. Eyes closed = mining. Stillness = currency.<br/><br/>
+        Takes 30 seconds to set up. No money required. Just close your eyes — and earn for 5 years while the coin grows.<br/><br/>
+        <span class="ph">Link: </span><span class="post-link" id="pl3">[connect wallet to generate]</span><br/>
+        <span class="ph">#MONKCOIN #Meditation #PassiveIncome</span></div>
       </div>
     </div>
   </div>
@@ -561,188 +676,27 @@ footer{padding:32px 60px;display:flex;justify-content:space-between;align-items:
   <div class="f-right">AMBASSADOR PROGRAM · © 2026<br/>MEDITATION GREAT AGAIN</div>
 </footer>
 
+</div><!-- /content -->
+
 <script>
-const BACKEND   = 'https://mmga-backend2.onrender.com';
-const CHAIN_ID  = '0x89';
-const APP_URL   = 'monkcoin.html'; // relative — change to full URL in production
+const BACKEND  = 'https://mmga-backend2.onrender.com';
+const CHAIN_ID = '0x89';
+const APP_URL  = 'monkcoin.html';
+const AMB_PW   = 'monk2026';
+const COMMISSION_RATE = 0.30;
+const COMMISSION_YEARS = 5;
 
 let ambAddress = null;
 
-// ─── DEBUG ───────────────────────────────────────────────
-function log(msg) {
-  const t = new Date().toLocaleTimeString();
-  console.log('[' + t + ']', msg);
-  const d = document.getElementById('debugLog');
-  d.innerHTML = '<div style="margin-bottom:3px;border-bottom:1px solid rgba(255,240,0,0.15);padding-bottom:3px;">[' + t + '] ' + msg + '</div>' + d.innerHTML;
-  while (d.children.length > 10) d.removeChild(d.lastChild);
-}
-
-// ─── CONNECT WALLET ──────────────────────────────────────
-document.getElementById('connectBtn').onclick = async () => {
-  try {
-    if (!window.ethereum) {
-      alert('Install MetaMask first.\n\nmetamask.io');
-      window.open('https://metamask.io/download/', '_blank');
-      return;
-    }
-    log('Connecting wallet...');
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    ambAddress = accounts[0];
-
-    // Switch to Polygon
-    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
-    if (chainId !== CHAIN_ID) {
-      try {
-        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: CHAIN_ID }] });
-      } catch(e) {
-        if (e.code === 4902) {
-          await window.ethereum.request({
-            method: 'wallet_addEthereumChain',
-            params: [{ chainId: CHAIN_ID, chainName: 'Polygon Mainnet', rpcUrls: ['https://polygon-rpc.com'], nativeCurrency: { name: 'MATIC', symbol: 'MATIC', decimals: 18 }, blockExplorerUrls: ['https://polygonscan.com'] }]
-          });
-        }
-      }
-    }
-
-    log('✓ Connected: ' + ambAddress.slice(0,10) + '...');
-    initDashboard(ambAddress);
-
-  } catch(e) {
-    log('❌ ' + e.message);
-    alert('Connection failed:\n\n' + e.message);
-  }
-};
-
-// ─── INIT DASHBOARD ──────────────────────────────────────
-function initDashboard(addr) {
-  const lower = addr.toLowerCase();
-
-  // Update UI
-  document.getElementById('connectBtn').style.display = 'none';
-  document.getElementById('walletInfo').style.display = 'block';
-  document.getElementById('walletAddr').textContent = addr.slice(0,8) + '...' + addr.slice(-6) + ' (Polygon)';
-
-  // Generate referral link
-  const refLink = window.location.origin + '/' + APP_URL + '?ref=' + lower;
-  document.getElementById('refLinkBox').textContent = refLink;
-
-  // Show post preview with real link
-  updatePostPreviews(refLink);
-  document.getElementById('postPreview').style.display = 'block';
-
-  // Show dashboard, hide placeholder
-  document.getElementById('dashPanel').classList.add('active');
-  document.getElementById('dashPlaceholder').style.display = 'none';
-
-  // Load recruit data from localStorage
-  loadDashboardData(lower);
-
-  log('✓ Ambassador dashboard ready');
-  showToast('★ AMBASSADOR LINK GENERATED');
-}
-
-function loadDashboardData(addr) {
-  const recruits = JSON.parse(localStorage.getItem('amb_recruits_' + addr) || '[]');
-  const commission = parseFloat(localStorage.getItem('amb_commission_' + addr) || '0');
-  const dates = JSON.parse(localStorage.getItem('amb_recruit_dates_' + addr) || '{}');
-
-  document.getElementById('dashRecruits').textContent = recruits.length;
-  document.getElementById('dashCommission').textContent = Math.floor(commission) + ' $MONK';
-
-  // Estimate daily: recruits × 20min × 60sec × 30% commission
-  const dailyEst = Math.floor(recruits.length * 20 * 60 * 0.30);
-  document.getElementById('dashDaily').textContent = dailyEst + ' $MONK/day';
-
-  // Render recruit list
-  const list = document.getElementById('recruitList');
-  if (recruits.length === 0) {
-    list.innerHTML = '<div class="no-recruits">NO RECRUITS YET<br/>SHARE YOUR LINK TO BEGIN</div>';
-  } else {
-    list.innerHTML = recruits.map((r, i) => {
-      const d = dates[r] ? new Date(dates[r]).toLocaleDateString() : '—';
-      return '<div class="recruit-item"><span class="ri-addr">#' + (i+1) + ' ' + r.slice(0,8) + '...' + r.slice(-4) + '</span><span class="ri-date">' + d + '</span></div>';
-    }).join('');
-  }
-}
-
-// ─── COPY LINK ───────────────────────────────────────────
-function copyLink() {
-  const link = document.getElementById('refLinkBox').textContent;
-  navigator.clipboard.writeText(link).then(() => {
-    showToast('✓ LINK COPIED TO CLIPBOARD');
-  }).catch(() => {
-    prompt('Copy your referral link:', link);
-  });
-}
-
-// ─── SHARE LINKEDIN ──────────────────────────────────────
-function shareLinkedIn() {
-  const link = document.getElementById('refLinkBox').textContent;
-  const text = encodeURIComponent(
-    'I\'m an ambassador for MONKCOIN — the world\'s first Proof of Presence protocol.\n\n' +
-    'You mine crypto ($MONK) through meditation. AI verifies your eyes are closed. Eyes closed = mining. Stillness = currency.\n\n' +
-    'Pre-liquidity. No purchase needed. Just close your eyes and earn.\n\n' +
-    'Join via my link: ' + link + '\n\n#MONKCOIN #Meditation #MMGA #Web3'
-  );
-  window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(link) + '&summary=' + text, '_blank');
-}
-
-// ─── SHARE EMAIL ─────────────────────────────────────────
-function shareEmail() {
-  const link = document.getElementById('refLinkBox').textContent;
-  const subject = encodeURIComponent('MONKCOIN — Mine crypto through meditation');
-  const body = encodeURIComponent(
-    'Hi,\n\n' +
-    'I wanted to share something unusual with you.\n\n' +
-    'MONKCOIN is the world\'s first Proof of Presence protocol. You mine cryptocurrency ($MONK) through meditation — AI tracks that your eyes are closed. Every second of stillness earns tokens. Pre-liquidity, no purchase required.\n\n' +
-    'I\'m an early ambassador. Join via my link below and I\'ll earn a 30% commission on every token you mine (on top of your full 100%):\n\n' +
-    link + '\n\n' +
-    'Happy to talk through it if you\'re curious.\n\nBest,'
-  );
-  window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
-}
-
-// ─── UPDATE POST PREVIEWS ────────────────────────────────
-function updatePostPreviews(link) {
-  ['preview-link-1','preview-link-2','preview-link-3'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = link;
-  });
-}
-
-// ─── TOAST ───────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
-}
-
-// ─── SCROLL OBSERVER ─────────────────────────────────────
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
-  });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-// ─── METAMASK EVENTS ─────────────────────────────────────
-if (window.ethereum) {
-  window.ethereum.on('accountsChanged', () => location.reload());
-  window.ethereum.on('chainChanged', () => location.reload());
-}
-
-
-// ─── PASSWORD GATE ───────────────────────────────────────
-const AMB_PASSWORD = 'monk2026';
+// ─── PASSWORD ─────────────────────────────────────────────
 function checkPW() {
   const val = document.getElementById('pwInput').value.toLowerCase().trim();
   const err = document.getElementById('pwError');
-  if (val === AMB_PASSWORD) {
+  if (val === AMB_PW) {
     document.getElementById('gate').style.display = 'none';
     document.getElementById('content').style.display = 'block';
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    renderReturnsTable('a');
   } else {
     err.style.display = 'block';
     document.getElementById('pwInput').value = '';
@@ -751,12 +705,207 @@ function checkPW() {
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
-  const inp = document.getElementById('pwInput');
-  if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkPW(); });
+  document.getElementById('pwInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkPW();
+  });
 });
 
-log('✅ Ambassador page ready');
+// ─── DEBUG ────────────────────────────────────────────────
+function log(msg) {
+  const t = new Date().toLocaleTimeString();
+  console.log('[' + t + ']', msg);
+  const d = document.getElementById('debugLog');
+  d.innerHTML = '<div style="margin-bottom:3px;padding-bottom:3px;border-bottom:1px solid rgba(255,240,0,0.15)">[' + t + '] ' + msg + '</div>' + d.innerHTML;
+  while (d.children.length > 10) d.removeChild(d.lastChild);
+}
+
+// ─── CONNECT ──────────────────────────────────────────────
+document.getElementById('connectBtn').onclick = async () => {
+  try {
+    if (!window.ethereum) { alert('Install MetaMask first.\nmetamask.io'); window.open('https://metamask.io/download/','_blank'); return; }
+    log('Connecting...');
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    ambAddress = accounts[0];
+    const chainId = await window.ethereum.request({ method: 'eth_chainId' });
+    if (chainId !== CHAIN_ID) {
+      try {
+        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: CHAIN_ID }] });
+      } catch(e) {
+        if (e.code === 4902) {
+          await window.ethereum.request({ method: 'wallet_addEthereumChain', params: [{ chainId: CHAIN_ID, chainName: 'Polygon Mainnet', rpcUrls: ['https://polygon-rpc.com'], nativeCurrency: { name:'MATIC', symbol:'MATIC', decimals:18 }, blockExplorerUrls: ['https://polygonscan.com'] }] });
+        }
+      }
+    }
+    log('Connected: ' + ambAddress.slice(0,10) + '...');
+    initDashboard(ambAddress);
+  } catch(e) {
+    log('Error: ' + e.message);
+    alert('Connection failed:\n' + e.message);
+  }
+};
+
+function initDashboard(addr) {
+  const lower = addr.toLowerCase();
+  document.getElementById('connectBtn').style.display = 'none';
+  document.getElementById('walletInfo').style.display = 'block';
+  document.getElementById('walletAddr').textContent = addr.slice(0,8) + '...' + addr.slice(-6) + ' (Polygon)';
+  const link = window.location.origin + '/' + APP_URL + '?ref=' + lower;
+  document.getElementById('refLinkBox').textContent = link;
+  updatePostLinks(link);
+  document.getElementById('postPreview').style.display = 'block';
+  document.getElementById('previewPostBody').innerHTML =
+    "I'm an ambassador for MONKCOIN — Proof of Presence protocol. Mine crypto through meditation. Pre-liquidity. No purchase needed.<br/><br/>" +
+    '<span style="color:var(--cyan)">Join: </span><span style="color:var(--yellow);font-family:monospace">' + link + '</span><br/>' +
+    '<span style="color:var(--cyan)">#MONKCOIN #Meditation #MMGA</span>';
+  document.getElementById('dashCard').classList.add('active');
+  document.getElementById('dashPlaceholder').style.display = 'none';
+  loadDash(lower);
+  showToast('Ambassador link generated!');
+}
+
+function loadDash(addr) {
+  const recruits = JSON.parse(localStorage.getItem('amb_recruits_' + addr) || '[]');
+  const commission = parseFloat(localStorage.getItem('amb_commission_' + addr) || '0');
+  const dates = JSON.parse(localStorage.getItem('amb_recruit_dates_' + addr) || '{}');
+  document.getElementById('dRecruits').textContent = recruits.length;
+  document.getElementById('dCommission').textContent = Math.floor(commission) + ' $MONK';
+  const daily = Math.floor(recruits.length * 20 * 60 * COMMISSION_RATE);
+  document.getElementById('dDaily').textContent = daily + ' $MONK/day';
+  const list = document.getElementById('recruitList');
+  if (recruits.length === 0) {
+    list.innerHTML = '<div class="no-recruits">NO RECRUITS YET — SHARE YOUR LINK</div>';
+  } else {
+    list.innerHTML = recruits.map((r, i) => {
+      const d = dates[r] ? new Date(dates[r]).toLocaleDateString() : '—';
+      return '<div class="ri"><span class="ri-addr">#' + (i+1) + ' ' + r.slice(0,8) + '...' + r.slice(-4) + '</span><span class="ri-date">' + d + '</span></div>';
+    }).join('');
+  }
+}
+
+function updatePostLinks(link) {
+  ['pl1','pl2','pl3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = link;
+  });
+}
+
+// ─── RETURNS TABLE ────────────────────────────────────────
+const MONK_5YR = [
+  { label: 'STARTER',     detail: '10 recruits · 20 min/day',    monk: 6570000  },
+  { label: 'AMBASSADOR',  detail: '50 recruits · 20 min/day',    monk: 32850000 },
+  { label: 'MONASTERY',   detail: '30 monks · 60 min/day',       monk: 59130000 },
+  { label: 'UNIVERSITY',  detail: '100 students · 15 min/day',   monk: 24637500 },
+  { label: 'CORPORATE',   detail: '200 employees · 10 min/day',  monk: 21900000 },
+];
+const SCENARIOS = {
+  a: { label:'CONSERVATIVE',  price:0.001, color:'#00c032', desc:'Token stays niche. Small community. Utility use only. No exchange listing.',              users:'< 10K'  },
+  b: { label:'EARLY ADOPTER', price:0.005, color:'#00d4ff', desc:'Word spreads in wellness and crypto circles. First press coverage. DEX listing imminent.', users:'~50K'   },
+  c: { label:'GROWING',       price:0.015, color:'#a78bfa', desc:'Monasteries and universities onboarding. LinkedIn campaigns hit. Token listed on first DEX.',users:'~150K'  },
+  d: { label:'TRACTION',      price:0.05,  color:'#fff000', desc:'Media story breaks globally. Corporate wellness contracts signed. MiCA compliance achieved.',users:'~500K'  },
+  e: { label:'MOMENTUM',      price:0.10,  color:'#ff8c00', desc:'Institutional holders accumulate. Proof of Presence cited in policy. CEX listing secured.',  users:'~1M'    },
+  f: { label:'WIDE ADOPTION', price:0.15,  color:'#ff10f0', desc:'Millions meditating globally. $MONK referenced as a wellness asset class.',                 users:'5M+'    },
+};
+
+function fmtEur(n) {
+  if (n >= 1000000) return '\u20ac' + (n/1000000).toFixed(2) + 'M';
+  if (n >= 1000)    return '\u20ac' + Math.round(n).toLocaleString();
+  return '\u20ac' + Math.round(n).toLocaleString();
+}
+function fmtMonk(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(1) + 'M';
+  return (n/1000).toFixed(0) + 'K';
+}
+
+function renderReturnsTable(id) {
+  const sc = SCENARIOS[id];
+  if (!sc) return;
+  let rows = '';
+  MONK_5YR.forEach(function(t, i) {
+    const eur = t.monk * sc.price;
+    const isMonastery = (i === 2);
+    const bg = isMonastery ? ' style="background:rgba(255,255,255,0.05)"' : '';
+    rows += '<tr' + bg + '>' +
+      '<td style="font-family:var(--pixel);font-size:8px;color:' + (isMonastery ? sc.color : '#fff') + ';white-space:normal;min-width:110px;">' + t.label + '</td>' +
+      '<td style="color:rgba(255,255,255,0.4);font-size:16px;white-space:normal;">' + t.detail + '</td>' +
+      '<td style="font-family:var(--pixel);font-size:10px;color:rgba(255,255,255,0.5);">' + fmtMonk(t.monk) + '</td>' +
+      '<td style="font-family:var(--pixel);font-size:12px;color:' + sc.color + ';text-shadow:0 0 10px ' + sc.color + '55;">' + fmtEur(eur) + '</td>' +
+      '</tr>';
+  });
+  const monasteryVal = fmtEur(MONK_5YR[2].monk * sc.price);
+  const monasteryMonk = fmtMonk(MONK_5YR[2].monk);
+  document.getElementById('returns-table-wrap').innerHTML =
+    '<div style="background:#111118;border:1px solid ' + sc.color + '44;padding:14px 20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">' +
+      '<div>' +
+        '<div style="font-family:var(--pixel);font-size:11px;color:' + sc.color + ';letter-spacing:2px;margin-bottom:4px;">' + sc.label + '</div>' +
+        '<div style="font-family:var(--retro);font-size:19px;color:rgba(255,255,255,0.5);">' + sc.desc + '</div>' +
+      '</div>' +
+      '<div style="text-align:right;">' +
+        '<div style="font-family:var(--pixel);font-size:8px;color:rgba(255,255,255,0.3);letter-spacing:2px;margin-bottom:4px;">TOKEN PRICE</div>' +
+        '<div style="font-family:var(--pixel);font-size:22px;color:' + sc.color + ';text-shadow:0 0 20px ' + sc.color + '88;">&euro;' + sc.price + '</div>' +
+        '<div style="font-family:var(--pixel);font-size:7px;color:rgba(255,255,255,0.25);letter-spacing:2px;margin-top:2px;">~' + sc.users + ' ACTIVE MINERS</div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="overflow-x:auto;">' +
+      '<table class="rt" style="margin-bottom:0;">' +
+        '<thead><tr style="border-bottom:2px solid ' + sc.color + ';">' +
+          '<th style="color:' + sc.color + ';">AMBASSADOR TYPE</th>' +
+          '<th style="color:' + sc.color + ';">YOUR RECRUITS</th>' +
+          '<th style="color:' + sc.color + ';">$MONK OVER 5 YRS</th>' +
+          '<th style="color:' + sc.color + ';">5-YEAR VALUE</th>' +
+        '</tr></thead>' +
+        '<tbody>' + rows + '</tbody>' +
+      '</table>' +
+    '</div>' +
+    '<div style="margin-top:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);padding:14px 18px;font-family:var(--retro);font-size:18px;color:rgba(255,255,255,0.45);line-height:1.6;">' +
+      '&#9733; <strong style="color:#fff;">Monastery at ' + sc.label + ':</strong> ' +
+      '30 monks meditating 1 hour daily earns you <strong style="color:' + sc.color + ';">' + monasteryMonk + ' $MONK</strong> over 5 years = <strong style="color:' + sc.color + ';">' + monasteryVal + '</strong>.' +
+    '</div>';
+}
+
+function showScenario(id) {
+  document.querySelectorAll('.stab').forEach(function(t) { t.classList.remove('active'); });
+  var btn = document.getElementById('stab-' + id) || document.querySelector('.stab-' + id);
+  if (btn) btn.classList.add('active');
+  renderReturnsTable(id);
+}
+
+// ─── COPY / SHARE ─────────────────────────────────────────
+function copyLink() {
+  const link = document.getElementById('refLinkBox').textContent;
+  navigator.clipboard.writeText(link).then(() => showToast('Link copied!')).catch(() => prompt('Copy:', link));
+}
+function shareLinkedIn() {
+  const link = document.getElementById('refLinkBox').textContent;
+  const text = encodeURIComponent("I'm a MONKCOIN ambassador — Proof of Presence protocol. Mine crypto through meditation. Pre-liquidity. Join: " + link + " #MONKCOIN #Meditation #MMGA #Web3");
+  window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(link) + '&summary=' + text, '_blank');
+}
+function shareEmail() {
+  const link = document.getElementById('refLinkBox').textContent;
+  const s = encodeURIComponent('MONKCOIN — Mine crypto through meditation');
+  const b = encodeURIComponent('Hi,\n\nI wanted to share MONKCOIN — mine cryptocurrency through meditation. AI verifies eyes closed. Every second earns $MONK tokens. Pre-liquidity, no purchase required.\n\nJoin via my link:\n' + link + '\n\nBest,');
+  window.location.href = 'mailto:?subject=' + s + '&body=' + b;
+}
+
+// ─── TOAST ────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast'; t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+// ─── SCROLL OBSERVER ──────────────────────────────────────
+const observer = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.08 });
+
+if (window.ethereum) {
+  window.ethereum.on('accountsChanged', () => location.reload());
+  window.ethereum.on('chainChanged', () => location.reload());
+}
+
+log('Ambassador page ready');
+
 </script>
-</div><!-- /content -->
 </body>
 </html>
