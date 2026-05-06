@@ -299,6 +299,20 @@ body{
   text-shadow:0 0 20px var(--cyan);animation:loading-pulse 1.5s ease-in-out infinite;
 }
 @keyframes loading-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+.setup-step{
+  display:flex;gap:12px;padding:10px 0;
+  border-bottom:1px solid rgba(0,255,65,0.1);
+}
+.ss-num{
+  font-family:var(--pixel);font-size:9px;
+  color:var(--pink);min-width:22px;padding-top:2px;flex-shrink:0;
+}
+.ss-body{display:flex;flex-direction:column;gap:4px;}
+.ss-body strong{
+  font-family:var(--pixel);font-size:8px;letter-spacing:1px;
+  color:var(--green);
+}
+.ss-body span{font-family:var(--retro);font-size:16px;color:rgba(0,255,65,0.55);line-height:1.5;}
 
 /* ═══ MOBILE ═══════════════════════════════════════════ */
 @media(max-width:1024px){
@@ -431,8 +445,16 @@ body{
         <span class="ss-num">03</span>
         <div class="ss-body">
           <strong>IMPORT $MONK TOKEN</strong>
-          <span>MetaMask → Import Token → paste:<br/>
-          <span style="color:var(--yellow);font-size:11px;word-break:break-all;font-family:monospace;">0x98823C52037aF043c2628185C74D7E98b16e3444</span></span>
+          <span>MetaMask → Import Token → paste this contract address:</span>
+          <div onclick="copyContract()" style="cursor:pointer;margin-top:6px;padding:8px 10px;background:rgba(255,240,0,0.08);border:2px solid rgba(255,240,0,0.4);font-family:monospace;font-size:11px;color:var(--yellow);word-break:break-all;line-height:1.6;">
+            0x98823C52037aF043c2628185C74D7E98b16e3444
+          </div>
+          <button onclick="copyContract()" id="copyContractBtn" style="margin-top:6px;width:100%;font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:var(--yellow);background:transparent;border:2px solid rgba(255,240,0,0.4);padding:7px;cursor:pointer;transition:all 0.2s;">
+            ⧉ TAP TO COPY CONTRACT ADDRESS
+          </button>
+          <span style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.35);letter-spacing:1px;">
+            ⚠ PASTE THIS — NOT YOUR WALLET ADDRESS
+          </span>
         </div>
       </div>
 
@@ -911,6 +933,7 @@ document.getElementById('connectBtn').onclick = async () => {
       state.address.slice(0,6) + '...' + state.address.slice(-4);
     document.getElementById('walletInfo').style.display = 'block';
     document.getElementById('connectBtn').style.display = 'none';
+    const sg = document.getElementById('setupGuide'); if(sg) sg.style.display='none';
 
     await fetchBalance();
 
@@ -1117,6 +1140,26 @@ async function mint() {
 }
 
 // ─── UTILS ────────────────────────────────────────────────
+function copyContract() {
+  const addr = '0x98823C52037aF043c2628185C74D7E98b16e3444';
+  navigator.clipboard.writeText(addr).then(function() {
+    const btn = document.getElementById('copyContractBtn');
+    if (btn) {
+      btn.textContent = '✓ COPIED!';
+      btn.style.borderColor = 'var(--green)';
+      btn.style.color = 'var(--green)';
+      setTimeout(function() {
+        btn.textContent = '⧉ TAP TO COPY CONTRACT ADDRESS';
+        btn.style.borderColor = 'rgba(255,240,0,0.4)';
+        btn.style.color = 'var(--yellow)';
+      }, 2500);
+    }
+    log('Contract address copied');
+  }).catch(function() {
+    prompt('Copy the $MONK contract address:', addr);
+  });
+}
+
 function formatTime(sec) {
   const m = Math.floor(sec / 60);
   const s = sec % 60;
