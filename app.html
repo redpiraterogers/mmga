@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MONKCOIN | Cyber Meditation</title>
+<title>MONKCOIN | Real AI Eye Tracking</title>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -151,18 +151,9 @@ body{
   opacity:0.6;
 }
 @keyframes heatmap-pulse{
-  0%{
-    filter:hue-rotate(0deg) brightness(1);
-    transform:scale(1);
-  }
-  50%{
-    filter:hue-rotate(180deg) brightness(1.3);
-    transform:scale(1.05);
-  }
-  100%{
-    filter:hue-rotate(360deg) brightness(1);
-    transform:scale(1);
-  }
+  0%{filter:hue-rotate(0deg) brightness(1);transform:scale(1)}
+  50%{filter:hue-rotate(180deg) brightness(1.3);transform:scale(1.05)}
+  100%{filter:hue-rotate(360deg) brightness(1);transform:scale(1)}
 }
 #video{
   width:100%;
@@ -170,6 +161,46 @@ body{
   object-fit:cover;
   transform:scaleX(-1);
   filter:saturate(1.2) contrast(1.1);
+}
+.canvas-overlay{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+}
+.face-overlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:10;
+}
+.eye-vertex{
+  position:absolute;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  transition:all 0.15s;
+  background:currentColor;
+  box-shadow:0 0 15px currentColor,0 0 30px currentColor;
+  transform:translate(-50%,-50%);
+}
+.eye-vertex.closed{
+  color:var(--green);
+  animation:vertex-glow-green 1s ease-in-out infinite;
+}
+.eye-vertex.open{
+  color:#ff0000;
+  animation:vertex-pulse-red 0.5s ease-in-out infinite;
+}
+@keyframes vertex-glow-green{
+  0%,100%{box-shadow:0 0 15px var(--green),0 0 30px var(--green)}
+  50%{box-shadow:0 0 25px var(--green),0 0 50px var(--green),0 0 70px var(--green)}
+}
+@keyframes vertex-pulse-red{
+  0%,100%{box-shadow:0 0 10px #ff0000,0 0 20px #ff0000;transform:translate(-50%,-50%) scale(1)}
+  50%{box-shadow:0 0 20px #ff0000,0 0 40px #ff0000;transform:translate(-50%,-50%) scale(1.2)}
 }
 .status-overlay{
   position:absolute;
@@ -202,37 +233,6 @@ body{
   border-color:var(--orange);
   color:var(--orange);
   box-shadow:0 0 15px rgba(255,107,53,0.4);
-}
-.face-overlay{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:10;
-}
-.eye-vertex{
-  position:absolute;
-  width:20px;
-  height:20px;
-  border-radius:50%;
-  transition:all 0.2s;
-  background:currentColor;
-  box-shadow:0 0 15px currentColor,0 0 30px currentColor;
-}
-.eye-vertex.closed{
-  color:var(--green);
-  animation:vertex-glow-green 1s ease-in-out infinite;
-}
-.eye-vertex.open{
-  color:#ff0000;
-  animation:vertex-pulse-red 0.5s ease-in-out infinite;
-}
-@keyframes vertex-glow-green{
-  0%,100%{box-shadow:0 0 15px var(--green),0 0 30px var(--green)}
-  50%{box-shadow:0 0 25px var(--green),0 0 50px var(--green),0 0 70px var(--green)}
-}
-@keyframes vertex-pulse-red{
-  0%,100%{box-shadow:0 0 10px #ff0000,0 0 20px #ff0000;transform:scale(1)}
-  50%{box-shadow:0 0 20px #ff0000,0 0 40px #ff0000;transform:scale(1.2)}
 }
 .controls{
   display:flex;
@@ -434,6 +434,24 @@ body{
   border-bottom:1px solid var(--yellow);
   letter-spacing:1px;
 }
+.loading-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.9);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:100;
+  backdrop-filter:blur(10px);
+}
+.loading-text{
+  font-family:var(--pixel);
+  font-size:16px;
+  color:var(--cyan);
+  text-shadow:0 0 20px var(--cyan);
+  animation:loading-pulse 1.5s ease-in-out infinite;
+}
+@keyframes loading-pulse{0%,100%{opacity:0.5}50%{opacity:1}}
 @media(max-width:1024px){
   .container{
     grid-template-columns:1fr;
@@ -491,20 +509,24 @@ body{
   <!-- CENTER: VIDEO & CONTROLS -->
   <div class="main-panel">
     <div class="video-box">
+      <div class="loading-overlay" id="loadingAI">
+        <div class="loading-text">LOADING AI MODEL...</div>
+      </div>
       <video id="video" autoplay playsinline muted></video>
+      <canvas id="canvas" class="canvas-overlay"></canvas>
       <div class="rainbow-heatmap"></div>
       <div class="face-overlay">
-        <div class="eye-vertex open" id="leftEye" style="top:40%;left:38%"></div>
-        <div class="eye-vertex open" id="rightEye" style="top:40%;right:38%"></div>
+        <div class="eye-vertex open" id="leftEye" style="display:none"></div>
+        <div class="eye-vertex open" id="rightEye" style="display:none"></div>
       </div>
       <div class="status-overlay">
-        <div class="status-badge inactive" id="eyesBadge">👁️ EYES: OPEN</div>
+        <div class="status-badge inactive" id="eyesBadge">👁️ EYES: DETECTING...</div>
         <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
       </div>
     </div>
     
     <div class="controls">
-      <button id="startBtn" class="btn btn-start">START SESSION</button>
+      <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
       <button id="stopBtn" class="btn btn-stop" disabled>STOP SESSION</button>
     </div>
     
@@ -573,6 +595,9 @@ body{
   <div id="debugLog"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
 const TOKEN = '0x98823C52037aF043c2628185C74D7E98b16e3444';
@@ -583,10 +608,15 @@ let state = {
   meditating: false,
   earned: 0,
   sessionSec: 0,
-  totalSec: parseInt(localStorage.getItem('totalSec') || '0')
+  totalSec: parseInt(localStorage.getItem('totalSec') || '0'),
+  eyesClosed: false,
+  leftEyePos: null,
+  rightEyePos: null
 };
 
 let intervals = [];
+let faceMesh = null;
+let camera = null;
 
 function log(msg) {
   const time = new Date().toLocaleTimeString();
@@ -597,7 +627,112 @@ function log(msg) {
   while (logs.length > 12) logDiv.removeChild(logs[logs.length - 1]);
 }
 
-log('🚀 App loaded - ready to meditate');
+log('🚀 Loading AI model...');
+
+// MEDIAPIPE FACE MESH INITIALIZATION
+function initMediaPipe() {
+  faceMesh = new FaceMesh({
+    locateFile: (file) => {
+      return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+    }
+  });
+
+  faceMesh.setOptions({
+    maxNumFaces: 1,
+    refineLandmarks: true,
+    minDetectionConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
+
+  faceMesh.onResults(onResults);
+  
+  log('✓ AI model loaded');
+  document.getElementById('loadingAI').style.display = 'none';
+  document.getElementById('startBtn').disabled = false;
+}
+
+// PROCESS FACE MESH RESULTS
+function onResults(results) {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const videoElement = document.getElementById('video');
+  
+  canvas.width = videoElement.videoWidth;
+  canvas.height = videoElement.videoHeight;
+  
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  if (results.multiFaceLandmarks && results.multiFaceLandmarks.length > 0) {
+    const landmarks = results.multiFaceLandmarks[0];
+    
+    // Eye landmarks (MediaPipe indices)
+    // Left eye: 33, 133, 160, 159, 158, 157, 173, 144, 145, 153, 154, 155
+    // Right eye: 263, 362, 387, 386, 385, 384, 398, 373, 374, 380, 381, 382
+    // Upper eyelid: 159 (left), 386 (right)
+    // Lower eyelid: 145 (left), 374 (right)
+    
+    const leftEyeUpper = landmarks[159];
+    const leftEyeLower = landmarks[145];
+    const leftEyeCenter = landmarks[468]; // Left iris center
+    
+    const rightEyeUpper = landmarks[386];
+    const rightEyeLower = landmarks[374];
+    const rightEyeCenter = landmarks[473]; // Right iris center
+    
+    // Calculate Eye Aspect Ratio (EAR)
+    const leftEAR = Math.abs(leftEyeUpper.y - leftEyeLower.y);
+    const rightEAR = Math.abs(rightEyeUpper.y - rightEyeLower.y);
+    const avgEAR = (leftEAR + rightEAR) / 2;
+    
+    // Threshold for closed eyes (smaller = more closed)
+    const EAR_THRESHOLD = 0.015;
+    state.eyesClosed = avgEAR < EAR_THRESHOLD;
+    
+    // Update eye vertex positions
+    const videoRect = videoElement.getBoundingClientRect();
+    
+    state.leftEyePos = {
+      x: leftEyeCenter.x * videoRect.width,
+      y: leftEyeCenter.y * videoRect.height
+    };
+    
+    state.rightEyePos = {
+      x: rightEyeCenter.x * videoRect.width,
+      y: rightEyeCenter.y * videoRect.height
+    };
+    
+    updateEyeVertices();
+  }
+}
+
+function updateEyeVertices() {
+  const leftEyeEl = document.getElementById('leftEye');
+  const rightEyeEl = document.getElementById('rightEye');
+  
+  if (state.leftEyePos && state.rightEyePos) {
+    leftEyeEl.style.display = 'block';
+    rightEyeEl.style.display = 'block';
+    
+    leftEyeEl.style.left = state.leftEyePos.x + 'px';
+    leftEyeEl.style.top = state.leftEyePos.y + 'px';
+    
+    rightEyeEl.style.left = state.rightEyePos.x + 'px';
+    rightEyeEl.style.top = state.rightEyePos.y + 'px';
+    
+    if (state.eyesClosed) {
+      leftEyeEl.className = 'eye-vertex closed';
+      rightEyeEl.className = 'eye-vertex closed';
+    } else {
+      leftEyeEl.className = 'eye-vertex open';
+      rightEyeEl.className = 'eye-vertex open';
+    }
+  }
+}
+
+// Initialize on page load
+window.addEventListener('load', () => {
+  initMediaPipe();
+});
 
 // CONNECT WALLET
 document.getElementById('connectBtn').onclick = async () => {
@@ -673,17 +808,22 @@ async function fetchBalance() {
 // START SESSION
 document.getElementById('startBtn').onclick = async () => {
   try {
-    log('🎥 Requesting camera...');
-    const stream = await navigator.mediaDevices.getUserMedia({ 
-      video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' }
+    log('🎥 Starting camera...');
+    
+    const videoElement = document.getElementById('video');
+    
+    camera = new Camera(videoElement, {
+      onFrame: async () => {
+        if (faceMesh) {
+          await faceMesh.send({ image: videoElement });
+        }
+      },
+      width: 640,
+      height: 480
     });
     
-    const video = document.getElementById('video');
-    video.srcObject = stream;
-    video.onloadedmetadata = () => {
-      video.play();
-      log('✓ Camera active');
-    };
+    await camera.start();
+    log('✓ Camera active + AI tracking');
     
     state.meditating = true;
     state.sessionSec = 0;
@@ -691,7 +831,7 @@ document.getElementById('startBtn').onclick = async () => {
     document.getElementById('startBtn').disabled = true;
     document.getElementById('stopBtn').disabled = false;
     
-    log('🧘 Session started!');
+    log('🧘 Session started! Close eyes to earn.');
     
     // Timer
     intervals.push(setInterval(() => {
@@ -703,38 +843,22 @@ document.getElementById('startBtn').onclick = async () => {
       document.getElementById('totalTime').textContent = formatTime(state.totalSec);
     }, 1000));
     
-    // EYES ONLY TRACKING - NO POINTS IF EYES OPEN!
+    // REAL EYE TRACKING - ONLY EARN WHEN EYES ACTUALLY CLOSED
     intervals.push(setInterval(() => {
       if (!state.meditating) return;
       
-      // VERY SENSITIVE eye detection (80% chance of being closed when meditating)
-      const eyesClosed = Math.random() > 0.2;  // 80% chance
+      const earning = state.eyesClosed;
       
-      // ONLY earn if eyes are CLOSED
-      const earning = eyesClosed;
-      
-      // Update eye badge
+      // Update badges
       const eyesBadge = document.getElementById('eyesBadge');
-      eyesBadge.className = eyesClosed ? 'badge active' : 'badge inactive';
-      eyesBadge.textContent = eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
+      eyesBadge.className = state.eyesClosed ? 'badge active' : 'badge inactive';
+      eyesBadge.textContent = state.eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
       
-      // Update earning badge
       const earnBadge = document.getElementById('earnBadge');
       earnBadge.className = earning ? 'badge active' : 'badge inactive';
       earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
       
-      // Update eye vertices (green when closed, red when open)
-      const leftEye = document.getElementById('leftEye');
-      const rightEye = document.getElementById('rightEye');
-      if (eyesClosed) {
-        leftEye.className = 'eye-vertex closed';
-        rightEye.className = 'eye-vertex closed';
-      } else {
-        leftEye.className = 'eye-vertex open';
-        rightEye.className = 'eye-vertex open';
-      }
-      
-      // ONLY earn tokens when eyes are CLOSED
+      // ONLY earn when eyes ACTUALLY closed
       if (earning) {
         state.earned++;
         document.getElementById('earned').textContent = state.earned;
@@ -747,16 +871,8 @@ document.getElementById('startBtn').onclick = async () => {
     }, 1000));
     
   } catch (e) {
-    log('❌ Camera error: ' + e.name);
-    let msg = 'Camera failed!\n\n';
-    if (e.name === 'NotAllowedError') {
-      msg += 'You denied permission.\n\nClick camera icon in address bar → Allow → Refresh';
-    } else if (e.name === 'NotFoundError') {
-      msg += 'No camera found!';
-    } else {
-      msg += e.message;
-    }
-    alert(msg);
+    log('❌ Error: ' + e.message);
+    alert('Failed to start:\n\n' + e.message);
   }
 };
 
@@ -765,9 +881,8 @@ document.getElementById('stopBtn').onclick = async () => {
   log('🛑 Stopping...');
   state.meditating = false;
   
-  const video = document.getElementById('video');
-  if (video.srcObject) {
-    video.srcObject.getTracks().forEach(t => t.stop());
+  if (camera) {
+    camera.stop();
   }
   
   intervals.forEach(i => clearInterval(i));
@@ -775,6 +890,8 @@ document.getElementById('stopBtn').onclick = async () => {
   
   document.getElementById('startBtn').disabled = false;
   document.getElementById('stopBtn').disabled = true;
+  document.getElementById('leftEye').style.display = 'none';
+  document.getElementById('rightEye').style.display = 'none';
   
   log('Session: ' + state.sessionSec + 's, earned ' + state.earned);
   
@@ -814,8 +931,6 @@ async function mint() {
       }
     };
     
-    log('Payload: ' + JSON.stringify(payload));
-    
     const res = await fetch(`${BACKEND}/api/mint-monk`, {
       method: 'POST',
       headers: { 
@@ -828,8 +943,6 @@ async function mint() {
     log('Response: ' + res.status);
     
     const responseText = await res.text();
-    log('Body: ' + responseText.slice(0, 100));
-    
     let data;
     try {
       data = JSON.parse(responseText);
@@ -849,9 +962,8 @@ async function mint() {
         '✅ SUCCESS!\n\n' +
         'Minted ' + state.earned + ' MONK!\n\n' +
         'TX: ' + tx.slice(0, 20) + '...\n\n' +
-        '⚠️ Chrome MetaMask has display glitch.\n' +
-        'Tokens ARE on blockchain!\n' +
-        'Use Firefox to see them.'
+        '⚠️ Chrome MetaMask glitch.\n' +
+        'Use Firefox to see tokens!'
       );
       
       state.earned = 0;
@@ -865,7 +977,7 @@ async function mint() {
     
   } catch (e) {
     log('❌ ERROR: ' + e.message);
-    alert('Mint error:\n\n' + e.message + '\n\nCheck debug log!');
+    alert('Mint error:\n\n' + e.message);
   } finally {
     document.getElementById('mintBtn').textContent = 'MINT TO CHAIN';
     if (state.earned > 0) {
@@ -887,7 +999,7 @@ if (window.ethereum) {
   window.ethereum.on('chainChanged', () => location.reload());
 }
 
-log('✅ Ready!');
+log('✅ Ready! Waiting for AI model...');
 </script>
 
 </body>
