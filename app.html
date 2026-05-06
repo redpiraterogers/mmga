@@ -372,7 +372,7 @@ body{
 <div class="crt"></div>
 
 <div class="firefox-banner">
-  <strong>⚠ USE FIREFOX ⚠</strong> Chrome MetaMask can't display $MONK tokens (glitch) • Your tokens ARE on blockchain!
+  <strong>⚠ DESKTOP: USE FIREFOX ⚠</strong> Chrome hides $MONK balance • <strong>⚠ MOBILE: CHECK BALANCE ON <a href="https://polygonscan.com/token/0x98823C52037aF043c2628185C74D7E98b16e3444#balances" target="_blank" style="color:#000;text-decoration:underline;">POLYGONSCAN ↗</a></strong> • Tokens ARE on-chain!
 </div>
 
 <nav class="nav-header">
@@ -433,11 +433,13 @@ body{
       <div class="setup-step">
         <span class="ss-num">02</span>
         <div class="ss-body">
-          <strong>ADD POLYGON NETWORK</strong>
-          <span>In MetaMask → Networks → Add Network:<br/>
+          <strong>ADD &amp; SWITCH TO POLYGON</strong>
+          <span>MetaMask → tap network at top → Add Network:<br/>
           RPC: <span style="color:var(--green);">polygon-rpc.com</span><br/>
-          Chain ID: <span style="color:var(--green);">137</span><br/>
-          Symbol: <span style="color:var(--green);">MATIC</span></span>
+          Chain ID: <span style="color:var(--green);">137</span> · Symbol: <span style="color:var(--green);">MATIC</span></span>
+          <div style="margin-top:6px;padding:6px 10px;background:rgba(255,16,240,0.1);border:2px solid rgba(255,16,240,0.4);font-family:var(--pixel);font-size:7px;color:var(--pink);letter-spacing:1px;line-height:1.9;">
+            ⚠ MUST BE ON POLYGON<br/>NOT ETHEREUM — BEFORE IMPORTING TOKEN
+          </div>
         </div>
       </div>
 
@@ -452,8 +454,8 @@ body{
           <button onclick="copyContract()" id="copyContractBtn" style="margin-top:6px;width:100%;font-family:var(--pixel);font-size:7px;letter-spacing:2px;color:var(--yellow);background:transparent;border:2px solid rgba(255,240,0,0.4);padding:7px;cursor:pointer;transition:all 0.2s;">
             ⧉ TAP TO COPY CONTRACT ADDRESS
           </button>
-          <span style="font-family:var(--pixel);font-size:7px;color:rgba(0,255,65,0.35);letter-spacing:1px;">
-            ⚠ PASTE THIS — NOT YOUR WALLET ADDRESS
+          <span style="font-family:var(--pixel);font-size:7px;color:var(--pink);letter-spacing:1px;line-height:1.9;">
+            ⚠ SWITCH TO POLYGON FIRST<br/>⚠ PASTE THIS — NOT YOUR WALLET
           </span>
         </div>
       </div>
@@ -717,9 +719,9 @@ function initMediaPipe() {
 
   faceMesh.setOptions({
     maxNumFaces: 1,
-    refineLandmarks: true,
-    minDetectionConfidence: 0.5,
-    minTrackingConfidence: 0.5
+    refineLandmarks: true,       // needed for iris landmarks
+    minDetectionConfidence: 0.7, // stricter face detection — fewer false positives
+    minTrackingConfidence: 0.7   // smoother tracking — less jitter between frames
   });
 
   faceMesh.onResults(onResults);
@@ -776,9 +778,11 @@ function onResults(results) {
   const avgEAR   = (leftEAR + rightEAR) / 2;
 
   // ── Stricter threshold: 0.013 to close, must drop to 0.010 to stay closed ──
-  // This prevents eyes-open being detected as closed. Raw EAR shown in debug.
-  const CLOSE_THRESH = 0.013;   // must drop below this to register as closed
-  const OPEN_THRESH  = 0.010;   // must stay above this to remain closed (hysteresis)
+  // Strict threshold — eyes must be clearly and fully closed to register
+  // Lower = stricter (eyes need to be more closed to trigger)
+  // CLOSE: 0.008 = eyes must be ~95% shut. OPEN: re-opens at 0.012
+  const CLOSE_THRESH = 0.008;   // must drop below this to register as CLOSED
+  const OPEN_THRESH  = 0.012;   // must rise above this to register as OPEN again
   if (!state.eyesClosed) {
     state.eyesClosed = avgEAR < CLOSE_THRESH;
   } else {
@@ -982,20 +986,30 @@ document.getElementById('startBtn').onclick = async () => {
     try { await videoEl.play(); } catch(e) { log('Play: ' + e.message); }
     log('✓ Camera live');
 
-    // Manual requestAnimationFrame loop — feeds frames to FaceMesh
-    // No camera_utils.js dependency needed
+    // Throttled RAF loop — 15fps for FaceMesh (60fps is wasteful and causes lag)
+    // MediaPipe only needs ~10-15fps for accurate eye tracking
     let rafActive = true;
+    let lastFrameTime = 0;
+    const FRAME_INTERVAL = 1000 / 15; // 15fps = 66ms between frames
+    let framePending = false;
+
     mpCamera = { stop: function() { rafActive = false; } };
 
-    async function rafLoop() {
+    function rafLoop(now) {
       if (!rafActive) return;
-      if (faceMesh && videoEl.readyState >= 2) {
-        try { await faceMesh.send({ image: videoEl }); } catch(e) {}
-      }
       requestAnimationFrame(rafLoop);
+      if (now - lastFrameTime < FRAME_INTERVAL) return; // skip frame
+      if (framePending) return; // don't queue if previous frame still processing
+      lastFrameTime = now;
+      if (faceMesh && videoEl.readyState >= 2) {
+        framePending = true;
+        faceMesh.send({ image: videoEl })
+          .then(function() { framePending = false; })
+          .catch(function() { framePending = false; });
+      }
     }
     requestAnimationFrame(rafLoop);
-    log('✓ AI eye tracking active');
+    log('✓ AI eye tracking active (15fps throttle)');
 
     state.meditating = true;
     state.sessionSec = 0;
