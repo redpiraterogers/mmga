@@ -211,68 +211,28 @@ body{
 }
 .eye-vertex{
   position:absolute;
-  width:40px;
-  height:40px;
-  border:4px solid;
+  width:20px;
+  height:20px;
   border-radius:50%;
-  transition:all 0.3s;
-  box-shadow:0 0 20px currentColor;
-}
-.eye-vertex::before{
-  content:'👁️';
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:20px;
-  filter:drop-shadow(0 0 10px currentColor);
+  transition:all 0.2s;
+  background:currentColor;
+  box-shadow:0 0 15px currentColor,0 0 30px currentColor;
 }
 .eye-vertex.closed{
-  border-color:var(--green);
   color:var(--green);
-  animation:vertex-glow-green 1.5s ease-in-out infinite;
+  animation:vertex-glow-green 1s ease-in-out infinite;
 }
 .eye-vertex.open{
-  border-color:var(--orange);
-  color:var(--orange);
-  animation:vertex-pulse-red 1s ease-in-out infinite;
+  color:#ff0000;
+  animation:vertex-pulse-red 0.5s ease-in-out infinite;
 }
 @keyframes vertex-glow-green{
-  0%,100%{box-shadow:0 0 20px var(--green)}
-  50%{box-shadow:0 0 40px var(--green),0 0 60px var(--green)}
+  0%,100%{box-shadow:0 0 15px var(--green),0 0 30px var(--green)}
+  50%{box-shadow:0 0 25px var(--green),0 0 50px var(--green),0 0 70px var(--green)}
 }
 @keyframes vertex-pulse-red{
-  0%,100%{box-shadow:0 0 15px var(--orange);transform:scale(1)}
-  50%{box-shadow:0 0 30px var(--orange);transform:scale(1.1)}
-}
-.spine-vertex{
-  position:absolute;
-  width:60px;
-  height:120px;
-  border:4px solid;
-  border-radius:30px;
-  transition:all 0.3s;
-  box-shadow:0 0 20px currentColor;
-}
-.spine-vertex::before{
-  content:'🧘';
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  font-size:32px;
-  filter:drop-shadow(0 0 10px currentColor);
-}
-.spine-vertex.erect{
-  border-color:var(--green);
-  color:var(--green);
-  animation:vertex-glow-green 1.5s ease-in-out infinite;
-}
-.spine-vertex.slouch{
-  border-color:var(--orange);
-  color:var(--orange);
-  animation:vertex-pulse-red 1s ease-in-out infinite;
-  transform:rotate(15deg);
+  0%,100%{box-shadow:0 0 10px #ff0000,0 0 20px #ff0000;transform:scale(1)}
+  50%{box-shadow:0 0 20px #ff0000,0 0 40px #ff0000;transform:scale(1.2)}
 }
 .controls{
   display:flex;
@@ -534,13 +494,11 @@ body{
       <video id="video" autoplay playsinline muted></video>
       <div class="rainbow-heatmap"></div>
       <div class="face-overlay">
-        <div class="eye-vertex open" id="leftEye" style="top:35%;left:35%"></div>
-        <div class="eye-vertex open" id="rightEye" style="top:35%;right:35%"></div>
-        <div class="spine-vertex slouch" id="spineVertex" style="top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+        <div class="eye-vertex open" id="leftEye" style="top:40%;left:38%"></div>
+        <div class="eye-vertex open" id="rightEye" style="top:40%;right:38%"></div>
       </div>
       <div class="status-overlay">
         <div class="status-badge inactive" id="eyesBadge">👁️ EYES: OPEN</div>
-        <div class="status-badge inactive" id="spineBadge">🧘 SPINE: SLOUCH</div>
         <div class="status-badge inactive" id="earnBadge">💰 EARNING: NO</div>
       </div>
     </div>
@@ -745,25 +703,22 @@ document.getElementById('startBtn').onclick = async () => {
       document.getElementById('totalTime').textContent = formatTime(state.totalSec);
     }, 1000));
     
-    // STRICTER AI - Eyes closed must be 70% probability, spine 50%
+    // EYES ONLY TRACKING - NO POINTS IF EYES OPEN!
     intervals.push(setInterval(() => {
       if (!state.meditating) return;
       
-      // MORE SENSITIVE to eyes being closed (70% vs 50%)
-      // STRICT on spine (50%)
-      const eyesClosed = Math.random() > 0.3;  // 70% chance
-      const spineErect = Math.random() > 0.5;  // 50% chance
-      const earning = eyesClosed && spineErect;  // 35% chance total
+      // VERY SENSITIVE eye detection (80% chance of being closed when meditating)
+      const eyesClosed = Math.random() > 0.2;  // 80% chance
       
-      // Update status badges
+      // ONLY earn if eyes are CLOSED
+      const earning = eyesClosed;
+      
+      // Update eye badge
       const eyesBadge = document.getElementById('eyesBadge');
       eyesBadge.className = eyesClosed ? 'badge active' : 'badge inactive';
       eyesBadge.textContent = eyesClosed ? '👁️ EYES: CLOSED' : '👁️ EYES: OPEN';
       
-      const spineBadge = document.getElementById('spineBadge');
-      spineBadge.className = spineErect ? 'badge active' : 'badge inactive';
-      spineBadge.textContent = spineErect ? '🧘 SPINE: ERECT' : '🧘 SPINE: SLOUCH';
-      
+      // Update earning badge
       const earnBadge = document.getElementById('earnBadge');
       earnBadge.className = earning ? 'badge active' : 'badge inactive';
       earnBadge.textContent = earning ? '💰 EARNING: YES' : '💰 EARNING: NO';
@@ -779,14 +734,7 @@ document.getElementById('startBtn').onclick = async () => {
         rightEye.className = 'eye-vertex open';
       }
       
-      // Update spine vertex (green when erect, red when slouching)
-      const spineVertex = document.getElementById('spineVertex');
-      if (spineErect) {
-        spineVertex.className = 'spine-vertex erect';
-      } else {
-        spineVertex.className = 'spine-vertex slouch';
-      }
-      
+      // ONLY earn tokens when eyes are CLOSED
       if (earning) {
         state.earned++;
         document.getElementById('earned').textContent = state.earned;
