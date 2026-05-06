@@ -519,15 +519,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script
-  src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js"
+  src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"
   crossorigin="anonymous"
   onerror="document.getElementById('loadingText').textContent='AI LOAD FAILED — RELOAD PAGE'; console.error('FaceMesh CDN failed');">
 </script>
-<script
-  src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1632090399/camera_utils.js"
-  crossorigin="anonymous"
-  onerror="document.getElementById('loadingText').textContent='AI LOAD FAILED — RELOAD PAGE'; console.error('Camera utils CDN failed');">
-</script>
+<!-- camera_utils removed — using requestAnimationFrame loop instead (more reliable) -->
 
 <script>
 const BACKEND = 'https://mmga-backend2.onrender.com';
@@ -876,29 +872,36 @@ document.getElementById('startBtn').onclick = async () => {
 
     const videoEl = document.getElementById('video');
 
-    // MediaPipe Camera utility handles getUserMedia internally — do NOT
-    // also call getUserMedia manually, as two streams conflict and break FaceMesh
-    mpCamera = new Camera(videoEl, {
-      onFrame: async () => {
-        if (faceMesh) await faceMesh.send({ image: videoEl });
-      },
-      width: 640,
-      height: 480
-    });
-
-    // Wrap mpCamera.start() with a 12s timeout
-    await Promise.race([
-      mpCamera.start(),
+    // Get camera stream via getUserMedia — no Camera utility dependency
+    stream = await Promise.race([
+      navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480, facingMode: 'user' }, audio: false }),
       new Promise(function(_, rej) {
-        setTimeout(function() {
-          rej(new Error('Camera timed out — please allow camera access and reload'));
-        }, 12000);
+        setTimeout(function() { rej(new Error('Camera access timed out — please allow camera and reload')); }, 12000);
       })
     ]);
 
-    // Keep a reference to the stream for cleanup on stop
-    stream = videoEl.srcObject;
-    log('✓ Camera + AI tracking active');
+    videoEl.srcObject = stream;
+    await new Promise(function(res, rej) {
+      const t = setTimeout(function() { res(); }, 3000); // resolve after 3s even if no metadata
+      videoEl.onloadedmetadata = function() { clearTimeout(t); res(); };
+    });
+    try { await videoEl.play(); } catch(e) { log('Play: ' + e.message); }
+    log('✓ Camera live');
+
+    // Manual requestAnimationFrame loop — feeds frames to FaceMesh
+    // No camera_utils.js dependency needed
+    let rafActive = true;
+    mpCamera = { stop: function() { rafActive = false; } };
+
+    async function rafLoop() {
+      if (!rafActive) return;
+      if (faceMesh && videoEl.readyState >= 2) {
+        try { await faceMesh.send({ image: videoEl }); } catch(e) {}
+      }
+      requestAnimationFrame(rafLoop);
+    }
+    requestAnimationFrame(rafLoop);
+    log('✓ AI eye tracking active');
 
     state.meditating = true;
     state.sessionSec = 0;
