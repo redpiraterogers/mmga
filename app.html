@@ -952,54 +952,68 @@ document.getElementById('startBtn').onclick = async () => {
     try { await videoEl.play(); } catch(e) { log('Play: ' + e.message); }
     log('✓ Camera live');
 
-    // Offscreen 2D canvas — draw video frame here first, then send to FaceMesh
-    // This avoids "Failed to create WebGL canvas context when passing video frame"
-    // which happens when MediaPipe tries to create WebGL directly from <video>
+    // ── Frame capture using ImageBitmap ─────────────────────────
+    // willReadFrequently conflicts with MediaPipe WebGL — do NOT use it.
+    // createImageBitmap() is the correct GPU-friendly way to pass frames
+    // to any WebGL-based API including MediaPipe FaceMesh.
     const offCanvas = document.createElement('canvas');
-    offCanvas.width  = 240;  // lower res = less CPU per frame
-    offCanvas.height = 180;
-    const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
+    offCanvas.width  = 256;
+    offCanvas.height = 192;
+    // NO willReadFrequently — let browser keep this in GPU memory
+    const offCtx = offCanvas.getContext('2d');
 
     let rafActive = true;
     let lastFrameTime = 0;
-    const FRAME_INTERVAL = 1000 / 10; // 10fps baseline — bumps to 15fps when eyes closing
+    const FRAME_INTERVAL = 1000 / 10; // 10fps
     let framePending = false;
+    let faceMeshFailed = 0; // consecutive failure counter
 
     mpCamera = { stop: function() { rafActive = false; } };
 
-    function rafLoop(now) {
+    async function rafLoop(now) {
       if (!rafActive) return;
       requestAnimationFrame(rafLoop);
       if (now - lastFrameTime < FRAME_INTERVAL) return;
       if (framePending) return;
       if (!faceMesh || videoEl.readyState < 2) return;
-      // Check video has actual dimensions
       if (!videoEl.videoWidth || !videoEl.videoHeight) return;
       lastFrameTime = now;
       framePending = true;
+
       try {
-        // Draw current video frame onto 2D canvas (no WebGL needed here)
+        // Step 1: draw video to 2D canvas (CPU path, no WebGL)
         offCtx.drawImage(videoEl, 0, 0, offCanvas.width, offCanvas.height);
-        // Send the 2D canvas to FaceMesh — avoids WebGL video context error
-        faceMesh.send({ image: offCanvas })
-          .then(function()  { framePending = false; })
-          .catch(function(e) {
-            framePending = false;
-            if (!window._warnedWebGL) {
-              log('FaceMesh frame error: ' + e.message);
-              window._warnedWebGL = true;
-            }
-          });
+
+        // Step 2: convert to ImageBitmap — GPU-friendly, avoids WebGL context conflict
+        const bitmap = await createImageBitmap(offCanvas);
+
+        // Step 3: send ImageBitmap to FaceMesh
+        await faceMesh.send({ image: bitmap });
+
+        // Close bitmap to free GPU memory immediately
+        bitmap.close();
+
+        framePending = false;
+        faceMeshFailed = 0;
+
       } catch(e) {
         framePending = false;
-        if (!window._warnedDraw) {
-          log('Canvas draw error: ' + e.message);
-          window._warnedDraw = true;
+        faceMeshFailed++;
+        if (faceMeshFailed === 1) {
+          log('Frame error: ' + e.message);
+        }
+        // After 10 consecutive failures reinitialise FaceMesh
+        if (faceMeshFailed >= 10) {
+          log('Reinitialising FaceMesh...');
+          faceMeshFailed = 0;
+          try {
+            faceMesh.onResults(onResults);
+          } catch(re) {}
         }
       }
     }
     requestAnimationFrame(rafLoop);
-    log('✓ AI eye tracking active (offscreen canvas, 12fps)');
+    log('✓ AI tracking active (ImageBitmap path)');
 
     state.meditating = true;
     state.sessionSec = 0;
