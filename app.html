@@ -467,8 +467,64 @@ document.getElementById('connectBtn').onclick = async () => {
         document.getElementById('walletInfo').style.display = 'block';
         document.getElementById('connectBtn').style.display = 'none';
         log("Node synchronized.");
+        await fetchBalance();
     } catch(e) {
         log("Sync failed.");
+    }
+};
+
+// --- MINT FUNCTIONALITY ---
+
+async function fetchBalance() {
+    if (!state.address) return;
+    try {
+        const res = await fetch(`${BACKEND}/api/balance/${state.address}`);
+        const data = await res.json();
+        document.getElementById('balance').textContent = Math.floor(parseFloat(data.balance || 0));
+    } catch (e) {
+        log("Balance check failed.");
+    }
+}
+
+document.getElementById('mintBtn').onclick = async () => {
+    if (state.earned <= 0) return log("Zero yield to mint.");
+    if (!state.address) return log("Link wallet first.");
+
+    const mintBtn = document.getElementById('mintBtn');
+    const originalText = mintBtn.innerText;
+    
+    try {
+        log("Preparing assets...");
+        mintBtn.disabled = true;
+        mintBtn.innerText = "MINTING...";
+
+        const response = await fetch(`${BACKEND}/api/mint-monk`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                walletAddress: state.address,
+                amount: state.earned
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok && result.success) {
+            log(`Successfully minted ${state.earned} $MONK!`);
+            log(`TX: ${result.transactionHash.slice(0, 12)}...`);
+            
+            // Reset session earned
+            state.earned = 0;
+            document.getElementById('earned').innerText = "0";
+            await fetchBalance();
+        } else {
+            throw new Error(result.error || "Chain rejection.");
+        }
+    } catch (e) {
+        log("Mint error: " + e.message);
+    } finally {
+        mintBtn.innerText = originalText;
+        mintBtn.disabled = state.earned <= 0;
     }
 };
 
