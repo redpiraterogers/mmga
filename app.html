@@ -178,29 +178,30 @@ body{
 }
 .eye-vertex{
   position:absolute;
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  transition:all 0.15s;
-  background:currentColor;
-  box-shadow:0 0 15px currentColor,0 0 30px currentColor;
+  width:200px;
+  height:120px;
+  transition:all 0.2s;
   transform:translate(-50%,-50%);
 }
-.eye-vertex.closed{
-  color:var(--green);
-  animation:vertex-glow-green 1s ease-in-out infinite;
+.eye-vertex svg{
+  width:100%;
+  height:100%;
 }
-.eye-vertex.open{
-  color:#ff0000;
-  animation:vertex-pulse-red 0.5s ease-in-out infinite;
+.eye-vertex.closed svg{
+  filter:drop-shadow(0 0 30px var(--green)) drop-shadow(0 0 60px var(--green)) drop-shadow(0 0 90px var(--green));
+  animation:vertex-glow-green 1.5s ease-in-out infinite;
+}
+.eye-vertex.open svg{
+  filter:drop-shadow(0 0 20px #ff0000) drop-shadow(0 0 50px #ff0000) drop-shadow(0 0 80px #ff0000);
+  animation:vertex-pulse-red 0.8s ease-in-out infinite;
 }
 @keyframes vertex-glow-green{
-  0%,100%{box-shadow:0 0 15px var(--green),0 0 30px var(--green)}
-  50%{box-shadow:0 0 25px var(--green),0 0 50px var(--green),0 0 70px var(--green)}
+  0%,100%{filter:drop-shadow(0 0 30px var(--green)) drop-shadow(0 0 60px var(--green)) drop-shadow(0 0 90px var(--green))}
+  50%{filter:drop-shadow(0 0 50px var(--green)) drop-shadow(0 0 90px var(--green)) drop-shadow(0 0 130px var(--green))}
 }
 @keyframes vertex-pulse-red{
-  0%,100%{box-shadow:0 0 10px #ff0000,0 0 20px #ff0000;transform:translate(-50%,-50%) scale(1)}
-  50%{box-shadow:0 0 20px #ff0000,0 0 40px #ff0000;transform:translate(-50%,-50%) scale(1.2)}
+  0%,100%{filter:drop-shadow(0 0 20px #ff0000) drop-shadow(0 0 50px #ff0000) drop-shadow(0 0 80px #ff0000);transform:translate(-50%,-50%) scale(1)}
+  50%{filter:drop-shadow(0 0 40px #ff0000) drop-shadow(0 0 80px #ff0000) drop-shadow(0 0 120px #ff0000);transform:translate(-50%,-50%) scale(1.1)}
 }
 .status-overlay{
   position:absolute;
@@ -516,8 +517,34 @@ body{
       <canvas id="canvas" class="canvas-overlay"></canvas>
       <div class="rainbow-heatmap"></div>
       <div class="face-overlay">
-        <div class="eye-vertex open" id="leftEye" style="display:none"></div>
-        <div class="eye-vertex open" id="rightEye" style="display:none"></div>
+        <div class="eye-vertex open" id="leftEye" style="display:none">
+          <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="leftGrad">
+                <stop offset="0%" style="stop-opacity:0.9"/>
+                <stop offset="100%" style="stop-opacity:0.4"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="100" cy="60" rx="90" ry="50" fill="currentColor" fill-opacity="0.7"/>
+            <path d="M 20,60 Q 100,20 180,60 Q 100,100 20,60 Z" fill="currentColor" fill-opacity="0.5"/>
+            <ellipse cx="100" cy="60" rx="70" ry="35" fill="url(#leftGrad)"/>
+            <circle cx="100" cy="60" r="15" fill="currentColor" opacity="0.9"/>
+          </svg>
+        </div>
+        <div class="eye-vertex open" id="rightEye" style="display:none">
+          <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="rightGrad">
+                <stop offset="0%" style="stop-opacity:0.9"/>
+                <stop offset="100%" style="stop-opacity:0.4"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="100" cy="60" rx="90" ry="50" fill="currentColor" fill-opacity="0.7"/>
+            <path d="M 20,60 Q 100,20 180,60 Q 100,100 20,60 Z" fill="currentColor" fill-opacity="0.5"/>
+            <ellipse cx="100" cy="60" rx="70" ry="35" fill="url(#rightGrad)"/>
+            <circle cx="100" cy="60" r="15" fill="currentColor" opacity="0.9"/>
+          </svg>
+        </div>
       </div>
       <div class="status-overlay">
         <div class="status-badge inactive" id="eyesBadge">👁️ EYES: DETECTING...</div>
@@ -684,8 +711,8 @@ function onResults(results) {
     const rightEAR = Math.abs(rightEyeUpper.y - rightEyeLower.y);
     const avgEAR = (leftEAR + rightEAR) / 2;
     
-    // Threshold for closed eyes (smaller = more closed)
-    const EAR_THRESHOLD = 0.015;
+    // Threshold for closed eyes (adjusted for better detection)
+    const EAR_THRESHOLD = 0.018;
     state.eyesClosed = avgEAR < EAR_THRESHOLD;
     
     // Update eye vertex positions
