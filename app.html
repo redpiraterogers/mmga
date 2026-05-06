@@ -13,67 +13,55 @@
   --green:#00ff41;
   --pink:#ff10f0;
   --blue:#00d4ff;
-  --cyan:#00ffff;
-  --yellow:#fff000;
-  --orange:#ff6b35;
-  --purple:#9d4edd;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--green);font-family:var(--retro);overflow-x:hidden;image-rendering:pixelated;}
-.firefox-banner{position:fixed;top:0;left:0;right:0;z-index:10000;background:linear-gradient(90deg,var(--orange),var(--pink),var(--orange));padding:10px 20px;text-align:center;border-bottom:3px solid var(--yellow);}
-.firefox-banner strong{font-family:var(--pixel);font-size:10px;color:#000;font-weight:900;letter-spacing:1px;}
-.nav-header{position:fixed;top:48px;left:0;right:0;z-index:9997;display:flex;align-items:center;justify-content:space-between;padding:10px 28px;background:rgba(10,10,15,0.92);border-bottom:2px solid var(--purple);}
-.nav-title{font-family:var(--pixel);font-size:13px;background:linear-gradient(90deg,var(--pink),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;}
-.container{display:grid;grid-template-columns:320px 1fr 320px;height:100vh;gap:24px;padding:108px 24px 24px;}
-.panel{background:rgba(14,14,22,0.95);border:4px solid;padding:28px;position:relative;overflow-y:auto;}
-.panel-left{border-color:var(--pink);}.panel-right{border-color:var(--cyan);}
-.main-panel{display:flex;flex-direction:column;gap:20px;}
-.video-box{flex:1;background:#000;border:5px solid var(--blue);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;min-height:320px;}
+.firefox-banner{position:fixed;top:0;left:0;right:0;z-index:10000;background:#000;padding:8px;text-align:center;border-bottom:2px solid var(--green);}
+.nav-header{position:fixed;top:40px;left:0;right:0;z-index:9997;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;background:rgba(10,10,15,0.95);border-bottom:2px solid var(--purple);}
+.container{display:grid;grid-template-columns:300px 1fr 300px;height:100vh;gap:20px;padding:90px 20px 20px;}
+.panel{background:rgba(14,14,22,0.95);border:3px solid;padding:20px;}
+.panel-left{border-color:var(--pink);}
+.panel-right{border-color:var(--blue);}
+.video-box{flex:1;background:#000;border:5px solid var(--blue);position:relative;overflow:hidden;}
 #video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
 .canvas-overlay{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;}
-.status-overlay{position:absolute;top:24px;left:24px;right:24px;display:flex;gap:12px;flex-wrap:wrap;z-index:20;}
-.status-badge{padding:10px 18px;background:rgba(10,10,15,0.97);border:3px solid;font-family:var(--pixel);font-size:10px;}
+.status-overlay{position:absolute;top:15px;left:15px;right:15px;display:flex;gap:10px;z-index:20;}
+.status-badge{padding:8px 14px;background:rgba(0,0,0,0.8);border:2px solid;font-family:var(--pixel);font-size:11px;}
 .status-badge.good{border-color:var(--green);color:var(--green);}
 .status-badge.bad{border-color:#ff4444;color:#ff4444;}
-.controls{display:flex;gap:15px;}
-.btn{flex:1;padding:15px;font-family:var(--pixel);font-size:10px;cursor:pointer;border:4px solid;background:transparent;color:#fff;transition:all 0.1s;}
-.btn:disabled{opacity:0.3;cursor:not-allowed;}
-.btn-start{border-color:var(--green);color:var(--green);}
-.loading-overlay{position:absolute;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;}
-.debug{position:fixed;bottom:10px;left:10px;width:300px;height:160px;background:rgba(0,0,0,0.8);border:1px solid var(--green);font-family:monospace;font-size:10px;padding:10px;overflow-y:auto;z-index:9999;}
-#printing{display:none;position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-family:var(--pixel);color:var(--yellow);font-size:14px;letter-spacing:2px;text-shadow:0 0 10px var(--yellow);}
+.controls{margin-top:15px;}
+.btn{width:100%;padding:14px;font-family:var(--pixel);font-size:11px;cursor:pointer;border:3px solid;background:transparent;color:#fff;}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.loading-overlay{position:absolute;inset:0;background:var(--bg);z-index:100;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:10px;}
+.debug{position:fixed;bottom:10px;left:10px;width:280px;height:130px;background:rgba(0,0,0,0.85);border:1px solid var(--green);font-family:monospace;font-size:9.5px;padding:8px;overflow-y:auto;z-index:9999;}
 </style>
 </head>
 <body>
-<div class="firefox-banner"><strong>⚠ MONKCOIN AI EYE TRACKER v6 ⚠</strong></div>
+<div class="firefox-banner"><strong>MONKCOIN AI EYE TRACKER</strong></div>
 <nav class="nav-header">
   <span class="nav-title">MONKCOIN AI</span>
   <div id="navStatus">● OFFLINE</div>
 </nav>
+
 <div class="container">
   <div class="panel panel-left">
-    <button id="connectBtn" class="btn btn-start" style="width:100%;margin-bottom:15px;">CONNECT WALLET</button>
-    <div id="walletAddress" style="font-size:10px;word-break:break-all;display:none;"></div>
+    <button id="connectBtn" class="btn">CONNECT WALLET</button>
   </div>
-  <div class="main-panel">
-    <div class="video-box">
-      <div class="loading-overlay" id="loadingAI">
-        <div style="font-family:var(--pixel); color:var(--cyan)">BOOTING AI...</div>
-      </div>
-      <video id="video" autoplay playsinline muted></video>
-      <canvas id="canvas" class="canvas-overlay"></canvas>
-      <div id="printing">🪙 PRINTING MONKCOIN...</div>
-      <div class="status-overlay">
-        <div class="status-badge bad" id="eyesBadge">EYES: WAITING</div>
-        <div class="status-badge bad" id="postureBadge">POSTURE: CHECKING</div>
-      </div>
+
+  <div class="video-box">
+    <div class="loading-overlay" id="loadingAI">
+      <div style="color:var(--cyan)">STARTING CAMERA...</div>
+      <div id="aiStatus" style="font-size:10px;color:#666;margin-top:8px;">AI will load in background</div>
     </div>
-    <div class="controls">
-      <button id="startBtn" class="btn btn-start" disabled>START SESSION</button>
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="canvas" class="canvas-overlay"></canvas>
+    <div class="status-overlay">
+      <div class="status-badge bad" id="eyesBadge">EYES: WAITING</div>
     </div>
   </div>
+
   <div class="panel panel-right">
-    <div style="font-family:var(--pixel); font-size:12px">LOGS</div>
+    <div style="font-family:var(--pixel);font-size:12px;margin-bottom:8px;">LOGS</div>
     <div id="debugLog" class="debug"></div>
   </div>
 </div>
@@ -83,116 +71,100 @@ body{background:var(--bg);color:var(--green);font-family:var(--retro);overflow-x
 <script>
 const video = document.getElementById('video');
 const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const debugLog = document.getElementById('debugLog');
+const ctx = canvas.getContext('2d', {willReadFrequently: false});
 const loadingAI = document.getElementById('loadingAI');
-const printingEl = document.getElementById('printing');
 const eyesBadge = document.getElementById('eyesBadge');
-const postureBadge = document.getElementById('postureBadge');
+const debugLog = document.getElementById('debugLog');
 
 let faceLandmarker = null;
 let lastProcess = 0;
 let sessionActive = false;
-let isVideoReady = false;
-let walletConnected = false;
+let cameraReady = false;
 
 const state = {
   eyesClosed: false,
-  goodPosture: false,
-  earCloseThresh: 0.019   // Tuned for sensitivity
+  earCloseThresh: 0.018
 };
 
 function log(msg) {
   const div = document.createElement('div');
   div.textContent = `> ${msg}`;
   debugLog.prepend(div);
-  if (debugLog.children.length > 60) debugLog.lastChild.remove();
+  if (debugLog.children.length > 40) debugLog.lastChild.remove();
 }
 
 // =============== BUTTONS ===============
-document.getElementById('connectBtn').addEventListener('click', () => {
-  if (walletConnected) return;
-  log("Connecting wallet...");
-  setTimeout(() => {
-    walletConnected = true;
-    document.getElementById('connectBtn').textContent = "✅ WALLET CONNECTED";
-    document.getElementById('connectBtn').disabled = true;
-    document.getElementById('navStatus').textContent = "● ONLINE";
-    document.getElementById('navStatus').style.color = "var(--green)";
-    document.getElementById('startBtn').disabled = false;
-    log("Wallet connected");
-  }, 700);
+document.getElementById('connectBtn').addEventListener('click', function() {
+  this.textContent = "✅ WALLET CONNECTED";
+  this.disabled = true;
+  document.getElementById('navStatus').textContent = "● ONLINE";
+  document.getElementById('navStatus').style.color = "var(--green)";
+  log("Wallet connected");
 });
 
-document.getElementById('startBtn').addEventListener('click', () => {
-  sessionActive = !sessionActive;
-  const btn = document.getElementById('startBtn');
-  if (sessionActive) {
-    btn.textContent = "⏹ STOP SESSION";
-    btn.style.borderColor = "#ff4444";
-    btn.style.color = "#ff4444";
-    log("Session Started");
-  } else {
-    btn.textContent = "▶ START SESSION";
-    btn.style.borderColor = "var(--green)";
-    btn.style.color = "var(--green)";
-    printingEl.style.display = "none";
-    log("Session Stopped");
-  }
-});
-
-// =============== AI SETUP ===============
-async function initAI() {
-  try {
-    log("Loading Face Landmarker...");
-    const { FaceLandmarker, FilesetResolver } = vision;
-    const filesetResolver = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm");
-
-    faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
-      baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task", delegate: "GPU" },
-      runningMode: "VIDEO",
-      numFaces: 1
-    });
-
-    log("✅ AI Ready");
-    startCamera();
-  } catch (e) {
-    log("AI Error: " + e.message);
-    startCamera();
-  }
-}
-
+// =============== CAMERA FIRST ===============
 async function startCamera() {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: { width: {ideal: 640}, height: {ideal: 480}} });
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { width: {ideal: 640}, height: {ideal: 480}, frameRate: {ideal: 20} }
+    });
     video.srcObject = stream;
-    video.onloadedmetadata = () => video.play();
+
+    video.onloadedmetadata = async () => {
+      await video.play();
+      cameraReady = true;
+      loadingAI.style.opacity = "0";
+      setTimeout(() => loadingAI.style.display = "none", 600);
+      log("Camera started successfully");
+    };
   } catch (err) {
     log("Camera Error: " + err.message);
   }
 }
 
-video.addEventListener('playing', () => { isVideoReady = true; log("Video streaming"); });
+// =============== AI (Background) ===============
+async function loadAI() {
+  try {
+    log("Loading AI in background...");
+    const { FaceLandmarker, FilesetResolver } = vision;
+    
+    const filesetResolver = await FilesetResolver.forVisionTasks(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm"
+    );
 
-// =============== MAIN LOOP ===============
+    faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
+      baseOptions: {
+        modelAssetPath: "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+        delegate: "GPU"
+      },
+      runningMode: "VIDEO",
+      numFaces: 1
+    });
+    log("✅ AI Model Loaded");
+  } catch (e) {
+    log("AI Load Failed: " + e.message);
+  }
+}
+
+// =============== LIGHTWEIGHT LOOP ===============
 async function processLoop() {
   const now = Date.now();
-  if (now - lastProcess < 40) {
+  if (now - lastProcess < 50) {        // ~20fps - very light on CPU
     requestAnimationFrame(processLoop);
     return;
   }
   lastProcess = now;
 
-  if (isVideoReady && faceLandmarker && sessionActive) {
+  if (cameraReady && faceLandmarker && sessionActive) {
     try {
       const results = faceLandmarker.detectForVideo(video, performance.now());
-      onResults(results);
+      handleResults(results);
     } catch (e) {}
   }
   requestAnimationFrame(processLoop);
 }
 
-function onResults(results) {
+function handleResults(results) {
   if (canvas.width !== video.clientWidth || canvas.height !== video.clientHeight) {
     canvas.width = video.clientWidth;
     canvas.height = video.clientHeight;
@@ -202,57 +174,50 @@ function onResults(results) {
   if (!results.faceLandmarks?.[0]) {
     eyesBadge.textContent = "EYES: NO FACE";
     eyesBadge.className = "status-badge bad";
-    postureBadge.textContent = "POSTURE: NO FACE";
-    postureBadge.className = "status-badge bad";
-    printingEl.style.display = "none";
     return;
   }
 
   const lm = results.faceLandmarks[0];
 
-  // === Eye Detection (Sensitive) ===
-  const leftEAR = Math.abs(lm[159].y - lm[145].y);
-  const rightEAR = Math.abs(lm[386].y - lm[374].y);
-  const avgEAR = (leftEAR + rightEAR) / 2;
+  // Simple & sensitive eye closed detection
+  const left = Math.abs(lm[159].y - lm[145].y);
+  const right = Math.abs(lm[386].y - lm[374].y);
+  const avgEAR = (left + right) / 2;
   const faceH = Math.abs(lm[10].y - lm[152].y) || 1;
+  
   state.eyesClosed = (avgEAR / faceH) < state.earCloseThresh;
 
-  // === Posture Check (Head above shoulders) ===
-  const noseY = lm[1].y;
-  const shoulderLevel = (lm[152].y + lm[397].y) / 2; // chin area
-  state.goodPosture = noseY < shoulderLevel - 0.08; // head properly above shoulders
-
-  // === Draw Enhanced Eye Vertices ===
-  const W = canvas.width;
-  const H = canvas.height;
-  const eyeColor = state.eyesClosed ? "#00ff41" : "#ff10f0";
-
-  ctx.fillStyle = eyeColor;
-  [159,145,160,144,158,153, 386,374,387,373,385,380].forEach(i => {  // more eye points
+  // Draw minimal eye markers
+  ctx.fillStyle = state.eyesClosed ? "#00ff41" : "#ff10f0";
+  [159, 145, 386, 374].forEach(i => {
     const p = lm[i];
     ctx.beginPath();
-    ctx.arc((1 - p.x) * W, p.y * H, 3.5, 0, Math.PI * 2);
+    ctx.arc((1 - p.x) * canvas.width, p.y * canvas.height, 3, 0, Math.PI * 2);
     ctx.fill();
   });
 
-  // Update UI
-  eyesBadge.textContent = state.eyesClosed ? "EYES: CLOSED ✓" : "EYES: OPEN";
-  eyesBadge.className = state.eyesClosed ? "status-badge good" : "status-badge bad";
-
-  postureBadge.textContent = state.goodPosture ? "POSTURE: GOOD ✓" : "POSTURE: ADJUST";
-  postureBadge.className = state.goodPosture ? "status-badge good" : "status-badge bad";
-
-  // === MONKCOIN PRINTING ===
-  if (state.eyesClosed && state.goodPosture && walletConnected) {
-    printingEl.style.display = "block";
-    log("🪙 BOTH CONDITIONS MET - PRINTING MONKCOIN");
+  // Update status
+  if (state.eyesClosed) {
+    eyesBadge.textContent = "EYES: CLOSED ✓";
+    eyesBadge.className = "status-badge good";
   } else {
-    printingEl.style.display = "none";
+    eyesBadge.textContent = "EYES: OPEN";
+    eyesBadge.className = "status-badge bad";
   }
 }
 
+// =============== START ===============
+document.getElementById('startBtn').addEventListener('click', () => {
+  sessionActive = !sessionActive;
+  const btn = document.getElementById('startBtn');
+  btn.textContent = sessionActive ? "⏹ STOP SESSION" : "▶ START SESSION";
+  btn.style.borderColor = sessionActive ? "#ff4444" : "var(--green)";
+  log(sessionActive ? "Session Started" : "Session Stopped");
+});
+
 window.onload = () => {
-  initAI();
+  startCamera();           // Camera first
+  loadAI();                // AI in background
   processLoop();
 };
 </script>
